@@ -1,0 +1,7 @@
+<header class="flex font-bold text-blue-50 bg-blue-700 h-8 flex-shrink-0 flex-grow-0">
+  <nav class="px-1 flex flex-grow text-blue-40">
+    <div class="flex items-center bg-blue-500 p-1">Home</div>
+    <div class="flex-grow"></div>
+    <div class="flex items-center p-1">Login</div>
+  </nav>
+</header>
