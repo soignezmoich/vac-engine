@@ -29,8 +29,8 @@ config :logger, :console,
 config :phoenix, :json_library, Jason
 
 # Default Locale
-config :gettext, :default_locale, "fr"
-config :vac_engine, VacEngine.Gettext, default_locale: "fr"
+config :gettext, :default_locale, "en"
+config :vac_engine, VacEngine.Gettext, default_locale: "en"
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
