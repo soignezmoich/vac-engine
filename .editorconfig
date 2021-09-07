@@ -16,6 +16,3 @@ trim_trailing_whitespace = false
 indent_style = tab
 indent_size = 4
 
-[*.elm]
-indent_style = space
-indent_size = 4
