@@ -14,10 +14,10 @@ function hsluvaToRgba (h, s, l, a) {
 
 
 
-function genBlues () {
+function genCreams () {
   const res = {}
-  for (let i = 1; i < 50; i++) {
-    res[20 * i] = hsluv.hsluvToHex([174, 20, 100 - 2 * i])
+  for (let i = 1; i < 20; i++) {
+    res[50 * i] = hsluv.hsluvToHex([60, 20, 100 - 5 * i])
   }
   return res
 }
@@ -31,10 +31,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        blue: genBlues(),
+        cream: genCreams(),
       },
       outline: {
-        blue: '2px solid ' + hsluvaToRgba(174, 90, 50, 1)
+        cream: '2px solid ' + hsluvaToRgba(60, 20, 50, 1)
       },
       spacing: {
         72: '18rem',
