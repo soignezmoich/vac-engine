@@ -7,8 +7,8 @@ defmodule VacEngine.Repo.Migrations.CreateGlobalPermissions do
         null: false
       )
 
-      add(:workspaces, :permissions)
-      add(:users, :permissions)
+      add(:workspaces, :permissions, null: false)
+      add(:users, :permissions, null: false)
 
       timestamps()
     end

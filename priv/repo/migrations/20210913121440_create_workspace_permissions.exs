@@ -10,9 +10,9 @@ defmodule VacEngine.Repo.Migrations.CreateWorkspacePermissions do
         null: false
       )
 
-      add(:portals, :permissions)
-      add(:endpoints, :permissions)
-      add(:users, :permissions)
+      add(:portals, :permissions, null: false)
+      add(:endpoints, :permissions, null: false)
+      add(:users, :permissions, null: false)
 
       timestamps()
     end
