@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" class="flex flex-col min-h-full h-full min-w-full w-full">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>VacEngine</title>
+
+    <link href="/css/app.css" rel="stylesheet" />
+  </head>
+  <body class="bg-cream-50 flex flex-col min-h-full h-full min-w-full w-full">
+    <main class="flex flex-grow text-cream-900">
+      <div class="self-center flex flex-col flex-grow items-center p-4">
+        <div class="text-2xl font-bold max-w-lg mb-2 text-center">
+          Oooooops! Server error
+        </div>
+        <svg height="300px" width="300px" viewBox="0 0 100 100">
+          <use href="/icons/server_error.svg#icon"></use>
+        </svg>
+        <div class="flex flex-col text-xl mt-4 max-w-lg text-center">
+          A server error has occured.
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
