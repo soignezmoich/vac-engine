@@ -2,11 +2,13 @@ defmodule VacEngineWeb.Router do
   use VacEngineWeb, :router
 
   pipeline :browser do
+    plug(RemoteIp)
     plug(:accepts, ["html"])
     plug(:fetch_session)
     plug(:fetch_flash)
     plug(:protect_from_forgery)
     plug(:put_secure_browser_headers)
+    plug(:fetch_role_session)
     plug(:put_root_layout, {VacEngineWeb.LayoutView, :root})
     plug(:put_layout, false)
   end
@@ -16,9 +18,11 @@ defmodule VacEngineWeb.Router do
   end
 
   scope "/", VacEngineWeb do
-    pipe_through(:browser)
+    pipe_through([:browser, :require_role])
 
-    get("/", PageController, :index)
+    get("/", DashboardController, :index)
+  end
+
   end
 
   # Other scopes may use custom stacks.

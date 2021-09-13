@@ -1,0 +1,9 @@
+<header class="flex font-bold bg-gray-50 flex-shrink-0 flex-grow-0 shadow-sm z-10">
+  <nav class="px-1 flex flex-grow">
+    <div class="flex-grow"></div>
+    <div class="flex items-center">
+      <a href="<%= Routes.auth_login_path(@conn, :login) %>"
+      class="px-4 py-2 hover:bg-blue-600 hover:text-gray-100">Login</a>
+    </div>
+  </nav>
+</header>

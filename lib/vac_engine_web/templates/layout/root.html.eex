@@ -12,8 +12,12 @@
     <script src="/js/app.js" type="text/javascript" async defer></script>
   </head>
   <body class="flex flex-col min-h-full h-full min-w-full w-full">
-    <%= render "header.html", assigns %>
-    <main class="flex flex-grow bg-cream-20 text-cream-900">
+    <%= if assigns[:role] != nil do %>
+    <%= render "logged_header.html", assigns %>
+    <% else %>
+    <%= render "public_header.html", assigns %>
+    <% end %>
+    <main class="flex flex-grow bg-cream-50 text-cream-900">
       <%= @inner_content %>
     </main>
   </body>
