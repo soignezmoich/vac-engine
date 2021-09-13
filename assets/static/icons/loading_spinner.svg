@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="271.45447"
+   height="120.81535"
+   viewBox="0 0 300 120"
+   version="1.1"
+   id="svg4770"
+   sodipodi:docname="loading_spinner.svg"
+   inkscape:version="1.1 (c4e8f9ed74, 2021-05-24)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs4764" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.27"
+     inkscape:cx="131.4978"
+     inkscape:cy="139.42731"
+     inkscape:document-units="px"
+     inkscape:current-layer="svg4770"
+     showgrid="true"
+     inkscape:window-width="2556"
+     inkscape:window-height="1394"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     units="px"
+     inkscape:snap-page="false"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:lockguides="true"
+     inkscape:document-rotation="0"
+     inkscape:pagecheckerboard="0"
+     fit-margin-top="1"
+     fit-margin-left="1"
+     fit-margin-right="1"
+     fit-margin-bottom="1"
+     lock-margins="true" />
+  <metadata
+     id="metadata9521">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="icon"
+     transform="translate(18.638784,30.442286)">
+    <g
+       id="a"
+       transform="rotate(30,24,30.607695)">
+      <animate attributeType="CSS" attributeName="opacity" from="0" to="0"
+      values="0; 0; 1; 1; 0; 0" keyTimes="0; 0; 0.1; 0.5; 0.6; 1" dur="2s"
+      begin="0s" repeatCount="indefinite" />
+      <path
+         style="stroke-width:1px;-inkscape-stroke:none"
+         d="m 12,16 h 8 v 54 l 10,4 10,-4 V 16 h 8 V 12 H 37 v 56 l -7,3 -7,-3 V 12 H 12 Z"
+         id="path1867" />
+      <path
+         style="stroke-width:1px;-inkscape-stroke:none"
+         d="m 23,23 h 14 v -3 h -3 v -54 h 5 v -3 H 21 v 3 h 5 v 54 h -3 z"
+         id="path5568" />
+      <path
+         style="-inkscape-stroke:none"
+         d="m 23,46.5 v 1 h 7 v -1 z"
+         id="path6301" />
+      <path
+         style="-inkscape-stroke:none"
+         d="m 23,50.5 v 1 h 4 v -1 z"
+         id="path6303" />
+      <path
+         style="-inkscape-stroke:none"
+         d="m 23,42.5 v 1 h 4 v -1 z"
+         id="path6303-3" />
+      <path
+         style="-inkscape-stroke:none"
+         d="m 23,54.5 v 1 h 7 v -1 z"
+         id="path6305" />
+      <path
+         style="-inkscape-stroke:none"
+         d="m 23,30.5 v 1 h 7 v -1 z"
+         id="path6301-6" />
+      <path
+         style="-inkscape-stroke:none"
+         d="m 23,34.5 v 1 h 4 v -1 z"
+         id="path6303-7" />
+      <path
+         style="-inkscape-stroke:none"
+         d="m 23,26.5 v 1 h 4 v -1 z"
+         id="path6303-3-5" />
+      <path
+         style="-inkscape-stroke:none"
+         d="m 23,38.5 v 1 h 7 v -1 z"
+         id="path6305-3" />
+      <path
+         style="-inkscape-stroke:none"
+         d="m 23,58.5 v 1 h 4 v -1 z"
+         id="path6307" />
+      <path
+         style="-inkscape-stroke:none"
+         d="m 23,62.5 v 1 h 7 v -1 z"
+         id="path6309" />
+      <path
+         style="-inkscape-stroke:none"
+         d="m 23,66.5 v 1 h 4 v -1 z"
+         id="path6311" />
+      <path
+         style="stroke-width:1px;-inkscape-stroke:none"
+         d="m 28,73 1,3 h 2 l 1,-3 z"
+         id="path6467" />
+      <path
+         style="stroke-width:1px;-inkscape-stroke:none"
+         d="m 29,76 v 18 l 1,1 1,-1 V 76 Z"
+         id="path6673" />
+    </g>
+    <g
+       id="b"
+       transform="rotate(30,50.5,129.50704)">
+      <animate attributeType="CSS" attributeName="opacity" from="0" to="0"
+      values="0; 0; 1; 1; 0; 0" keyTimes="0; 0.1; 0.2; 0.6; 0.7; 1" dur="2s"
+      begin="0s" repeatCount="indefinite" />
+      <path
+         style="stroke-width:1px;-inkscape-stroke:none"
+         d="m 12,16 h 8 v 54 l 10,4 10,-4 V 16 h 8 V 12 H 37 v 56 l -7,3 -7,-3 V 12 H 12 Z"
+         id="path1867-6" />
+      <path
+         style="stroke-width:1px;-inkscape-stroke:none"
+         d="m 23,35 h 14 v -3 h -3 v -54 h 5 v -3 H 21 v 3 h 5 v 54 h -3 z"
+         id="path5568-2" />
+      <path
+         style="-inkscape-stroke:none"
+         d="m 23,46.5 v 1 h 7 v -1 z"
+         id="path6301-9" />
+      <path
+         style="-inkscape-stroke:none"
+         d="m 23,50.5 v 1 h 4 v -1 z"
+         id="path6303-1" />
+      <path
+         style="-inkscape-stroke:none"
+         d="m 23,42.5 v 1 h 4 v -1 z"
+         id="path6303-3-2" />
+      <path
+         style="-inkscape-stroke:none"
+         d="m 23,54.5 v 1 h 7 v -1 z"
+         id="path6305-7" />
+      <path
+         style="-inkscape-stroke:none"
+         d="m 23,38.5 v 1 h 7 v -1 z"
+         id="path6305-3-6" />
+      <path
+         style="-inkscape-stroke:none"
+         d="m 23,58.5 v 1 h 4 v -1 z"
+         id="path6307-0" />
+      <path
+         style="-inkscape-stroke:none"
+         d="m 23,62.5 v 1 h 7 v -1 z"
+         id="path6309-6" />
+      <path
+         style="-inkscape-stroke:none"
+         d="m 23,66.5 v 1 h 4 v -1 z"
+         id="path6311-2" />
+      <path
+         style="stroke-width:1px;-inkscape-stroke:none"
+         d="m 28,73 1,3 h 2 l 1,-3 z"
+         id="path6467-6" />
+      <path
+         style="stroke-width:1px;-inkscape-stroke:none"
+         d="m 29,76 v 18 l 1,1 1,-1 V 76 Z"
+         id="path6673-1" />
+    </g>
+    <g
+       id="c"
+       transform="rotate(30,77,228.40639)">
+      <animate attributeType="CSS" attributeName="opacity" from="0" to="0"
+      values="0; 0; 1; 1; 0; 0" keyTimes="0; 0.2; 0.3; 0.7; 0.8; 1" dur="2s"
+      begin="0s" repeatCount="indefinite" />
+      <path
+         style="stroke-width:1px;-inkscape-stroke:none"
+         d="m 12,16 h 8 v 54 l 10,4 10,-4 V 16 h 8 V 12 H 37 v 56 l -7,3 -7,-3 V 12 H 12 Z"
+         id="path1867-6-7" />
+      <path
+         style="stroke-width:1px;-inkscape-stroke:none"
+         d="m 23,47 h 14 v -3 h -3 v -54 h 5 v -3 H 21 v 3 h 5 v 54 h -3 z"
+         id="path5568-2-9" />
+      <path
+         style="-inkscape-stroke:none"
+         d="m 23,50.5 v 1 h 4 v -1 z"
+         id="path6303-1-0" />
+      <path
+         style="-inkscape-stroke:none"
+         d="m 23,54.5 v 1 h 7 v -1 z"
+         id="path6305-7-3" />
+      <path
+         style="-inkscape-stroke:none"
+         d="m 23,58.5 v 1 h 4 v -1 z"
+         id="path6307-0-9" />
+      <path
+         style="-inkscape-stroke:none"
+         d="m 23,62.5 v 1 h 7 v -1 z"
+         id="path6309-6-2" />
+      <path
+         style="-inkscape-stroke:none"
+         d="m 23,66.5 v 1 h 4 v -1 z"
+         id="path6311-2-2" />
+      <path
+         style="stroke-width:1px;-inkscape-stroke:none"
+         d="m 28,73 1,3 h 2 l 1,-3 z"
+         id="path6467-6-8" />
+      <path
+         style="stroke-width:1px;-inkscape-stroke:none"
+         d="m 29,76 v 18 l 1,1 1,-1 V 76 Z"
+         id="path6673-1-9" />
+    </g>
+    <g
+       id="d"
+       transform="rotate(30,103.5,327.30573)">
+      <animate attributeType="CSS" attributeName="opacity" from="0" to="0"
+      values="0; 0; 1; 1; 0; 0" keyTimes="0; 0.3; 0.4; 0.8; 0.9; 1" dur="2s"
+      begin="0s" repeatCount="indefinite" />
+      <path
+         style="stroke-width:1px;-inkscape-stroke:none"
+         d="m 12,16 h 8 v 54 l 10,4 10,-4 V 16 h 8 V 12 H 37 v 56 l -7,3 -7,-3 V 12 H 12 Z"
+         id="path1867-6-7-3" />
+      <path
+         style="stroke-width:1px;-inkscape-stroke:none"
+         d="M 23,59 H 37 V 56 H 34 V 2 h 5 V -1 H 21 v 3 h 5 v 54 h -3 z"
+         id="path5568-2-9-6" />
+      <path
+         style="-inkscape-stroke:none"
+         d="m 23,62.5 v 1 h 7 v -1 z"
+         id="path6309-6-2-1" />
+      <path
+         style="-inkscape-stroke:none"
+         d="m 23,66.5 v 1 h 4 v -1 z"
+         id="path6311-2-2-9" />
+      <path
+         style="stroke-width:1px;-inkscape-stroke:none"
+         d="m 28,73 1,3 h 2 l 1,-3 z"
+         id="path6467-6-8-4" />
+      <path
+         style="stroke-width:1px;-inkscape-stroke:none"
+         d="m 29,76 v 18 l 1,1 1,-1 V 76 Z"
+         id="path6673-1-9-7" />
+    </g>
+    <g
+       id="e"
+       transform="rotate(30,130,426.20508)">
+      <animate attributeType="CSS" attributeName="opacity" from="0" to="0"
+      values="0; 0; 1; 1; 0; 0" keyTimes="0; 0.4; 0.5; 0.9; 1; 1" dur="2s"
+      begin="0s" repeatCount="indefinite" />
+      <path
+         style="stroke-width:1px;-inkscape-stroke:none"
+         d="m 12,16 h 8 v 54 l 10,4 10,-4 V 16 h 8 V 12 H 37 v 56 l -7,3 -7,-3 V 12 H 12 Z"
+         id="path1867-6-7-3-4" />
+      <path
+         style="stroke-width:1px;-inkscape-stroke:none"
+         d="M 23,71 H 37 V 68 H 34 V 14 h 5 V 11 H 21 v 3 h 5 v 54 h -3 z"
+         id="path5568-2-9-6-5" />
+      <path
+         style="stroke-width:1px;-inkscape-stroke:none"
+         d="m 28,73 1,3 h 2 l 1,-3 z"
+         id="path6467-6-8-4-0" />
+      <path
+         style="stroke-width:1px;-inkscape-stroke:none"
+         d="m 29,76 v 18 l 1,1 1,-1 V 76 Z"
+         id="path6673-1-9-7-6" />
+    </g>
+  </g>
+</svg>
