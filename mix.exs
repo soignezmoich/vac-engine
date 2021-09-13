@@ -63,7 +63,10 @@ defmodule VacEngine.MixProject do
       {:base24, "~> 0.1.1"},
 
       # Plug that extract remote ip from different sources
-      {:remote_ip, "~> 1.0"}
+      {:remote_ip, "~> 1.0"},
+
+      # Strong password hashing
+      {:argon2_elixir, "~> 2.0"},
     ]
   end
 
