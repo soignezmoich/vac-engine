@@ -21,6 +21,7 @@ defmodule VacEngineWeb do
     quote do
       use Phoenix.Controller, namespace: VacEngineWeb
 
+      import VacEngineWeb.RolePlug
       import Plug.Conn
       import VacEngineWeb.Gettext
       alias VacEngineWeb.Router.Helpers, as: Routes
@@ -46,8 +47,10 @@ defmodule VacEngineWeb do
     quote do
       use Phoenix.Router
 
+      import VacEngineWeb.RolePlug
       import Plug.Conn
       import Phoenix.Controller
+      import Phoenix.LiveView.Router
     end
   end
 
