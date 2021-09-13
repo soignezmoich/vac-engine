@@ -16,8 +16,13 @@ config :vac_engine, VacEngineWeb.Endpoint,
   live_view: [
     signing_salt: "rn7sBRyD84HI0vPGUgv1YoO7FGRAgT5z6YfVMxaK"
   ],
-  secret_key_base: "CJrwieShyn60rAAligMhqc6bOHs6QZq7why2weSMrf8OjETOtVHbchxHHeS3W6leek0LsBD4gIgSl6z9",
-  render_errors: [view: VacEngineWeb.ErrorView, accepts: ~w(html json), layout: false],
+  secret_key_base:
+    "CJrwieShyn60rAAligMhqc6bOHs6QZq7why2weSMrf8OjETOtVHbchxHHeS3W6leek0LsBD4gIgSl6z9",
+  render_errors: [
+    view: VacEngineWeb.ErrorView,
+    accepts: ~w(html json),
+    layout: false
+  ],
   pubsub_server: VacEngine.PubSub
 
 # Configures Elixir's Logger

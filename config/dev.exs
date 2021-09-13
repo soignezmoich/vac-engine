@@ -6,7 +6,6 @@ config :vac_engine, VacEngine.Repo,
   url: System.fetch_env!("DATABASE_URL"),
   pool_size: 10
 
-
 # For development, we disable any cache and enable
 # debugging and code reloading.
 #

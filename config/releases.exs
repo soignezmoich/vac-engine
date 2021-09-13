@@ -20,7 +20,7 @@ config :vac_engine, VacEngineWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: port],
   secret_key_base: secret_key_base,
   live_view: [
-    signing_salt: live_view_salt,
-  ],
+    signing_salt: live_view_salt
+  ]
 
 config :vac_engine, VacEngineWeb.Endpoint, server: true
