@@ -4,3 +4,25 @@
 @import "tailwindcss/components";
 
 @import "tailwindcss/utilities";
+
+input, select, button {
+  border-radius: 0;
+  appearance: none;
+}
+
+svg * {
+  fill: currentColor;
+}
+
+
+.loading-show {
+  display: none;
+}
+
+.phx-submit-loading .loading-show {
+  display: flex;
+}
+
+.phx-submit-loading .loading-hide {
+  display: none;
+}
