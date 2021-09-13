@@ -47,7 +47,6 @@ defmodule VacEngine.MixProject do
       {:ecto_sql, "~> 3.4"},
       {:postgrex, ">= 0.0.0"},
 
-
       # Localization
       {:gettext, "~> 0.11"},
 
@@ -61,13 +60,15 @@ defmodule VacEngine.MixProject do
       {:hsluv, "~> 0.2"},
 
       # Use base24 for ids
-      {:base24, "~> 0.1.1"}
+      {:base24, "~> 0.1.1"},
+
+      # Plug that extract remote ip from different sources
+      {:remote_ip, "~> 1.0"}
     ]
   end
 
   # Project uses Makefile, type make for info
   defp aliases do
-    [
-    ]
+    []
   end
 end
