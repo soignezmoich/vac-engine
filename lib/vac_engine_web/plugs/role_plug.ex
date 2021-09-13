@@ -1,6 +1,7 @@
 defmodule VacEngineWeb.RolePlug do
   import Plug.Conn
   import Phoenix.Controller, only: [redirect: 2]
+  import VacEngineWeb.ConnUtils
 
   alias VacEngine.Auth
 
@@ -39,14 +40,10 @@ defmodule VacEngineWeb.RolePlug do
   end
 
   defp restore_session(conn) do
-    with ua <- conn |> get_req_header("user-agent"),
-         {:ok, session} <-
+    with {:ok, session} <-
            conn |> get_session("role_session_token") |> Auth.fetch_session(),
          {:ok, session} <-
-           Auth.update_session(session, %{
-             "remote_ip" => conn.remote_ip,
-             "client_info" => %{"user-agent" => ua}
-           }) do
+           Auth.update_session(session, session_attrs(conn)) do
       {:ok, session}
     else
       _ -> {:error, "cannot fetch an update session"}
