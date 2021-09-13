@@ -3,10 +3,10 @@ defmodule VacEngine.Repo.Migrations.CreateWorkspaces do
 
   def change do
     create table(:workspaces) do
+      timestamps()
+
       add(:name, :string, size: 100, null: false)
       add(:description, :string, size: 1000)
-
-      timestamps()
     end
   end
 end

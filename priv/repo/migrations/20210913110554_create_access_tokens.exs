@@ -10,12 +10,13 @@ defmodule VacEngine.Repo.Migrations.CreateAccessTokens do
       )")
 
     create table(:access_tokens) do
-      add(:token, :string, size: 200, null: false)
+      timestamps()
+
       add(:role_id, references(:roles, on_delete: :delete_all), null: false)
+
+      add(:token, :string, size: 200, null: false)
       add(:expires_at, :utc_datetime)
       add(:type, :access_token_type)
-
-      timestamps()
     end
 
     create(index(:access_tokens, [:role_id]))

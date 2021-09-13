@@ -3,6 +3,8 @@ defmodule VacEngine.Repo.Migrations.CreateWorkspacePermissions do
 
   def change do
     create table(:workspace_permissions) do
+      timestamps()
+
       add(:workspace_id, references(:workspaces, on_delete: :delete_all),
         null: false
       )
@@ -13,8 +15,6 @@ defmodule VacEngine.Repo.Migrations.CreateWorkspacePermissions do
       add(:portals, :permissions, null: false)
       add(:endpoints, :permissions, null: false)
       add(:users, :permissions, null: false)
-
-      timestamps()
     end
 
     create(index(:workspace_permissions, [:workspace_id]))

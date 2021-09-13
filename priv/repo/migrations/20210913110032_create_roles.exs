@@ -10,13 +10,14 @@ defmodule VacEngine.Repo.Migrations.CreateRoles do
       )")
 
     create table(:roles) do
-      add(:type, :role_type, null: false)
-      add(:user_id, references(:users, on_delete: :restrict))
-      add(:active, :bool, null: false, default: false)
-      add(:parent_id, references(:roles, on_delete: :restrict))
-      add(:description, :string, size: 1000)
-
       timestamps()
+
+      add(:user_id, references(:users, on_delete: :restrict))
+      add(:parent_id, references(:roles, on_delete: :restrict))
+
+      add(:type, :role_type, null: false)
+      add(:active, :bool, null: false, default: false)
+      add(:description, :string, size: 1000)
     end
 
     create(index(:roles, [:user_id]))
