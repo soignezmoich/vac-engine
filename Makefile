@@ -85,6 +85,16 @@ db:
 	mix ecto.create
 	mix ecto.migrate
 
+.PHONY: rollback
+
+rollback:
+	mix ecto.rollback
+
+.PHONY: rollback-all
+
+rollback-all:
+	mix ecto.rollback --to 20210909075125
+
 .PHONY: release
 
 release: export MIX_ENV=prod
