@@ -13,7 +13,7 @@ defmodule VacEngine.Repo.Migrations.CreateRoles do
       add(:type, :role_type, null: false)
       add(:user_id, references(:users, on_delete: :restrict))
       add(:active, :bool, null: false, default: false)
-      add(:parent_role_id, references(:roles, on_delete: :restrict))
+      add(:parent_id, references(:roles, on_delete: :restrict))
       add(:description, :string, size: 1000)
 
       timestamps()
