@@ -23,6 +23,11 @@ defmodule VacEngineWeb.Router do
     get("/", DashboardController, :index)
   end
 
+  scope "/", VacEngineWeb do
+    pipe_through([:browser])
+    live("/login", AuthLive.Login, :login)
+    get("/login/:token", AuthController, :login)
+    match(:*, "/logout", AuthController, :logout)
   end
 
   # Other scopes may use custom stacks.
