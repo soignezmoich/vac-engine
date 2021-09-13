@@ -9,7 +9,7 @@ defmodule VacEngine.Repo.Migrations.CreateSessions do
 
       add(:token, :string, size: 200, null: false)
       add(:expires_at, :utc_datetime)
-      add(:active, :bool, null: false, default: false)
+      add(:last_active_at, :utc_datetime)
       add(:remote_ip, :inet, null: false)
       add(:client_info, :jsonb)
     end
