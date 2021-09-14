@@ -1,10 +1,7 @@
 use Mix.Config
 
-# Configure your database
 #
-# The MIX_TEST_PARTITION environment variable can be used
-# to provide built-in test partitioning in CI environment.
-# Run `mix help test` for more information.
+# DATABASE_TEST_URL must be defined when the app is compiled for testing
 config :vac_engine, VacEngine.Repo,
   url: System.fetch_env!("DATABASE_TEST_URL"),
   pool: Ecto.Adapters.SQL.Sandbox

@@ -6,8 +6,6 @@ defmodule VacEngineWeb.AuthController do
 
   action_fallback(VacEngineWeb.FallbackController)
 
-  plug(:require_no_role when action not in [:logout])
-
   def login(conn, %{"token" => token}) do
     Phoenix.Token.verify(
       VacEngineWeb.Endpoint,

@@ -23,7 +23,10 @@ config :vac_engine, VacEngineWeb.Endpoint,
     accepts: ~w(html json),
     layout: false
   ],
-  pubsub_server: VacEngine.PubSub
+  pubsub_server: VacEngine.PubSub,
+  session_signing_salt: "s829bssj(92jldk",
+  session_encryption_salt: "SMXCY=NGOIjs",
+  session_key: "_vac_engine_session_key"
 
 # Configures Elixir's Logger
 config :logger, :console,

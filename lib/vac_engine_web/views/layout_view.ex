@@ -1,15 +1,17 @@
 defmodule VacEngineWeb.LayoutView do
   use VacEngineWeb, :view
 
-  def header_els(:left, %{assigns: %{role: role}} = conn) when not is_nil(role) do
+  def header_els(:left, %{assigns: %{role: role}} = conn)
+      when not is_nil(role) do
     [
-      {"Dashboard", Routes.dashboard_path(conn, :index)},
+      {"Dashboard", Routes.dashboard_path(conn, :index)}
     ]
   end
 
-  def header_els(:right, %{assigns: %{role: role}} = conn) when not is_nil(role) do
+  def header_els(:right, %{assigns: %{role: role}} = conn)
+      when not is_nil(role) do
     [
-      {"Logout", Routes.auth_path(conn, :logout)},
+      {"Logout", Routes.auth_path(conn, :logout)}
     ]
   end
 
@@ -19,7 +21,7 @@ defmodule VacEngineWeb.LayoutView do
 
   def header_els(:right, conn) do
     [
-      {"Login", Routes.auth_login_path(conn, :login)},
+      {"Login", Routes.auth_login_path(conn, :login)}
     ]
   end
 end

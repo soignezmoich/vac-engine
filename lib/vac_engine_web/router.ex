@@ -25,9 +25,13 @@ defmodule VacEngineWeb.Router do
   end
 
   scope "/", VacEngineWeb do
-    pipe_through([:browser])
+    pipe_through([:browser, :require_no_role])
     live("/login", AuthLive.Login, :login)
     get("/login/:token", AuthController, :login)
+  end
+
+  scope "/", VacEngineWeb do
+    pipe_through([:browser])
     match(:*, "/logout", AuthController, :logout)
   end
 

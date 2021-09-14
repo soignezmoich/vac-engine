@@ -2,6 +2,9 @@ import Config
 
 require Logger
 
+# Runtime configuration
+# All environment variables must be defined in production
+
 case Config.config_env() do
   :prod ->
     database_url = System.fetch_env!("DATABASE_URL")

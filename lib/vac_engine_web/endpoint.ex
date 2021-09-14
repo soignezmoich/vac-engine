@@ -1,14 +1,18 @@
 defmodule VacEngineWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :vac_engine
 
-  # The session will be stored in the cookie and signed,
-  # this means its contents can be read but not tampered with.
-  # Set :encryption_salt if you would also like to encrypt it.
   @session_options [
     store: :cookie,
-    key: "_vac_engine_key",
-    signing_salt: "ISKJC5rf",
-    max_age: 7 * 3600 * 24,
+    key:
+      Application.get_env(:vac_engine, VacEngineWeb.Endpoint)
+      |> Keyword.fetch!(:session_key),
+    signing_salt:
+      Application.get_env(:vac_engine, VacEngineWeb.Endpoint)
+      |> Keyword.fetch!(:session_signing_salt),
+    encryption_salt:
+      Application.get_env(:vac_engine, VacEngineWeb.Endpoint)
+      |> Keyword.fetch!(:session_encryption_salt),
+    max_age: 365 * 3600 * 24,
     same_site: "Strict"
   ]
 
