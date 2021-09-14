@@ -67,6 +67,9 @@ defmodule VacEngine.MixProject do
 
       # Strong password hashing
       {:argon2_elixir, "~> 2.0"},
+
+      # Ecto postgresql inet data type support
+      {:ecto_network, "~> 1.3.0"}
     ]
   end
 
