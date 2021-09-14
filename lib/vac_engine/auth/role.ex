@@ -10,7 +10,7 @@ defmodule VacEngine.Auth.Role do
     belongs_to(:user, User)
     belongs_to(:parent, Role)
 
-    field(:type, :integer)
+    field(:type, :string)
     field(:active, :boolean)
     field(:description, :string)
   end
