@@ -28,6 +28,7 @@ case Config.config_env() do
       ]
 
     config :vac_engine, VacEngineWeb.Endpoint, server: true
+
   _ ->
     Logger.info("Runtime not configured, using default configuration")
 end

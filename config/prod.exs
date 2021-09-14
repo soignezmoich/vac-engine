@@ -16,7 +16,7 @@ config :vac_engine, VacEngineWeb.Endpoint,
 config :logger, level: :info
 
 # To display a loading spinner for a minimal time, and also protect from DoS
-config :vac_engine, load_delay: 2000
+config :vac_engine, login_delay: 4000
 
 # ## SSL Support
 #

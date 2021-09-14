@@ -21,6 +21,8 @@ config :vac_engine, VacEngineWeb.Endpoint,
     make: ["assets-watch"]
   ]
 
+config :vac_engine, login_delay: 100
+
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed
