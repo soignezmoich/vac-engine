@@ -30,6 +30,15 @@ function sluggize (str) {
   return removeDiacritics(str).replace(/\s/g, '_').toLowerCase().replace(/\W/g, '_')
 }
 
+Hooks.focus = {
+  mounted () {
+
+  },
+  updated () {
+    const el = document.getElementById(this.el.dataset.focus)
+    el.focus()
+  }
+}
 
 Hooks.sluggize = {
   mounted () {
