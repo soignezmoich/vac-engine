@@ -7,7 +7,7 @@ defmodule VacEngine.Repo.Migrations.CreateUsers do
 
       add(:name, :string, size: 100, null: false)
       add(:description, :string, size: 1000)
-      add(:email, :string, size: 100)
+      add(:email, :string, size: 100, null: false)
       add(:phone, :string, size: 100)
       add(:encrypted_password, :string, size: 200)
       add(:totp_secret, :string, size: 1000)
