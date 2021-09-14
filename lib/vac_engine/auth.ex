@@ -14,7 +14,13 @@ defmodule VacEngine.Auth do
   end
 
   def fetch_session(token) do
-    Repo.get_by(Session, token: token)
+    from(r in Session,
+      where:
+        r.token == ^token and
+          (r.expires_at >
+             fragment("timezone('UTC', now())") or is_nil(r.expires_at))
+    )
+    |> Repo.one()
     |> case do
       nil -> {:error, "session token not found"}
       session -> {:ok, session}
@@ -31,6 +37,13 @@ defmodule VacEngine.Auth do
     session
     |> Session.changeset(attrs)
     |> Repo.update()
+  end
+
+  def expire_session(%Session{} = session) do
+    session
+    |> update_session(%{
+      "expires_at" => NaiveDateTime.utc_now() |> NaiveDateTime.add(-1)
+    })
   end
 
   def fetch_user(id) do

@@ -38,10 +38,19 @@ defmodule VacEngineWeb.AuthController do
 
   def logout(conn, _params) do
     conn
+    |> expire_role_session
     |> clear_session
     |> configure_session(renew: true)
     |> assign(:role, nil)
     |> assign(:role_session, nil)
     |> render("logout.html")
   end
+
+  defp expire_role_session(%{assigns: %{role_session: session}} = conn)
+       when not is_nil(session) do
+    {:ok, session} = Auth.expire_session(session)
+    conn
+  end
+
+  defp expire_role_session(conn), do: conn
 end
