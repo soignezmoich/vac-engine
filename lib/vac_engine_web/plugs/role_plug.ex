@@ -46,7 +46,7 @@ defmodule VacEngineWeb.RolePlug do
            Auth.update_session(session, session_attrs(conn)) do
       {:ok, session}
     else
-      _ -> {:error, "cannot fetch an update session"}
+      _ -> {:error, "cannot restore session"}
     end
   end
 end
