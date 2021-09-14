@@ -1,0 +1,7 @@
+<section class="self-center flex flex-grow items-center p-4 justify-center">
+<div class="flex items-center flex-col
+            bg-white overflow-hidden p-10 bg-cream-700">
+  <div class="font-bold text-2xl mb-4 text-gray-100"><%= @title %></div>
+  <span class="mt-4 text-md text-gray-200"><%= @subtitle %></span>
+</div>
+</section>
