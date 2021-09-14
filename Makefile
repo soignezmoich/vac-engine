@@ -19,8 +19,14 @@ all:
 
 .PHONY: test
 
+test: export MIX_ENV=test
 test:
 	mix test
+
+.PHONY: test-db
+
+test-db: export MIX_ENV=test
+test-db: db
 
 
 .PHONY: watch-test
