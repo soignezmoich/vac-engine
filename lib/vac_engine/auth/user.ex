@@ -1,6 +1,7 @@
 defmodule VacEngine.Auth.User do
   use Ecto.Schema
   import Ecto.Changeset
+  alias VacEngine.Auth.Role
 
   schema "users" do
     timestamps(type: :utc_datetime)
@@ -12,14 +13,16 @@ defmodule VacEngine.Auth.User do
     field(:encrypted_password, :string)
     field(:totp_secret, :string)
 
+    belongs_to(:role, Role)
+
     field(:password, :string, virtual: true)
   end
 
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:name, :description, :phone, :password])
-    |> validate_required([:name, :password])
+    |> cast(attrs, [:name, :description, :phone, :password, :email])
+    |> validate_required([:name, :password, :email])
     |> validate_length(:password, min: 8, max: 1024)
     |> unique_constraint(:email)
     |> encrypt_password()

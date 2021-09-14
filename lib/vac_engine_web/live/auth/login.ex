@@ -62,24 +62,23 @@ defmodule VacEngineWeb.AuthLive.Login do
        )}
     else
       with {:ok, user} <- Auth.check_user(email, password) do
-          token =
-            Phoenix.Token.sign(
-              VacEngineWeb.Endpoint,
-              "login_token",
-              {user.id, socket.assigns.next_url}
-            )
-
-          url = Routes.auth_path(socket, :login, token)
-
-          Process.send_after(
-            self(),
-            {:redirect_to, url},
-            Application.get_env(:vac_engine, :login_delay)
+        token =
+          Phoenix.Token.sign(
+            VacEngineWeb.Endpoint,
+            "login_token",
+            {user.id, socket.assigns.next_url}
           )
 
-          {:noreply, assign(socket, success: true)}
-      else
+        url = Routes.auth_path(socket, :login, token)
 
+        Process.send_after(
+          self(),
+          {:redirect_to, url},
+          Application.get_env(:vac_engine, :login_delay)
+        )
+
+        {:noreply, assign(socket, success: true)}
+      else
         _ ->
           {:noreply,
            assign(socket,

@@ -13,11 +13,11 @@ defmodule VacEngineWeb.AuthController do
       VacEngineWeb.Endpoint,
       "login_token",
       token,
-      max_age: 60
+      max_age: 10
     )
     |> case do
       {:ok, {user_id, next_url}} ->
-        with {:ok, user} <- Auth.get_user(user_id),
+        with {:ok, user} <- Auth.fetch_user(user_id),
              {:ok, session} <-
                Auth.create_session(
                  user.role,
@@ -29,7 +29,7 @@ defmodule VacEngineWeb.AuthController do
           |> put_session("role_session_token", session.token)
           |> redirect(to: next_url)
         else
-          _ ->
+          _err ->
             {:error, :internal_server_error}
         end
 
