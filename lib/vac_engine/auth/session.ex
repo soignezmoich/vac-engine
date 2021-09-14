@@ -11,7 +11,7 @@ defmodule VacEngine.Auth.Session do
     field(:token, :string)
     field(:expires_at, :utc_datetime)
     field(:last_active_at, :utc_datetime)
-    field(:remote_ip, :string)
+    field(:remote_ip, EctoNetwork.INET)
     field(:client_info, :map)
   end
 
@@ -19,6 +19,6 @@ defmodule VacEngine.Auth.Session do
   def changeset(session, attrs) do
     session
     |> cast(attrs, [:remote_ip, :client_info, :last_active_at])
-    |> validate_required([:token, :active, :remote_ip])
+    |> validate_required([:token, :remote_ip])
   end
 end
