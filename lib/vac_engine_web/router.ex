@@ -11,6 +11,7 @@ defmodule VacEngineWeb.Router do
     plug(:fetch_role_session)
     plug(:put_root_layout, {VacEngineWeb.LayoutView, :root})
     plug(:put_layout, false)
+    plug(:no_cache)
   end
 
   pipeline :api do

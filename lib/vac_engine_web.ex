@@ -48,6 +48,7 @@ defmodule VacEngineWeb do
       use Phoenix.Router
 
       import VacEngineWeb.RolePlug
+      import VacEngineWeb.CachePlug
       import Plug.Conn
       import Phoenix.Controller
       import Phoenix.LiveView.Router
