@@ -11,15 +11,11 @@ help:
 readme:
 	@$(MDCAT) README.md
 
-.PHONY: all
-
-all:
-	echo "Run make with a task"
-
 
 .PHONY: test
 
 test: export MIX_ENV=test
+test: export DATABASE_URL=${DATABASE_TEST_URL}
 test:
 	mix test
 
@@ -29,9 +25,9 @@ test-db: export MIX_ENV=test
 test-db: db
 
 
-.PHONY: watch-test
+.PHONY: test-watch
 
-watch-test:
+test-watch:
 	fswatch --event=Updated -ro test lib \
 	|mix test --listen-on-stdin --stale
 
@@ -79,11 +75,6 @@ assets:
 assets-watch:
 	cd assets && make watch
 
-.PHONY: import
-
-import:
-	mix import
-
 .PHONY: db
 
 db:
@@ -113,8 +104,3 @@ release: clean deps assets build
 
 psql:
 	psql ${DATABASE_URL}
-
-.PHONY: deploy
-
-deploy: release
-	echo "NO RELEASE SCRIPT"
