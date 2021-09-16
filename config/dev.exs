@@ -3,7 +3,6 @@ use Mix.Config
 # Configure your database
 config :vac_engine, VacEngine.Repo,
   show_sensitive_data_on_connection_error: true,
-  url: System.fetch_env!("DATABASE_URL"),
   pool_size: 10
 
 # For development, we disable any cache and enable

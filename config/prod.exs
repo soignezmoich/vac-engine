@@ -7,7 +7,10 @@ config :vac_engine, VacEngineWeb.Endpoint,
   cache_static_manifest: "priv/static/cache_manifest.json",
   session_signing_salt: System.fetch_env!("SESSION_SIGNING_SALT"),
   session_encryption_salt: System.fetch_env!("SESSION_ENCRYPTION_SALT"),
-  session_key: System.fetch_env!("SESSION_KEY")
+  session_key: System.fetch_env!("SESSION_KEY"),
+  live_view: [
+    signing_salt: System.fetch_env!("LIVE_VIEW_SALT")
+  ]
 
 # Do not print debug messages in production
 config :logger, level: :info

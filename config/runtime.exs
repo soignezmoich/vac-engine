@@ -3,7 +3,7 @@ import Config
 require Logger
 
 # Runtime configuration
-# All environment variables must be defined in production
+Logger.info("Running runtime configuration")
 
 case Config.config_env() do
   :prod ->
@@ -11,10 +11,9 @@ case Config.config_env() do
 
     config :vac_engine, VacEngine.Repo,
       url: database_url,
-      pool_size: String.to_integer(System.fetch_env!("POOL_SIZE"))
+      pool_size: String.to_integer(System.get_env("POOL_SIZE", "10"))
 
     secret_key_base = System.fetch_env!("SECRET_KEY_BASE")
-    live_view_salt = System.fetch_env!("LIVE_VIEW_SALT")
 
     host = System.fetch_env!("HOST")
 
@@ -25,13 +24,16 @@ case Config.config_env() do
     config :vac_engine, VacEngineWeb.Endpoint,
       url: [host: host, port: 443, scheme: "https"],
       http: [ip: {127, 0, 0, 1}, port: port],
-      secret_key_base: secret_key_base,
-      live_view: [
-        signing_salt: live_view_salt
-      ]
+      secret_key_base: secret_key_base
 
     config :vac_engine, VacEngineWeb.Endpoint, server: true
 
-  _ ->
-    Logger.info("Runtime not configured, using default configuration")
+  :dev ->
+    config :vac_engine, VacEngine.Repo,
+      url: System.get_env("DATABASE_URL", "postgres://localhost/vac_engine")
+
+  :test ->
+    config :vac_engine, VacEngine.Repo,
+      url:
+        System.get_env("DATABASE_URL", "postgres://localhost/vac_engine_test")
 end
