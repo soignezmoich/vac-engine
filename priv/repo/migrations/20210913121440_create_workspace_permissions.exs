@@ -19,5 +19,6 @@ defmodule VacEngine.Repo.Migrations.CreateWorkspacePermissions do
 
     create(index(:workspace_permissions, [:workspace_id]))
     create(index(:workspace_permissions, [:role_id]))
+    create(index(:workspace_permissions, [:workspace_id, :role_id], unique: true))
   end
 end

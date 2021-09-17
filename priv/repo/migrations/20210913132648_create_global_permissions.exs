@@ -13,7 +13,7 @@ defmodule VacEngine.Repo.Migrations.CreateGlobalPermissions do
       add(:users, :permissions, null: false)
     end
 
-    create(index(:global_permissions, [:role_id]))
+    create(index(:global_permissions, [:role_id], unique: true))
 
   end
 end
