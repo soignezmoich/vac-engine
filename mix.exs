@@ -36,15 +36,15 @@ defmodule VacEngine.MixProject do
       # Phoenix
       {:phoenix, "~> 1.5.12"},
       {:phoenix_ecto, "~> 4.4"},
-      {:phoenix_html, "~> 2.11"},
+      {:phoenix_html, "~> 3.0.3"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_dashboard, "~> 0.4"},
-      {:phoenix_live_view, "~> 0.15.4"},
-      {:telemetry_metrics, "~> 0.4"},
+      {:phoenix_live_dashboard, "~> 0.5.1"},
+      {:phoenix_live_view, "~> 0.16.3"},
+      {:telemetry_metrics, "~> 0.6.1"},
       {:telemetry_poller, "~> 0.4"},
 
       # DB Connection
-      {:ecto_sql, "~> 3.4"},
+      {:ecto_sql, "~> 3.7"},
       {:postgrex, ">= 0.0.0"},
 
       # Localization
