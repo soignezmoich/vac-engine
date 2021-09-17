@@ -33,7 +33,8 @@ defmodule VacEngineWeb.Endpoint do
     at: "/",
     from: :vac_engine,
     gzip: false,
-    only: ~w(css fonts icons images js favicon.ico robots.txt)
+    only:
+      ~w(css fonts icons images js favicon.ico favicon.svg favicon.png robots.txt)
   )
 
   # Code reloading can be explicitly enabled under the
