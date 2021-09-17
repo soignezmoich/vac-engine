@@ -4,7 +4,7 @@ defmodule VacEngine.Auth.WorkspacePermission do
   alias VacEngine.Auth.Workspace
   alias VacEngine.Auth.Role
 
-  schema "workspaces_permissions" do
+  schema "workspace_permissions" do
     timestamps(type: :utc_datetime)
 
     belongs_to(:workspace, Workspace)

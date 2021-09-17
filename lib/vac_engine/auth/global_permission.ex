@@ -2,14 +2,23 @@ defmodule VacEngine.Auth.GlobalPermission do
   use Ecto.Schema
   import Ecto.Changeset
   alias VacEngine.Auth.Role
+  alias VacEngine.PermissionsType
 
   schema "global_permissions" do
     timestamps(type: :utc_datetime)
 
     belongs_to(:role, Role)
 
-    field(:workspaces, :map)
-    field(:users, :map)
+    field(:workspaces, PermissionsType)
+    field(:users, PermissionsType)
+  end
+
+  def new(role) do
+    %__MODULE__{
+      role_id: role.id,
+      users: %PermissionsType{},
+      workspaces: %PermissionsType{}
+    }
   end
 
   @doc false
