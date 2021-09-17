@@ -21,9 +21,18 @@ case Config.config_env() do
       System.fetch_env!("PORT")
       |> String.to_integer()
 
+    {:ok, address} =
+      :inet.parse_address(
+        System.get_env(
+          "ADDRESS",
+          "::0"
+        )
+        |> to_charlist
+      )
+
     config :vac_engine, VacEngineWeb.Endpoint,
       url: [host: host, port: 443, scheme: "https"],
-      http: [ip: {127, 0, 0, 1}, port: port],
+      http: [ip: address, port: port],
       secret_key_base: secret_key_base
 
     config :vac_engine, VacEngineWeb.Endpoint, server: true

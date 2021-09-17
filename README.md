@@ -101,6 +101,12 @@ added.
 
 The HTTP port to listen on.
 
+### `ADDRESS`
+
+The IP address to bind the HTTP listener to. By default it will use `::0` which
+will bind to all ipv6 and ipv4 addresses. You can set it to either an ipv6 or
+ipv4 address. Set it to `127.0.0.1` for ipv4 only localhost listening.
+
 ### `SECRET_KEY_BASE`
 
 This is the secret used to derive all the keys used in the application.
