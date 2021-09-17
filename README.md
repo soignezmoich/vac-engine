@@ -10,6 +10,7 @@ Compile time env var must be set prior to build.
 
 The application is the compiled with:
 
+`make clean`
 `make release`
 
 This will generate the application in:

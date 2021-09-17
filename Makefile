@@ -95,9 +95,9 @@ rollback-all:
 .PHONY: release
 
 release: export MIX_ENV=prod
-release: clean deps assets build
+release: deps assets build
 	mix phx.digest
-	mix release
+	mix release --overwrite
 
 
 .PHONY: psql
