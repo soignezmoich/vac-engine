@@ -75,7 +75,7 @@ defmodule VacEngineWeb do
       import Phoenix.LiveView.Helpers
       alias VacEngineWeb.Router.Helpers, as: Routes
 
-      import VacEngineWeb.PermissionHelpers, only: [can?: 3, can!: 3]
+      import VacEngineWeb.PermissionHelpers
       import VacEngineWeb.FormHelpers
       import VacEngineWeb.FormatHelpers
     end
