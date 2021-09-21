@@ -16,6 +16,10 @@ defmodule VacEngine.Permissions do
     change_global(role, name, key, false)
   end
 
+  def toggle(role, name, key) do
+    change_global(role, name, key, :toggle)
+  end
+
   defp change_global(role, name, key, value) do
     Multi.new()
     |> Multi.run(:perm, fn repo, _changes ->
@@ -24,8 +28,29 @@ defmodule VacEngine.Permissions do
          GlobalPermission.new(role)}
     end)
     |> Multi.insert_or_update(:update, fn %{perm: perm} ->
+      value =
+        if value == :toggle do
+          !(Map.get(perm, name) |> Map.get(key))
+        else
+          value
+        end
+
+      values =
+        Map.get(perm, name)
+        |> Map.put(key, value)
+
+      values =
+        cond do
+          value == false && key == :read ->
+            %{write: false, delegate: false, delete: false, read: false}
+
+          value == true && key != :read ->
+            Map.put(values, :read, true)
+          true -> values
+        end
+
       GlobalPermission.changeset(perm, %{
-        Atom.to_string(name) => Map.put(Map.get(perm, name), key, value)
+        Atom.to_string(name) => values
       })
     end)
     |> Repo.transaction()
