@@ -47,3 +47,22 @@ svg * {
     @apply bg-gray-600;
   }
 }
+
+.form-fld {
+  @apply bg-gray-100 text-gray-900 px-2 py-1;
+
+  &:focus:not([readonly]) {
+    @apply outline-blue;
+  }
+  &[readonly]:focus {
+    @apply outline-cream;
+  }
+}
+
+input.form-fld {
+  @apply h-8;
+}
+
+textarea.form-fld {
+  @apply h-32 resize-none;
+}
