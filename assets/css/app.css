@@ -26,3 +26,24 @@ svg * {
 .phx-submit-loading .loading-hide {
   display: none;
 }
+
+.btn {
+  @apply px-2 py-1 bg-cream-400 text-gray-50 font-bold;
+  &:hover {
+    @apply bg-gray-600;
+  }
+}
+
+.btn-sm {
+  @apply px-2 bg-cream-400 text-gray-50 text-sm;
+  &:hover {
+    @apply bg-gray-600;
+  }
+}
+
+.btn-default {
+  @apply px-2 py-1 bg-blue-600 text-gray-50 font-bold;
+  &:hover {
+    @apply bg-gray-600;
+  }
+}
