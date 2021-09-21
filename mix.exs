@@ -69,7 +69,10 @@ defmodule VacEngine.MixProject do
       {:argon2_elixir, "~> 2.0"},
 
       # Ecto postgresql inet data type support
-      {:ecto_network, "~> 1.3.0"}
+      {:ecto_network, "~> 1.3.0"},
+
+      # Date and time manipulation library
+      {:timex, "~> 3.0"},
     ]
   end
 
