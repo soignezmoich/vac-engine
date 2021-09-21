@@ -5,6 +5,17 @@ defmodule VacEngine.PermissionsType do
 
   def type, do: :permissions
 
+  def cast(nil) do
+    perm = %__MODULE__{
+      read: false,
+      write: false,
+      delete: false,
+      delegate: false
+    }
+
+    {:ok, perm}
+  end
+
   def cast(map) when is_map(map) do
     perm = %__MODULE__{
       read: extract(map, :read),
