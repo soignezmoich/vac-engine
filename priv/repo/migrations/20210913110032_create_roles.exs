@@ -23,7 +23,7 @@ defmodule VacEngine.Repo.Migrations.CreateRoles do
     create(index(:roles, [:user_id]))
 
     alter table(:users) do
-      add(:role_id, references(:roles, on_delete: :restrict))
+      add(:role_id, references(:roles, on_delete: :delete_all))
     end
     create(index(:users, [:role_id]))
 
