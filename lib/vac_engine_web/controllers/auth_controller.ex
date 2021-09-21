@@ -24,7 +24,8 @@ defmodule VacEngineWeb.AuthController do
           conn
           |> clear_session
           |> configure_session(renew: true)
-          |> put_session("role_session_token", session.token)
+          |> put_session(:role_session_token, session.token)
+          |> put_session(:live_socket_id, "roles_socket:#{session.role_id}")
           |> redirect(to: next_url)
         else
           _err ->
@@ -48,7 +49,15 @@ defmodule VacEngineWeb.AuthController do
 
   defp expire_role_session(%{assigns: %{role_session: session}} = conn)
        when not is_nil(session) do
-    {:ok, session} = Auth.expire_session(session)
+    {:ok, _session} = Auth.expire_session(session)
+
+    :ok =
+      VacEngineWeb.Endpoint.broadcast(
+        "roles_socket:#{session.role_id}",
+        "disconnect",
+        %{}
+      )
+
     conn
   end
 
