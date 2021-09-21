@@ -4,6 +4,7 @@ defmodule VacEngine.Auth.Role do
   alias VacEngine.Auth.Role
   alias VacEngine.Auth.User
   alias VacEngine.Auth.WorkspacePermission
+  alias VacEngine.Auth.Session
   alias VacEngine.Auth.GlobalPermission
 
   schema "roles" do
@@ -13,6 +14,8 @@ defmodule VacEngine.Auth.Role do
     belongs_to(:parent, Role)
     has_many(:workspace_permissions, WorkspacePermission)
     has_one(:global_permission, GlobalPermission)
+
+    has_many(:sessions, Session)
 
     field(:type, :string)
     field(:active, :boolean)
