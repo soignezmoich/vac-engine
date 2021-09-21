@@ -15,12 +15,4 @@ defmodule VacEngineWeb.LivePermissions do
   def mount(params, _session, socket) do
     {:halt, redirect(socket, to: "/login")}
   end
-
-  def can?(socket, name, key) do
-    VacEngine.Permissions.can?(socket.assigns.role_session.role, name, key)
-  end
-end
-
-defmodule VacEngineWeb.RoleLiveError do
-  defexception message: "unauthorized", plug_status: 403
 end
