@@ -72,7 +72,12 @@ defmodule VacEngineWeb do
 
       import VacEngineWeb.ErrorHelpers
       import VacEngineWeb.Gettext
+      import Phoenix.LiveView.Helpers
       alias VacEngineWeb.Router.Helpers, as: Routes
+
+      import VacEngineWeb.PermissionHelpers, only: [can?: 3, can!: 3]
+      import VacEngineWeb.FormHelpers
+      import VacEngineWeb.FormatHelpers
     end
   end
 
