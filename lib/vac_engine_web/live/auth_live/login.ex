@@ -3,7 +3,7 @@ defmodule VacEngineWeb.AuthLive.Login do
     container: {:div, class: "flex flex-col max-w-full min-w-full"}
 
   alias VacEngineWeb.AuthView
-  alias VacEngine.Auth
+  alias VacEngine.Accounts
   alias VacEngineWeb.Router.Helpers, as: Routes
 
   @impl true
@@ -61,7 +61,7 @@ defmodule VacEngineWeb.AuthLive.Login do
          login_disabled: true
        )}
     else
-      with {:ok, user} <- Auth.check_user(email, password) do
+      with {:ok, user} <- Accounts.check_user(email, password) do
         token =
           Phoenix.Token.sign(
             VacEngineWeb.Endpoint,

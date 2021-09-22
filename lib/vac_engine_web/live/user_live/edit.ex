@@ -4,9 +4,7 @@ defmodule VacEngineWeb.UserLive.Edit do
 
   import VacEngineWeb.PermissionHelpers
   alias VacEngineWeb.UserView
-  alias VacEngine.Auth.User
-  alias VacEngine.Auth
-  alias VacEngine.Users
+  alias VacEngine.Accounts
   alias VacEngineWeb.Router.Helpers, as: Routes
   alias VacEngineWeb.UserLive
 
@@ -16,14 +14,14 @@ defmodule VacEngineWeb.UserLive.Edit do
   def render(assigns), do: UserView.render("edit.html", assigns)
 
   @impl true
-  def mount(%{"user_id" => uid}, session, socket) do
+  def mount(%{"user_id" => uid}, _session, socket) do
     can!(socket, :users, :read)
 
-    {:ok, user} = Users.fetch(uid)
+    {:ok, user} = Accounts.fetch_user(uid)
 
     changeset =
       user
-      |> Users.change()
+      |> Accounts.change_user()
       |> Map.put(:action, :update)
 
     {:ok,
@@ -45,7 +43,7 @@ defmodule VacEngineWeb.UserLive.Edit do
       ) do
     changeset =
       socket.assigns.user
-      |> Users.change(params)
+      |> Accounts.change_user(params)
       |> Map.put(:action, :update)
 
     {:noreply, assign(socket, changeset: changeset)}
@@ -60,7 +58,7 @@ defmodule VacEngineWeb.UserLive.Edit do
     not_self!(socket, user)
     can!(socket, :users, :write)
 
-    Users.update(socket.assigns.user, params)
+    Accounts.update_user(socket.assigns.user, params)
     |> case do
       {:ok, user} ->
         {:noreply,
@@ -83,7 +81,7 @@ defmodule VacEngineWeb.UserLive.Edit do
 
     pass = VacEngine.Token.generate(8)
 
-    {:ok, _user} = Users.update(socket.assigns.user, %{"password" => pass})
+    {:ok, _user} = Accounts.update_user(socket.assigns.user, %{"password" => pass})
 
     {:noreply,
      socket
@@ -119,7 +117,7 @@ defmodule VacEngineWeb.UserLive.Edit do
     not_self!(socket, user)
     can!(socket, :users, :write)
 
-    {:ok, user} = Users.toggle_permission(user, permission)
+    {:ok, user} = Accounts.toggle_permission(user, permission)
 
     :ok = VacEngineWeb.Endpoint.disconnect_live_views(user)
 
@@ -149,10 +147,10 @@ defmodule VacEngineWeb.UserLive.Edit do
 
     "revoke_session_" <> session_id = key
 
-    session = Auth.get_session!(session_id)
+    session = Accounts.get_session!(session_id)
     check!(session.role_id == user.role_id)
 
-    {:ok, session} = Auth.revoke_session(session)
+    {:ok, session} = Accounts.revoke_session(session)
 
     :ok = VacEngineWeb.Endpoint.disconnect_live_views(session)
 
@@ -182,9 +180,9 @@ defmodule VacEngineWeb.UserLive.Edit do
 
     {:ok, role} =
       if user.role.active do
-        Auth.deactivate_role(user.role)
+        Accounts.deactivate_role(user.role)
       else
-        Auth.activate_role(user.role)
+        Accounts.activate_role(user.role)
       end
 
     :ok = VacEngineWeb.Endpoint.disconnect_live_views(role)
@@ -219,18 +217,20 @@ defmodule VacEngineWeb.UserLive.Edit do
 
   defp clear_tooltip(socket) do
     if socket.assigns.clear_tooltip_ref != nil do
-      false != Process.cancel_timer(socket.assigns.clear_tooltip_ref)
+      if Process.cancel_timer(socket.assigns.clear_tooltip_ref) == false do
+        raise "cannot stop timer"
+      end
     end
 
     assign(socket, current_tooltip: nil, clear_tooltip_ref: nil)
   end
 
   def reload_user(%{assigns: %{user: user}} = socket) do
-    {:ok, user} = Users.fetch(user.id)
+    {:ok, user} = Accounts.fetch_user(user.id)
 
     changeset =
       user
-      |> Users.change()
+      |> Accounts.change_user()
       |> Map.put(:action, :update)
 
     assign(socket, user: user, changeset: changeset)

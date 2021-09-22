@@ -1,7 +1,7 @@
 defmodule VacEngineWeb.PermissionHelpers do
-  alias VacEngine.Auth.Role
-  alias VacEngine.Auth.User
-  alias VacEngine.Auth.Session
+  alias VacEngine.Accounts.Role
+  alias VacEngine.Accounts.User
+  alias VacEngine.Accounts.Session
 
   def can?(%Role{} = role, name, key) do
     VacEngine.Permissions.can?(role, name, key)
@@ -9,7 +9,7 @@ defmodule VacEngineWeb.PermissionHelpers do
 
   def can?(
         %Phoenix.LiveView.Socket{assigns: %{role_session: %{role: role}}} =
-          socket,
+          _socket,
         name,
         key
       ) do

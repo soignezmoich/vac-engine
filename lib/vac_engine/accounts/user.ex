@@ -1,7 +1,7 @@
-defmodule VacEngine.Auth.User do
+defmodule VacEngine.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
-  alias VacEngine.Auth.Role
+  alias VacEngine.Accounts.Role
 
   schema "users" do
     timestamps(type: :utc_datetime)

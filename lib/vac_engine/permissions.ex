@@ -1,6 +1,6 @@
 defmodule VacEngine.Permissions do
-  alias VacEngine.Auth.Role
-  alias VacEngine.Auth.GlobalPermission
+  alias VacEngine.Accounts.Role
+  alias VacEngine.Accounts.GlobalPermission
   alias Ecto.Multi
   alias VacEngine.Repo
 

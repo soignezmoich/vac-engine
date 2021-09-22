@@ -4,7 +4,7 @@ defmodule VacEngineWeb.UserLive.Index do
 
   import VacEngineWeb.PermissionHelpers, only: [can!: 3]
   alias VacEngineWeb.UserView
-  alias VacEngine.Users
+  alias VacEngine.Accounts
 
   on_mount(VacEngineWeb.LivePermissions)
 
@@ -17,21 +17,8 @@ defmodule VacEngineWeb.UserLive.Index do
 
     {:ok,
      assign(socket,
-       users: Users.list()
+       users: Accounts.list_users()
      )}
   end
 
-  @impl true
-  def handle_event(
-        "generate_password",
-        %{"id" => user_id},
-        socket
-      ) do
-    can!(socket, :users, :write)
-
-    {:noreply,
-     assign(socket,
-       users: Users.list()
-     )}
-  end
 end

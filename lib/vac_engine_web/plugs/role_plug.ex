@@ -3,7 +3,7 @@ defmodule VacEngineWeb.RolePlug do
   import Phoenix.Controller, only: [redirect: 2]
   import VacEngineWeb.ConnUtils
 
-  alias VacEngine.Auth
+  alias VacEngine.Accounts
 
   def fetch_role_session(conn, _) do
     with {:ok, session} <- restore_session(conn) do
@@ -41,9 +41,9 @@ defmodule VacEngineWeb.RolePlug do
 
   defp restore_session(conn) do
     with {:ok, session} <-
-           conn |> get_session("role_session_token") |> Auth.fetch_session(),
+           conn |> get_session("role_session_token") |> Accounts.fetch_session(),
          {:ok, session} <-
-           Auth.update_session(session, session_attrs(conn)) do
+           Accounts.update_session(session, session_attrs(conn)) do
       {:ok, session}
     else
       _ -> {:error, "cannot restore session"}

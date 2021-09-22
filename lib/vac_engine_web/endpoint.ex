@@ -65,9 +65,9 @@ defmodule VacEngineWeb.Endpoint do
   plug(Plug.Session, @session_options)
   plug(VacEngineWeb.Router)
 
-  alias VacEngine.Auth.Role
-  alias VacEngine.Auth.User
-  alias VacEngine.Auth.Session
+  alias VacEngine.Accounts.Role
+  alias VacEngine.Accounts.User
+  alias VacEngine.Accounts.Session
 
   def disconnect_live_views(%Role{} = role) do
     disconnect_live_views(role.id)

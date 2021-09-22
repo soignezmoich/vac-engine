@@ -1,8 +1,8 @@
 defmodule VacEngineWeb.AuthControllerTest do
   use VacEngineWeb.ConnCase
 
-  alias VacEngine.Auth
-  alias VacEngine.Auth.Session
+  alias VacEngine.Accounts
+  alias VacEngine.Accounts.Session
   alias VacEngine.Repo
 
   test "GET /login", %{conn: conn} do
@@ -17,7 +17,7 @@ defmodule VacEngineWeb.AuthControllerTest do
 
   test "GET /login/:token SUCCESS", %{conn: conn} do
     assert {:ok, %{user: user}} =
-             Auth.create_user(%{
+             Accounts.create_user(%{
                email: "test@test.com",
                name: "Jon Doe",
                password: "12341234"

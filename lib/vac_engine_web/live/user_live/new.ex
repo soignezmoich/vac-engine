@@ -4,8 +4,8 @@ defmodule VacEngineWeb.UserLive.New do
 
   import VacEngineWeb.PermissionHelpers, only: [can?: 3, can!: 3]
   alias VacEngineWeb.UserView
-  alias VacEngine.Auth.User
-  alias VacEngine.Users
+  alias VacEngine.Accounts.User
+  alias VacEngine.Accounts
   alias VacEngineWeb.Router.Helpers, as: Routes
   alias VacEngineWeb.UserLive
 
@@ -20,7 +20,7 @@ defmodule VacEngineWeb.UserLive.New do
 
     changeset =
       %User{}
-      |> Users.change()
+      |> Accounts.change_user()
       |> Map.put(:action, :insert)
 
     {:ok, assign(socket, changeset: changeset)}
@@ -34,7 +34,7 @@ defmodule VacEngineWeb.UserLive.New do
       ) do
     changeset =
       %User{}
-      |> Users.change(params)
+      |> Accounts.change_user(params)
       |> Map.put(:action, :insert)
 
     {:noreply, assign(socket, changeset: changeset)}
@@ -50,7 +50,7 @@ defmodule VacEngineWeb.UserLive.New do
 
     can!(socket, :users, :write)
 
-    Users.create(params)
+    Accounts.create_user(params)
     |> case do
       {:ok, result} ->
         {:noreply,

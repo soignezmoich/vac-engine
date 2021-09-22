@@ -2,7 +2,7 @@ defmodule VacEngineWeb.AuthController do
   use VacEngineWeb, :controller
 
   import VacEngineWeb.ConnUtils
-  alias VacEngine.Auth
+  alias VacEngine.Accounts
 
   action_fallback(VacEngineWeb.FallbackController)
 
@@ -15,9 +15,9 @@ defmodule VacEngineWeb.AuthController do
     )
     |> case do
       {:ok, {user_id, next_url}} ->
-        with {:ok, user} <- Auth.fetch_user(user_id),
+        with {:ok, user} <- Accounts.fetch_user(user_id),
              {:ok, session} <-
-               Auth.create_session(
+               Accounts.create_session(
                  user.role,
                  session_attrs(conn)
                ) do
@@ -49,7 +49,7 @@ defmodule VacEngineWeb.AuthController do
 
   defp revoke_role_session(%{assigns: %{role_session: session}} = conn)
        when not is_nil(session) do
-    {:ok, _session} = Auth.revoke_session(session)
+    {:ok, _session} = Accounts.revoke_session(session)
 
     :ok =
       VacEngineWeb.Endpoint.disconnect_live_views(session)
