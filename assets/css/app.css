@@ -5,7 +5,7 @@
 
 @import "tailwindcss/utilities";
 
-input, select, button {
+textarea, input, select, button {
   border-radius: 0;
   appearance: none;
 }
