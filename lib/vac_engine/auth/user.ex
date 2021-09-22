@@ -16,24 +16,27 @@ defmodule VacEngine.Auth.User do
     belongs_to(:role, Role)
 
     field(:password, :string, virtual: true)
+    field(:last_login_at, :utc_datetime, virtual: true)
+    field(:last_active_at, :utc_datetime, virtual: true)
   end
 
   @doc false
   def changeset(user, attrs) do
     user
     |> cast(attrs, [:name, :description, :phone, :password, :email])
-    |> validate_required([:name, :password, :email])
+    |> encrypt_password()
+    |> validate_required([:name, :encrypted_password, :email])
     |> validate_length(:password, min: 8, max: 1024)
     |> unique_constraint(:email)
-    |> encrypt_password()
+    |> validate_format(:email, ~r/.+@.+\..+/)
   end
 
   @doc """
   Encrypt the password in `changeset` and return a new changeset with
   `encrypted_password` set as changes
   """
-  def encrypt_password(%{valid?: true} = changeset) do
-    pass = Argon2.hash_pwd_salt(get_field(changeset, :password))
+  def encrypt_password(%{changes: %{password: pass}} = changeset) do
+    pass = Argon2.hash_pwd_salt(pass)
 
     changeset
     |> put_change(:encrypted_password, pass)

@@ -1,11 +1,19 @@
 defmodule VacEngineWeb.LayoutView do
   use VacEngineWeb, :view
+  alias VacEngineWeb.UserLive
 
   def header_els(:left, %{assigns: %{role: role}} = conn)
       when not is_nil(role) do
     [
       {"Dashboard", Routes.dashboard_path(conn, :index)}
-    ]
+    ] ++
+      if can?(role, :users, :read) do
+        [
+          {"Users", Routes.live_path(conn, UserLive.Index)}
+        ]
+      else
+        []
+      end
   end
 
   def header_els(:right, %{assigns: %{role: role}} = conn)

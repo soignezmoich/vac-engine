@@ -1,0 +1,198 @@
+<section class="p-4">
+  <h1 class="font-bold text-xl mb-4">
+    User details
+    <%= if !@edit do %>
+      <span class="text-sm"> (readonly)</span>
+    <% end %>
+  </h1>
+
+  <%= if @edit do %>
+    <div class="flex mb-2 h-8 flex-col items-start">
+      <%= if @generated_password do %>
+        <div class="flex items-baseline">
+          <div class="text-sm mr-2">
+            New password:
+          </div>
+          <div class="bg-cream-100 px-2 border border-gray-200 text-center"
+               id="generatedPassword"
+               phx-hook="clipboardCopy">
+            <%= @generated_password %>
+          </div>
+          <div class="text-xs mx-2">
+            (click to copy)
+          </div>
+          <button phx-click="hide_generated_password"
+                  class="btn-sm">Hide</button>
+        </div>
+      <% else %>
+        <%= button(%{
+              class: "btn-sm mr-4",
+              key: "generate_password",
+              click: "generate_password",
+              label: "Regenerate password",
+              tooltip_key: @current_tooltip
+        }) %>
+      <% end %>
+    </div>
+
+    <div class="flex mb-4">
+      <%= button(%{
+            class: "btn-sm mr-4",
+            key: "toggle_active",
+            click: "toggle_active",
+            label: (if @user.role.active do "Deactivate" else "Activate" end),
+            tooltip_key: @current_tooltip
+      }) %>
+    </div>
+  <% end %>
+
+  <h2 class="font-bold text-lg mb-4 mt-6">Profile</h2>
+
+  <%= f = form_for @changeset, "#", [
+    id: "new_user_form",
+    class: "flex flex-col w-128",
+    phx_throttle: 100,
+    phx_change: "validate",
+    phx_submit: "update"] %>
+    <%= label_line_tag f, :name, "Full name" %>
+    <%= text_input f, :name, class: "form-fld mb-4", autofocus: true, readonly: !@edit %>
+
+    <%= label_line_tag f, :email, "Email address" %>
+    <%= text_input f, :email, class: "form-fld mb-4", readonly: !@edit %>
+
+    <%= label_line_tag f, :phone, "Phone number" %>
+    <%= text_input f, :phone, class: "form-fld mb-4", readonly: !@edit %>
+
+    <%= label_line_tag f, :description, "Description" %>
+    <%= textarea f, :description, class: "form-fld mb-4", readonly: !@edit %>
+
+    <%= if @edit do %>
+      <%= submit "Update", class: "btn-default", phx_disable_with: "Creation in progress..." %>
+    <% end %>
+  </form>
+
+  <h2 class="font-bold text-lg mb-4 mt-6">Permissions</h2>
+  <h3 class="font-bold  mb-3 mt-4">Global</h3>
+  <table class="permissions-table">
+    <thead>
+      <th></th>
+      <th>Read</th>
+      <th>Write</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Users</td>
+        <%= if @edit do %>
+          <td>
+            <%= toggle(%{
+                  value: @user.role.global_permission.users.read,
+                  click: "toggle_permission",
+                  key: "global.users.read",
+                  tooltip_key: @current_tooltip
+                }) %>
+          </td>
+          <td>
+            <%= toggle(%{
+                  value: @user.role.global_permission.users.write,
+                  click: "toggle_permission",
+                  key: "global.users.write",
+                  tooltip_key: @current_tooltip
+                }) %>
+          </td>
+        <% else %>
+          <td class="text-center">
+            <%= format_bool(@user.role.global_permission.users.read) %>
+          </td>
+          <td class="text-center">
+            <%= format_bool(@user.role.global_permission.users.write) %>
+          </td>
+        <% end %>
+      </tr>
+      <tr>
+        <td>Workspaces</td>
+        <%= if @edit do %>
+          <td>
+            <%= toggle(%{
+                  value: @user.role.global_permission.workspaces.read,
+                  click: "toggle_permission",
+                  key: "global.workspaces.read",
+                  tooltip_key: @current_tooltip
+                }) %>
+          </td>
+          <td>
+            <%= toggle(%{
+                  value: @user.role.global_permission.workspaces.write,
+                  click: "toggle_permission",
+                  key: "global.workspaces.write",
+                  tooltip_key: @current_tooltip
+                }) %>
+          </td>
+        <% else %>
+          <td class="text-center">
+            <%= format_bool(@user.role.global_permission.workspaces.read) %>
+          </td>
+          <td class="text-center">
+            <%= format_bool(@user.role.global_permission.workspaces.write) %>
+          </td>
+        <% end %>
+      </tr>
+    </tbody>
+  </table>
+  <div class="text-sm mt-2">
+    <span class="font-bold text-red-600">Warning:</span>
+    those permissions are global and should only be given to trusted user
+    accounts.
+  </div>
+
+  <h3 class="font-bold mb-3 mt-4">Workspaces</h3>
+
+  <%= case @user.role.workspace_permissions do %>
+    <% [] -> %>
+      <div>This user has not access to any workspace yet.</div>
+  <% end %>
+
+  <h2 class="font-bold text-lg mb-4 mt-6">Sessions</h2>
+
+  <%= case @user.role.sessions do %>
+    <% [] -> %>
+      <div>This user has not opened any session yet.</div>
+    <% sessions -> %>
+      <table class="listing-table">
+        <thead>
+          <th>Created at</th>
+          <th>From</th>
+          <th>Last active</th>
+          <th>Expired</th>
+          <th></th>
+        </thead>
+        <tbody>
+          <%= for s <- sessions do %>
+            <% expired = VacEngine.Auth.Session.expired?(s) %>
+            <% current = @role_session.token == s.token %>
+            <tr>
+              <td phx-update="ignore"><%= format_date(s.inserted_at) %></td>
+              <td><%= s.remote_ip %></td>
+              <td phx-update="ignore"><%= format_date(s.last_active_at) %></td>
+              <td><%= format_bool(expired) %></td>
+              <td>
+                <%= cond do %>
+                  <% current -> %>
+                    <span class="font-bold">This is your current session</span>
+                  <% !expired && @edit -> %>
+                    <%= button(%{
+                          class: "btn-sm",
+                          key: "revoke_session_#{s.id}",
+                          click: "revoke_session",
+                          label: "Revoke",
+                          tooltip_key: @current_tooltip
+                    }) %>
+                  <% true -> %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+  <% end %>
+  <div class="mb-6"></div>
+</section>

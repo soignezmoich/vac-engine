@@ -1,5 +1,4 @@
 defmodule VacEngineWeb.FormHelpers do
-
   use Phoenix.HTML
   import VacEngineWeb.ErrorHelpers
 

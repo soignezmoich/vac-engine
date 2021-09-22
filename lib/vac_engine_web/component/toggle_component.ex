@@ -21,7 +21,7 @@ defmodule ToggleComponent do
       <% end %>
       <%= if @key == @tooltip_key do %>
         <div class="absolute bg-cream-200 text-xs p-1 whitespace-nowrap
-                    -bottom-full z-50 border border-cream-600">
+                    top-full mt-1 z-50 border border-cream-600">
           click again to toggle
         </div>
       <% end %>

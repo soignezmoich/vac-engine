@@ -64,4 +64,28 @@ defmodule VacEngineWeb.Endpoint do
   plug(Plug.Head)
   plug(Plug.Session, @session_options)
   plug(VacEngineWeb.Router)
+
+  alias VacEngine.Auth.Role
+  alias VacEngine.Auth.User
+  alias VacEngine.Auth.Session
+
+  def disconnect_live_views(%Role{} = role) do
+    disconnect_live_views(role.id)
+  end
+
+  def disconnect_live_views(%User{} = user) do
+    disconnect_live_views(user.role_id)
+  end
+
+  def disconnect_live_views(%Session{} = s) do
+    disconnect_live_views(s.role_id)
+  end
+
+  def disconnect_live_views(role_id) when is_number(role_id) do
+    broadcast(
+      "roles_socket:#{role_id}",
+      "disconnect",
+      %{}
+    )
+  end
 end

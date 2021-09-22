@@ -39,7 +39,7 @@ defmodule VacEngineWeb.AuthController do
 
   def logout(conn, _params) do
     conn
-    |> expire_role_session
+    |> revoke_role_session
     |> clear_session
     |> configure_session(renew: true)
     |> assign(:role, nil)
@@ -47,19 +47,15 @@ defmodule VacEngineWeb.AuthController do
     |> render("logout.html")
   end
 
-  defp expire_role_session(%{assigns: %{role_session: session}} = conn)
+  defp revoke_role_session(%{assigns: %{role_session: session}} = conn)
        when not is_nil(session) do
-    {:ok, _session} = Auth.expire_session(session)
+    {:ok, _session} = Auth.revoke_session(session)
 
     :ok =
-      VacEngineWeb.Endpoint.broadcast(
-        "roles_socket:#{session.role_id}",
-        "disconnect",
-        %{}
-      )
+      VacEngineWeb.Endpoint.disconnect_live_views(session)
 
     conn
   end
 
-  defp expire_role_session(conn), do: conn
+  defp revoke_role_session(conn), do: conn
 end

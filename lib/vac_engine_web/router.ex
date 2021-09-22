@@ -22,6 +22,10 @@ defmodule VacEngineWeb.Router do
     pipe_through([:browser, :require_role])
 
     get("/", DashboardController, :index)
+
+    live("/users", UserLive.Index)
+    live("/users/new", UserLive.New)
+    live("/users/:user_id", UserLive.Edit)
   end
 
   scope "/", VacEngineWeb do

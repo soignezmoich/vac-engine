@@ -25,7 +25,7 @@ defmodule VacEngine.Auth.Role do
   @doc false
   def changeset(role, attrs) do
     role
-    |> cast(attrs, [:description])
+    |> cast(attrs, [:description, :active])
     |> validate_required([:active, :type])
   end
 end

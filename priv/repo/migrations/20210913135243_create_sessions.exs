@@ -13,6 +13,8 @@ defmodule VacEngine.Repo.Migrations.CreateSessions do
       add(:remote_ip, :inet, null: false)
       add(:client_info, :jsonb)
     end
+
     create(index(:sessions, [:token], unique: true))
+    create(index(:sessions, ["(inserted_at::date) DESC"]))
   end
 end

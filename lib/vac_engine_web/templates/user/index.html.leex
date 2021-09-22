@@ -1,0 +1,42 @@
+<section class="p-4">
+  <h1 class="font-bold text-xl mb-6">Users</h1>
+  <%= if can?(@role_session, :users, :write) do %>
+    <%= live_redirect("Create user",
+          to: Routes.live_path(@socket, UserLive.New),
+          class: "inline-block mb-4 btn-default"
+        ) %>
+  <% end %>
+  <table class="listing-table">
+    <thead>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Active</th>
+      <th>Last activity</th>
+      <th>Last login</th>
+      <th></th>
+    </thead>
+    <tbody>
+      <%= for u <- @users do %>
+        <% self = u.role_id == @role_session.role_id %>
+        <tr>
+          <td>
+            <%= u.name %>
+            <%= if self do %>
+              (You)
+            <% end %>
+          </td>
+          <td><%= u.email %></td>
+          <td><%= format_bool(u.role.active) %></td>
+          <td><%= format_date(u.last_active_at) %></td>
+          <td><%= format_date(u.last_login_at) %></td>
+          <td>
+            <%= live_redirect("Details",
+                  to: Routes.live_path(@socket, UserLive.Edit, u),
+                  class: "btn-sm inline-block"
+                ) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>

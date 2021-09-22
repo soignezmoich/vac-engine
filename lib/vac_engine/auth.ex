@@ -28,6 +28,10 @@ defmodule VacEngine.Auth do
     end
   end
 
+  def get_session!(id) do
+    Repo.get!(Session, id)
+  end
+
   def create_session(%Role{} = role, attrs) do
     %Session{role_id: role.id, token: Token.generate()}
     |> Session.changeset(attrs)
@@ -40,11 +44,45 @@ defmodule VacEngine.Auth do
     |> Repo.update()
   end
 
-  def expire_session(%Session{} = session) do
+  def revoke_session(%Session{} = session) do
     session
     |> update_session(%{
       "expires_at" => NaiveDateTime.utc_now() |> NaiveDateTime.add(-1)
     })
+  end
+
+  def update_role(%Role{} = role, attrs) do
+    role
+    |> Role.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def activate_role(%Role{} = role) do
+    update_role(role, %{"active" => true})
+  end
+
+  def deactivate_role(%Role{} = role) do
+    Multi.new()
+    |> Multi.update(:role, fn _ ->
+      Role.changeset(role, %{"active" => false})
+    end)
+    |> Multi.update_all(
+      :sessions,
+      fn %{role: role} ->
+        exp = NaiveDateTime.utc_now() |> NaiveDateTime.add(-1)
+
+        from(s in Session,
+          where: s.role_id == ^role.id,
+          update: [set: [expires_at: ^exp]]
+        )
+      end,
+      []
+    )
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{role: role}} -> {:ok, role}
+      err -> err
+    end
   end
 
   def fetch_user(id) do
@@ -57,28 +95,17 @@ defmodule VacEngine.Auth do
   end
 
   def check_user(email, password) do
-    with user <- Repo.get_by(User, email: email),
+    with user <-
+           from(u in User,
+             join: r in assoc(u, :role),
+             where: u.email == ^email and r.active == true
+           )
+           |> Repo.one(),
          true <- User.check_password(user, password) do
       {:ok, user}
     else
       _ ->
         {:error, "invalid email or password"}
     end
-  end
-
-  def create_user(attrs) do
-    Multi.new()
-    |> Multi.insert(:role, fn _ ->
-      %Role{active: true, type: "user"}
-      |> Role.changeset(%{})
-    end)
-    |> Multi.insert(:user, fn %{role: role} ->
-      %User{role_id: role.id}
-      |> User.changeset(attrs)
-    end)
-    |> Multi.update(:role_user, fn %{role: role, user: user} ->
-      Ecto.Changeset.change(role, user_id: user.id)
-    end)
-    |> Repo.transaction()
   end
 end

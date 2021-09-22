@@ -38,6 +38,9 @@ defmodule VacEngineWeb.PermissionHelpers do
     end
   end
 
+  def check!(false), do: denied!()
+  def check!(true), do: nil
+
   def denied!() do
     raise VacEngineWeb.PermissionError
   end
