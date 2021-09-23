@@ -1,4 +1,4 @@
-defmodule ButtonComponent do
+defmodule VacEngineWeb.ButtonComponent do
   use Phoenix.Component
 
   import VacEngineWeb.FormatHelpers

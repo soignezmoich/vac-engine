@@ -3,7 +3,7 @@ defmodule VacEngineWeb.UserView do
 
   alias VacEngineWeb.UserLive
   alias VacEngineWeb.PermissionToggleComponent
-  import ToggleComponent
-  import ButtonComponent
+  import VacEngineWeb.ToggleComponent
+  import VacEngineWeb.ButtonComponent
 
 end

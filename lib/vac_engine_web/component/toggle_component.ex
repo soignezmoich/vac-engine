@@ -1,4 +1,4 @@
-defmodule ToggleComponent do
+defmodule VacEngineWeb.ToggleComponent do
   use Phoenix.Component
 
   import VacEngineWeb.FormatHelpers
