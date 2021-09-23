@@ -188,5 +188,9 @@ defmodule VacEngine.Accounts do
       ["workspaces", _name, _key] ->
         {:error, "not implemented"}
     end
+    |> case do
+      {:ok, _} -> {:ok, user}
+      err -> err
+    end
   end
 end
