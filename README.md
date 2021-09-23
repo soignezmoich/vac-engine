@@ -120,3 +120,126 @@ This is a secret and must be protected.
 The postgresql pool size. This is the number of database connection to open.
 
 Default to 10.
+
+## Available variables types
+
+### boolean
+Predicate operators:
+
+| name | arguments |
+|---------|--------|
+| =    | a:boolean |
+| !=   | a:boolean |
+| any | - |
+
+> note: a can be a variable or a constant
+
+Assignation operators:
+
+| name | arguments |
+|------|-----------|
+| a  | a:number |
+| a + b | a:number, b:number |
+| a - b | a:number, b:number |
+| a * b | a:number, b:number |
+| a / b | a:number, b:number |
+
+> note: a and b can be variables or constants
+
+### number
+Predicate operators:
+
+| name | arguments |
+|------|-----------|
+| =    |a:number|
+| \<   |a:number|
+| \>   |a:number|
+| \<=  |a:number|
+| \>=  |a:number|
+| !=   |a:number|
+| any  | - |
+
+> note 2: if you need to define a "between a and b", use two predicates
+
+Assignation operators:
+
+| name | arguments |
+|------|-----------|
+| a  | a:number |
+| a + b | a:number, b:number |
+| a - b | a:number, b:number |
+
+> note: a and b can be variables or constants
+
+### enum and string
+Enums are represented by strings in input.
+Enums are used in predicates. Strings are used in assignation.
+
+Predicate operators (for enum input only):
+
+| name | arguments |
+|------|-----------|
+| =    |a:enum_type|
+| !=   |a:enum_type|
+| in   |\[a:enum_type, b:enum_type...\]|
+| not_in|a:enum_type[]|
+| any  | - |
+
+> note: a and b can be variables or constants
+
+> note: strings are currently not used in predicates, below is an example of
+> how they could be compared.
+>
+> | name | arguments |
+> |------|-----------|
+> | =   |a:string |
+> | !=   |a:string |
+> | contains   |a:string |
+> | longer_than |a:number |
+> | any  | - |
+
+
+Assignation operators (for string output only):
+
+| name | arguments |
+|------|-----------|
+| a  | a:string |
+
+> note: a is a constant
+
+
+### date
+
+Predicate operators:
+
+| name | arguments |
+|------|-----------|
+| =    |a:date|
+| !=   |a:date|
+| olderThanDays | a:number |
+| olderThanMonths |a:number |
+| olderThanYears |a:number |
+| older=ThanDays | a:number |
+| older=ThanMonths |a:number |
+| older=ThanYears |a:number |
+| youngerThanDays | a:number |
+| youngerThanMonths | a:number |
+| youngerThanYears | a:number |
+| younger=ThanDays | a:number |
+| younger=ThanMonths | a:number |
+| younger=ThanYears | a:number |
+
+> note 2: if you need to define a "between a and b", use two predicates 
+
+Assignation operators:
+
+| name | arguments |
+|------|-----------|
+|addDays|a:number|
+|addMonths|a:number|
+|addYears|a:number|
+
+> note: a can be a variable or a constant
+
+
+
