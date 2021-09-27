@@ -27,6 +27,8 @@ test-db: db
 
 .PHONY: test-watch
 
+test-watch: export MIX_ENV=test
+test-watch: export DATABASE_URL=${DATABASE_TEST_URL}
 test-watch:
 	fswatch --event=Updated -ro test lib \
 	|mix test --listen-on-stdin --stale
