@@ -34,9 +34,9 @@ defmodule VacEngine.MixProject do
   defp deps do
     [
       # Phoenix
-      {:phoenix, "~> 1.5.12"},
+      {:phoenix, "~> 1.6.0"},
       {:phoenix_ecto, "~> 4.4"},
-      {:phoenix_html, "~> 3.0.3"},
+      {:phoenix_html, "~> 3.0.4"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_dashboard, "~> 0.5.1"},
       {:phoenix_live_view, "~> 0.16.3"},
