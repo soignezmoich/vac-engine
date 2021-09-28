@@ -165,6 +165,10 @@ defmodule VacEngine.Accounts do
       Ecto.Changeset.change(role, user_id: user.id)
     end)
     |> Repo.transaction()
+    |> case do
+      {:ok, %{user: user}} -> {:ok, user}
+      err -> err
+    end
   end
 
   def change_user(data, attrs \\ %{}) do
@@ -176,12 +180,16 @@ defmodule VacEngine.Accounts do
     |> Repo.update()
   end
 
-  def toggle_permission(user, permission_key) do
+  def toggle_permission(%User{} = user, permission_key) do
+    toggle_permission(user.role, permission_key)
+  end
+
+  def toggle_permission(role, permission_key) do
     String.split(permission_key, ".")
     |> case do
       ["global", name, key] ->
         Permissions.toggle(
-          user.role,
+          role,
           String.to_existing_atom(name),
           String.to_existing_atom(key)
         )
