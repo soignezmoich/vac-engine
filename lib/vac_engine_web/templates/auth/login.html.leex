@@ -1,5 +1,10 @@
 <section class="self-center flex flex-grow items-center p-4">
-  <%= if !@success do %>
+  <%= if @success do %>
+    <%= render VacEngineWeb.PartialView, "loader.html",
+          title: "Login successful",
+          subtitle: "Application loading in progress"
+    %>
+  <% else %>
   <div class="bg-white border p-2 flex flex-col">
     <h1 class="font-bold text-2xl text-center">Login</h1>
 
@@ -86,10 +91,5 @@
     <% end %>
     </form>
   </div>
-  <% else %>
-    <%= render VacEngineWeb.PartialView, "loader.html",
-          title: "Login successful",
-          subtitle: "Application loading in progress"
-    %>
   <% end %>
 </section>

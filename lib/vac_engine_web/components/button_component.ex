@@ -19,4 +19,3 @@ defmodule VacEngineWeb.ButtonComponent do
     """
   end
 end
-

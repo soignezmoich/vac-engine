@@ -17,7 +17,7 @@ defmodule VacEngine.Accounts.Role do
 
     has_many(:sessions, Session)
 
-    field(:type, :string)
+    field(:type, Ecto.Enum, values: ~w(user link api)a)
     field(:active, :boolean)
     field(:description, :string)
   end

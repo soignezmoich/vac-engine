@@ -4,19 +4,19 @@
   <nav class="px-1 flex flex-grow">
     <%= for {label, href} <- header_els(:left, @conn) do %>
       <div class="flex items-center">
-        <a href="<%= href %>"
-           class="px-4 py-2 hover:bg-blue-600 hover:text-gray-100">
+        <%= live_redirect to: href,
+              class: "px-4 py-2 hover:bg-blue-600 hover:text-gray-100" do %>
           <%= label %>
-        </a>
+        <% end %>
       </div>
     <% end %>
     <div class="flex-grow"></div>
     <%= for {label, href} <- header_els(:right, @conn) do %>
       <div class="flex items-center">
-        <a href="<%= href %>"
-           class="px-4 py-2 hover:bg-blue-600 hover:text-gray-100">
+        <%= live_redirect to: href,
+              class: "px-4 py-2 hover:bg-blue-600 hover:text-gray-100" do %>
           <%= label %>
-        </a>
+        <% end %>
       </div>
     <% end %>
   </nav>

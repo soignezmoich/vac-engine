@@ -25,24 +25,24 @@
                   class="btn-sm">Hide</button>
         </div>
       <% else %>
-        <%= button(%{
+        <%= component(&button/1,
               class: "btn-sm mr-4",
               key: "generate_password",
               click: "generate_password",
               label: "Regenerate password",
               tooltip_key: @current_tooltip
-        }) %>
+        ) %>
       <% end %>
     </div>
 
     <div class="flex mb-4">
-      <%= button(%{
+      <%= component(&button/1,
             class: "btn-sm mr-4",
             key: "toggle_active",
             click: "toggle_active",
             label: (if @user.role.active do "Deactivate" else "Activate" end),
             tooltip_key: @current_tooltip
-      }) %>
+      ) %>
     </div>
   <% end %>
 
@@ -84,20 +84,20 @@
         <td>Users</td>
         <%= if @edit do %>
           <td>
-            <%= toggle(%{
+            <%= component(&toggle/1,
                   value: @user.role.global_permission.users.read,
                   click: "toggle_permission",
                   key: "global.users.read",
                   tooltip_key: @current_tooltip
-                }) %>
+                ) %>
           </td>
           <td>
-            <%= toggle(%{
+            <%= component(&toggle/1,
                   value: @user.role.global_permission.users.write,
                   click: "toggle_permission",
                   key: "global.users.write",
                   tooltip_key: @current_tooltip
-                }) %>
+                ) %>
           </td>
         <% else %>
           <td class="text-center">
@@ -112,20 +112,20 @@
         <td>Workspaces</td>
         <%= if @edit do %>
           <td>
-            <%= toggle(%{
+            <%= component(&toggle/1,
                   value: @user.role.global_permission.workspaces.read,
                   click: "toggle_permission",
                   key: "global.workspaces.read",
                   tooltip_key: @current_tooltip
-                }) %>
+                ) %>
           </td>
           <td>
-            <%= toggle(%{
+            <%= component(&toggle/1,
                   value: @user.role.global_permission.workspaces.write,
                   click: "toggle_permission",
                   key: "global.workspaces.write",
                   tooltip_key: @current_tooltip
-                }) %>
+                ) %>
           </td>
         <% else %>
           <td class="text-center">
@@ -179,13 +179,13 @@
                   <% current -> %>
                     <span class="font-bold">This is your current session</span>
                   <% !expired && @edit -> %>
-                    <%= button(%{
+                    <%= component(&button/1,
                           class: "btn-sm",
                           key: "revoke_session_#{s.id}",
                           click: "revoke_session",
                           label: "Revoke",
                           tooltip_key: @current_tooltip
-                    }) %>
+                    ) %>
                   <% true -> %>
                 <% end %>
               </td>

@@ -51,8 +51,7 @@ defmodule VacEngineWeb.AuthController do
        when not is_nil(session) do
     {:ok, _session} = Accounts.revoke_session(session)
 
-    :ok =
-      VacEngineWeb.Endpoint.disconnect_live_views(session)
+    :ok = VacEngineWeb.Endpoint.disconnect_live_views(session)
 
     conn
   end

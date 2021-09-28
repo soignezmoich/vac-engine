@@ -1,4 +1,4 @@
-defmodule VacEngine.Permissions do
+defmodule VacEngine.Accounts.Permissions do
   alias VacEngine.Accounts.Role
   alias VacEngine.Accounts.GlobalPermission
   alias Ecto.Multi
@@ -46,7 +46,9 @@ defmodule VacEngine.Permissions do
 
           value == true && key != :read ->
             Map.put(values, :read, true)
-          true -> values
+
+          true ->
+            values
         end
 
       GlobalPermission.changeset(perm, %{

@@ -1,11 +1,12 @@
 defmodule VacEngine.Accounts do
   alias VacEngine.Repo
+  alias VacEngine.Accounts.Workspace
   alias VacEngine.Accounts.Session
   alias VacEngine.Accounts.User
   alias VacEngine.Accounts.Role
   alias VacEngine.Accounts.GlobalPermission
-  alias VacEngine.Permissions
-  alias VacEngine.Token
+  alias VacEngine.Accounts.Permissions
+  alias VacEngine.Accounts.AccessToken
   alias Ecto.Multi
   import Ecto.Query
 
@@ -35,7 +36,7 @@ defmodule VacEngine.Accounts do
   end
 
   def create_session(%Role{} = role, attrs) do
-    %Session{role_id: role.id, token: Token.generate()}
+    %Session{role_id: role.id, token: AccessToken.generate_token()}
     |> Session.changeset(attrs)
     |> Repo.insert()
   end
@@ -150,7 +151,7 @@ defmodule VacEngine.Accounts do
   def create_user(attrs) do
     Multi.new()
     |> Multi.insert(:role, fn _ ->
-      %Role{active: true, type: "user"}
+      %Role{active: true, type: :user}
       |> Role.changeset(%{})
     end)
     |> Multi.insert(:global_permissions, fn %{role: role} ->
@@ -192,5 +193,16 @@ defmodule VacEngine.Accounts do
       {:ok, _} -> {:ok, user}
       err -> err
     end
+  end
+
+  def list_workspaces() do
+    from(w in Workspace, order_by: :id)
+    |> Repo.all()
+  end
+
+  def create_workspace(attrs) do
+    %Workspace{}
+    |> Workspace.changeset(attrs)
+    |> Repo.insert()
   end
 end

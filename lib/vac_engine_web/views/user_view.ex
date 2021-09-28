@@ -5,5 +5,4 @@ defmodule VacEngineWeb.UserView do
   alias VacEngineWeb.PermissionToggleComponent
   import VacEngineWeb.ToggleComponent
   import VacEngineWeb.ButtonComponent
-
 end
