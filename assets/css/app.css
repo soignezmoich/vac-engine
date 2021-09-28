@@ -35,7 +35,7 @@ svg * {
 }
 
 .btn-sm {
-  @apply px-2 bg-cream-400 text-gray-50 text-sm;
+  @apply px-2 py-1 bg-cream-400 text-gray-50 text-sm;
   &:hover {
     @apply bg-gray-600;
   }
