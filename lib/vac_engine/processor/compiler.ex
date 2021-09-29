@@ -1,8 +1,8 @@
 defmodule VacEngine.Processor.Compiler do
-  alias VacEngine.Processor.Compiler.Expression
-  alias VacEngine.Processor.Blueprint
-  alias VacEngine.Processor.Blueprint.Function
-  alias VacEngine.Processor.Blueprint.Branch
+  alias VacEngine.Processor.Expression
+  alias VacEngine.Blueprints.Blueprint
+  alias VacEngine.Blueprints.Deduction
+  alias VacEngine.Blueprints.Branch
 
   def eval_expression(expr, bindings \\ %{})
 
@@ -55,7 +55,7 @@ defmodule VacEngine.Processor.Compiler do
     fref =
       {:., [],
        [
-         quote(do: VacEngine.Processor.Compiler.Libraries),
+         quote(do: VacEngine.Processor.Libraries),
          fname
        ]}
 
@@ -66,8 +66,8 @@ defmodule VacEngine.Processor.Compiler do
 
   def compile_blueprint(%Blueprint{} = blueprint) do
     fn_asts =
-      blueprint.functions
-      |> Enum.map(&compile_function/1)
+      blueprint.deductions
+      |> Enum.map(&compile_deduction/1)
       |> Enum.map(fn f ->
         quote do
           var!(assigns) = unquote(f)
@@ -78,9 +78,9 @@ defmodule VacEngine.Processor.Compiler do
     {:ok, ast}
   end
 
-  def compile_function(%Function{} = function) do
+  def compile_deduction(%Deduction{} = deduction) do
     branches_asts =
-      function.branches
+      deduction.branches
       |> Enum.map(fn br ->
         {conditions_ast, assignements_ast} = compile_branch!(br)
 
@@ -124,7 +124,7 @@ defmodule VacEngine.Processor.Compiler do
         expr = compile_expression!(as.expression)
 
         {
-          as.variable,
+          as.target,
           expr
         }
       end)

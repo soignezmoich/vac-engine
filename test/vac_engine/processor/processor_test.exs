@@ -1,17 +1,18 @@
 defmodule VacEngine.Processor.ProcessorTest do
   use ExUnit.Case
 
-  alias Fixtures.Blueprints
+  import Fixtures.Blueprints
   alias Fixtures.Cases
   alias VacEngine.Processor
-  alias VacEngine.Processor.Blueprint
+  alias VacEngine.Blueprints
+  alias VacEngine.Blueprints.Blueprint
 
   test "run cases" do
     processors =
-      Blueprints.blueprints()
+      blueprints()
       |> Enum.map(fn blueprint ->
         assert {:ok, blueprint} =
-                 Processor.update_blueprint(%Blueprint{}, blueprint)
+                 Blueprints.change_blueprint(%Blueprint{}, blueprint)
                  |> Ecto.Changeset.apply_action(:insert)
 
         assert {:ok, processor} = Processor.compile_blueprint(blueprint)

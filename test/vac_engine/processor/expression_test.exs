@@ -1,7 +1,7 @@
 defmodule VacEngine.Processor.ExpressionTest do
   use ExUnit.Case
 
-  alias VacEngine.Processor.Compiler.Expression
+  alias VacEngine.Processor.Expression
 
   @expression %{
     elixir: %{

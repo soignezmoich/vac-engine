@@ -1,6 +1,7 @@
 defmodule VacEngine.Accounts.Session do
   use Ecto.Schema
   import Ecto.Changeset
+
   alias VacEngine.Accounts.Role
   alias VacEngine.Accounts.Session
 

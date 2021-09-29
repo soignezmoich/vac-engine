@@ -1,8 +1,8 @@
 defmodule VacEngine.Processor.LibrariesTest do
   use ExUnit.Case
 
-  alias VacEngine.Processor.Compiler.Libraries
-  import VacEngine.Processor.Compiler.Libraries
+  alias VacEngine.Processor.Libraries
+  import VacEngine.Processor.Libraries
 
   test "is_true(bool)" do
     assert is_true(true) == true

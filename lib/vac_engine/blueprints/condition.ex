@@ -1,9 +1,9 @@
-defmodule VacEngine.Processor.Blueprint.Condition do
+defmodule VacEngine.Blueprints.Condition do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias VacEngine.Processor.Blueprint.ExpressionType
-  alias VacEngine.Processor.Blueprint.NameType
+  alias VacEngine.Blueprints.ExpressionType
+  alias VacEngine.Blueprints.NameType
 
   @primary_key false
   embedded_schema do
@@ -17,5 +17,4 @@ defmodule VacEngine.Processor.Blueprint.Condition do
     |> cast(attrs, [:name, :description, :expression])
     |> validate_required([:expression])
   end
-
 end

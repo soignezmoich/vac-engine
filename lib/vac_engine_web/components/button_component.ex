@@ -1,8 +1,6 @@
 defmodule VacEngineWeb.ButtonComponent do
   use Phoenix.Component
 
-  import VacEngineWeb.FormatHelpers
-
   def button(assigns) do
     ~H"""
     <button class={"relative " <> @class}

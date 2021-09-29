@@ -1,6 +1,7 @@
 defmodule VacEngine.Accounts.GlobalPermission do
   use Ecto.Schema
   import Ecto.Changeset
+
   alias VacEngine.Accounts.Role
   alias VacEngine.Accounts.PermissionsType
 

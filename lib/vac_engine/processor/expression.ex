@@ -1,12 +1,13 @@
-defmodule VacEngine.Processor.Compiler.Expression do
+defmodule VacEngine.Processor.Expression do
   defstruct ast: nil
 
-  alias VacEngine.Processor.Compiler.Libraries
+  alias VacEngine.Processor.Libraries
+  alias VacEngine.Processor.Expression
 
   def new(data) do
     ast = sanitize(data)
 
-    {:ok, %__MODULE__{ast: ast}}
+    {:ok, %Expression{ast: ast}}
   rescue
     err ->
       case err do
@@ -22,7 +23,7 @@ defmodule VacEngine.Processor.Compiler.Expression do
   def sanitize(var) when is_atom(var), do: sanitize(to_string(var))
 
   def sanitize(var) when is_binary(var) do
-    Regex.replace(~r/[^a-z_]/, var, "_")
+    Regex.replace(~r/[^a-zA-Z0-9_]/, var, "_")
   end
 
   def sanitize({f, _, args}), do: sanitize({f, args})
@@ -41,8 +42,10 @@ defmodule VacEngine.Processor.Compiler.Expression do
   end
 
   def sanitize({:@, args}), do: sanitize({:var, args})
+
   def sanitize({f, args}) when is_atom(f) and is_list(args) do
     ari = length(args)
+
     unless function_exported?(Libraries, f, ari) do
       raise "undefined function #{f}/#{ari}"
     end
@@ -57,5 +60,14 @@ defmodule VacEngine.Processor.Compiler.Expression do
   def sanitize(_expr) do
     raise "invalid expression"
   end
-end
 
+  def serialize(%Expression{ast: ast}) do
+    serialize(ast)
+  end
+
+  def serialize({a, args}) do
+    [a, Enum.map(args, &serialize/1)]
+  end
+
+  def serialize(e), do: e
+end

@@ -83,6 +83,12 @@ db:
 	mix ecto.drop
 	mix ecto.create
 	mix ecto.migrate
+	mix run priv/repo/seeds.exs
+
+.PHONY: db-seed
+
+db-seed:
+	mix run priv/repo/seeds.exs
 
 .PHONY: rollback
 

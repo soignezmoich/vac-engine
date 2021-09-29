@@ -1,19 +1,23 @@
-defmodule VacEngine.Processor.Blueprint do
+defmodule VacEngine.Blueprints.Blueprint do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias VacEngine.Processor.Blueprint
-  alias VacEngine.Processor.Blueprint.Function
-  alias VacEngine.Processor.Blueprint.Variable
-  alias VacEngine.Processor.Blueprint.NameType
+  alias VacEngine.Accounts.Workspace
+  alias VacEngine.Blueprints.Blueprint
+  alias VacEngine.Blueprints.Deduction
+  alias VacEngine.Blueprints.Variable
+  alias VacEngine.Blueprints.NameType
 
   schema "blueprints" do
+    timestamps(type: :utc_datetime)
+
     field(:name, NameType)
     field(:description, :string)
     field(:editor_data, :map)
-    embeds_many(:variables, Variable)
-    embeds_many(:functions, Function)
+    embeds_many(:variables, Variable, on_replace: :delete, )
+    embeds_many(:deductions, Deduction, on_replace: :delete)
 
+    belongs_to(:workspace, Workspace)
     belongs_to(:parent, Blueprint)
     field(:draft, :boolean)
   end
@@ -24,11 +28,11 @@ defmodule VacEngine.Processor.Blueprint do
     data
     |> cast(attrs, [:name, :editor_data, :description])
     |> cast_embed(:variables, required: true)
-    |> cast_embed(:functions, required: true)
+    |> cast_embed(:deductions, required: true)
     |> validate_required([:name])
   end
 
-  defp accept_array_or_map_for_embed(attrs, key) do
+  defp accept_array_or_map_for_embed(attrs, key) when is_map(attrs) do
     skey = to_string(key)
 
     cond do
@@ -42,6 +46,7 @@ defmodule VacEngine.Processor.Blueprint do
         attrs
     end
   end
+  defp accept_array_or_map_for_embed(attrs, _key), do: attrs
 
   defp put_key_in_child(vars) when is_map(vars) do
     vars

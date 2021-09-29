@@ -1,6 +1,5 @@
-defmodule VacEngine.Processor.Blueprint.NameType do
+defmodule VacEngine.Blueprints.NameType do
   use Ecto.Type
-
 
   def type, do: :string
 
@@ -31,5 +30,4 @@ defmodule VacEngine.Processor.Blueprint.NameType do
   end
 
   def dump(_), do: :error
-
 end

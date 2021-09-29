@@ -1,14 +1,9 @@
 defmodule VacEngine.Processor do
-  alias VacEngine.Processor.Blueprint
   alias VacEngine.Processor.Compiler
+  alias VacEngine.Blueprints.Blueprint
   alias VacEngine.Processor
 
   defstruct blueprint: nil, compiled_ast: nil
-
-  def update_blueprint(%Blueprint{} = blueprint, attrs) do
-    blueprint
-    |> Blueprint.changeset(attrs)
-  end
 
   def compile_blueprint(%Blueprint{} = blueprint) do
     Compiler.compile_blueprint(blueprint)

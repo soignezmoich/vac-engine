@@ -1,26 +1,49 @@
 defmodule VacEngine.Accounts.Permissions do
-  alias VacEngine.Accounts.Role
-  alias VacEngine.Accounts.GlobalPermission
   alias Ecto.Multi
   alias VacEngine.Repo
+  alias VacEngine.Accounts.GlobalPermission
+  alias VacEngine.Accounts.Role
 
-  def can?(role, name, key) do
-    check_global(role, name, key)
+  def has_permission?(%Role{} = role, path) do
+    check_permission(role, path)
   end
 
-  def grant(role, name, key) do
-    change_global(role, name, key, true)
+  def grant_permission(%Role{} = role, path) do
+    change_permission(role, path, true)
   end
 
-  def revoke(role, name, key) do
-    change_global(role, name, key, false)
+  def revoke_permission(%Role{} = role, path) do
+    change_permission(role, path, false)
   end
 
-  def toggle(role, name, key) do
-    change_global(role, name, key, :toggle)
+  def toggle_permission(%Role{} = role, path) do
+    change_permission(role, path, :toggle)
   end
 
-  defp change_global(role, name, key, value) do
+  defp change_permission(role, path, value) when is_binary(path) do
+    String.split(path, ".")
+    |> case do
+      ["global", name, key] ->
+        change_permission(
+          role,
+          [
+            :global,
+            String.to_existing_atom(name),
+            String.to_existing_atom(key)
+          ],
+          value
+        )
+
+      _ ->
+        {:error, "not implemented"}
+    end
+    |> case do
+      {:ok, _} -> {:ok, role}
+      err -> err
+    end
+  end
+
+  defp change_permission(role, [:global, name, key], value) do
     Multi.new()
     |> Multi.run(:perm, fn repo, _changes ->
       {:ok,
@@ -58,9 +81,25 @@ defmodule VacEngine.Accounts.Permissions do
     |> Repo.transaction()
   end
 
-  defp check_global(%{global_permission: nil} = role, _name, _key), do: false
+  defp check_permission(role, path) when is_binary(path) do
+    String.split(path, ".")
+    |> case do
+      ["global", name, key] ->
+        check_permission(
+          role,
+          [
+            :global,
+            String.to_existing_atom(name),
+            String.to_existing_atom(key)
+          ]
+        )
 
-  defp check_global(role, name, key) do
+      _ ->
+        false
+    end
+  end
+
+  defp check_permission(role, [:global, name, key]) do
     role.global_permission
     |> Map.get(name)
     |> Map.get(key)

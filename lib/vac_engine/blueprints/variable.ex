@@ -1,10 +1,10 @@
-defmodule VacEngine.Processor.Blueprint.Variable do
+defmodule VacEngine.Blueprints.Variable do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias VacEngine.Processor.Blueprint.Variable.EnumValue
-  alias VacEngine.Processor.Blueprint.NameType
-  alias VacEngine.Processor.Blueprint.ExpressionType
+  alias VacEngine.Blueprints.EnumValue
+  alias VacEngine.Blueprints.NameType
+  alias VacEngine.Blueprints.ExpressionType
 
   @types ~w(
     boolean
@@ -25,7 +25,7 @@ defmodule VacEngine.Processor.Blueprint.Variable do
     field(:description, :string)
     field(:editor_data, :map)
     field(:default, ExpressionType)
-    embeds_many(:values, EnumValue)
+    embeds_many(:values, EnumValue, on_replace: :delete)
   end
 
   def changeset(data, attrs) do

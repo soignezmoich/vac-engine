@@ -1,5 +1,4 @@
-defmodule VacEngine.Processor.Compiler.Libraries do
-
+defmodule VacEngine.Processor.Libraries do
   # This is a placeholder for AST compilation
   # that will be replaced by the compiler
   def var(name), do: name
@@ -10,9 +9,10 @@ defmodule VacEngine.Processor.Compiler.Libraries do
   def is_true(true), do: true
   def is_true(_), do: false
 
-  def not(true), do: false
-  def not(false), do: true
-  def not(_) do
+  def not true, do: false
+  def not false, do: true
+
+  def not _ do
     raise "not cannot be used for non boolean"
   end
 
@@ -24,10 +24,10 @@ defmodule VacEngine.Processor.Compiler.Libraries do
     Check equality of two expressions.
   """
   @doc interfaces: [
-    {{:integer, :integer}, :boolean},
-    {{:boolean, :boolean}, :boolean},
-    {{:date, :date}, :boolean},
-  ]
+         {{:integer, :integer}, :boolean},
+         {{:boolean, :boolean}, :boolean},
+         {{:date, :date}, :boolean}
+       ]
   def eq(a, b) do
     a == b
   end
@@ -79,8 +79,7 @@ defmodule VacEngine.Processor.Compiler.Libraries do
 
   # TODO date functions
 
-
-  def age_now(birthdate) do
+  def age_now(_birthdate) do
     85
   end
 end

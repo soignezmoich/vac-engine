@@ -12,7 +12,7 @@ defmodule VacEngineWeb.UserLive.Index do
   def render(assigns), do: UserView.render("index.html", assigns)
 
   @impl true
-  def mount(_params, session, socket) do
+  def mount(_params, _session, socket) do
     can!(socket, :users, :read)
 
     {:ok,

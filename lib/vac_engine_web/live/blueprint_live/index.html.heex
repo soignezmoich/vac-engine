@@ -1,0 +1,24 @@
+<section class="p-4">
+  <h1 class="font-bold text-xl mb-6">Blueprints</h1>
+  <table class="listing-table">
+    <thead>
+      <th>Name</th>
+      <th></th>
+    </thead>
+    <tbody>
+      <%= for b <- @blueprints do %>
+        <tr>
+          <td>
+            <%= b.name %>
+          </td>
+          <td>
+            <%= live_redirect("Open editor",
+                  to: Routes.live_path(@socket, BlueprintLive.Edit, b),
+                  class: "btn-sm inline-block"
+                ) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>

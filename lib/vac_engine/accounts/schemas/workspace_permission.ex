@@ -1,6 +1,7 @@
 defmodule VacEngine.Accounts.WorkspacePermission do
   use Ecto.Schema
   import Ecto.Changeset
+
   alias VacEngine.Accounts.Workspace
   alias VacEngine.Accounts.Role
 

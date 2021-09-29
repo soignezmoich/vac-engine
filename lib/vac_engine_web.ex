@@ -43,6 +43,15 @@ defmodule VacEngineWeb do
     end
   end
 
+  def live_view do
+    quote do
+      use Phoenix.LiveView,
+        container: {:div, class: "flex flex-col max-w-full min-w-full"}
+
+      unquote(view_helpers())
+    end
+  end
+
   def router do
     quote do
       use Phoenix.Router
@@ -78,6 +87,7 @@ defmodule VacEngineWeb do
       import VacEngineWeb.PermissionHelpers
       import VacEngineWeb.FormHelpers
       import VacEngineWeb.FormatHelpers
+      alias VacEngineWeb.BlueprintLive
     end
   end
 

@@ -16,7 +16,7 @@ defmodule VacEngineWeb.AuthControllerTest do
   end
 
   test "GET /login/:token SUCCESS", %{conn: conn} do
-    assert {:ok, %{user: user}} =
+    assert {:ok, user} =
              Accounts.create_user(%{
                email: "test@test.com",
                name: "Jon Doe",

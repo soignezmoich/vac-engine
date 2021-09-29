@@ -1,6 +1,7 @@
 defmodule VacEngine.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
+
   alias VacEngine.Accounts.Role
 
   schema "users" do
@@ -45,19 +46,5 @@ defmodule VacEngine.Accounts.User do
 
   def encrypt_password(changeset) do
     changeset
-  end
-
-  def check_password(nil, _password) do
-    Argon2.no_user_verify()
-  end
-
-  def check_password(_user, nil) do
-    Argon2.no_user_verify()
-  end
-
-  def check_password(_user, password) when byte_size(password) > 1024, do: false
-
-  def check_password(user, password) do
-    Argon2.verify_pass(password, user.encrypted_password)
   end
 end

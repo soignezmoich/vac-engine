@@ -2,7 +2,7 @@ defmodule VacEngineWeb.UserLive.New do
   use Phoenix.LiveView,
     container: {:div, class: "flex flex-col max-w-full min-w-full"}
 
-  import VacEngineWeb.PermissionHelpers, only: [can?: 3, can!: 3]
+  import VacEngineWeb.PermissionHelpers
   alias VacEngineWeb.UserView
   alias VacEngine.Accounts.User
   alias VacEngine.Accounts
@@ -15,7 +15,7 @@ defmodule VacEngineWeb.UserLive.New do
   def render(assigns), do: UserView.render("new.html", assigns)
 
   @impl true
-  def mount(_params, session, socket) do
+  def mount(_params, _session, socket) do
     can!(socket, :users, :write)
 
     changeset =
@@ -46,13 +46,13 @@ defmodule VacEngineWeb.UserLive.New do
         %{"user" => params},
         socket
       ) do
-    params = Map.put(params, "password", VacEngine.Token.generate(16))
+    params = Map.put(params, "password", Accounts.generate_token(16))
 
     can!(socket, :users, :write)
 
     Accounts.create_user(params)
     |> case do
-      {:ok, result} ->
+      {:ok, _result} ->
         {:noreply,
          socket
          |> push_redirect(to: Routes.live_path(socket, UserLive.Index))}

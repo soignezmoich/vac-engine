@@ -1,14 +1,14 @@
-defmodule VacEngine.Processor.Blueprint.Function do
+defmodule VacEngine.Blueprints.Deduction do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias VacEngine.Processor.Blueprint.Branch
+  alias VacEngine.Blueprints.Branch
 
   @primary_key false
   embedded_schema do
     field(:description, :string)
     field(:editor_data, :map)
-    embeds_many(:branches, Branch)
+    embeds_many(:branches, Branch, on_replace: :delete)
   end
 
   def changeset(data, attrs) do
@@ -17,5 +17,4 @@ defmodule VacEngine.Processor.Blueprint.Function do
     |> cast_embed(:branches, required: true)
     |> validate_required([])
   end
-
 end

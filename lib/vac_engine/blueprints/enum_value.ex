@@ -1,4 +1,4 @@
-defmodule VacEngine.Processor.Blueprint.Variable.EnumValue do
+defmodule VacEngine.Blueprints.EnumValue do
   use Ecto.Schema
   import Ecto.Changeset
 

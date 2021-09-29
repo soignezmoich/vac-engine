@@ -28,6 +28,12 @@ defmodule VacEngineWeb.Router do
     live("/users/:user_id", UserLive.Edit)
 
     live("/workspaces", WorkspaceLive.Index)
+    live("/workspaces/:workspace_id/blueprints", BlueprintLive.Index)
+
+    live(
+      "/blueprints/:blueprint_id",
+      BlueprintLive.Edit
+    )
   end
 
   scope "/", VacEngineWeb do

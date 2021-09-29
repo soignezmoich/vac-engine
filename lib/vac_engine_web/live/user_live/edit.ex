@@ -119,7 +119,7 @@ defmodule VacEngineWeb.UserLive.Edit do
     not_self!(socket, user)
     can!(socket, :users, :write)
 
-    {:ok, user} = Accounts.toggle_permission(user, permission)
+    {:ok, _role} = Accounts.toggle_permission(user.role, permission)
 
     :ok = VacEngineWeb.Endpoint.disconnect_live_views(user)
 
