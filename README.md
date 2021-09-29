@@ -1,5 +1,29 @@
 # VacEngine
 
+## Development quick start
+
+1) Set environment variables ([direnv](https://direnv.net/) is good)
+
+    DATABASE_URL=postgres://user@host/db
+
+2) Create database. This WILL DROP IT and recreate it.
+
+    make db
+
+3) Start server
+
+    make server
+
+4) Connect to localhost on port 4000
+
+<https://localhost:4000>
+
+Log in with:
+
+Email: **admin@admin.com**
+
+Password: **12341234**
+
 
 ## Compiling a release
 
