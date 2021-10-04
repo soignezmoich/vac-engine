@@ -1,8 +1,8 @@
 defmodule VacEngine.Processor.ProcessorTest do
-  use ExUnit.Case
+  use VacEngine.ProcessorCase
 
   import Fixtures.Blueprints
-  alias Fixtures.Cases
+  import Fixtures.Cases
   alias VacEngine.Processor
   alias VacEngine.Blueprints
   alias VacEngine.Blueprints.Blueprint
@@ -20,11 +20,12 @@ defmodule VacEngine.Processor.ProcessorTest do
       end)
       |> Map.new()
 
-    Cases.cases()
+    cases()
     |> Enum.map(fn cs ->
       assert {:ok, processor} = Map.fetch(processors, to_string(cs.blueprint))
-      result = Map.new(cs.output, fn {k, v} -> {to_string(k), v} end)
-      assert {:ok, ^result} = Processor.run(processor, cs.input)
+      input = smap(cs.input)
+      expected_result = smap(cs.output)
+      assert {:ok, ^expected_result} = Processor.run(processor, input)
     end)
   end
 end

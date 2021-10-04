@@ -2,7 +2,7 @@ defmodule VacEngineWeb.BlueprintLive.Edit do
   use VacEngineWeb, :live_view
 
   import VacEngineWeb.PermissionHelpers, only: [can!: 3]
-  alias VacEngine.Blueprints 
+  alias VacEngine.Blueprints
 
   on_mount(VacEngineWeb.LivePermissions)
 

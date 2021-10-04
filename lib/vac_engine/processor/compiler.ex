@@ -1,15 +1,19 @@
 defmodule VacEngine.Processor.Compiler do
+  alias VacEngine.Processor.State
   alias VacEngine.Processor.Expression
   alias VacEngine.Blueprints.Blueprint
   alias VacEngine.Blueprints.Deduction
   alias VacEngine.Blueprints.Branch
+  import VacEngine.Processor.Meta
 
-  def eval_expression(expr, bindings \\ %{})
+  def eval_expression(expr, input \\ %{})
 
-  def eval_expression(%Expression{} = expr, assigns) do
+  def eval_expression(%Expression{} = expr, input) do
+    state = State.with_input(input)
+
     expr
     |> compile_expression!()
-    |> eval_ast(assigns)
+    |> eval_ast(state)
   rescue
     e in KeyError ->
       {:error, "variable #{e.key} not found"}
@@ -26,32 +30,34 @@ defmodule VacEngine.Processor.Compiler do
     end
   end
 
-  def eval_ast(compiled_ast, assigns) do
-    assigns = Map.new(assigns, fn {k, v} -> {to_string(k), v} end)
-
+  def eval_ast(compiled_ast, %State{} = state) do
     compiled_ast
-    |> Code.eval_quoted(assigns: assigns)
+    # |> debug_ast()
+    |> Code.eval_quoted(state: state)
     |> case do
-      {result, _} -> {:ok, result}
+      {state, _} -> {:ok, state}
       _ -> {:error, "run error"}
     end
+  rescue
+    e in KeyError ->
+      {:error, "variable #{e.key} not found"}
   end
 
   def compile_expression!(%Expression{} = expr) do
-    compile_expression!(expr.ast)
+    compile_ast!(expr.ast)
   end
 
-  def compile_expression!({:var, [name]}) when is_binary(name) do
+  def compile_ast!({:var, _m, [path]}) do
     quote do
-      Map.fetch!(var!(assigns), unquote(name))
+      VacEngine.Processor.State.get_input(var!(state), unquote(path))
     end
   end
 
-  def compile_expression!({:var, _}) do
-    raise "invalid expression"
+  def compile_ast!({:var, _m, _arg}) do
+    raise "invalid call of var/1"
   end
 
-  def compile_expression!({fname, args}) do
+  def compile_ast!({fname, m, args}) do
     fref =
       {:., [],
        [
@@ -59,10 +65,10 @@ defmodule VacEngine.Processor.Compiler do
          fname
        ]}
 
-    {fref, [], Enum.map(args, &compile_expression!/1)}
+    {fref, [], Enum.map(args, &compile_ast!/1)}
   end
 
-  def compile_expression!(const), do: const
+  def compile_ast!(const), do: const
 
   def compile_blueprint(%Blueprint{} = blueprint) do
     fn_asts =
@@ -70,7 +76,7 @@ defmodule VacEngine.Processor.Compiler do
       |> Enum.map(&compile_deduction/1)
       |> Enum.map(fn f ->
         quote do
-          var!(assigns) = unquote(f)
+          var!(state) = unquote(f)
         end
       end)
 
@@ -86,8 +92,11 @@ defmodule VacEngine.Processor.Compiler do
 
         [q] =
           quote do
-            unquote(conditions_ast).() ->
-              Map.merge(var!(assigns), unquote(assignements_ast).())
+            unquote(conditions_ast) ->
+              VacEngine.Processor.State.merge_output(
+                var!(state),
+                unquote(assignements_ast).()
+              )
           end
 
         q
@@ -96,7 +105,7 @@ defmodule VacEngine.Processor.Compiler do
     branches_asts =
       branches_asts ++
         quote do
-          true -> var!(assigns)
+          true -> var!(state)
         end
 
     quote do
@@ -107,15 +116,25 @@ defmodule VacEngine.Processor.Compiler do
   end
 
   def compile_branch!(%Branch{} = branch) do
-    conditions =
-      branch.conditions
-      |> Enum.map(fn c ->
-        compile_expression!(c.expression)
-      end)
-
     conditions_ast =
-      quote do
-        fn -> Enum.all?(unquote(conditions)) end
+      branch.conditions
+      |> case do
+        [] ->
+          quote(do: true)
+
+        nil ->
+          quote(do: true)
+
+        conds ->
+          ast =
+            conds
+            |> Enum.map(fn c ->
+              compile_expression!(c.expression)
+            end)
+
+          quote do
+            Enum.all?(unquote(ast))
+          end
       end
 
     assignements_ast =
@@ -137,5 +156,13 @@ defmodule VacEngine.Processor.Compiler do
       end
 
     {conditions_ast, assignements_ast}
+  end
+
+  defp debug_ast(ast) do
+    Macro.to_string(ast)
+    |> Code.format_string!()
+    |> IO.puts()
+
+    ast
   end
 end

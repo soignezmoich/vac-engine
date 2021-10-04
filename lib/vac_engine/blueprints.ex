@@ -32,5 +32,4 @@ defmodule VacEngine.Blueprints do
   def get_blueprint!(id) do
     Repo.get!(Blueprint, id)
   end
-
 end

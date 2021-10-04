@@ -145,91 +145,37 @@ The postgresql pool size. This is the number of database connection to open.
 
 Default to 10.
 
-## Available variables types
+## Processor expressions
 
-### boolean
-Predicate operators:
+### Types
 
-| name | arguments |
-|---------|--------|
-| =    | a:boolean |
-| !=   | a:boolean |
-| any | - |
+- `boolean` - `true` or `false` (`0` and `nil` are not `false` and truthy values
+  are not `true`)
+- `integer` - an integer
+- `number` - any number, integer or decimal (this type must NOT be used for
+  equality)
+- `string` - a string, length limited to 100 characters
+- `enum` - a string with a specific set of pre-defined values
+- `date` - a date with a precision of one day
+- `datetime` - a date with time, time has a 1 second precision
 
-> note: a can be a variable or a constant
+### Functions
 
-Assignation operators:
+- `is_true(a)` - a is true
+- `is_false(a)` - a is false
+- `not(a)` - invert a
+- `eq(a, b)` - a is equal to b. Not to be used for non integer numbers.
+- `neq(a, b)` - a is not equal to b
+- `gt(a, b)` - a is greater than b
+- `gte(a, b)` - a is greater than or equal to b
+- `lt(a, b)` - a is less than b
+- `lte(a, b)` - a is less than or equal to b
+- `add(a, b)` - add a and b
+- `sub(a, b)` - subtract b from a
+- `mult(a, b)` - multiply a with b
+- `div(a, b)` - divide a with b
+- `contains(a, b)` - check if a contains b
 
-| name | arguments |
-|------|-----------|
-| a  | a:number |
-| a + b | a:number, b:number |
-| a - b | a:number, b:number |
-| a * b | a:number, b:number |
-| a / b | a:number, b:number |
-
-> note: a and b can be variables or constants
-
-### number
-Predicate operators:
-
-| name | arguments |
-|------|-----------|
-| =    |a:number|
-| \<   |a:number|
-| \>   |a:number|
-| \<=  |a:number|
-| \>=  |a:number|
-| !=   |a:number|
-| any  | - |
-
-> note 2: if you need to define a "between a and b", use two predicates
-
-Assignation operators:
-
-| name | arguments |
-|------|-----------|
-| a  | a:number |
-| a + b | a:number, b:number |
-| a - b | a:number, b:number |
-
-> note: a and b can be variables or constants
-
-### enum and string
-Enums are represented by strings in input.
-Enums are used in predicates. Strings are used in assignation.
-
-Predicate operators (for enum input only):
-
-| name | arguments |
-|------|-----------|
-| =    |a:enum_type|
-| !=   |a:enum_type|
-| in   |\[a:enum_type, b:enum_type...\]|
-| not_in|a:enum_type[]|
-| any  | - |
-
-> note: a and b can be variables or constants
-
-> note: strings are currently not used in predicates, below is an example of
-> how they could be compared.
->
-> | name | arguments |
-> |------|-----------|
-> | =   |a:string |
-> | !=   |a:string |
-> | contains   |a:string |
-> | longer_than |a:number |
-> | any  | - |
-
-
-Assignation operators (for string output only):
-
-| name | arguments |
-|------|-----------|
-| a  | a:string |
-
-> note: a is a constant
 
 
 ### date
@@ -253,7 +199,7 @@ Predicate operators:
 | younger=ThanMonths | a:number |
 | younger=ThanYears | a:number |
 
-> note 2: if you need to define a "between a and b", use two predicates 
+> note 2: if you need to define a "between a and b", use two predicates
 
 Assignation operators:
 

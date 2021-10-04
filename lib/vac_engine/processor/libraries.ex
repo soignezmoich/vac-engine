@@ -23,11 +23,13 @@ defmodule VacEngine.Processor.Libraries do
   @doc """
     Check equality of two expressions.
   """
-  @doc interfaces: [
+  @doc signatures: [
          {{:integer, :integer}, :boolean},
          {{:boolean, :boolean}, :boolean},
          {{:date, :date}, :boolean}
        ]
+  @doc label: "Equals to"
+  @doc short: "="
   def eq(a, b) do
     a == b
   end

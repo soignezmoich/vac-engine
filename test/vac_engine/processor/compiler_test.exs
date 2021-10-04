@@ -1,5 +1,5 @@
 defmodule VacEngine.Processor.CompilerTest do
-  use ExUnit.Case
+  use VacEngine.ProcessorCase
 
   alias VacEngine.Processor.Compiler
 
@@ -10,6 +10,7 @@ defmodule VacEngine.Processor.CompilerTest do
             block: Macro.escape(block),
             binding: binding
           ] do
+            binding = smap(binding)
       assert {^status, ^result} = Compiler.eval_expression(block, binding)
     end
   end

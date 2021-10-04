@@ -16,7 +16,7 @@ defmodule VacEngine.Blueprints.Branch do
   def changeset(data, attrs) do
     data
     |> cast(attrs, [:description, :editor_data])
-    |> cast_embed(:conditions, required: true)
+    |> cast_embed(:conditions)
     |> cast_embed(:assignements, required: true)
     |> validate_required([])
   end

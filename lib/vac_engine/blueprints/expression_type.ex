@@ -9,8 +9,8 @@ defmodule VacEngine.Blueprints.ExpressionType do
     Expression.new(data)
   end
 
-  def load(ast) do
-    Expression.new(ast)
+  def load(expr) do
+    Expression.deserialize(expr)
   end
 
   def load(_data), do: :error
@@ -22,5 +22,4 @@ defmodule VacEngine.Blueprints.ExpressionType do
   def dump(_), do: :error
 
   def embed_as(_format), do: :dump
-
 end
