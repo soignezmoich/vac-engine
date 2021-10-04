@@ -17,6 +17,7 @@ defmodule Fixtures.Blueprints do
               %{expression: quote(do: lt(@aint, 200))}
             ],
             assignements: [
+              %{target: :aint, expression: 72},
               %{target: :bint, expression: quote(do: add(1, @aint))},
               %{target: :cint, expression: quote(do: add(2, @bint))}
             ]
@@ -44,7 +45,6 @@ defmodule Fixtures.Blueprints do
       enum_string: %{
         type: "string",
         input: true,
-        output: true,
         validators: [
           %{expression: quote(do: contains(["v1", "v2"], @self))}
         ]
@@ -91,7 +91,14 @@ defmodule Fixtures.Blueprints do
             type: :map,
             output: true,
             children: %{
-              grand_child_int: %{type: :integer, output: true}
+              grand_child_int: %{type: :integer, output: true},
+              grand_child_map: %{
+                type: :map,
+                output: true,
+                children: %{
+                  grand_grand_child_ints: %{type: "integer[]", output: true}
+                }
+              }
             }
           }
         }
@@ -109,6 +116,16 @@ defmodule Fixtures.Blueprints do
               %{
                 target: [:map_list, 1, :child_object, :grand_child_int],
                 expression: 15
+              },
+              %{
+                target: [
+                  :map_list,
+                  1,
+                  :child_object,
+                  :grand_child_map,
+                  :grand_grand_child_ints
+                ],
+                expression: [1, 2, 3]
               }
             ]
           }
@@ -136,7 +153,7 @@ defmodule Fixtures.Blueprints do
                 expression:
                   {:gt, [signature: {{:integer, :integer}, :boolean}],
                    [
-                     {:var, [signature: {{:any}, :integer}], [[:int_list, 0]]},
+                     {:var, [signature: {{:any}, :integer}], [[:int_list, 2]]},
                      32
                    ]}
               }
@@ -144,6 +161,88 @@ defmodule Fixtures.Blueprints do
             assignements: [
               %{target: :enum_string, expression: "v1"},
               %{target: :int_list, expression: [1, 2, 3]}
+            ]
+          }
+        ]
+      }
+    ]
+  }
+
+  @blueprint %{
+    name: :ruleset0,
+    variables: %{
+      gender: %{
+        type: :string,
+        input: true
+      },
+      pregnant: %{
+        type: :string,
+        input: true
+      },
+      high_risk: %{
+        type: :boolean,
+        input: true
+      },
+      immuno: %{
+        type: :boolean,
+        input: true
+      },
+      immuno_discussed: %{
+        type: :boolean,
+        input: true
+      },
+      immuno_recommended: %{
+        type: :boolean,
+        input: true
+      },
+      healthcare_worker: %{
+        type: :boolean,
+        input: true
+      },
+      high_risk_contact: %{
+        type: :boolean,
+        input: true
+      },
+      immuno_contact: %{
+        type: :boolean,
+        input: true
+      },
+      community_facility: %{
+        type: :boolean,
+        input: true
+      },
+      infection_date: %{
+        type: :date,
+        input: true
+      },
+      vaccine_allergy: %{
+        type: :boolean,
+        input: true
+      },
+      vaccine_compatibilities: %{
+        type: "map[]",
+        output: true,
+        children: %{
+          compatible: %{type: :boolean, output: true}
+        }
+      }
+    },
+    deductions: [
+      %{
+        branches: [
+          %{
+            conditions: [
+              %{expression: quote(do: lt(@age, 12))}
+            ],
+            assignements: [
+              %{
+                target: [:vaccine_compatibilities, 0, :boolean],
+                expression: false
+              },
+              %{
+                target: [:vaccine_compatibilities, 1, :boolean],
+                expression: false
+              }
             ]
           }
         ]

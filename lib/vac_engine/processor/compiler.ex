@@ -8,8 +8,8 @@ defmodule VacEngine.Processor.Compiler do
 
   def eval_expression(expr, input \\ %{})
 
-  def eval_expression(%Expression{} = expr, input) do
-    state = State.with_input(input)
+  def eval_expression(%Expression{} = expr, bindings) do
+    state = %State{stack: bindings}
 
     expr
     |> compile_expression!()
@@ -49,7 +49,7 @@ defmodule VacEngine.Processor.Compiler do
 
   def compile_ast!({:var, _m, [path]}) do
     quote do
-      VacEngine.Processor.State.get_input(var!(state), unquote(path))
+      VacEngine.Processor.State.get_var(var!(state), unquote(path))
     end
   end
 
@@ -93,7 +93,7 @@ defmodule VacEngine.Processor.Compiler do
         [q] =
           quote do
             unquote(conditions_ast) ->
-              VacEngine.Processor.State.merge_output(
+              VacEngine.Processor.State.merge_vars(
                 var!(state),
                 unquote(assignements_ast).()
               )

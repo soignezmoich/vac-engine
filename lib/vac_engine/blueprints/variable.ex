@@ -43,12 +43,33 @@ defmodule VacEngine.Blueprints.Variable do
     |> cast_embed(:children)
     |> validate_required([:name, :type, :input, :output])
     |> validate_container()
+    |> validate_children_state()
   end
 
   defp validate_container(changeset) do
     if length(get_field(changeset, :children)) > 0 &&
          !Meta.has_nested_type?(get_field(changeset, :type)) do
       add_error(changeset, :children, "only map and map[] can have children")
+    else
+      changeset
+    end
+  end
+
+  defp validate_children_state(changeset) do
+    input = get_field(changeset, :input)
+    output = get_field(changeset, :output)
+
+    get_field(changeset, :children)
+    |> Enum.any?(fn child ->
+      (!input && child.input) ||
+        (!output && child.output)
+    end)
+    |> if do
+      add_error(
+        changeset,
+        :children,
+        "children cannot be in input or output if parent is not"
+      )
     else
       changeset
     end

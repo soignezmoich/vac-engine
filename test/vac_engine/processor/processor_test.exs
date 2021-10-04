@@ -25,7 +25,8 @@ defmodule VacEngine.Processor.ProcessorTest do
       assert {:ok, processor} = Map.fetch(processors, to_string(cs.blueprint))
       input = smap(cs.input)
       expected_result = smap(cs.output)
-      assert {:ok, ^expected_result} = Processor.run(processor, input)
+      assert {:ok, actual_result} = Processor.run(processor, input)
+      assert actual_result == expected_result
     end)
   end
 end

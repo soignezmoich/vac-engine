@@ -1,9 +1,6 @@
 defmodule VacEngine.Processor.StateTest do
   use VacEngine.ProcessorCase
 
-  import Fixtures.Blueprints
-  import Fixtures.Cases
-  alias VacEngine.Processor
   alias VacEngine.Processor.State
   alias VacEngine.Blueprints
   alias VacEngine.Blueprints.Blueprint
@@ -15,13 +12,15 @@ defmodule VacEngine.Processor.StateTest do
         list: %{
           type: "map[]",
           input: true,
+          output: true,
           children: %{
             name: %{type: :string, input: true},
             nested: %{
               type: "map[]",
               input: true,
+              output: true,
               children: %{
-                nested: %{type: "integer[]", input: true}
+                nested: %{type: "integer[]", input: true, output: true}
               }
             }
           }
@@ -115,6 +114,42 @@ defmodule VacEngine.Processor.StateTest do
       }
       |> smap()
 
+    expected_stack =
+      %{
+        list: %{
+          0 => %{
+            name: "name1",
+            nested: %{0 => %{nested: %{0 => 1, 1 => 2, 2 => 3}}}
+          },
+          1 => %{
+            name: "name2",
+            nested: %{0 => %{nested: %{0 => 4, 1 => 5, 2 => 6}}}
+          }
+        },
+        int: 3,
+        str: "somestr",
+        num: 2.4,
+        map: %{
+          nlist: %{0 => 1, 1 => 2, 2 => 3},
+          nmap: %{name: "name3"},
+          nlist2: %{0 => %{nested: 1}, 1 => %{nested: 3}}
+        }
+      }
+      |> smap()
+
+    expected_output =
+      %{
+        list: [
+          %{
+            nested: [%{nested: [1, 2, 3]}]
+          },
+          %{
+            nested: [%{nested: [4, 5, 6]}]
+          }
+        ]
+      }
+      |> smap()
+
     assert {:ok, blueprint} =
              Blueprints.change_blueprint(%Blueprint{}, blueprint)
              |> Ecto.Changeset.apply_action(:insert)
@@ -122,7 +157,11 @@ defmodule VacEngine.Processor.StateTest do
     state = State.new(blueprint.variables)
 
     state = State.map_input(state, input)
+    state = State.finalize_output(state)
 
     assert state.input == expected_input
+    assert state.stack == expected_stack
+    assert state.output == expected_output
+
   end
 end
