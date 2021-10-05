@@ -5,6 +5,8 @@ defmodule VacEngine.Blueprints.Variable do
   alias VacEngine.Blueprints.NameType
   alias VacEngine.Blueprints.ExpressionType
   alias VacEngine.Processor.Compiler
+  alias VacEngine.Processor.Expression
+  require VacEngine.Processor.Expression
   alias VacEngine.Processor.Meta
   alias VacEngine.Blueprints.Variable
   alias VacEngine.Blueprints.Validator
@@ -18,7 +20,7 @@ defmodule VacEngine.Blueprints.Variable do
     field(:name, NameType)
     field(:description, :string)
     field(:editor_data, :map)
-    field(:default, ExpressionType)
+    field(:default, ExpressionType, default: Expression.expr(nil))
     embeds_many(:validators, Validator, on_replace: :delete)
     embeds_many(:children, Variable, on_replace: :delete)
   end

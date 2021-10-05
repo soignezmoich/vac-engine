@@ -1,5 +1,6 @@
 defmodule VacEngine.Processor.State do
   alias VacEngine.Processor.State
+  alias VacEngine.Processor.Compiler
   alias VacEngine.Blueprints.Variable
   alias VacEngine.Processor.Meta
   require VacEngine.Processor.Meta
@@ -19,14 +20,14 @@ defmodule VacEngine.Processor.State do
       |> Enum.reduce({%{}, %{}}, fn {path, var}, {input_vars, output_vars} ->
         input_vars =
           if var.input do
-            Map.put(input_vars, path, var.type)
+            Map.put(input_vars, path, var)
           else
             input_vars
           end
 
         output_vars =
           if var.output do
-            Map.put(output_vars, path, var.type)
+            Map.put(output_vars, path, var)
           else
             output_vars
           end
@@ -34,7 +35,7 @@ defmodule VacEngine.Processor.State do
         {input_vars, output_vars}
       end)
 
-    vars = vars |> Enum.map(fn {path, v} -> {path, v.type} end) |> Map.new()
+    vars = vars |> Enum.map(fn {path, v} -> {path, v} end) |> Map.new()
 
     %State{
       input_variables: input_vars,
@@ -51,7 +52,8 @@ defmodule VacEngine.Processor.State do
       map,
       fn %Variable{name: name, children: children} = var, map ->
         parents = parents ++ [name]
-        map = Map.put(map, parents, var)
+        default = Compiler.compile_expression!(var.default)
+        map = Map.put(map, parents, %{var | default: default})
         flatten_variables(children, {map, parents})
       end
     )
@@ -73,12 +75,12 @@ defmodule VacEngine.Processor.State do
   end
 
   def map_variables(_, _) do
-    raise "data to filter must be a map"
+    throw({:invalid_data, "data to filter must be a map"})
   end
 
   def map_variable(vars, value, mapped_data, path) do
     vpath = Enum.reject(path, &is_function/1)
-    type = Map.get(vars, vpath)
+    type = vars |> Map.get(vpath) |> get_type
 
     in_list = is_function(List.last(path))
 
@@ -109,17 +111,46 @@ defmodule VacEngine.Processor.State do
       is_number(value) && Meta.is_type?(type, :number, in_list) ->
         put_in(mapped_data, path, value)
 
+      is_binary(value) && Meta.is_type?(type, :date, in_list) ->
+        value = parse_date(value)
+        put_in(mapped_data, path, value)
+
+      is_binary(value) && Meta.is_type?(type, :datetime, in_list) ->
+        value = parse_datetime(value)
+        put_in(mapped_data, path, value)
+
       true ->
         mapped_data
     end
   end
 
-  def get_var(%State{} = state, name_path) do
-    path =
-      convert_path(name_path)
-      |> Enum.map(&Access.key!/1)
+  def get_var(%State{variables: vars} = state, name_path) do
+    path = convert_path(name_path)
+    vpath = path |> Enum.reject(&is_integer/1)
+    gpath = path |> Enum.map(&Access.key!/1)
 
-    get_in(state.stack, path)
+    if !is_nil(vars) do
+      var = Map.get(vars, vpath)
+
+      if is_nil(var) do
+        throw({:invalid_path, "invalid variable path #{inspect(path)}"})
+      end
+
+      try do
+        get_in(state.stack, gpath)
+      rescue
+        e in KeyError ->
+          {:ok, res} = Compiler.eval_ast(var.default, %{state | variables: nil})
+          res
+      end
+    else
+      try do
+        get_in(state.stack, gpath)
+      rescue
+        e in KeyError ->
+          throw({:invalid_path, "variable #{to_string(path)} not found"})
+      end
+    end
   end
 
   def merge_vars(%State{} = state, assigns) do
@@ -136,14 +167,14 @@ defmodule VacEngine.Processor.State do
       ) do
     path = convert_path(path)
     vpath = Enum.reject(path, &is_number/1)
-    type = Map.get(vars, vpath)
-    ptype = Map.get(vars, Enum.drop(vpath, -1))
+    type = vars |> Map.get(vpath) |> get_type()
+    ptype = vars |> Map.get(Enum.drop(vpath, -1)) |> get_type()
 
     in_list = Meta.is_list_type?(type)
 
     cond do
+      # We are setting the whole list at once, iterate it and recurse call
       is_list(value) && in_list ->
-        # We are setting the whole list at once, iterate it and recurse call
         value
         |> Enum.with_index()
         |> Enum.reduce(state, fn {el, idx}, state ->
@@ -166,7 +197,11 @@ defmodule VacEngine.Processor.State do
             (is_integer(value) && Meta.is_type?(type, :integer, in_list)) ||
             (is_binary(value) && Meta.is_type?(type, :string, in_list)) ||
             (is_boolean(value) && Meta.is_type?(type, :boolean, in_list)) ||
-            (is_number(value) && Meta.is_type?(type, :number, in_list))
+            (is_number(value) && Meta.is_type?(type, :number, in_list)) ||
+            (is_struct(value, NaiveDateTime) &&
+               Meta.is_type?(type, :date, in_list)) ||
+            (is_struct(value, NaiveDateTime) &&
+               Meta.is_type?(type, :datetime, in_list))
 
         if compatible do
           stack =
@@ -193,7 +228,8 @@ defmodule VacEngine.Processor.State do
     filter_vars(data, vars, [])
   end
 
-  defp filter_vars(data, vars, path) when is_map(data) do
+  defp filter_vars(data, vars, path)
+       when is_map(data) and not is_struct(data) do
     data
     |> Enum.map(fn {key, val} ->
       path =
@@ -214,7 +250,7 @@ defmodule VacEngine.Processor.State do
   end
 
   defp filter_vars(data, _vars, _path) when is_list(data) do
-    raise "list is not supported in data"
+    throw({:invalid_data, "list is not supported in data"})
   end
 
   defp filter_vars(data, _vars, _path), do: data
@@ -223,15 +259,17 @@ defmodule VacEngine.Processor.State do
     lists_to_maps(data, vars, [])
   end
 
-  defp lists_to_maps(data, vars, path) when is_map(data) do
+  defp lists_to_maps(data, vars, path)
+       when is_map(data) and not is_struct(data) do
     data
     |> Enum.map(fn {key, value} ->
       path = path ++ [key]
-      type = Map.get(vars, path)
+
+      type = vars |> Map.get(path) |> get_type()
 
       if Meta.is_list_type?(type) do
         unless is_list(value) do
-          raise "value at #{path} must be a list"
+          throw({:invalid_value, "value at #{path} must be a list"})
         end
 
         value =
@@ -256,15 +294,18 @@ defmodule VacEngine.Processor.State do
     maps_to_lists(data, vars, [])
   end
 
-  defp maps_to_lists(data, vars, path) when is_map(data) do
+  defp maps_to_lists(data, vars, path)
+       when is_map(data) and not is_struct(data) do
     data
     |> Enum.map(fn {key, value} ->
       path = path ++ [key]
-      type = Map.get(vars, path)
+      type = vars |> Map.get(path) |> get_type()
 
       if Meta.is_list_type?(type) do
         unless is_map(value) do
-          raise "value at #{path} must be a map with integer keys"
+          throw(
+            {:invalid_value, "value at #{path} must be a map with integer keys"}
+          )
         end
 
         value =
@@ -285,103 +326,12 @@ defmodule VacEngine.Processor.State do
 
   defp maps_to_lists(data, _vars, _path), do: data
 
-  # defp intersperse_all_access(path, vars) do
-  #   current = Enum.at(path, -1)
-  #   path = Enum.drop(path, -1)
-  #
-  #   path
-  #   |> Enum.flat_map_reduce([], fn el, acc ->
-  #     acc = acc ++ [el]
-  #     type = Map.get(vars, acc)
-  #
-  #     if Meta.is_list_type?(type) do
-  #       {[el, Access.all()], acc}
-  #     else
-  #       {[el], acc}
-  #     end
-  #   end)
-  #   |> elem(0)
-  #   |> Enum.concat([current])
-  # end
-  #
-  # defp lists_to_maps(data, vars) do
-  #   vars = vars
-  #   |> filter_list_vars()
-  #   |> Enum.reverse()
-  #
-  #   lists_to_maps(data, vars, [])
-  # end
-  #
-  # defp lists_to_maps(data, vars, path) when is_map(data) do
-  #   data
-  #   |> Enum.map(fn {key, value} ->
-  #     type = Map.get(vars, path ++ [key])
-  #     if Meta.is_list_type?(type) do
-  #     end
-  #   end)
-  #   |> Map.new()
-  #
-  #   #|> Enum.reduce(data, fn {path, type}, data ->
-  #   #  path = intersperse_all_access(path, vars)
-  #
-  #   #  if path_exists?(data, path) do
-  #   #    update_in(data, path, fn
-  #   #      nil ->
-  #   #        nil
-  #
-  #   #      el ->
-  #   #        el
-  #   #        |> Enum.with_index()
-  #   #        |> Enum.map(fn {a, b} -> {b, a} end)
-  #   #        |> Map.new()
-  #   #    end)
-  #   #  else
-  #   #    data
-  #   #  end
-  #   #end)
-  # end
-  #
-  # defp maps_to_lists(data, vars) do
-  #   IO.inspect("----------------")
-  #   IO.inspect(data)
-  #
-  #   vars
-  #   |> filter_list_vars()
-  #   |> Enum.reduce(data, fn {path, type}, data ->
-  #     path = intersperse_all_access(path, vars)
-  #
-  #     IO.inspect(path)
-  #
-  #     if path_exists?(data, path) do
-  #       update_in(data, path, fn
-  #         nil ->
-  #           nil
-  #
-  #         el ->
-  #           el
-  #           |> Enum.to_list()
-  #           |> Enum.sort()
-  #           |> Enum.map(fn {_idx, val} -> val end)
-  #       end)
-  #     else
-  #       data
-  #     end
-  #   end)
-  # end
-
-  # defp filter_list_vars(vars) do
-  #   vars
-  #   |> Enum.to_list()
-  #   |> Enum.filter(fn {path, type} -> Meta.is_list_type?(type) end)
-  #   |> Enum.sort()
-  # end
-
   defp create_parents(vars, map, path) do
     path
     |> Enum.reduce({map, []}, fn el, {map, parents} ->
       path = parents ++ [el]
       vpath = Enum.reject(path, &is_number/1)
-      type = Map.get(vars, vpath)
+      type = vars |> Map.get(vpath) |> get_type()
 
       {_, map} =
         if Meta.is_list_type?(type) || type == :map do
@@ -421,44 +371,42 @@ defmodule VacEngine.Processor.State do
 
       el ->
         if not is_binary(el) do
-          raise "invalid variable path #{inspect(el)}"
+          throw({:invalid_path, "invalid variable path #{inspect(el)}"})
         end
     end)
   end
 
   defp convert_path(name) do
-    raise "invalid variable path #{inspect(name)}"
+    throw({:invalid_path, "invalid variable path #{inspect(name)}"})
   end
 
-  # defp path_exists?(map, path) do
-  #   IO.puts("check check")
-  #   IO.inspect(map)
-  #   IO.inspect(path)
-  #   path
-  #   |> Enum.drop(-1)
-  #   |> Enum.reduce_while({[], true}, fn el, {path, res} ->
-  #     path = path ++ [el]
-  #
-  #     IO.puts("pppppppppppppp")
-  #     IO.puts("xxxxxxxxxxxxxxxxxxxxxxx")
-  #     IO.inspect(path)
-  #     val = get_in(map, path)
-  #
-  #     exists =
-  #       case val do
-  #         nil -> false
-  #         [] -> false
-  #         val when is_list(val) -> !Enum.all?(val, &is_nil/1)
-  #         _ -> true
-  #       end
-  #
-  #     if exists do
-  #       {:cont, {path, res}}
-  #     else
-  #       {:halt, {path, false}}
-  #     end
-  #   end)
-  #   |> elem(1)
-  #   |> IO.inspect()
-  # end
+  @date_formats ~w({YYYY}-{0M}-{D} {YYYY})
+
+  defp parse_date(str) do
+    parse_datetime(str, @date_formats)
+  end
+
+  @datetime_formats ~w({ISO:Extended} {YYYY}-{0M}-{D} {YYYY})
+
+  defp parse_datetime(str) do
+    parse_datetime(str, @datetime_formats)
+  end
+
+  defp parse_datetime(str, fmts) do
+    fmts
+    |> Enum.find_value(fn fmt ->
+      Timex.parse(str, fmt)
+      |> case do
+        {:ok, result} -> result
+        _ -> nil
+      end
+    end)
+    |> case do
+      nil -> throw({:invalid_input, "invalid string for date #{str}"})
+      date -> date
+    end
+  end
+
+  defp get_type(nil), do: nil
+  defp get_type(var), do: var.type
 end

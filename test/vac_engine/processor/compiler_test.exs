@@ -10,7 +10,7 @@ defmodule VacEngine.Processor.CompilerTest do
             block: Macro.escape(block),
             binding: binding
           ] do
-            binding = smap(binding)
+      binding = smap(binding)
       assert {^status, ^result} = Compiler.eval_expression(block, binding)
     end
   end

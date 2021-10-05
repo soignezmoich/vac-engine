@@ -1,69 +1,13 @@
 defmodule VacEngine.Processor.StateTest do
   use VacEngine.ProcessorCase
 
+  import Fixtures.Blueprints
   alias VacEngine.Processor.State
   alias VacEngine.Blueprints
   alias VacEngine.Blueprints.Blueprint
 
   test "map inputs" do
-    blueprint = %{
-      name: :map_test,
-      variables: %{
-        list: %{
-          type: "map[]",
-          input: true,
-          output: true,
-          children: %{
-            name: %{type: :string, input: true},
-            nested: %{
-              type: "map[]",
-              input: true,
-              output: true,
-              children: %{
-                nested: %{type: "integer[]", input: true, output: true}
-              }
-            }
-          }
-        },
-        int: %{
-          type: "integer",
-          input: true
-        },
-        str: %{
-          type: "string",
-          input: true
-        },
-        num: %{
-          type: "number",
-          input: true
-        },
-        ignore: %{
-          type: "string",
-          output: true
-        },
-        map: %{
-          type: :map,
-          input: true,
-          children: %{
-            nlist: %{type: "integer[]", input: true},
-            nmap: %{
-              type: :map,
-              input: true,
-              children: %{
-                name: %{type: :string, input: true}
-              }
-            },
-            nlist2: %{
-              type: "map[]",
-              input: true,
-              children: %{
-                nested: %{type: :integer, input: true}
-              }
-            }
-          }
-        }
-      }
-    }
+    br = Map.get(blueprints(), :map_test)
 
     input =
       %{
@@ -151,7 +95,7 @@ defmodule VacEngine.Processor.StateTest do
       |> smap()
 
     assert {:ok, blueprint} =
-             Blueprints.change_blueprint(%Blueprint{}, blueprint)
+             Blueprints.change_blueprint(%Blueprint{}, br)
              |> Ecto.Changeset.apply_action(:insert)
 
     state = State.new(blueprint.variables)
@@ -162,6 +106,5 @@ defmodule VacEngine.Processor.StateTest do
     assert state.input == expected_input
     assert state.stack == expected_stack
     assert state.output == expected_output
-
   end
 end

@@ -39,8 +39,9 @@ defmodule VacEngine.Processor.ExpressionTest do
       assert expr.ast == to
     end
 
-    for {from, err} <- @elixir_expressions.error do
-      assert {:error, ^err} = Expression.new(from)
+    for {from, expected_err} <- @elixir_expressions.error do
+      assert {:error, actual_err} = Expression.new(from)
+      assert actual_err == expected_err
     end
   end
 
@@ -50,8 +51,9 @@ defmodule VacEngine.Processor.ExpressionTest do
       assert expr.ast == to
     end
 
-    for {from, err} <- @json_expressions.error do
-      assert {:error, ^err} = Expression.deserialize(from)
+    for {from, expected_err} <- @json_expressions.error do
+      assert {:error, actual_err} = Expression.deserialize(from)
+      assert actual_err == expected_err
     end
   end
 end

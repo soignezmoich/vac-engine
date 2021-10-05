@@ -4,27 +4,28 @@ defmodule VacEngine.Processor.Expression do
   alias VacEngine.Processor.Libraries
   alias VacEngine.Processor.Expression
 
+  defmacro expr(ex) do
+    quote bind_quoted: [ex: Macro.escape(ex)] do
+      {:ok, e} = Expression.new(ex)
+      e
+    end
+  end
+
   def new(data) do
     ast = sanitize!(data)
 
     {:ok, %Expression{ast: ast}}
-  rescue
-    err ->
-      case err do
-        %{message: msg} ->
-          {:error, msg}
-
-        err ->
-          {:error, inspect(err)}
-      end
+  catch
+    {code, msg} ->
+      {:error, msg}
   end
 
   def sanitize!({f, m, args}) when is_list(args) and is_binary(f) do
     fname = String.to_existing_atom(f)
     sanitize!({fname, m, args})
-  rescue
+  catch
     _ ->
-      raise "undefined function #{f}/#{length(args)}"
+      throw({:undefined, "undefined function #{f}/#{length(args)}"})
   end
 
   def sanitize!({:@, m, args}), do: sanitize!({:var, m, args})
@@ -33,7 +34,7 @@ defmodule VacEngine.Processor.Expression do
     ari = length(args)
 
     unless function_exported?(Libraries, f, ari) do
-      raise "undefined function #{f}/#{ari}"
+      throw({:undefined, "undefined function #{f}/#{ari}"})
     end
 
     m =
@@ -50,7 +51,9 @@ defmodule VacEngine.Processor.Expression do
     to_string(f)
   end
 
+  def sanitize!(i) when is_nil(i), do: i
   def sanitize!(i) when is_number(i), do: i
+  def sanitize!(b) when is_boolean(b), do: b
   def sanitize!(var) when is_atom(var), do: sanitize!(to_string(var))
 
   def sanitize!(var) when is_binary(var) do
@@ -62,7 +65,7 @@ defmodule VacEngine.Processor.Expression do
   end
 
   def sanitize!(expr) do
-    raise "invalid expression"
+    throw({:invalid_expression, "invalid expression"})
   end
 
   def serialize(%Expression{ast: ast}) do
@@ -77,15 +80,9 @@ defmodule VacEngine.Processor.Expression do
       |> sanitize!()
 
     {:ok, %Expression{ast: ast}}
-  rescue
-    err ->
-      case err do
-        %{message: msg} ->
-          {:error, msg}
-
-        err ->
-          {:error, inspect(err)}
-      end
+  catch
+    {code, msg} ->
+      {:error, msg}
   end
 
   defp ast_to_json({l, m, r}) do
@@ -100,7 +97,7 @@ defmodule VacEngine.Processor.Expression do
       |> case do
         [[_ | _] = args, ret] ->
           if length(args) > 32 do
-            raise "invalid signature"
+            throw({:invalid_signature, "invalid signature"})
           end
 
           args =

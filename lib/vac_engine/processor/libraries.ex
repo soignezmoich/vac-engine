@@ -79,9 +79,17 @@ defmodule VacEngine.Processor.Libraries do
     String.contains?(str, to_string(el))
   end
 
+  def empty_map() do
+    %{}
+  end
+
   # TODO date functions
 
-  def age_now(_birthdate) do
-    85
+  def age(birthdate) do
+    Timex.diff(NaiveDateTime.utc_now(), birthdate, :years)
+  end
+
+  def utc_now() do
+    NaiveDateTime.utc_now()
   end
 end

@@ -31,7 +31,7 @@ test-watch: export MIX_ENV=test
 test-watch: export DATABASE_URL=${DATABASE_TEST_URL}
 test-watch:
 	fswatch --event=Updated -ro test lib \
-	|mix test --listen-on-stdin --stale
+		|mix test --listen-on-stdin --stale
 
 
 .PHONY: deps
@@ -112,3 +112,8 @@ release: deps assets build
 
 psql:
 	psql ${DATABASE_URL}
+
+.PHONY: format
+
+format:
+	mix format

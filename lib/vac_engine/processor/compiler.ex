@@ -4,7 +4,6 @@ defmodule VacEngine.Processor.Compiler do
   alias VacEngine.Blueprints.Blueprint
   alias VacEngine.Blueprints.Deduction
   alias VacEngine.Blueprints.Branch
-  import VacEngine.Processor.Meta
 
   def eval_expression(expr, input \\ %{})
 
@@ -14,9 +13,9 @@ defmodule VacEngine.Processor.Compiler do
     expr
     |> compile_expression!()
     |> eval_ast(state)
-  rescue
-    e in KeyError ->
-      {:error, "variable #{e.key} not found"}
+  catch
+    {_code, msg} ->
+      {:error, msg}
   end
 
   def eval_expression(expression_ast, bindings) do
@@ -35,12 +34,15 @@ defmodule VacEngine.Processor.Compiler do
     # |> debug_ast()
     |> Code.eval_quoted(state: state)
     |> case do
-      {state, _} -> {:ok, state}
-      _ -> {:error, "run error"}
+      {state, _} ->
+        {:ok, state}
+
+      _ ->
+        {:error, "run error"}
     end
-  rescue
-    e in KeyError ->
-      {:error, "variable #{e.key} not found"}
+  catch
+    {_code, msg} ->
+      {:error, msg}
   end
 
   def compile_expression!(%Expression{} = expr) do
@@ -57,7 +59,7 @@ defmodule VacEngine.Processor.Compiler do
     raise "invalid call of var/1"
   end
 
-  def compile_ast!({fname, m, args}) do
+  def compile_ast!({fname, _m, args}) do
     fref =
       {:., [],
        [
