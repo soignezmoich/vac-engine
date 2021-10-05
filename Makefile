@@ -88,12 +88,12 @@ db:
 	mix ecto.drop
 	mix ecto.create
 	mix ecto.migrate
-	mix run priv/repo/seeds.exs
+	make db-seed
 
 .PHONY: db-seed
 
 db-seed:
-	mix run priv/repo/seeds.exs
+	mix run  -r test/fixtures/helpers.ex -r test/fixtures/blueprints.ex priv/repo/seeds.exs
 
 .PHONY: rollback
 
