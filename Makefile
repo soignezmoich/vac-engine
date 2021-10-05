@@ -67,6 +67,11 @@ clean:
 server: deps
 	iex -S mix phx.server
 
+.PHONY: prod-test-server
+
+prod-test-server: release
+	./_build/prod/rel/vac_engine/bin/vac_engine start
+
 .PHONY: assets
 
 assets:
