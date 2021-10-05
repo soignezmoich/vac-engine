@@ -18,11 +18,11 @@ defmodule VacEngine.Processor.ExpressionTest do
   }
   @json_expressions %{
     ok: [
-      {%{"l" => "gt", "r" => [4, "a"]}, {:gt, [], [4, "a"]}},
+      {%{"l" => "gt", "r" => [4, "a"], "m" => %{}}, {:gt, [], [4, "a"]}},
       {%{
          "l" => "lt",
          "m" => %{"signature" => [["integer", "integer"], "boolean"]},
-         "r" => [%{"l" => "add", "r" => ["a", 5]}, 8]
+         "r" => [%{"l" => "add", "r" => ["a", 5], "m" => %{}}, 8]
        },
        {:lt, [signature: {{:integer, :integer}, :boolean}],
         [{:add, [], ["a", 5]}, 8]}}
@@ -49,6 +49,8 @@ defmodule VacEngine.Processor.ExpressionTest do
     for {from, to} <- @json_expressions.ok do
       assert {:ok, expr} = Expression.deserialize(from)
       assert expr.ast == to
+      assert {:ok, json} = Expression.serialize(expr)
+      assert json == from
     end
 
     for {from, expected_err} <- @json_expressions.error do

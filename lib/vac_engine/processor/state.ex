@@ -139,7 +139,7 @@ defmodule VacEngine.Processor.State do
       try do
         get_in(state.stack, gpath)
       rescue
-        e in KeyError ->
+        _e in KeyError ->
           {:ok, res} = Compiler.eval_ast(var.default, %{state | variables: nil})
           res
       end
@@ -147,7 +147,7 @@ defmodule VacEngine.Processor.State do
       try do
         get_in(state.stack, gpath)
       rescue
-        e in KeyError ->
+        _e in KeyError ->
           throw({:invalid_path, "variable #{to_string(path)} not found"})
       end
     end
@@ -251,6 +251,22 @@ defmodule VacEngine.Processor.State do
 
   defp filter_vars(data, _vars, _path) when is_list(data) do
     throw({:invalid_data, "list is not supported in data"})
+  end
+
+  defp filter_vars(data, vars, path) when is_struct(data, NaiveDateTime) do
+    vars
+    |> Map.get(path)
+    |> get_type()
+    |> case do
+      :date ->
+        Timex.format!(data, "{ISOdate}")
+
+      :datetime ->
+        Timex.format!(data, "{ISO:Extended}")
+
+      nil ->
+        nil
+    end
   end
 
   defp filter_vars(data, _vars, _path), do: data

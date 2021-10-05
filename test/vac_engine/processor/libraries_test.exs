@@ -157,6 +157,4 @@ defmodule VacEngine.Processor.LibrariesTest do
     assert contains("44", "4") == true
     assert contains("23", "4") == false
   end
-
-
 end
