@@ -16,7 +16,7 @@ defmodule VacEngine.Processor.Expression do
 
     {:ok, %Expression{ast: ast}}
   catch
-    {code, msg} ->
+    {_code, msg} ->
       {:error, msg}
   end
 
@@ -47,7 +47,7 @@ defmodule VacEngine.Processor.Expression do
     {f, m, Enum.map(args, &sanitize!/1)}
   end
 
-  def sanitize!({f, m, args}) when not is_list(args) do
+  def sanitize!({f, _m, args}) when not is_list(args) do
     to_string(f)
   end
 
@@ -64,12 +64,12 @@ defmodule VacEngine.Processor.Expression do
     Enum.map(list, &sanitize!/1)
   end
 
-  def sanitize!(expr) do
+  def sanitize!(_expr) do
     throw({:invalid_expression, "invalid expression"})
   end
 
   def serialize(%Expression{ast: ast}) do
-    ast_to_json(ast)
+    {:ok, ast_to_json(ast)}
   end
 
   def deserialize(json) do
@@ -81,12 +81,33 @@ defmodule VacEngine.Processor.Expression do
 
     {:ok, %Expression{ast: ast}}
   catch
-    {code, msg} ->
+    {_code, msg} ->
       {:error, msg}
   end
 
   defp ast_to_json({l, m, r}) do
-    {l, m, Enum.map(r, &ast_to_json/1)}
+    m =
+      Keyword.get(m, :signature)
+      |> case do
+        {args, ret} when is_tuple(args) ->
+          args =
+            args
+            |> Tuple.to_list()
+            |> Enum.map(&to_string/1)
+
+          ret = to_string(ret)
+          sig = [args, ret]
+          %{"signature" => sig}
+
+        nil ->
+          %{}
+      end
+
+    %{
+      "l" => to_string(l),
+      "m" => m,
+      "r" => Enum.map(r, &ast_to_json/1)
+    }
   end
 
   defp ast_to_json(e), do: e

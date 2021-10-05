@@ -13,10 +13,8 @@ defmodule VacEngine.Blueprints.ExpressionType do
     Expression.deserialize(expr)
   end
 
-  def load(_data), do: :error
-
   def dump(%Expression{} = expr) do
-    {:ok, Expression.serialize(expr)}
+    Expression.serialize(expr)
   end
 
   def dump(_), do: :error
