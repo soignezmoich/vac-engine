@@ -4,7 +4,6 @@ defmodule VacEngine.Blueprints.Variable do
 
   alias VacEngine.Blueprints.NameType
   alias VacEngine.Blueprints.ExpressionType
-  alias VacEngine.Processor.Compiler
   alias VacEngine.Processor.Expression
   require VacEngine.Processor.Expression
   alias VacEngine.Processor.Meta

@@ -17,7 +17,7 @@ defmodule VacEngine.Blueprints.NamePathType do
     end
   end
 
-  def cast([hd | tail] = data) do
+  def cast([_ | _] = data) do
     {data, res} =
       Enum.map_reduce(data, :first, fn el, state ->
         case state do
