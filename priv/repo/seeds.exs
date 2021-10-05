@@ -1,4 +1,4 @@
-alias VacEngine.Accounts
+alias VacEngine.Account
 alias VacEngine.Processor
 alias VacEngine.Processor.Blueprint
 
@@ -615,18 +615,18 @@ blueprint = %{
 
 VacEngine.Repo.transaction(fn ->
   {:ok, user} =
-    Accounts.create_user(%{
+    Account.create_user(%{
       "name" => "Default Admin",
       "email" => "admin@admin.com",
       "password" => "12341234"
     })
 
-  {:ok, _role} = Accounts.grant_permission(user.role, [:global, :users, :write])
+  {:ok, _role} = Account.grant_permission(user.role, [:global, :users, :write])
 
   {:ok, _role} =
-    Accounts.grant_permission(user.role, [:global, :workspaces, :write])
+    Account.grant_permission(user.role, [:global, :workspaces, :write])
 
-  {:ok, workspace} = Accounts.create_workspace(%{name: "Test workspace"})
+  {:ok, workspace} = Account.create_workspace(%{name: "Test workspace"})
 
   {:ok, blueprint} =
     Processor.create_blueprint(

@@ -2,7 +2,7 @@ defmodule VacEngineWeb.WorkspaceLive.Index do
   use VacEngineWeb, :live_view
 
   import VacEngineWeb.PermissionHelpers, only: [can!: 3]
-  alias VacEngine.Accounts
+  alias VacEngine.Account
 
   on_mount(VacEngineWeb.LivePermissions)
 
@@ -12,7 +12,7 @@ defmodule VacEngineWeb.WorkspaceLive.Index do
 
     {:ok,
      assign(socket,
-       workspaces: Accounts.list_workspaces()
+       workspaces: Account.list_workspaces()
      )}
   end
 end

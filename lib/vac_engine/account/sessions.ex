@@ -1,9 +1,9 @@
-defmodule VacEngine.Accounts.Sessions do
+defmodule VacEngine.Account.Sessions do
   import Ecto.Query
   alias VacEngine.Repo
-  alias VacEngine.Accounts.Session
-  alias VacEngine.Accounts.Role
-  alias VacEngine.Accounts.AccessToken
+  alias VacEngine.Account.Session
+  alias VacEngine.Account.Role
+  alias VacEngine.Account.AccessToken
 
   def fetch_session(token)
 

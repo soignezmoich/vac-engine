@@ -2,7 +2,7 @@ defmodule VacEngine.Processor.Blueprint do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias VacEngine.Accounts.Workspace
+  alias VacEngine.Account.Workspace
   alias VacEngine.Processor.Blueprint
   alias VacEngine.Processor.Deduction
   alias VacEngine.Processor.Variable

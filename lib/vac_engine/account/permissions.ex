@@ -1,8 +1,8 @@
-defmodule VacEngine.Accounts.Permissions do
+defmodule VacEngine.Account.Permissions do
   alias Ecto.Multi
   alias VacEngine.Repo
-  alias VacEngine.Accounts.GlobalPermission
-  alias VacEngine.Accounts.Role
+  alias VacEngine.Account.GlobalPermission
+  alias VacEngine.Account.Role
 
   def has_permission?(%Role{} = role, path) do
     check_permission(role, path)

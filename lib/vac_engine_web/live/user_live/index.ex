@@ -4,7 +4,7 @@ defmodule VacEngineWeb.UserLive.Index do
 
   import VacEngineWeb.PermissionHelpers, only: [can!: 3]
   alias VacEngineWeb.UserView
-  alias VacEngine.Accounts
+  alias VacEngine.Account
 
   on_mount(VacEngineWeb.LivePermissions)
 
@@ -17,7 +17,7 @@ defmodule VacEngineWeb.UserLive.Index do
 
     {:ok,
      assign(socket,
-       users: Accounts.list_users()
+       users: Account.list_users()
      )}
   end
 end

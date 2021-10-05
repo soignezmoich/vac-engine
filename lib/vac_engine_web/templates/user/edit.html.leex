@@ -167,7 +167,7 @@
         </thead>
         <tbody>
           <%= for s <- sessions do %>
-            <% expired = VacEngine.Accounts.Session.expired?(s) %>
+            <% expired = VacEngine.Account.Session.expired?(s) %>
             <% current = @role_session.token == s.token %>
             <tr>
               <td phx-update="ignore"><%= format_date(s.inserted_at) %></td>

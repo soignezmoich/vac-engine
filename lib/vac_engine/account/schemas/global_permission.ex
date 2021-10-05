@@ -1,9 +1,9 @@
-defmodule VacEngine.Accounts.GlobalPermission do
+defmodule VacEngine.Account.GlobalPermission do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias VacEngine.Accounts.Role
-  alias VacEngine.Accounts.PermissionsType
+  alias VacEngine.Account.Role
+  alias VacEngine.Account.PermissionsType
 
   schema "global_permissions" do
     timestamps(type: :utc_datetime)

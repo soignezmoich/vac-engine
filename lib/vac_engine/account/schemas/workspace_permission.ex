@@ -1,9 +1,9 @@
-defmodule VacEngine.Accounts.WorkspacePermission do
+defmodule VacEngine.Account.WorkspacePermission do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias VacEngine.Accounts.Workspace
-  alias VacEngine.Accounts.Role
+  alias VacEngine.Account.Workspace
+  alias VacEngine.Account.Role
 
   schema "workspace_permissions" do
     timestamps(type: :utc_datetime)

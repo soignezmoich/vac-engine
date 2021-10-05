@@ -1,7 +1,7 @@
-defmodule VacEngine.Accounts.Workspaces do
+defmodule VacEngine.Account.Workspaces do
   import Ecto.Query
   alias VacEngine.Repo
-  alias VacEngine.Accounts.Workspace
+  alias VacEngine.Account.Workspace
 
   def list_workspaces() do
     from(w in Workspace, order_by: :id)

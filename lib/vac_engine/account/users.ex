@@ -1,11 +1,11 @@
-defmodule VacEngine.Accounts.Users do
+defmodule VacEngine.Account.Users do
   import Ecto.Query
   alias Ecto.Multi
   alias VacEngine.Repo
-  alias VacEngine.Accounts.User
-  alias VacEngine.Accounts.Session
-  alias VacEngine.Accounts.Role
-  alias VacEngine.Accounts.GlobalPermission
+  alias VacEngine.Account.User
+  alias VacEngine.Account.Session
+  alias VacEngine.Account.Role
+  alias VacEngine.Account.GlobalPermission
 
   def check_password(nil, _password) do
     Argon2.no_user_verify()

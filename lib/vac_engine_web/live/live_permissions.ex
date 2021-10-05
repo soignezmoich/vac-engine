@@ -1,11 +1,11 @@
 defmodule VacEngineWeb.LivePermissions do
   import Phoenix.LiveView
-  alias VacEngine.Accounts
+  alias VacEngine.Account
 
   def mount(_params, %{"role_session_token" => token} = _session, socket) do
     socket =
       assign_new(socket, :role_session, fn ->
-        {:ok, session} = Accounts.fetch_session(token)
+        {:ok, session} = Account.fetch_session(token)
         session
       end)
 

@@ -1,4 +1,4 @@
-defmodule VacEngine.Accounts.PermissionsType do
+defmodule VacEngine.Account.PermissionsType do
   use Ecto.Type
 
   defstruct read: false, write: false, delete: false, delegate: false

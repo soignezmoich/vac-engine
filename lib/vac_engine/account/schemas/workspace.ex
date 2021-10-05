@@ -1,4 +1,4 @@
-defmodule VacEngine.Accounts.Workspace do
+defmodule VacEngine.Account.Workspace do
   use Ecto.Schema
   import Ecto.Changeset
 

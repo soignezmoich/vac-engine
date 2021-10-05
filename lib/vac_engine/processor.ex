@@ -2,7 +2,7 @@ defmodule VacEngine.Processor do
   import Ecto.Query
   alias VacEngine.Repo
   alias VacEngine.Processor.Blueprint
-  alias VacEngine.Accounts.Workspace
+  alias VacEngine.Account.Workspace
   alias VacEngine.Processor.Compiler
   alias VacEngine.Processor.State
   alias VacEngine.Processor

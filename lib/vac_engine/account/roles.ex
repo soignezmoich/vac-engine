@@ -1,9 +1,9 @@
-defmodule VacEngine.Accounts.Roles do
+defmodule VacEngine.Account.Roles do
   import Ecto.Query
   alias Ecto.Multi
   alias VacEngine.Repo
-  alias VacEngine.Accounts.Session
-  alias VacEngine.Accounts.Role
+  alias VacEngine.Account.Session
+  alias VacEngine.Account.Role
 
   def update_role(%Role{} = role, attrs) do
     role

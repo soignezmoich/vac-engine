@@ -1,11 +1,11 @@
 defmodule VacEngineWeb.PermissionHelpers do
-  alias VacEngine.Accounts.Role
-  alias VacEngine.Accounts.User
-  alias VacEngine.Accounts.Session
-  alias VacEngine.Accounts
+  alias VacEngine.Account.Role
+  alias VacEngine.Account.User
+  alias VacEngine.Account.Session
+  alias VacEngine.Account
 
   def can?(%Role{} = role, name, key) do
-    Accounts.has_permission?(role, [:global, name, key])
+    Account.has_permission?(role, [:global, name, key])
   end
 
   def can?(
@@ -18,7 +18,7 @@ defmodule VacEngineWeb.PermissionHelpers do
   end
 
   def can?(%Session{role: role}, name, key) do
-    Accounts.has_permission?(role, [:global, name, key])
+    Account.has_permission?(role, [:global, name, key])
   end
 
   def can?(_val, _name, _key), do: false
