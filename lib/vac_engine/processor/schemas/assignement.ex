@@ -1,9 +1,9 @@
-defmodule VacEngine.Blueprints.Assignement do
+defmodule VacEngine.Processor.Assignement do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias VacEngine.Blueprints.ExpressionType
-  alias VacEngine.Blueprints.NamePathType
+  alias VacEngine.Processor.ExpressionType
+  alias VacEngine.Processor.NamePathType
 
   @primary_key false
   embedded_schema do

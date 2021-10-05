@@ -1,7 +1,6 @@
 alias VacEngine.Accounts
 alias VacEngine.Processor
-alias VacEngine.Blueprints
-alias VacEngine.Blueprints.Blueprint
+alias VacEngine.Processor.Blueprint
 
 blueprint = %{
   name: :ruleset0,
@@ -630,7 +629,7 @@ VacEngine.Repo.transaction(fn ->
   {:ok, workspace} = Accounts.create_workspace(%{name: "Test workspace"})
 
   {:ok, blueprint} =
-    Blueprints.create_blueprint(
+    Processor.create_blueprint(
       workspace,
       blueprint
     )

@@ -1,9 +1,9 @@
-defmodule VacEngine.Blueprints.Condition do
+defmodule VacEngine.Processor.Condition do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias VacEngine.Blueprints.ExpressionType
-  alias VacEngine.Blueprints.NameType
+  alias VacEngine.Processor.ExpressionType
+  alias VacEngine.Processor.NameType
 
   @primary_key false
   embedded_schema do

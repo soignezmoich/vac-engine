@@ -1,4 +1,4 @@
-defmodule VacEngine.Blueprints.ExpressionType do
+defmodule VacEngine.Processor.ExpressionType do
   use Ecto.Type
 
   alias VacEngine.Processor.Expression

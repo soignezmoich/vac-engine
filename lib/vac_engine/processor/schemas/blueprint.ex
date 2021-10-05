@@ -1,12 +1,12 @@
-defmodule VacEngine.Blueprints.Blueprint do
+defmodule VacEngine.Processor.Blueprint do
   use Ecto.Schema
   import Ecto.Changeset
 
   alias VacEngine.Accounts.Workspace
-  alias VacEngine.Blueprints.Blueprint
-  alias VacEngine.Blueprints.Deduction
-  alias VacEngine.Blueprints.Variable
-  alias VacEngine.Blueprints.NameType
+  alias VacEngine.Processor.Blueprint
+  alias VacEngine.Processor.Deduction
+  alias VacEngine.Processor.Variable
+  alias VacEngine.Processor.NameType
 
   schema "blueprints" do
     timestamps(type: :utc_datetime)

@@ -1,8 +1,8 @@
-defmodule VacEngine.Blueprints.Deduction do
+defmodule VacEngine.Processor.Deduction do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias VacEngine.Blueprints.Branch
+  alias VacEngine.Processor.Branch
 
   @primary_key false
   embedded_schema do

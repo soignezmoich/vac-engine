@@ -1,7 +1,7 @@
 defmodule VacEngine.Processor.State do
   alias VacEngine.Processor.State
   alias VacEngine.Processor.Compiler
-  alias VacEngine.Blueprints.Variable
+  alias VacEngine.Processor.Variable
   alias VacEngine.Processor.Meta
   require VacEngine.Processor.Meta
 

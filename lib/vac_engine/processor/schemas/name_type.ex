@@ -1,4 +1,4 @@
-defmodule VacEngine.Blueprints.NameType do
+defmodule VacEngine.Processor.NameType do
   use Ecto.Type
 
   def type, do: :string

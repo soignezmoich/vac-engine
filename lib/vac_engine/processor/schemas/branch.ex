@@ -1,9 +1,9 @@
-defmodule VacEngine.Blueprints.Branch do
+defmodule VacEngine.Processor.Branch do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias VacEngine.Blueprints.Condition
-  alias VacEngine.Blueprints.Assignement
+  alias VacEngine.Processor.Condition
+  alias VacEngine.Processor.Assignement
 
   @primary_key false
   embedded_schema do

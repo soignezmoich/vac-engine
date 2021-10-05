@@ -3,8 +3,8 @@ defmodule VacEngine.Processor.StateTest do
 
   import Fixtures.Blueprints
   alias VacEngine.Processor.State
-  alias VacEngine.Blueprints
-  alias VacEngine.Blueprints.Blueprint
+  alias VacEngine.Processor
+  alias VacEngine.Processor.Blueprint
 
   test "map inputs" do
     br = Map.get(blueprints(), :map_test)
@@ -95,7 +95,7 @@ defmodule VacEngine.Processor.StateTest do
       |> smap()
 
     assert {:ok, blueprint} =
-             Blueprints.change_blueprint(%Blueprint{}, br)
+             Processor.change_blueprint(%Blueprint{}, br)
              |> Ecto.Changeset.apply_action(:insert)
 
     state = State.new(blueprint.variables)

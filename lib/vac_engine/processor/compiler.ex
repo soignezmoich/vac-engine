@@ -1,9 +1,9 @@
 defmodule VacEngine.Processor.Compiler do
   alias VacEngine.Processor.State
   alias VacEngine.Processor.Expression
-  alias VacEngine.Blueprints.Blueprint
-  alias VacEngine.Blueprints.Deduction
-  alias VacEngine.Blueprints.Branch
+  alias VacEngine.Processor.Blueprint
+  alias VacEngine.Processor.Deduction
+  alias VacEngine.Processor.Branch
 
   def eval_expression(expr, input \\ %{})
 

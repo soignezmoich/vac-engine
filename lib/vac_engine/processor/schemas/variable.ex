@@ -1,14 +1,14 @@
-defmodule VacEngine.Blueprints.Variable do
+defmodule VacEngine.Processor.Variable do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias VacEngine.Blueprints.NameType
-  alias VacEngine.Blueprints.ExpressionType
+  alias VacEngine.Processor.NameType
+  alias VacEngine.Processor.ExpressionType
   alias VacEngine.Processor.Expression
   require VacEngine.Processor.Expression
   alias VacEngine.Processor.Meta
-  alias VacEngine.Blueprints.Variable
-  alias VacEngine.Blueprints.Validator
+  alias VacEngine.Processor.Variable
+  alias VacEngine.Processor.Validator
   alias VacEngine.Utils
 
   @primary_key false

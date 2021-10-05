@@ -1,7 +1,7 @@
-defmodule VacEngine.Blueprints.Validator do
+defmodule VacEngine.Processor.Validator do
   use Ecto.Schema
   import Ecto.Changeset
-  alias VacEngine.Blueprints.ExpressionType
+  alias VacEngine.Processor.ExpressionType
 
   @primary_key false
   embedded_schema do
