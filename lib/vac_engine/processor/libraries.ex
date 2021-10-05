@@ -16,6 +16,12 @@ defmodule VacEngine.Processor.Libraries do
     raise "not cannot be used for non boolean"
   end
 
+  def is_nil(nil), do: true
+  def is_nil(_), do: false
+
+  def is_not_nil(nil), do: false
+  def is_not_nil(_), do: true
+
   def eq(a, b) when is_float(a) or is_float(b) do
     raise "eq cannot be used for non integer"
   end
@@ -89,7 +95,7 @@ defmodule VacEngine.Processor.Libraries do
     Timex.diff(NaiveDateTime.utc_now(), birthdate, :years)
   end
 
-  def utc_now() do
+  def now() do
     NaiveDateTime.utc_now()
   end
 end
