@@ -41,6 +41,31 @@ defmodule Fixtures.Blueprints do
   }
 
   @blueprint %{
+    name: :sig_test,
+    variables: [
+    ],
+    deductions: [
+      %{
+        branches: [
+          %{
+            conditions: [
+              %{
+                expression:
+                  {:gt, [signature: {[:integer, :integer], :boolean}],
+                   [
+                     {:var, [signature: {[:name], :integer}], ["age"]},
+                     12
+                   ]}
+              }
+            ],
+            assignements: []
+          }
+        ]
+      }
+    ]
+  }
+
+  @blueprint %{
     name: :nested_test,
     variables: %{
       enum_string: %{

@@ -89,10 +89,9 @@ defmodule VacEngine.Processor.Expression do
     m =
       Keyword.get(m, :signature)
       |> case do
-        {args, ret} when is_tuple(args) ->
+        {args, ret} when is_list(args) ->
           args =
             args
-            |> Tuple.to_list()
             |> Enum.map(&to_string/1)
 
           ret = to_string(ret)
@@ -124,7 +123,6 @@ defmodule VacEngine.Processor.Expression do
           args =
             args
             |> Enum.map(&String.to_existing_atom/1)
-            |> List.to_tuple()
 
           ret = String.to_existing_atom(ret)
           sig = {args, ret}

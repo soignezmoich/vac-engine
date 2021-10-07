@@ -17,7 +17,7 @@ defmodule VacEngine.Processor.Branch do
     data
     |> cast(attrs, [:description, :editor_data])
     |> cast_embed(:conditions)
-    |> cast_embed(:assignements, required: true)
+    |> cast_embed(:assignements)
     |> validate_required([])
   end
 end

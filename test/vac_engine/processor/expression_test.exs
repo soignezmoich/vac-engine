@@ -24,7 +24,7 @@ defmodule VacEngine.Processor.ExpressionTest do
          "m" => %{"signature" => [["integer", "integer"], "boolean"]},
          "r" => [%{"l" => "add", "r" => ["a", 5], "m" => %{}}, 8]
        },
-       {:lt, [signature: {{:integer, :integer}, :boolean}],
+       {:lt, [signature: {[:integer, :integer], :boolean}],
         [{:add, [], ["a", 5]}, 8]}}
     ],
     error: [
