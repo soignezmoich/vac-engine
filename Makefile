@@ -121,4 +121,5 @@ psql:
 .PHONY: format
 
 format:
-	mix format mix.exs "lib/**/*.{ex,exs}" "test/**/*.{ex,exs}" "config/**/*.{ex,exs}"
+	mix format mix.exs "lib/**/*.{ex,exs}" "test/**/*.{ex,exs}" \
+		"config/**/*.{ex,exs}"  "priv/repo/**/*.{ex,exs}"
