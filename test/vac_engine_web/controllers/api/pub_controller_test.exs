@@ -7,19 +7,19 @@ defmodule VacEngineWeb.Api.PubControllerTest do
   alias VacEngine.Processor
   alias VacEngine.Processor.Blueprint
 
-  test "POST /api/p/run with no api key", %{conn: conn} do
-    conn = post(conn, "/api/p/run")
+  test "POST /api/p/:id/run with no api key", %{conn: conn} do
+    conn = post(conn, "/api/p/3/run")
 
     assert json_response(conn, 401) == %{
              "error" => "unauthorized, api_key required"
            }
   end
 
-  test "POST /api/p/run with no data", %{conn: conn} do
+  test "POST /api/p/:id/run with no data", %{conn: conn} do
     conn =
       conn
       |> put_req_header("authorization", "Bearer 1234")
-      |> post("/api/p/run")
+      |> post("/api/p/3/run")
 
     assert json_response(conn, 400) == %{
              "error" => "portal_id and input required"
@@ -49,15 +49,16 @@ defmodule VacEngineWeb.Api.PubControllerTest do
     Cases.cases()
     |> Enum.each(fn
       %{blueprint: :ruleset0} = cas ->
-        data = %{portal_id: publication.portal_id, input: cas.input}
+        data = %{input: cas.input}
 
         conn =
           conn
           |> put_req_header("authorization", "Bearer #{api_token.secret}")
-          |> post("/api/p/run", data)
+          |> post("/api/p/#{publication.portal_id}/run", data)
 
         assert json_response(conn, 200) == %{
-                 "input" => cas.input |> smap()
+                 "input" => cas.input |> smap(),
+                 "output" => cas.output |> smap(),
                }
 
       _ ->
