@@ -4,6 +4,16 @@ defmodule VacEngineWeb.Api.PubController do
 
   action_fallback(VacEngineWeb.Api.FallbackController)
 
+  def run(conn, %{"portal_id" => portal_id, "input" => input})
+      when is_binary(portal_id) do
+    with {portal_id, _} <- Integer.parse(portal_id) do
+      run(conn, %{"portal_id" => portal_id, "input" => input})
+    else
+      :error ->
+        {:error, :bad_request, "invalid portal_id"}
+    end
+  end
+
   def run(conn, %{"portal_id" => portal_id, "input" => input}) do
     api_key = conn.assigns.api_key
 
@@ -18,12 +28,12 @@ defmodule VacEngineWeb.Api.PubController do
       {:error, msg} ->
         {:error, :bad_request, msg}
 
-      err ->
+      _err ->
         {:error, :bad_request}
     end
   end
 
-  def run(conn, _) do
+  def run(_conn, _) do
     {:error, :bad_request, "portal_id and input required"}
   end
 end

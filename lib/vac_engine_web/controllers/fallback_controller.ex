@@ -6,6 +6,9 @@ defmodule VacEngineWeb.FallbackController do
   """
   use VacEngineWeb, :controller
 
+  def call(conn, :error), do: call(conn, {:error, :bad_request})
+  def call(conn, {:error}), do: call(conn, {:error, :bad_request})
+
   def call(conn, {:error, :not_found}) do
     conn
     |> put_status(:not_found)

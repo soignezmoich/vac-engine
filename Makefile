@@ -45,7 +45,7 @@ deps:
 .PHONY: build
 
 build: export MIX_ENV=prod
-build: deps
+build: deps docs
 	mix compile
 
 .PHONY: migrate
@@ -124,3 +124,13 @@ psql:
 format:
 	mix format mix.exs "lib/**/*.{ex,exs}" "test/**/*.{ex,exs}" \
 		"config/**/*.{ex,exs}"  "priv/repo/**/*.{ex,exs}"
+
+.PHONY: docs
+
+docs: deps
+	redoc-cli bundle docs/swagger.yaml -o priv/static/docs/api.html
+
+.PHONY: docs-server
+
+docs-server:
+	redoc-cli serve -w  docs/swagger.yaml

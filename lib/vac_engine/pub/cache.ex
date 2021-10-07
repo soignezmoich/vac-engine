@@ -47,9 +47,8 @@ defmodule VacEngine.Pub.Cache do
            Account.explode_composite_secret(api_key),
          %{portals: portals, secret: secret} <- Map.get(state.api_keys, id),
          true <- Plug.Crypto.secure_compare(req_secret, secret),
-         %{blueprint_id: blueprint_id} <- Map.get(portals, pid) do
-      state = ensure_processor_loaded(state, blueprint_id)
-
+         %{blueprint_id: blueprint_id} <- Map.get(portals, pid),
+         {:ok, state} <- ensure_processor_loaded(state, blueprint_id) do
       proc =
         state
         |> get_in([:processors, blueprint_id])
@@ -83,15 +82,17 @@ defmodule VacEngine.Pub.Cache do
     |> get_in([:processors, blueprint_id])
     |> case do
       nil ->
-        {:ok, proc} =
-          blueprint_id
-          |> Processor.get_blueprint!()
-          |> Processor.compile_blueprint()
-
-        put_in(state, [:processors, blueprint_id], proc)
+        with {:ok, proc} <-
+               blueprint_id
+               |> Processor.get_blueprint!()
+               |> Processor.compile_blueprint() do
+          {:ok, put_in(state, [:processors, blueprint_id], proc)}
+        else
+          err -> err
+        end
 
       p ->
-        state
+        {:ok, state}
     end
   end
 end

@@ -1,0 +1,140 @@
+openapi: 3.0.0
+info:
+  title: Vac Engine API
+  description: |
+    ## Introduction
+
+    The vac engine API allows running deductions
+
+    ### Blueprint
+
+    A blueprint is a description of a deductive process. It provides an
+    abstraction to precisely define conditions and branches.
+
+    A blueprint is composed of two things:
+
+      1. A list of input and output variables, which
+         composes the inteface of it.
+      2. A list of deduction tables which defines its behaviour.
+
+    ### Processor
+
+    A processor is a compiled blueprint with it's run environment. Processor IDs
+    are always the same as the corresponding blueprint IDs.
+
+    ### Portal
+
+    A portal is a publishable endpoint. A portal has one published blueprint at
+    a time.
+
+    ### Publication
+
+    A publication is what makes a processor callable via the API.
+
+    ## Authentication
+
+    All API requests must be authenticated with an API key.
+
+    To authenticate the requests, pass the `Authorization` header with a
+    `Bearer` token containing the API key.
+
+
+    For example, if the API key is:
+
+    `api_ga9cyre_gafksz5c6h2zbf77t9w4wgfsz674b5t32ghparft83368zaga88f6xyk8sr8wazwe3p4ekk2taxksshbcgg5`
+
+
+    You need to pass the header as follow:
+
+    `Authorization: Bearer api_ga9cyre_gafksz5c6h2zbf77t9w4wgfsz674b5t32ghparft83368zaga88f6xyk8sr8wazwe3p4ekk2taxksshbcgg5`
+
+    ## Namespaces
+
+    API paths are organized in two main namespaces:
+
+    - `/p` - All API in this namespace works on **published live data**.
+    - `/u` - All API in this namespace works on **unpublished draft data**.
+
+
+  version: 0.0.1
+
+servers:
+  - url: https://vac-engine.goyman.com/api
+    description: Temporary test server.
+
+tags:
+- name: /p
+  description: Published namespace
+- name: /u
+  description: Unpublished "draft" namespace
+
+paths:
+  /p/:portal_id/run:
+    post:
+      tags:
+        - /p
+      operationId: post-run
+      summary: Run
+      description: Run a portal's processor
+      parameters:
+      - in: path
+        name: portal_id
+        type: integer
+        required: true
+        description: "Portal ID"
+        example: 3
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                input:
+                  required: true
+                  type: object
+                  example:
+                  - birthdate: "2002-04-01"
+                  description: |
+                    Input data.
+
+                    The input format is defined in the blueprint definition.
+
+      responses:
+        '200':
+          description: Successful processor run
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  input:
+                    type: object
+                    example:
+                    - birthdate: "2002-04-01"
+                    description: >
+                      The input data used by the processor.
+                  output:
+                    type: object
+                    example:
+                    - age: 19
+                    description: |
+                      The processed data output.
+
+                      The complete format of the output can be queried via the
+                      [GET /p/:portal_id](#operation/get-portal) endpoint.
+
+  /p/:portal_id:
+    get:
+      operationId: get-portal
+      summary: Get portal data
+      description: Run a the published blueprint of a portal.
+
+
+x-tagGroups:
+- name: Published
+  tags:
+  - /p
+- name: Unpublished
+  tags:
+  - /u
