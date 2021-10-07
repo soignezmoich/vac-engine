@@ -31,11 +31,46 @@ defmodule VacEngine.Account do
 
   alias VacEngine.Account.Roles
 
+  defdelegate create_role(type, attrs \\ %{}), to: Roles
   defdelegate update_role(role, attrs), to: Roles
   defdelegate activate_role(role), to: Roles
   defdelegate deactivate_role(role), to: Roles
 
-  alias VacEngine.Account.AccessToken
+  alias VacEngine.Account.AccessTokens
 
-  defdelegate generate_token(length \\ 16), to: AccessToken
+  defdelegate generate_secret(length \\ 16), to: AccessTokens
+  defdelegate create_api_token(role), to: AccessTokens
+
+  defdelegate generate_composite_secret(prefix, id), to: AccessTokens
+  defdelegate explode_composite_secret(secret), to: AccessTokens
+
+  alias VacEngine.Pub
+
+  def list_api_keys() do
+    # TODO actually check role portal id permissions
+    portals =
+      Pub.list_portals()
+      |> Enum.map(fn portal ->
+        portal
+        |> Pub.active_publication()
+        |> case do
+          nil ->
+            nil
+
+          publi ->
+            {portal.id, %{blueprint_id: publi.blueprint_id}}
+        end
+      end)
+      |> Enum.reject(&is_nil/1)
+      |> Map.new()
+
+    Roles.list_roles(:api)
+    |> Enum.map(fn r ->
+      AccessTokens.list_api_tokens(r)
+      |> Enum.map(fn t ->
+        %{secret: t.secret, portals: portals}
+      end)
+    end)
+    |> List.flatten()
+  end
 end

@@ -5,6 +5,7 @@ defmodule VacEngine.Account.Users do
   alias VacEngine.Account.User
   alias VacEngine.Account.Session
   alias VacEngine.Account.Role
+  alias VacEngine.Account.Roles
   alias VacEngine.Account.GlobalPermission
 
   def check_password(nil, _password) do
@@ -83,13 +84,7 @@ defmodule VacEngine.Account.Users do
 
   def create_user(attrs) do
     Multi.new()
-    |> Multi.insert(:role, fn _ ->
-      %Role{active: true, type: :user}
-      |> Role.changeset(%{})
-    end)
-    |> Multi.insert(:global_permissions, fn %{role: role} ->
-      GlobalPermission.new(role)
-    end)
+    |> Multi.append(Roles.create_role_multi(:user))
     |> Multi.insert(:user, fn %{role: role} ->
       %User{role_id: role.id}
       |> User.changeset(attrs)

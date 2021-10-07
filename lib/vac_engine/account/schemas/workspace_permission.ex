@@ -17,7 +17,7 @@ defmodule VacEngine.Account.WorkspacePermission do
   end
 
   @doc false
-  def changeset(workspace_permission, attrs) do
+  def changeset(workspace_permission, attrs \\ %{}) do
     workspace_permission
     |> cast(attrs, [:portals, :endpoints, :users])
     |> validate_required([:portals, :endpoints, :users])

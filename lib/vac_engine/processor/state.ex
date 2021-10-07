@@ -200,6 +200,8 @@ defmodule VacEngine.Processor.State do
             (is_number(value) && Meta.is_type?(type, :number, in_list)) ||
             (is_struct(value, NaiveDateTime) &&
                Meta.is_type?(type, :date, in_list)) ||
+            (is_struct(value, Date) &&
+               Meta.is_type?(type, :date, in_list)) ||
             (is_struct(value, NaiveDateTime) &&
                Meta.is_type?(type, :datetime, in_list))
 
@@ -253,7 +255,9 @@ defmodule VacEngine.Processor.State do
     throw({:invalid_data, "list is not supported in data"})
   end
 
-  defp filter_vars(data, vars, path) when is_struct(data, NaiveDateTime) do
+  defp filter_vars(data, vars, path)
+       when is_struct(data, NaiveDateTime) or
+              is_struct(data, Date) do
     vars
     |> Map.get(path)
     |> get_type()
@@ -400,6 +404,11 @@ defmodule VacEngine.Processor.State do
 
   defp parse_date(str) do
     parse_datetime(str, @date_formats)
+    |> Timex.to_date()
+    |> case do
+      {:error, err} -> throw({:invalid_date, to_string(err)})
+      res -> res
+    end
   end
 
   @datetime_formats ~w({ISO:Extended} {YYYY}-{0M}-{D} {YYYY})

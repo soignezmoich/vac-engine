@@ -1,9 +1,9 @@
 defmodule VacEngine.Account.Sessions do
   import Ecto.Query
   alias VacEngine.Repo
+  alias VacEngine.Account
   alias VacEngine.Account.Session
   alias VacEngine.Account.Role
-  alias VacEngine.Account.AccessToken
 
   def fetch_session(token)
 
@@ -31,7 +31,7 @@ defmodule VacEngine.Account.Sessions do
   end
 
   def create_session(%Role{} = role, attrs) do
-    %Session{role_id: role.id, token: AccessToken.generate_token()}
+    %Session{role_id: role.id, token: Account.generate_secret()}
     |> Session.changeset(attrs)
     |> Repo.insert()
   end

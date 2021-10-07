@@ -23,7 +23,7 @@ defmodule VacEngine.Account.GlobalPermission do
   end
 
   @doc false
-  def changeset(global_permission, attrs) do
+  def changeset(global_permission, attrs \\ %{}) do
     global_permission
     |> cast(attrs, [:workspaces, :users])
     |> validate_required([:workspaces, :users])

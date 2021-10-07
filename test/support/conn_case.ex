@@ -23,6 +23,7 @@ defmodule VacEngineWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import VacEngineWeb.ConnCase
+      import Fixtures.Helpers
 
       alias VacEngineWeb.Router.Helpers, as: Routes
 

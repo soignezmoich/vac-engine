@@ -22,7 +22,7 @@ defmodule VacEngine.Account.User do
   end
 
   @doc false
-  def changeset(user, attrs) do
+  def changeset(user, attrs \\ %{}) do
     user
     |> cast(attrs, [:name, :description, :phone, :password, :email])
     |> encrypt_password()

@@ -14,15 +14,16 @@ defmodule VacEngine.Repo.Migrations.CreateAccessTokens do
 
       add(:role_id, references(:roles, on_delete: :delete_all), null: false)
 
-      add(:token, :string, size: 200, null: false)
+      add(:secret, :string, size: 200, null: false)
       add(:expires_at, :utc_datetime)
       add(:type, :access_token_type)
     end
 
+    create(index(:access_tokens, [:expires_at]))
     create(index(:access_tokens, [:role_id]))
     create(index(:access_tokens, [:type]))
     create(index(:access_tokens, [:type, :role_id]))
-    create(index(:access_tokens, [:token], unique: true))
+    create(index(:access_tokens, [:secret], unique: true))
   end
 
   def down do

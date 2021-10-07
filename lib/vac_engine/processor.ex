@@ -36,7 +36,6 @@ defmodule VacEngine.Processor do
     Repo.get!(Blueprint, id)
   end
 
-
   defstruct blueprint: nil, compiled_ast: nil, state: nil
 
   def compile_blueprint(%Blueprint{} = blueprint) do
@@ -49,26 +48,28 @@ defmodule VacEngine.Processor do
       e ->
         e
     end
+  catch
+    {_code, msg} ->
+      {:error, msg}
   end
 
   def run(%Processor{} = processor, input) do
     state = State.map_input(processor.state, input)
 
-    time(fn -> Compiler.eval_ast(processor.compiled_ast, state) end)
+    Compiler.eval_ast(processor.compiled_ast, state)
     |> case do
       {:ok, state} ->
         state = State.finalize_output(state)
-        {:ok, state.output}
+        {:ok, state}
+
+      {:error, msg} ->
+        {:error, msg}
 
       err ->
-        err
+        {:error, err}
     end
-  end
-
-  def time(fun) do
-    {time, ret} = :timer.tc(fun)
-
-    IO.puts("Elapsed time: #{time}uSec")
-    ret
+  catch
+    {_code, msg} ->
+      {:error, msg}
   end
 end

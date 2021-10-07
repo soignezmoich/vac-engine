@@ -24,7 +24,7 @@ defmodule VacEngine.Processor.Blueprint do
     field(:draft, :boolean)
   end
 
-  def changeset(data, attrs) do
+  def changeset(data, attrs \\ %{}) do
     attrs = VacEngine.Utils.accept_array_or_map_for_embed(attrs, :variables)
 
     data

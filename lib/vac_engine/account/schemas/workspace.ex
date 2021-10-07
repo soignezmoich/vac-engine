@@ -10,7 +10,7 @@ defmodule VacEngine.Account.Workspace do
   end
 
   @doc false
-  def changeset(workspace, attrs) do
+  def changeset(workspace, attrs \\ %{}) do
     workspace
     |> cast(attrs, [:name, :description])
     |> validate_required([:name])

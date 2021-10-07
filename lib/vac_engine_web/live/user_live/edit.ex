@@ -7,7 +7,6 @@ defmodule VacEngineWeb.UserLive.Edit do
   alias VacEngine.Account
   alias VacEngineWeb.Router.Helpers, as: Routes
   alias VacEngineWeb.UserLive
-  alias VacEngine.Account.AccessToken
 
   on_mount(VacEngineWeb.LivePermissions)
 
@@ -80,7 +79,7 @@ defmodule VacEngineWeb.UserLive.Edit do
     not_self!(socket, user)
     can!(socket, :users, :write)
 
-    pass = AccessToken.generate_token(8)
+    pass = Account.generate_secret(8)
 
     {:ok, _user} =
       Account.update_user(socket.assigns.user, %{"password" => pass})

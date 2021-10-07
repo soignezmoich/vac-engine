@@ -41,6 +41,7 @@ defmodule Fixtures.Cases do
     }
   }
 
+  # TODO must be recompiled for now() to update
   @injection_sequence [
     %{
       delay_min: 0,

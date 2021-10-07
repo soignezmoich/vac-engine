@@ -45,6 +45,8 @@ defmodule VacEngine.Processor.Compiler do
       {:error, msg}
   end
 
+  def compile_expression!(nil), do: nil
+
   def compile_expression!(%Expression{} = expr) do
     compile_ast!(expr.ast)
   end

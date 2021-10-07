@@ -8,9 +8,8 @@ defmodule VacEngine.Repo.Migrations.CreateWorkspacePermissions do
       add(:workspace_id, references(:workspaces, on_delete: :delete_all),
         null: false
       )
-      add(:role_id, references(:roles, on_delete: :delete_all),
-        null: false
-      )
+
+      add(:role_id, references(:roles, on_delete: :delete_all), null: false)
 
       add(:portals, :permissions, null: false)
       add(:endpoints, :permissions, null: false)
@@ -19,6 +18,9 @@ defmodule VacEngine.Repo.Migrations.CreateWorkspacePermissions do
 
     create(index(:workspace_permissions, [:workspace_id]))
     create(index(:workspace_permissions, [:role_id]))
-    create(index(:workspace_permissions, [:workspace_id, :role_id], unique: true))
+
+    create(
+      index(:workspace_permissions, [:workspace_id, :role_id], unique: true)
+    )
   end
 end

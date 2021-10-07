@@ -46,7 +46,7 @@ defmodule VacEngineWeb.UserLive.New do
         %{"user" => params},
         socket
       ) do
-    params = Map.put(params, "password", Account.generate_token(16))
+    params = Map.put(params, "password", Account.generate_secret(16))
 
     can!(socket, :users, :write)
 

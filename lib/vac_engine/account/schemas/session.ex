@@ -18,7 +18,7 @@ defmodule VacEngine.Account.Session do
   end
 
   @doc false
-  def changeset(session, attrs) do
+  def changeset(session, attrs \\ %{}) do
     session
     |> cast(attrs, [:remote_ip, :client_info, :last_active_at, :expires_at])
     |> validate_required([:token, :remote_ip])

@@ -25,16 +25,16 @@ defmodule VacEngine.Repo.Migrations.CreateRoles do
     alter table(:users) do
       add(:role_id, references(:roles, on_delete: :delete_all))
     end
-    create(index(:users, [:role_id]))
 
+    create(index(:users, [:role_id]))
   end
 
   def down do
     alter table(:users) do
       remove(:role_id)
     end
+
     drop(table(:roles))
     execute("DROP TYPE role_type")
   end
-
 end

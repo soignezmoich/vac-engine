@@ -58,6 +58,7 @@ defmodule VacEngineWeb do
 
       import VacEngineWeb.RolePlug
       import VacEngineWeb.CachePlug
+      import VacEngineWeb.ApiPlug
       import Plug.Conn
       import Phoenix.Controller
       import Phoenix.LiveView.Router

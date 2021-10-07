@@ -16,6 +16,7 @@ defmodule VacEngineWeb.Router do
 
   pipeline :api do
     plug(:accepts, ["json"])
+    plug(:require_api_key)
   end
 
   scope "/", VacEngineWeb do
@@ -45,6 +46,11 @@ defmodule VacEngineWeb.Router do
   scope "/", VacEngineWeb do
     pipe_through([:browser])
     match(:*, "/logout", AuthController, :logout)
+  end
+
+  scope "/api", VacEngineWeb.Api do
+    pipe_through([:api])
+    post("/pub/run", PubController, :run)
   end
 
   if Mix.env() in [:dev, :test] do

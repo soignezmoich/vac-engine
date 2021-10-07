@@ -4,6 +4,13 @@ defmodule VacEngine.Account.Permissions do
   alias VacEngine.Account.GlobalPermission
   alias VacEngine.Account.Role
 
+  def global_permissions_multi(role) do
+    Multi.new()
+    |> Multi.insert(:global_permissions, fn _ ->
+      GlobalPermission.new(role)
+    end)
+  end
+
   def has_permission?(%Role{} = role, path) do
     check_permission(role, path)
   end
@@ -36,10 +43,6 @@ defmodule VacEngine.Account.Permissions do
 
       _ ->
         {:error, "not implemented"}
-    end
-    |> case do
-      {:ok, _} -> {:ok, role}
-      err -> err
     end
   end
 
@@ -79,6 +82,10 @@ defmodule VacEngine.Account.Permissions do
       })
     end)
     |> Repo.transaction()
+    |> case do
+      {:ok, _} -> {:ok, role}
+      err -> err
+    end
   end
 
   defp check_permission(role, path) when is_binary(path) do

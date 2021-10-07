@@ -14,9 +14,9 @@ defmodule VacEngine.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: VacEngine.PubSub},
       # Start the Endpoint (http/https)
-      VacEngineWeb.Endpoint
-      # Start a worker by calling: VacEngine.Worker.start_link(arg)
-      # {VacEngine.Worker, arg}
+      VacEngineWeb.Endpoint,
+      # Start the cache engine for publisher
+      VacEngine.Pub.Cache
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

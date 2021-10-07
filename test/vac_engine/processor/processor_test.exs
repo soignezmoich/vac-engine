@@ -26,7 +26,7 @@ defmodule VacEngine.Processor.ProcessorTest do
       input = smap(cs.input)
       expected_result = smap(cs.output)
       assert {:ok, actual_result} = Processor.run(processor, input)
-      assert actual_result == expected_result
+      assert actual_result.output == expected_result
     end)
   end
 end
