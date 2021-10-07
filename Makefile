@@ -22,6 +22,7 @@ test:
 .PHONY: test-db
 
 test-db: export MIX_ENV=test
+test-db: export DATABASE_URL=${DATABASE_TEST_URL}
 test-db: db
 
 
