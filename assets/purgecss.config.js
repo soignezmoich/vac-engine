@@ -6,11 +6,13 @@ module.exports = {
   extractors: [
     {
       extractor: extract,
-      extensions: ['eex', 'leex']
+      extensions: ['ex', 'heex', 'eex', 'leex']
     }
   ],
   content: [
+    '../lib/**/*.ex',
     '../lib/**/*.leex',
+    '../lib/**/*.heex',
     '../lib/**/*.eex'
   ],
   safelist: { greedy: [/phx-/] },
