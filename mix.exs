@@ -73,6 +73,9 @@ defmodule VacEngine.MixProject do
 
       # Date and time manipulation library
       {:timex, "~> 3.0"},
+
+      # Static analysis
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
     ]
   end
 
