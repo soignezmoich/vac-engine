@@ -42,8 +42,7 @@ defmodule Fixtures.Blueprints do
 
   @blueprint %{
     name: :sig_test,
-    variables: [
-    ],
+    variables: [],
     deductions: [
       %{
         branches: [
@@ -862,6 +861,41 @@ defmodule Fixtures.Blueprints do
         ]
       }
     ]
+  }
+
+  @blueprint %{
+    name: :hash0_test,
+    variables: [
+      %{name: :aint, type: :integer, input: true, output: false, default: 0}
+    ],
+    deductions: []
+  }
+
+  @blueprint %{
+    name: :hash1_test,
+    variables: [
+      %{name: :aint, type: :integer, input: true, output: false, default: 0},
+      %{name: :bint, type: :integer, input: false, output: false, default: 0}
+    ],
+    deductions: []
+  }
+
+  @blueprint %{
+    name: :hash2_test,
+    variables: [
+      %{name: :bint, type: :integer, input: false, output: false, default: 0},
+      %{name: :aint, type: :integer, input: true, output: false, default: 0}
+    ],
+    deductions: []
+  }
+
+  @blueprint %{
+    name: :hash3_test,
+    variables: [
+      %{name: :bint, type: :integer, input: true, output: false, default: 0},
+      %{name: :aint, type: :integer, input: true, output: false, default: 0}
+    ],
+    deductions: []
   }
 
   def blueprints() do
