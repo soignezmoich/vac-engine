@@ -32,7 +32,11 @@ case Config.config_env() do
 
     config :vac_engine, VacEngineWeb.Endpoint,
       url: [host: host, port: 443, scheme: "https"],
-      http: [ip: address, port: port],
+      http: [
+        ip: address,
+        port: port,
+        transport_options: [num_acceptors: 1000, max_connections: 10000]
+      ],
       secret_key_base: secret_key_base
 
     config :vac_engine, VacEngineWeb.Endpoint, server: true
