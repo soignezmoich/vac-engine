@@ -5,6 +5,10 @@
 - `help`            print this message
 - `readme`          print the README
 
+## Development
+
+- `checks`          run static analyser
+
 ## Building
 
 - `clean`           clean the project
