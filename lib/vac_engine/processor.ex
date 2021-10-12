@@ -1,16 +1,9 @@
 defmodule VacEngine.Processor do
-  import Ecto.Query
-  alias Ecto.Multi
-  alias VacEngine.Repo
   alias VacEngine.Processor.Blueprint
   alias VacEngine.Processor.Blueprints
-  alias VacEngine.Account.Workspace
   alias VacEngine.Processor.Compiler
   alias VacEngine.Processor.State
-  alias VacEngine.Processor.Variable
-  alias VacEngine.Hash
   alias VacEngine.Processor
-  import VacEngine.TupleHelpers
 
   defdelegate create_blueprint(workspace, attrs), to: Blueprints
   defdelegate fetch_blueprint(workspace, bid), to: Blueprints

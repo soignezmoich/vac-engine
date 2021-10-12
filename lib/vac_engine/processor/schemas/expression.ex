@@ -4,8 +4,6 @@ defmodule VacEngine.Processor.Expression do
 
   alias VacEngine.Account.Workspace
   alias VacEngine.Processor.Blueprint
-  alias VacEngine.Processor.Branch
-  alias VacEngine.Processor.Column
   alias VacEngine.Processor.AstType
   alias VacEngine.Processor.Binding
   alias VacEngine.Processor.Ast
@@ -23,15 +21,13 @@ defmodule VacEngine.Processor.Expression do
     field(:ast, AstType)
   end
 
-  def changeset(data, attrs, ctx, opts \\ []) do
+  def changeset(data, attrs, ctx, _opts \\ []) do
     attrs =
       attrs
       |> get_in_attrs(:ast)
       |> extract_bindings()
       |> case do
         {:ok, {ast, bindings}} ->
-          ast
-
           bindings =
             bindings
             |> Enum.with_index()
@@ -81,7 +77,7 @@ defmodule VacEngine.Processor.Expression do
     end
   end
 
-  def insert_bindings(expression, %{variable_id_index: index} = ctx) do
+  def insert_bindings(expression, %{variable_id_index: _index} = ctx) do
     bindings =
       get_in(expression, [
         Access.key(:bindings),
@@ -97,7 +93,7 @@ defmodule VacEngine.Processor.Expression do
       {:ok, ast} ->
         put_in(expression, [Access.key(:ast)], ast)
 
-      {:err, _} ->
+      {:error, _} ->
         put_in(expression, [Access.key(:ast)], nil)
     end
   end

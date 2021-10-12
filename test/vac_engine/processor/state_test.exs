@@ -5,7 +5,6 @@ defmodule VacEngine.Processor.StateTest do
   alias VacEngine.Account
   alias VacEngine.Processor.State
   alias VacEngine.Processor
-  alias VacEngine.Processor.Blueprint
 
   test "map inputs" do
     br = Map.get(blueprints(), :map_test)

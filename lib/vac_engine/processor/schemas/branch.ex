@@ -7,7 +7,6 @@ defmodule VacEngine.Processor.Branch do
   alias VacEngine.Processor.Deduction
   alias VacEngine.Processor.Condition
   alias VacEngine.Processor.Assignment
-  alias VacEngine.Processor.Branch
   alias VacEngine.EctoHelpers
 
   schema "branches" do
@@ -30,12 +29,11 @@ defmodule VacEngine.Processor.Branch do
       |> EctoHelpers.set_positions(:conditions)
       |> EctoHelpers.set_positions(:assignments)
 
-    changeset =
-      data
-      |> cast(attrs, [:description, :position])
-      |> change(blueprint_id: ctx.blueprint_id, workspace_id: ctx.workspace_id)
-      |> cast_assoc(:conditions, with: {Condition, :changeset, [ctx]})
-      |> cast_assoc(:assignments, with: {Assignment, :changeset, [ctx]})
-      |> validate_required([])
+    data
+    |> cast(attrs, [:description, :position])
+    |> change(blueprint_id: ctx.blueprint_id, workspace_id: ctx.workspace_id)
+    |> cast_assoc(:conditions, with: {Condition, :changeset, [ctx]})
+    |> cast_assoc(:assignments, with: {Assignment, :changeset, [ctx]})
+    |> validate_required([])
   end
 end

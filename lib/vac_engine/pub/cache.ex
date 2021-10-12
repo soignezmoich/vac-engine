@@ -2,8 +2,6 @@ defmodule VacEngine.Pub.Cache do
   use GenServer
 
   alias VacEngine.Account
-  alias VacEngine.Pub
-  alias VacEngine.Pub.Cache
   alias VacEngine.Processor
 
   def start_link(opts \\ []) do
@@ -20,18 +18,15 @@ defmodule VacEngine.Pub.Cache do
     GenServer.call(__MODULE__, :refresh)
   end
 
-  def load_blueprint(blueprint_id) do
-  end
-
   @impl true
-  def init(opts) do
+  def init(_opts) do
     state = build_cache()
 
     {:ok, state}
   end
 
   @impl true
-  def handle_call(:refresh, _from, state) do
+  def handle_call(:refresh, _from, _state) do
     state = build_cache()
 
     {:reply, :ok, state}
@@ -43,7 +38,7 @@ defmodule VacEngine.Pub.Cache do
         _from,
         state
       ) do
-    with %{id: id, prefix: prefix, secret: req_secret} <-
+    with %{id: id, prefix: _prefix, secret: req_secret} <-
            Account.explode_composite_secret(api_key),
          %{portals: portals, secret: secret} <- Map.get(state.api_keys, id),
          true <- Plug.Crypto.secure_compare(req_secret, secret),
@@ -64,7 +59,7 @@ defmodule VacEngine.Pub.Cache do
     keys =
       Account.list_api_keys()
       |> Enum.map(fn k ->
-        %{id: id, prefix: prefix, secret: secret} =
+        %{id: id, prefix: _prefix, secret: secret} =
           Account.explode_composite_secret(k.secret)
 
         {id, %{secret: secret, portals: k.portals}}
@@ -82,16 +77,18 @@ defmodule VacEngine.Pub.Cache do
     |> get_in([:processors, blueprint_id])
     |> case do
       nil ->
-        with {:ok, proc} <-
-               blueprint_id
-               |> Processor.get_blueprint!()
-               |> Processor.compile_blueprint() do
-          {:ok, put_in(state, [:processors, blueprint_id], proc)}
-        else
-          err -> err
+        blueprint_id
+        |> Processor.get_blueprint!()
+        |> Processor.compile_blueprint()
+        |> case do
+          {:ok, proc} ->
+            {:ok, put_in(state, [:processors, blueprint_id], proc)}
+
+          err ->
+            err
         end
 
-      p ->
+      _p ->
         {:ok, state}
     end
   end

@@ -32,7 +32,6 @@ defmodule VacEngine.Processor.Compiler do
 
   def eval_ast(compiled_ast, %State{} = state) do
     compiled_ast
-    # |> debug_ast()
     |> Code.eval_quoted(state: state)
     |> case do
       {state, _} ->
@@ -163,6 +162,7 @@ defmodule VacEngine.Processor.Compiler do
     {conditions_ast, assignments_ast}
   end
 
+  @doc false
   defp debug_ast(ast) do
     Macro.to_string(ast)
     |> Code.format_string!()

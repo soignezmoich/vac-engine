@@ -22,7 +22,7 @@ defmodule VacEngine.Processor.Column do
     field(:description, :string)
   end
 
-  def changeset(data, attrs, ctx) do
+  def changeset(data, attrs, _ctx) do
     data
     |> cast(attrs, [:description])
     |> validate_required([])

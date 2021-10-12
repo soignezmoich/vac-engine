@@ -134,7 +134,7 @@ defmodule VacEngine.Processor.State do
     vpath = path |> Enum.reject(&is_integer/1)
     gpath = path |> Enum.map(&Access.key!/1)
 
-    if !is_nil(vars) do
+    if vars != nil do
       var = Map.get(vars, vpath)
 
       if is_nil(var) do

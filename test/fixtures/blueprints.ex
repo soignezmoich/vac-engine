@@ -143,8 +143,18 @@ defmodule Fixtures.Blueprints do
                   1,
                   :child_object,
                   :grand_child_map,
+                  :grand_grand_child_ints
+                ],
+                expression: [1, 2, 3]
+              },
+              %{
+                target: [
+                  :map_list,
+                  1,
+                  :child_object,
+                  :grand_child_map,
                   :grand_grand_child_ints,
-                  2
+                  8
                 ],
                 expression: 42
               },

@@ -46,7 +46,7 @@ deps:
 
 build: export MIX_ENV=prod
 build: deps docs
-	mix compile
+	mix compile  --warnings-as-errors
 
 .PHONY: migrate
 
@@ -139,3 +139,9 @@ docs: deps
 docs-server:
 	redoc-cli serve -w  docs/swagger.yaml
 
+
+.PHONY: checks
+
+checks:
+	mix dialyzer || true
+	mix credo suggest -a

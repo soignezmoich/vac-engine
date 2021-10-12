@@ -1,7 +1,7 @@
 defmodule VacEngine.EctoHelpers do
   def get_in_attrs(attrs, path, default \\ nil)
 
-  def get_in_attrs(attrs, path, default) when is_binary(path) do
+  def get_in_attrs(_attrs, path, _default) when is_binary(path) do
     raise "use atom in path"
   end
 
@@ -26,7 +26,7 @@ defmodule VacEngine.EctoHelpers do
     end
   end
 
-  def put_in_attrs(attrs, path, value) when is_binary(path) do
+  def put_in_attrs(_attrs, path, _value) when is_binary(path) do
     raise "use atom in path"
   end
 

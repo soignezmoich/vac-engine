@@ -6,9 +6,12 @@ defmodule VacEngineWeb.Api.PubController do
 
   def run(conn, %{"portal_id" => portal_id, "input" => input})
       when is_binary(portal_id) do
-    with {portal_id, _} <- Integer.parse(portal_id) do
-      run(conn, %{"portal_id" => portal_id, "input" => input})
-    else
+    portal_id
+    |> Integer.parse()
+    |> case do
+      {portal_id, _} ->
+        run(conn, %{"portal_id" => portal_id, "input" => input})
+
       :error ->
         {:error, :bad_request, "invalid portal_id"}
     end
@@ -17,14 +20,16 @@ defmodule VacEngineWeb.Api.PubController do
   def run(conn, %{"portal_id" => portal_id, "input" => input}) do
     api_key = conn.assigns.api_key
 
-    with {:ok, result} <-
-           Pub.run_cached(%{
-             input: input,
-             api_key: api_key,
-             portal_id: portal_id
-           }) do
-      render(conn, "result.json", result: result)
-    else
+    %{
+      input: input,
+      api_key: api_key,
+      portal_id: portal_id
+    }
+    |> Pub.run_cached()
+    |> case do
+      {:ok, result} ->
+        render(conn, "result.json", result: result)
+
       {:error, msg} ->
         {:error, :bad_request, msg}
 

@@ -3,15 +3,9 @@ defmodule VacEngine.Processor.BindingElement do
   import Ecto.Changeset
 
   alias VacEngine.Account.Workspace
-  alias VacEngine.Processor.Meta
   alias VacEngine.Processor.Binding
   alias VacEngine.Processor.Blueprint
-  alias VacEngine.Processor.Branch
-  alias VacEngine.Processor.Column
-  alias VacEngine.Processor.AstType
   alias VacEngine.Processor.Variable
-  alias VacEngine.Processor.Expression
-  import VacEngine.EctoHelpers
 
   schema "bindings_elements" do
     timestamps(type: :utc_datetime)
@@ -25,7 +19,7 @@ defmodule VacEngine.Processor.BindingElement do
     field(:index, :integer)
   end
 
-  def changeset(data, attrs, ctx, opts \\ []) do
+  def changeset(data, attrs, ctx, _opts \\ []) do
     data
     |> cast(attrs, [:position, :index, :variable_id])
     |> change(blueprint_id: ctx.blueprint_id, workspace_id: ctx.workspace_id)

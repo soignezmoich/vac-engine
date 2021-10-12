@@ -4,15 +4,12 @@ defmodule VacEngine.Processor.Blueprints do
   alias VacEngine.Repo
   alias VacEngine.Processor.Blueprint
   alias VacEngine.Account.Workspace
-  alias VacEngine.Processor.Compiler
-  alias VacEngine.Processor.State
   alias VacEngine.Processor.Variable
   alias VacEngine.Processor.Assignment
   alias VacEngine.Processor.Condition
   alias VacEngine.Processor.Branch
   alias VacEngine.Processor.Deduction
   alias VacEngine.Hash
-  alias VacEngine.Processor
   import VacEngine.TupleHelpers
 
   def create_blueprint(%Workspace{} = workspace, attrs) do
@@ -144,7 +141,7 @@ defmodule VacEngine.Processor.Blueprints do
 
     id_index =
       path_index
-      |> Enum.map(fn {path, var} ->
+      |> Enum.map(fn {_path, var} ->
         {var.id, var}
       end)
       |> Map.new()

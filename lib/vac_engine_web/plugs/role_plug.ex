@@ -6,11 +6,14 @@ defmodule VacEngineWeb.RolePlug do
   alias VacEngine.Account
 
   def fetch_role_session(conn, _) do
-    with {:ok, session} <- restore_session(conn) do
-      conn
-      |> assign(:role_session, session)
-      |> assign(:role, session.role)
-    else
+    conn
+    |> restore_session
+    |> case do
+      {:ok, session} ->
+        conn
+        |> assign(:role_session, session)
+        |> assign(:role, session.role)
+
       _ ->
         conn
         |> assign(:role_session, nil)

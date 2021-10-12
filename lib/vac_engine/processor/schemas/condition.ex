@@ -27,16 +27,15 @@ defmodule VacEngine.Processor.Condition do
   def changeset(data, attrs, ctx) do
     attrs = EctoHelpers.wrap_in_map(attrs, :expression, :ast)
 
-    changeset =
-      data
-      |> cast(attrs, [:description, :position])
-      |> change(blueprint_id: ctx.blueprint_id, workspace_id: ctx.workspace_id)
-      |> cast_assoc(:expression, with: {Expression, :changeset, [ctx]})
-      |> validate_required([])
-      |> prepare_changes(fn changeset ->
-        branch = changeset.repo.get!(Branch, get_field(changeset, :branch_id))
-        change(changeset, deduction_id: branch.deduction_id)
-      end)
+    data
+    |> cast(attrs, [:description, :position])
+    |> change(blueprint_id: ctx.blueprint_id, workspace_id: ctx.workspace_id)
+    |> cast_assoc(:expression, with: {Expression, :changeset, [ctx]})
+    |> validate_required([])
+    |> prepare_changes(fn changeset ->
+      branch = changeset.repo.get!(Branch, get_field(changeset, :branch_id))
+      change(changeset, deduction_id: branch.deduction_id)
+    end)
   end
 
   def insert_bindings(data, ctx) do

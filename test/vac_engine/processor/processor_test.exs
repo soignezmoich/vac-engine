@@ -6,14 +6,12 @@ defmodule VacEngine.Processor.ProcessorTest do
   alias VacEngine.Account
   alias VacEngine.Processor
   alias VacEngine.Processor
-  alias VacEngine.Processor.Blueprint
 
   test "run cases" do
     {:ok, workspace} = Account.create_workspace(%{name: "Test workspace"})
 
     processors =
       blueprints()
-      |> Enum.filter(fn {name, blueprint} -> name == :ruleset0 end)
       |> Enum.map(fn {name, blueprint} ->
         assert {:ok, blueprint} =
                  Processor.create_blueprint(workspace, blueprint)
@@ -24,7 +22,6 @@ defmodule VacEngine.Processor.ProcessorTest do
       |> Map.new()
 
     cases()
-    |> Enum.filter(fn cs -> cs.blueprint == :ruleset0 end)
     |> Enum.map(fn cs ->
       assert {:ok, processor} = Map.fetch(processors, cs.blueprint)
       input = smap(cs.input)

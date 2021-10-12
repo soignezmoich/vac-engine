@@ -4,9 +4,12 @@ defmodule VacEngineWeb.ApiPlug do
   @err Jason.encode!(%{error: "unauthorized, api_key required"})
 
   def require_api_key(conn, _) do
-    with ["Bearer " <> api_key] <- get_req_header(conn, "authorization") do
-      assign(conn, :api_key, api_key)
-    else
+    conn
+    |> get_req_header("authorization")
+    |> case do
+      ["Bearer " <> api_key] ->
+        assign(conn, :api_key, api_key)
+
       _ ->
         conn
         |> put_resp_content_type("application/json")

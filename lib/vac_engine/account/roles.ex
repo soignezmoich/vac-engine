@@ -17,7 +17,7 @@ defmodule VacEngine.Account.Roles do
     end)
   end
 
-  def create_role(type, attrs) do
+  def create_role(type, _attrs) do
     create_role_multi(type)
     |> Repo.transaction()
     |> case do

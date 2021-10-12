@@ -47,13 +47,15 @@ defmodule VacEngine.Pub do
 
   def refresh_cache(), do: Cache.refresh()
 
-  def run_cached(%{api_key: api_key, portal_id: portal_id, input: input} = args) do
+  def run_cached(
+        %{api_key: _api_key, portal_id: _portal_id, input: input} = args
+      ) do
     with {:ok, processor} <- Cache.find_processor(args),
          {:ok, state} <- Processor.run(processor, input) do
       {:ok, %{output: state.output, input: state.input}}
     else
       {:error, msg} -> {:error, msg}
-      err -> {:error, "cannot run processor"}
+      _err -> {:error, "cannot run processor"}
     end
   end
 

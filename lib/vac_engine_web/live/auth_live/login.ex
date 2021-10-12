@@ -51,7 +51,9 @@ defmodule VacEngineWeb.AuthLive.Login do
         %{"credentials" => %{"email" => email, "password" => password}},
         socket
       ) do
-    if !String.match?(email, ~r/.*@.*/) do
+    if String.match?(email, ~r/.*@.*/) do
+      check_user(email, password, socket)
+    else
       {:noreply,
        assign(socket,
          email: email,
@@ -60,8 +62,23 @@ defmodule VacEngineWeb.AuthLive.Login do
          password_error: false,
          login_disabled: true
        )}
-    else
-      with {:ok, user} <- Account.check_user(email, password) do
+    end
+  end
+
+  @impl true
+  def handle_event("toggle_password", _, socket) do
+    {:noreply, assign(socket, show_password: !socket.assigns.show_password)}
+  end
+
+  @impl true
+  def handle_info({:redirect_to, url}, socket) do
+    {:noreply, redirect(socket, to: url)}
+  end
+
+  defp check_user(email, password, socket) do
+    Account.check_user(email, password)
+    |> case do
+      {:ok, user} ->
         token =
           Phoenix.Token.sign(
             VacEngineWeb.Endpoint,
@@ -78,27 +95,16 @@ defmodule VacEngineWeb.AuthLive.Login do
         )
 
         {:noreply, assign(socket, success: true)}
-      else
-        _ ->
-          {:noreply,
-           assign(socket,
-             email: email,
-             password: password,
-             email_error: false,
-             password_error: true,
-             login_disabled: true
-           )}
-      end
+
+      _ ->
+        {:noreply,
+         assign(socket,
+           email: email,
+           password: password,
+           email_error: false,
+           password_error: true,
+           login_disabled: true
+         )}
     end
-  end
-
-  @impl true
-  def handle_event("toggle_password", _, socket) do
-    {:noreply, assign(socket, show_password: !socket.assigns.show_password)}
-  end
-
-  @impl true
-  def handle_info({:redirect_to, url}, socket) do
-    {:noreply, redirect(socket, to: url)}
   end
 end

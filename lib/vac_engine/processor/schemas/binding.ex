@@ -6,10 +6,6 @@ defmodule VacEngine.Processor.Binding do
   alias VacEngine.Processor.Meta
   alias VacEngine.Processor.BindingElement
   alias VacEngine.Processor.Blueprint
-  alias VacEngine.Processor.Branch
-  alias VacEngine.Processor.Column
-  alias VacEngine.Processor.AstType
-  alias VacEngine.Processor.Variable
   alias VacEngine.Processor.Expression
   import VacEngine.EctoHelpers
 
@@ -24,7 +20,7 @@ defmodule VacEngine.Processor.Binding do
     field(:position, :integer)
   end
 
-  def changeset(data, attrs, ctx, opts \\ []) do
+  def changeset(data, attrs, ctx, _opts \\ []) do
     {:ok, path} =
       attrs
       |> get_in_attrs(:path)
@@ -33,7 +29,7 @@ defmodule VacEngine.Processor.Binding do
     {_, path_elements} =
       path
       |> Enum.reduce({[], []}, fn
-        elem, {path, [{a, nil} | tail]} when is_integer(elem) ->
+        elem, {path, [{_, nil} | tail]} when is_integer(elem) ->
           {path, [{path, elem} | tail]}
 
         elem, {parents, list} ->
@@ -56,22 +52,23 @@ defmodule VacEngine.Processor.Binding do
 
     attrs = attrs |> put_in_attrs(:elements, elements_attrs)
 
-    changeset =
-      data
-      |> cast(attrs, [:position])
-      |> change(blueprint_id: ctx.blueprint_id, workspace_id: ctx.workspace_id)
-      |> cast_assoc(:elements, with: {BindingElement, :changeset, [ctx]})
-      |> validate_required([])
+    data
+    |> cast(attrs, [:position])
+    |> change(blueprint_id: ctx.blueprint_id, workspace_id: ctx.workspace_id)
+    |> cast_assoc(:elements, with: {BindingElement, :changeset, [ctx]})
+    |> validate_required([])
   end
 
   def to_path(nil, _ctx), do: nil
 
   def to_path(binding, %{variable_id_index: index}) do
     binding.elements
-    |> Enum.reduce([], &to_path_el/2)
+    |> Enum.reduce([], fn el, path ->
+      to_path_el(el, path, index)
+    end)
   end
 
-  defp to_path_el(el, path) do
+  defp to_path_el(el, path, index) do
     get_in(index, [el.variable_id, Access.key(:name)])
     |> case do
       nil ->

@@ -27,7 +27,7 @@ defmodule Fixtures.Cases do
         %{
           child_object: %{
             grand_child_int: 15,
-            grand_child_map: %{grand_grand_child_ints: [1, 2, 3]}
+            grand_child_map: %{grand_grand_child_ints: [1, 2, 3, 42]}
           }
         },
         %{

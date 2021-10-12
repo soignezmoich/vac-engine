@@ -27,12 +27,11 @@ defmodule VacEngine.Processor.Deduction do
       |> EctoHelpers.set_positions(:branches)
       |> EctoHelpers.set_positions(:columns)
 
-    changeset =
-      data
-      |> cast(attrs, [:description, :position])
-      |> change(blueprint_id: ctx.blueprint_id, workspace_id: ctx.workspace_id)
-      |> cast_assoc(:branches, with: {Branch, :changeset, [ctx]})
-      |> cast_assoc(:columns, with: {Column, :changeset, [ctx]})
-      |> validate_required([])
+    data
+    |> cast(attrs, [:description, :position])
+    |> change(blueprint_id: ctx.blueprint_id, workspace_id: ctx.workspace_id)
+    |> cast_assoc(:branches, with: {Branch, :changeset, [ctx]})
+    |> cast_assoc(:columns, with: {Column, :changeset, [ctx]})
+    |> validate_required([])
   end
 end

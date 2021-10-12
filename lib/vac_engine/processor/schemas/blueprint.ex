@@ -1,7 +1,6 @@
 defmodule VacEngine.Processor.Blueprint do
   use Ecto.Schema
   import Ecto.Changeset
-  import Ecto.Query
 
   alias VacEngine.EctoHelpers
   alias VacEngine.Account.Workspace
@@ -46,10 +45,9 @@ defmodule VacEngine.Processor.Blueprint do
       attrs
       |> EctoHelpers.accept_array_or_map_for_embed(:variables)
 
-    changeset =
-      data
-      |> cast(attrs, [])
-      |> cast_assoc(:variables, with: {Variable, :changeset, [ctx]})
+    data
+    |> cast(attrs, [])
+    |> cast_assoc(:variables, with: {Variable, :changeset, [ctx]})
   end
 
   def deductions_changeset(data, attrs, ctx) do
@@ -57,9 +55,8 @@ defmodule VacEngine.Processor.Blueprint do
       attrs
       |> EctoHelpers.set_positions(:deductions)
 
-    changeset =
-      data
-      |> cast(attrs, [])
-      |> cast_assoc(:deductions, with: {Deduction, :changeset, [ctx]})
+    data
+    |> cast(attrs, [])
+    |> cast_assoc(:deductions, with: {Deduction, :changeset, [ctx]})
   end
 end

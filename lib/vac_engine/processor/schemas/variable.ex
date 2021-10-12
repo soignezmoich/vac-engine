@@ -7,7 +7,6 @@ defmodule VacEngine.Processor.Variable do
   alias VacEngine.Processor.Expression
   alias VacEngine.Processor.Meta
   alias VacEngine.Processor.Variable
-  alias VacEngine.Processor.Binding
   alias VacEngine.EctoHelpers
 
   schema "variables" do
@@ -18,7 +17,6 @@ defmodule VacEngine.Processor.Variable do
 
     has_many(:children, Variable, on_replace: :delete, foreign_key: :parent_id)
     belongs_to(:parent, Variable)
-    has_many(:bindings, Binding, on_replace: :delete)
 
     belongs_to(:default, Expression)
 
@@ -37,23 +35,22 @@ defmodule VacEngine.Processor.Variable do
       |> EctoHelpers.accept_array_or_map_for_embed(:children)
       |> EctoHelpers.wrap_in_map(:default, :ast)
 
-    changeset =
-      data
-      |> cast(attrs, [
-        :name,
-        :type,
-        :input,
-        :output,
-        :description
-      ])
-      |> change(blueprint_id: ctx.blueprint_id, workspace_id: ctx.workspace_id)
-      |> cast_assoc(:children, with: {Variable, :changeset, [ctx]})
-      |> cast_assoc(:default,
-        with: {Expression, :changeset, [ctx, nobindings: true]}
-      )
-      |> validate_required([:name, :type, :input, :output])
-      |> validate_container()
-      |> validate_children_state()
+    data
+    |> cast(attrs, [
+      :name,
+      :type,
+      :input,
+      :output,
+      :description
+    ])
+    |> change(blueprint_id: ctx.blueprint_id, workspace_id: ctx.workspace_id)
+    |> cast_assoc(:children, with: {Variable, :changeset, [ctx]})
+    |> cast_assoc(:default,
+      with: {Expression, :changeset, [ctx, nobindings: true]}
+    )
+    |> validate_required([:name, :type, :input, :output])
+    |> validate_container()
+    |> validate_children_state()
   end
 
   defp validate_container(changeset) do

@@ -4,13 +4,13 @@ defmodule VacEngineWeb.Endpoint do
   @session_options [
     store: :cookie,
     key:
-      Application.get_env(:vac_engine, VacEngineWeb.Endpoint)
+      Application.compile_env(:vac_engine, VacEngineWeb.Endpoint)
       |> Keyword.fetch!(:session_key),
     signing_salt:
-      Application.get_env(:vac_engine, VacEngineWeb.Endpoint)
+      Application.compile_env(:vac_engine, VacEngineWeb.Endpoint)
       |> Keyword.fetch!(:session_signing_salt),
     encryption_salt:
-      Application.get_env(:vac_engine, VacEngineWeb.Endpoint)
+      Application.compile_env(:vac_engine, VacEngineWeb.Endpoint)
       |> Keyword.fetch!(:session_encryption_salt),
     max_age: 365 * 3600 * 24,
     same_site: "Strict"

@@ -2,11 +2,9 @@ defmodule VacEngine.Processor.BlueprintTest do
   use VacEngine.DataCase
 
   import Fixtures.Blueprints
-  import Fixtures.Cases
   alias VacEngine.Account
   alias VacEngine.Processor
   alias VacEngine.Processor
-  alias VacEngine.Processor.Blueprint
 
   @hashes %{
     "7XZBRP9BZ7KX564ZAX7FTAXBYPRCG68E8S2TY4XESZSRSF36G4ASF55S" => [

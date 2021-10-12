@@ -5,7 +5,6 @@ defmodule VacEngineWeb.Api.PubControllerTest do
   alias VacEngine.Pub
   alias VacEngine.Account
   alias VacEngine.Processor
-  alias VacEngine.Processor.Blueprint
 
   test "POST /api/p/:id/run with no api key", %{conn: conn} do
     conn = post(conn, "/api/p/3/run")
