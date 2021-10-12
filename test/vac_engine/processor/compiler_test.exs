@@ -1,5 +1,5 @@
 defmodule VacEngine.Processor.CompilerTest do
-  use VacEngine.ProcessorCase
+  use VacEngine.DataCase
 
   alias VacEngine.Processor.Compiler
 

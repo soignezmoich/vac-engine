@@ -1,40 +1,21 @@
 defmodule VacEngine.Processor do
   import Ecto.Query
+  alias Ecto.Multi
   alias VacEngine.Repo
   alias VacEngine.Processor.Blueprint
+  alias VacEngine.Processor.Blueprints
   alias VacEngine.Account.Workspace
   alias VacEngine.Processor.Compiler
   alias VacEngine.Processor.State
+  alias VacEngine.Processor.Variable
+  alias VacEngine.Hash
   alias VacEngine.Processor
+  import VacEngine.TupleHelpers
 
-  def create_blueprint(%Workspace{} = workspace, attrs) do
-    %Blueprint{workspace_id: workspace.id}
-    |> Blueprint.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  def change_blueprint(blueprint_or_changeset, attrs) do
-    blueprint_or_changeset
-    |> Blueprint.changeset(attrs)
-  end
-
-  def update_blueprint(blueprint_or_changeset, attrs) do
-    blueprint_or_changeset
-    |> change_blueprint(attrs)
-    |> Repo.update()
-  end
-
-  def list_blueprints(%Workspace{} = workspace) do
-    from(b in Blueprint,
-      where: b.workspace_id == ^workspace.id,
-      select: [:id, :name, :description]
-    )
-    |> Repo.all()
-  end
-
-  def get_blueprint!(id) do
-    Repo.get!(Blueprint, id)
-  end
+  defdelegate create_blueprint(workspace, attrs), to: Blueprints
+  defdelegate fetch_blueprint(workspace, bid), to: Blueprints
+  defdelegate list_blueprints(workspace), to: Blueprints
+  defdelegate get_blueprint!(blueprint_id), to: Blueprints
 
   defstruct blueprint: nil, compiled_ast: nil, state: nil
 

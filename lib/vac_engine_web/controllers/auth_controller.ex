@@ -1,7 +1,7 @@
 defmodule VacEngineWeb.AuthController do
   use VacEngineWeb, :controller
 
-  import VacEngineWeb.ConnUtils
+  import VacEngineWeb.ConnHelpers
   alias VacEngine.Account
 
   action_fallback(VacEngineWeb.FallbackController)

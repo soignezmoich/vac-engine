@@ -34,6 +34,8 @@ defmodule Fixtures.Helpers do
     |> Enum.map(&stringify_keys/1)
   end
 
+  defp stringify_keys(v) when is_boolean(v), do: v
+  defp stringify_keys(v) when is_atom(v), do: to_string(v)
   defp stringify_keys(v), do: v
 
   def amap(map) do

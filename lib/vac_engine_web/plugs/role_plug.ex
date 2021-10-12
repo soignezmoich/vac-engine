@@ -1,7 +1,7 @@
 defmodule VacEngineWeb.RolePlug do
   import Plug.Conn
   import Phoenix.Controller, only: [redirect: 2]
-  import VacEngineWeb.ConnUtils
+  import VacEngineWeb.ConnHelpers
 
   alias VacEngine.Account
 

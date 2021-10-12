@@ -2,22 +2,40 @@ defmodule VacEngine.Processor.Branch do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias VacEngine.Account.Workspace
+  alias VacEngine.Processor.Blueprint
+  alias VacEngine.Processor.Deduction
   alias VacEngine.Processor.Condition
-  alias VacEngine.Processor.Assignement
+  alias VacEngine.Processor.Assignment
+  alias VacEngine.Processor.Branch
+  alias VacEngine.EctoHelpers
 
-  @primary_key false
-  embedded_schema do
+  schema "branches" do
+    timestamps(type: :utc_datetime)
+
+    belongs_to(:workspace, Workspace)
+    belongs_to(:blueprint, Blueprint)
+    belongs_to(:deduction, Deduction)
+
+    has_many(:conditions, Condition, on_replace: :delete)
+    has_many(:assignments, Assignment, on_replace: :delete)
+
+    field(:position, :integer)
     field(:description, :string)
-    field(:editor_data, :map)
-    embeds_many(:conditions, Condition, on_replace: :delete)
-    embeds_many(:assignements, Assignement, on_replace: :delete)
   end
 
-  def changeset(data, attrs) do
-    data
-    |> cast(attrs, [:description, :editor_data])
-    |> cast_embed(:conditions)
-    |> cast_embed(:assignements)
-    |> validate_required([])
+  def changeset(data, attrs, ctx) do
+    attrs =
+      attrs
+      |> EctoHelpers.set_positions(:conditions)
+      |> EctoHelpers.set_positions(:assignments)
+
+    changeset =
+      data
+      |> cast(attrs, [:description, :position])
+      |> change(blueprint_id: ctx.blueprint_id, workspace_id: ctx.workspace_id)
+      |> cast_assoc(:conditions, with: {Condition, :changeset, [ctx]})
+      |> cast_assoc(:assignments, with: {Assignment, :changeset, [ctx]})
+      |> validate_required([])
   end
 end

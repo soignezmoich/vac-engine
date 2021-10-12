@@ -1,7 +1,7 @@
 defmodule VacEngine.Processor.ExpressionTest do
   use ExUnit.Case
 
-  alias VacEngine.Processor.Expression
+  alias VacEngine.Processor.Ast
 
   @elixir_expressions %{
     ok: [
@@ -35,26 +35,26 @@ defmodule VacEngine.Processor.ExpressionTest do
 
   test "elixir expression conversions" do
     for {from, to} <- @elixir_expressions.ok do
-      assert {:ok, expr} = Expression.new(from)
-      assert expr.ast == to
+      assert {:ok, expr} = Ast.sanitize(from)
+      assert expr == to
     end
 
     for {from, expected_err} <- @elixir_expressions.error do
-      assert {:error, actual_err} = Expression.new(from)
+      assert {:error, actual_err} = Ast.sanitize(from)
       assert actual_err == expected_err
     end
   end
 
   test "json expression conversions" do
     for {from, to} <- @json_expressions.ok do
-      assert {:ok, expr} = Expression.deserialize(from)
-      assert expr.ast == to
-      assert {:ok, json} = Expression.serialize(expr)
-      assert json == from
+      assert {:ok, expr} = Ast.deserialize(%{"ast" => from})
+      assert expr == to
+      assert {:ok, json} = Ast.serialize(expr)
+      assert json == %{"ast" => from}
     end
 
     for {from, expected_err} <- @json_expressions.error do
-      assert {:error, actual_err} = Expression.deserialize(from)
+      assert {:error, actual_err} = Ast.deserialize(%{"ast" => from})
       assert actual_err == expected_err
     end
   end

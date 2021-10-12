@@ -2,19 +2,37 @@ defmodule VacEngine.Processor.Deduction do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias VacEngine.EctoHelpers
+  alias VacEngine.Account.Workspace
+  alias VacEngine.Processor.Blueprint
   alias VacEngine.Processor.Branch
+  alias VacEngine.Processor.Column
 
-  @primary_key false
-  embedded_schema do
+  schema "deductions" do
+    timestamps(type: :utc_datetime)
+
+    belongs_to(:workspace, Workspace)
+    belongs_to(:blueprint, Blueprint)
+
+    has_many(:branches, Branch, on_replace: :delete)
+    has_many(:columns, Column, on_replace: :delete)
+
+    field(:position, :integer)
     field(:description, :string)
-    field(:editor_data, :map)
-    embeds_many(:branches, Branch, on_replace: :delete)
   end
 
-  def changeset(data, attrs) do
-    data
-    |> cast(attrs, [:editor_data, :description])
-    |> cast_embed(:branches, required: true)
-    |> validate_required([])
+  def changeset(data, attrs, ctx) do
+    attrs =
+      attrs
+      |> EctoHelpers.set_positions(:branches)
+      |> EctoHelpers.set_positions(:columns)
+
+    changeset =
+      data
+      |> cast(attrs, [:description, :position])
+      |> change(blueprint_id: ctx.blueprint_id, workspace_id: ctx.workspace_id)
+      |> cast_assoc(:branches, with: {Branch, :changeset, [ctx]})
+      |> cast_assoc(:columns, with: {Column, :changeset, [ctx]})
+      |> validate_required([])
   end
 end

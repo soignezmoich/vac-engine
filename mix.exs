@@ -75,7 +75,8 @@ defmodule VacEngine.MixProject do
       {:timex, "~> 3.0"},
 
       # Static analysis
-      {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
+      {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
     ]
   end
 

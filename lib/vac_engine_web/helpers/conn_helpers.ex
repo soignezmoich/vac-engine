@@ -1,4 +1,4 @@
-defmodule VacEngineWeb.ConnUtils do
+defmodule VacEngineWeb.ConnHelpers do
   import Plug.Conn
 
   def session_attrs(conn) do

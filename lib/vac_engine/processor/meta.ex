@@ -1,4 +1,6 @@
 defmodule VacEngine.Processor.Meta do
+  import VacEngine.TupleHelpers
+
   @types ~w(
     boolean
     integer
@@ -36,5 +38,41 @@ defmodule VacEngine.Processor.Meta do
       (!unquote(in_list) && unquote(type) == unquote(tname)) ||
         (unquote(in_list) && unquote(type) == unquote(:"#{tname}[]"))
     end
+  end
+
+  def cast_path(name) when is_binary(name) do
+    cast_path([name])
+  end
+
+  def cast_path(name) when is_atom(name) do
+    cast_path([Atom.to_string(name)])
+  end
+
+  def cast_path(name_path) when is_list(name_path) do
+    name_path
+    |> Enum.map(fn
+      el when is_integer(el) ->
+        el
+
+      el when is_binary(el) ->
+        Integer.parse(el)
+        |> case do
+          {index, _} -> index
+          _ -> el
+        end
+
+      el ->
+        if not is_binary(el) do
+          throw({:invalid_path, "invalid variable path #{inspect(el)}"})
+        end
+    end)
+    |> ok()
+  catch
+    {_, err} ->
+      {:error, err}
+  end
+
+  def cast_path(name) do
+    {:error, "invalid variable path #{inspect(name)}"}
   end
 end

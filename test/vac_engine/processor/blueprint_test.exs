@@ -1,28 +1,30 @@
 defmodule VacEngine.Processor.BlueprintTest do
-  use VacEngine.ProcessorCase
+  use VacEngine.DataCase
 
   import Fixtures.Blueprints
   import Fixtures.Cases
+  alias VacEngine.Account
   alias VacEngine.Processor
   alias VacEngine.Processor
   alias VacEngine.Processor.Blueprint
 
   @hashes %{
-    "SF38ZPKGHC48F674EYF9522367HXC9C8ZF2EKF7HG3CT9R622B2SWYZ8" => [
+    "7XZBRP9BZ7KX564ZAX7FTAXBYPRCG68E8S2TY4XESZSRSF36G4ASF55S" => [
       :hash0_test,
       :hash1_test,
       :hash2_test
     ],
-    "EZF7B46RYZHA6X8EH6ZTBS6P6EEE4XSRSC4FW629C9WYC5PB4FXRHT76" => [:hash3_test]
+    "RKBZZXY82ZXTYS29EEB3YBC5R2FP7HKBGZY6AY4CB87H63T8T5X7WT95" => [:hash3_test]
   }
 
   test "run cases" do
+    {:ok, workspace} = Account.create_workspace(%{name: "Test workspace"})
+
     brs =
       blueprints()
       |> Enum.map(fn {name, blueprint} ->
         assert {:ok, blueprint} =
-                 Processor.change_blueprint(%Blueprint{}, blueprint)
-                 |> Ecto.Changeset.apply_action(:insert)
+                 Processor.create_blueprint(workspace, blueprint)
 
         {name, blueprint}
       end)

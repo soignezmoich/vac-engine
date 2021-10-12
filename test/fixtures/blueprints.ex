@@ -17,7 +17,7 @@ defmodule Fixtures.Blueprints do
               %{expression: quote(do: gt(@aint, 75))},
               %{expression: quote(do: lt(@aint, 200))}
             ],
-            assignements: [
+            assignments: [
               %{target: :aint, expression: 72},
               %{target: :bint, expression: quote(do: add(1, @aint))},
               %{target: :cint, expression: quote(do: add(2, @bint))}
@@ -31,7 +31,7 @@ defmodule Fixtures.Blueprints do
             conditions: [
               %{expression: quote(do: gt(@aint, 200))}
             ],
-            assignements: [
+            assignments: [
               %{target: :cint, expression: quote(do: add(@aint, 1))}
             ]
           }
@@ -57,7 +57,7 @@ defmodule Fixtures.Blueprints do
                    ]}
               }
             ],
-            assignements: []
+            assignments: []
           }
         ]
       }
@@ -133,24 +133,27 @@ defmodule Fixtures.Blueprints do
       %{
         branches: [
           %{
-            conditions: [],
-            assignements: [
-              %{target: [:int_list, 2], expression: 54},
-              %{target: [:dnest, 2, :dnest2, 4, :dnest3], expression: "nested"},
-              %{target: [:map_list, 4, :child_int], expression: 45},
-              %{
-                target: [:map_list, 1, :child_object, :grand_child_int],
-                expression: 15
-              },
+            conditions: [
+              %{expression: quote(do: is_nil(@enum_string))}
+            ],
+            assignments: [
               %{
                 target: [
                   :map_list,
                   1,
                   :child_object,
                   :grand_child_map,
-                  :grand_grand_child_ints
+                  :grand_grand_child_ints,
+                  2
                 ],
-                expression: [1, 2, 3]
+                expression: 42
+              },
+              %{target: [:int_list, 2], expression: 54},
+              %{target: [:dnest, 2, :dnest2, 4, :dnest3], expression: "nested"},
+              %{target: [:map_list, 4, :child_int], expression: 45},
+              %{
+                target: [:map_list, 1, :child_object, :grand_child_int],
+                expression: 15
               }
             ]
           }
@@ -160,7 +163,7 @@ defmodule Fixtures.Blueprints do
         branches: [
           %{
             conditions: [],
-            assignements: [
+            assignments: [
               %{target: [:map_list, 2, :child_int], expression: 25},
               %{
                 target: [:map_list, 3, :child_object, :grand_child_int],
@@ -176,14 +179,14 @@ defmodule Fixtures.Blueprints do
             conditions: [
               %{
                 expression:
-                  {:gt, [signature: {{:integer, :integer}, :boolean}],
+                  {:gt, [signature: {[:integer, :integer], :boolean}],
                    [
-                     {:var, [signature: {{:any}, :integer}], [[:int_list, 2]]},
+                     {:var, [signature: {[:name], :integer}], [[:int_list, 2]]},
                      32
                    ]}
               }
             ],
-            assignements: [
+            assignments: [
               %{target: :enum_string, expression: "v1"},
               %{target: :int_list, expression: [1, 2, 3]}
             ]
@@ -370,7 +373,7 @@ defmodule Fixtures.Blueprints do
         branches: [
           %{
             conditions: [],
-            assignements: [
+            assignments: [
               %{
                 target: :age,
                 expression: quote(do: age(@birthdate))
@@ -385,7 +388,7 @@ defmodule Fixtures.Blueprints do
             conditions: [
               %{expression: quote(do: lt(@age, 12))}
             ],
-            assignements: [
+            assignments: [
               %{
                 target: [:vaccine_compatibilities, :moderna, :compatible],
                 description: "<12",
@@ -403,7 +406,7 @@ defmodule Fixtures.Blueprints do
               %{expression: quote(do: is_true(@immuno))},
               %{expression: quote(do: is_false(@immuno_recommended))}
             ],
-            assignements: [
+            assignments: [
               %{
                 target: [:vaccine_compatibilities, :moderna, :compatible],
                 description: "immuno not recommended",
@@ -418,7 +421,7 @@ defmodule Fixtures.Blueprints do
           },
           %{
             conditions: [],
-            assignements: [
+            assignments: [
               %{
                 target: [:vaccine_compatibilities, :moderna, :compatible],
                 description: "other",
@@ -456,7 +459,7 @@ defmodule Fixtures.Blueprints do
                   )
               }
             ],
-            assignements: [
+            assignments: [
               %{
                 target: :eligible,
                 expression: false
@@ -465,7 +468,7 @@ defmodule Fixtures.Blueprints do
           },
           %{
             conditions: [],
-            assignements: [
+            assignments: [
               %{
                 target: :eligible,
                 expression: true
@@ -480,7 +483,7 @@ defmodule Fixtures.Blueprints do
             conditions: [
               %{expression: quote(do: gt(@age, 75))}
             ],
-            assignements: [
+            assignments: [
               %{
                 target: [:vaccine_compatibilities, :moderna, :priority],
                 description: "> 75 years",
@@ -497,7 +500,7 @@ defmodule Fixtures.Blueprints do
             conditions: [
               %{expression: quote(do: is_true(@high_risk))}
             ],
-            assignements: [
+            assignments: [
               %{
                 target: [:vaccine_compatibilities, :moderna, :priority],
                 description: "high risk",
@@ -515,7 +518,7 @@ defmodule Fixtures.Blueprints do
               %{expression: quote(do: is_true(@immuno))},
               %{expression: quote(do: is_true(@immuno_recommended))}
             ],
-            assignements: [
+            assignments: [
               %{
                 target: [:vaccine_compatibilities, :moderna, :priority],
                 description: "immuno",
@@ -532,7 +535,7 @@ defmodule Fixtures.Blueprints do
             conditions: [
               %{expression: quote(do: gt(@age, 65))}
             ],
-            assignements: [
+            assignments: [
               %{
                 target: [:vaccine_compatibilities, :moderna, :priority],
                 description: "> 65",
@@ -549,7 +552,7 @@ defmodule Fixtures.Blueprints do
             conditions: [
               %{expression: quote(do: gt(@age, 60))}
             ],
-            assignements: [
+            assignments: [
               %{
                 target: [:vaccine_compatibilities, :moderna, :priority],
                 description: "> 60",
@@ -566,7 +569,7 @@ defmodule Fixtures.Blueprints do
             conditions: [
               %{expression: quote(do: is_true(@healthcare_worker))}
             ],
-            assignements: [
+            assignments: [
               %{
                 target: [:vaccine_compatibilities, :moderna, :priority],
                 description: "healthcare worker",
@@ -583,7 +586,7 @@ defmodule Fixtures.Blueprints do
             conditions: [
               %{expression: quote(do: is_true(@high_risk_contact))}
             ],
-            assignements: [
+            assignments: [
               %{
                 target: [:vaccine_compatibilities, :moderna, :priority],
                 description: "high risk contact",
@@ -600,7 +603,7 @@ defmodule Fixtures.Blueprints do
             conditions: [
               %{expression: quote(do: is_true(@community_facility))}
             ],
-            assignements: [
+            assignments: [
               %{
                 target: [:vaccine_compatibilities, :moderna, :priority],
                 description: "community facility",
@@ -618,7 +621,7 @@ defmodule Fixtures.Blueprints do
               %{expression: quote(do: is_true(@immuno))},
               %{expression: quote(do: is_false(@immuno_recommended))}
             ],
-            assignements: [
+            assignments: [
               %{
                 target: [:vaccine_compatibilities, :moderna, :priority],
                 description: "immuno not recommended",
@@ -635,7 +638,7 @@ defmodule Fixtures.Blueprints do
             conditions: [
               %{expression: quote(do: lt(@age, 12))}
             ],
-            assignements: [
+            assignments: [
               %{
                 target: [:vaccine_compatibilities, :moderna, :priority],
                 description: "< 12",
@@ -650,7 +653,7 @@ defmodule Fixtures.Blueprints do
           },
           %{
             conditions: [],
-            assignements: [
+            assignments: [
               %{
                 target: [:vaccine_compatibilities, :moderna, :priority],
                 description: "other",
@@ -673,7 +676,7 @@ defmodule Fixtures.Blueprints do
                 expression: quote(do: eq(@gender, "f"))
               }
             ],
-            assignements: [
+            assignments: [
               %{
                 target: [:flags, :need_determine_pregnant],
                 expression: true
@@ -689,7 +692,7 @@ defmodule Fixtures.Blueprints do
               %{expression: quote(do: is_true(@immuno))},
               %{expression: quote(do: is_true(@immuno_discussed))}
             ],
-            assignements: [
+            assignments: [
               %{
                 target: [:flags, :immuno_need_recommendation],
                 expression: true
@@ -705,7 +708,7 @@ defmodule Fixtures.Blueprints do
               %{expression: quote(do: is_not_nil(@infection_date))},
               %{expression: quote(do: is_true(@eligible))}
             ],
-            assignements: [
+            assignments: [
               %{
                 target: [:flags, :infection],
                 expression: true
@@ -731,7 +734,7 @@ defmodule Fixtures.Blueprints do
                 expression: quote(do: is_not_nil(@infection_date))
               }
             ],
-            assignements: [
+            assignments: [
               %{
                 target: [:injection_sequence, 0, :vaccine],
                 expression: "moderna"
@@ -758,7 +761,7 @@ defmodule Fixtures.Blueprints do
                   )
               }
             ],
-            assignements: [
+            assignments: [
               %{
                 target: [:injection_sequence, 0, :vaccine],
                 expression: "moderna"
@@ -804,7 +807,7 @@ defmodule Fixtures.Blueprints do
                 expression: quote(do: is_not_nil(@infection_date))
               }
             ],
-            assignements: [
+            assignments: [
               %{
                 target: [:injection_sequence, 1, :vaccine],
                 expression: "pfizer"
@@ -831,7 +834,7 @@ defmodule Fixtures.Blueprints do
                   )
               }
             ],
-            assignements: [
+            assignments: [
               %{
                 target: [:injection_sequence, 1, :vaccine],
                 expression: "pfizer"
@@ -901,7 +904,7 @@ defmodule Fixtures.Blueprints do
   def blueprints() do
     @blueprint
     |> Enum.map(fn b ->
-      {b.name, b}
+      {b.name, b |> smap()}
     end)
     |> Map.new()
   end

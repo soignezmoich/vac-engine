@@ -1,7 +1,7 @@
 defmodule VacEngine.Repo.Migrations.CreatePublications do
   use Ecto.Migration
 
-  def change do
+  def up do
     create table(:publications) do
       timestamps()
 
@@ -42,5 +42,9 @@ defmodule VacEngine.Repo.Migrations.CreatePublications do
         REFERENCES portals (id, workspace_id)
         ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
     ")
+  end
+
+  def down do
+    drop(table(:publications))
   end
 end

@@ -17,7 +17,7 @@ readme:
 test: export MIX_ENV=test
 test: export DATABASE_URL=${DATABASE_TEST_URL}
 test:
-	mix test
+	mix test $(test_name)
 
 .PHONY: test-db
 
@@ -106,6 +106,10 @@ rollback:
 rollback-all:
 	mix ecto.rollback --to 20210909075125
 
+.PHONY: remigrate
+
+remigrate: rollback-all migrate
+
 .PHONY: release
 
 release: export MIX_ENV=prod
@@ -134,3 +138,4 @@ docs: deps
 
 docs-server:
 	redoc-cli serve -w  docs/swagger.yaml
+

@@ -4,6 +4,7 @@ defmodule VacEngine.Processor.Compiler do
   alias VacEngine.Processor.Blueprint
   alias VacEngine.Processor.Deduction
   alias VacEngine.Processor.Branch
+  alias VacEngine.Processor.Ast
 
   def eval_expression(expr, input \\ %{})
 
@@ -19,10 +20,10 @@ defmodule VacEngine.Processor.Compiler do
   end
 
   def eval_expression(expression_ast, bindings) do
-    Expression.new(expression_ast)
+    Ast.sanitize(expression_ast)
     |> case do
-      {:ok, expr} ->
-        eval_expression(expr, bindings)
+      {:ok, ast} ->
+        eval_expression(%Expression{ast: ast}, bindings)
 
       err ->
         err
@@ -92,14 +93,14 @@ defmodule VacEngine.Processor.Compiler do
     branches_asts =
       deduction.branches
       |> Enum.map(fn br ->
-        {conditions_ast, assignements_ast} = compile_branch!(br)
+        {conditions_ast, assignments_ast} = compile_branch!(br)
 
         [q] =
           quote do
             unquote(conditions_ast) ->
               VacEngine.Processor.State.merge_vars(
                 var!(state),
-                unquote(assignements_ast).()
+                unquote(assignments_ast).()
               )
           end
 
@@ -141,8 +142,8 @@ defmodule VacEngine.Processor.Compiler do
           end
       end
 
-    assignements_ast =
-      branch.assignements
+    assignments_ast =
+      branch.assignments
       |> Enum.map(fn as ->
         expr = compile_expression!(as.expression)
 
@@ -152,14 +153,14 @@ defmodule VacEngine.Processor.Compiler do
         }
       end)
 
-    assignements_ast = {:%{}, [], assignements_ast}
+    assignments_ast = {:%{}, [], assignments_ast}
 
-    assignements_ast =
+    assignments_ast =
       quote do
-        fn -> unquote(assignements_ast) end
+        fn -> unquote(assignments_ast) end
       end
 
-    {conditions_ast, assignements_ast}
+    {conditions_ast, assignments_ast}
   end
 
   defp debug_ast(ast) do

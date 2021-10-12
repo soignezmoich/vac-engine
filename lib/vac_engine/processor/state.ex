@@ -3,6 +3,7 @@ defmodule VacEngine.Processor.State do
   alias VacEngine.Processor.Compiler
   alias VacEngine.Processor.Variable
   alias VacEngine.Processor.Meta
+  alias VacEngine.Processor.Convert
   require VacEngine.Processor.Meta
 
   defstruct variables: nil,
@@ -108,15 +109,19 @@ defmodule VacEngine.Processor.State do
       is_boolean(value) && Meta.is_type?(type, :boolean, in_list) ->
         put_in(mapped_data, path, value)
 
+      is_binary(value) && Meta.is_type?(type, :boolean, in_list) ->
+        value = Convert.parse_bool(value)
+        put_in(mapped_data, path, value)
+
       is_number(value) && Meta.is_type?(type, :number, in_list) ->
         put_in(mapped_data, path, value)
 
       is_binary(value) && Meta.is_type?(type, :date, in_list) ->
-        value = parse_date(value)
+        value = Convert.parse_date(value)
         put_in(mapped_data, path, value)
 
       is_binary(value) && Meta.is_type?(type, :datetime, in_list) ->
-        value = parse_datetime(value)
+        value = Convert.parse_datetime(value)
         put_in(mapped_data, path, value)
 
       true ->
@@ -125,7 +130,7 @@ defmodule VacEngine.Processor.State do
   end
 
   def get_var(%State{variables: vars} = state, name_path) do
-    path = convert_path(name_path)
+    path = cast_path(name_path)
     vpath = path |> Enum.reject(&is_integer/1)
     gpath = path |> Enum.map(&Access.key!/1)
 
@@ -165,7 +170,7 @@ defmodule VacEngine.Processor.State do
         path,
         value
       ) do
-    path = convert_path(path)
+    path = cast_path(path)
     vpath = Enum.reject(path, &is_number/1)
     type = vars |> Map.get(vpath) |> get_type()
     ptype = vars |> Map.get(Enum.drop(vpath, -1)) |> get_type()
@@ -368,67 +373,15 @@ defmodule VacEngine.Processor.State do
     |> elem(0)
   end
 
-  defp convert_path(name) when is_binary(name) do
-    convert_path([name])
-  end
-
-  defp convert_path(name) when is_atom(name) do
-    convert_path([Atom.to_string(name)])
-  end
-
-  defp convert_path(name_path) when is_list(name_path) do
-    name_path
-    |> Enum.map(fn
-      el when is_integer(el) ->
-        el
-
-      el when is_binary(el) ->
-        Integer.parse(el)
-        |> case do
-          {index, _} -> index
-          _ -> el
-        end
-
-      el ->
-        if not is_binary(el) do
-          throw({:invalid_path, "invalid variable path #{inspect(el)}"})
-        end
-    end)
-  end
-
-  defp convert_path(name) do
-    throw({:invalid_path, "invalid variable path #{inspect(name)}"})
-  end
-
-  @date_formats ~w({YYYY}-{0M}-{D} {YYYY})
-
-  defp parse_date(str) do
-    parse_datetime(str, @date_formats)
-    |> Timex.to_date()
+  defp cast_path(name) do
+    name
+    |> Meta.cast_path()
     |> case do
-      {:error, err} -> throw({:invalid_date, to_string(err)})
-      res -> res
-    end
-  end
+      {:ok, path} ->
+        path
 
-  @datetime_formats ~w({ISO:Extended} {YYYY}-{0M}-{D} {YYYY})
-
-  defp parse_datetime(str) do
-    parse_datetime(str, @datetime_formats)
-  end
-
-  defp parse_datetime(str, fmts) do
-    fmts
-    |> Enum.find_value(fn fmt ->
-      Timex.parse(str, fmt)
-      |> case do
-        {:ok, result} -> result
-        _ -> nil
-      end
-    end)
-    |> case do
-      nil -> throw({:invalid_input, "invalid string for date #{str}"})
-      date -> date
+      {_, err} ->
+        throw({:invalid_path, err})
     end
   end
 

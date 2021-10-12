@@ -58,7 +58,7 @@ defmodule VacEngineWeb.Api.PubControllerTest do
 
         assert json_response(conn, 200) == %{
                  "input" => cas.input |> smap(),
-                 "output" => cas.output |> smap(),
+                 "output" => cas.output |> smap()
                }
 
       _ ->

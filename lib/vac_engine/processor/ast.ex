@@ -1,26 +1,16 @@
-defmodule VacEngine.Processor.Expression do
-  defstruct ast: nil
-
+defmodule VacEngine.Processor.Ast do
   alias VacEngine.Processor.Libraries
-  alias VacEngine.Processor.Expression
 
-  defmacro expr(ex) do
-    quote bind_quoted: [ex: Macro.escape(ex)] do
-      {:ok, e} = Expression.new(ex)
-      e
-    end
-  end
-
-  def new(data) do
+  def sanitize(data) do
     ast = sanitize!(data)
 
-    {:ok, %Expression{ast: ast}}
+    {:ok, ast}
   catch
     {_code, msg} ->
       {:error, msg}
   end
 
-  def sanitize!({f, m, args}) when is_list(args) and is_binary(f) do
+  defp sanitize!({f, m, args}) when is_list(args) and is_binary(f) do
     fname = String.to_existing_atom(f)
     sanitize!({fname, m, args})
   catch
@@ -28,9 +18,9 @@ defmodule VacEngine.Processor.Expression do
       throw({:undefined, "undefined function #{f}/#{length(args)}"})
   end
 
-  def sanitize!({:@, m, args}), do: sanitize!({:var, m, args})
+  defp sanitize!({:@, m, args}), do: sanitize!({:var, m, args})
 
-  def sanitize!({f, m, args}) when is_atom(f) and is_list(args) do
+  defp sanitize!({f, m, args}) when is_atom(f) and is_list(args) do
     ari = length(args)
 
     unless function_exported?(Libraries, f, ari) do
@@ -47,39 +37,93 @@ defmodule VacEngine.Processor.Expression do
     {f, m, Enum.map(args, &sanitize!/1)}
   end
 
-  def sanitize!({f, _m, args}) when not is_list(args) do
+  defp sanitize!({f, _m, args}) when not is_list(args) do
     to_string(f)
   end
 
-  def sanitize!(i) when is_nil(i), do: i
-  def sanitize!(i) when is_number(i), do: i
-  def sanitize!(b) when is_boolean(b), do: b
-  def sanitize!(var) when is_atom(var), do: sanitize!(to_string(var))
+  defp sanitize!(i) when is_nil(i), do: i
+  defp sanitize!(i) when is_number(i), do: i
+  defp sanitize!(b) when is_boolean(b), do: b
+  defp sanitize!(var) when is_atom(var), do: sanitize!(to_string(var))
 
-  def sanitize!(var) when is_binary(var) do
+  defp sanitize!(var) when is_binary(var) do
     Regex.replace(~r/[^a-zA-Z0-9_]/, var, "_")
   end
 
-  def sanitize!(list) when is_list(list) do
+  defp sanitize!(list) when is_list(list) do
     Enum.map(list, &sanitize!/1)
   end
 
-  def sanitize!(_expr) do
+  defp sanitize!(_expr) do
     throw({:invalid_expression, "invalid expression"})
   end
 
-  def serialize(%Expression{ast: ast}) do
-    {:ok, ast_to_json(ast)}
+  def extract_bindings(data) do
+    {ast, bindings} = extract_bindings!(data, [])
+    {:ok, {ast, Enum.reverse(bindings)}}
+  catch
+    {_code, msg} ->
+      {:error, msg}
+  end
+
+  defp extract_bindings!({:var, m, [path]}, bindings) do
+    {{:var, m, [length(bindings)]}, [path | bindings]}
+  end
+
+  defp extract_bindings!({f, m, r}, bindings) when is_atom(f) and is_list(r) do
+    {r, bindings} =
+      r
+      |> Enum.map_reduce(bindings, fn el, bindings ->
+        extract_bindings!(el, bindings)
+      end)
+
+    {{f, m, r}, bindings}
+  end
+
+  defp extract_bindings!(ast, bindings) do
+    {ast, bindings}
+  end
+
+  def insert_bindings(data, bindings) do
+    ast = insert_bindings!(data, bindings)
+    {:ok, ast}
+  catch
+    {_code, msg} ->
+      {:error, msg}
+  end
+
+  defp insert_bindings!({:var, m, [pos]}, bindings) do
+    path = Enum.at(bindings, pos)
+    {:var, m, [path]}
+  end
+
+  defp insert_bindings!({f, m, r}, bindings) when is_atom(f) and is_list(r) do
+    r =
+      r
+      |> Enum.map(fn el ->
+        insert_bindings!(el, bindings)
+      end)
+
+    {f, m, r}
+  end
+
+  defp insert_bindings!(ast, _bindings) do
+    ast
+  end
+
+  def serialize(ast) do
+    {:ok, ast_to_json(ast) |> wrap_root()}
   end
 
   def deserialize(json) do
     # TODO limit json size
     ast =
       json
+      |> unwrap_root()
       |> json_to_ast!()
       |> sanitize!()
 
-    {:ok, %Expression{ast: ast}}
+    {:ok, ast}
   catch
     {_code, msg} ->
       {:error, msg}
@@ -142,4 +186,7 @@ defmodule VacEngine.Processor.Expression do
   end
 
   defp json_to_ast!(e), do: e
+
+  defp wrap_root(val), do: %{"ast" => val}
+  defp unwrap_root(%{"ast" => val}), do: val
 end

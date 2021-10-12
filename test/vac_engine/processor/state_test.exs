@@ -1,7 +1,8 @@
 defmodule VacEngine.Processor.StateTest do
-  use VacEngine.ProcessorCase
+  use VacEngine.DataCase
 
   import Fixtures.Blueprints
+  alias VacEngine.Account
   alias VacEngine.Processor.State
   alias VacEngine.Processor
   alias VacEngine.Processor.Blueprint
@@ -94,9 +95,8 @@ defmodule VacEngine.Processor.StateTest do
       }
       |> smap()
 
-    assert {:ok, blueprint} =
-             Processor.change_blueprint(%Blueprint{}, br)
-             |> Ecto.Changeset.apply_action(:insert)
+    {:ok, workspace} = Account.create_workspace(%{name: "Test workspace"})
+    assert {:ok, blueprint} = Processor.create_blueprint(workspace, br)
 
     state = State.new(blueprint.variables)
 

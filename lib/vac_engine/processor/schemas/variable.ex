@@ -2,49 +2,58 @@ defmodule VacEngine.Processor.Variable do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias VacEngine.Processor.NameType
-  alias VacEngine.Processor.ExpressionType
+  alias VacEngine.Account.Workspace
+  alias VacEngine.Processor.Blueprint
   alias VacEngine.Processor.Expression
-  require VacEngine.Processor.Expression
   alias VacEngine.Processor.Meta
   alias VacEngine.Processor.Variable
-  alias VacEngine.Processor.Validator
-  alias VacEngine.Utils
+  alias VacEngine.Processor.Binding
+  alias VacEngine.EctoHelpers
 
-  @primary_key false
-  embedded_schema do
+  schema "variables" do
+    timestamps(type: :utc_datetime)
+
+    belongs_to(:workspace, Workspace)
+    belongs_to(:blueprint, Blueprint)
+
+    has_many(:children, Variable, on_replace: :delete, foreign_key: :parent_id)
+    belongs_to(:parent, Variable)
+    has_many(:bindings, Binding, on_replace: :delete)
+
+    belongs_to(:default, Expression)
+
     field(:type, Ecto.Enum, values: Meta.types())
     field(:input, :boolean, default: false)
     field(:output, :boolean, default: false)
-    field(:name, NameType)
+    field(:name, :string)
     field(:description, :string)
-    field(:editor_data, :map)
-    field(:default, ExpressionType, default: Expression.expr(nil))
-    embeds_many(:validators, Validator, on_replace: :delete)
-    embeds_many(:children, Variable, on_replace: :delete)
+
+    field(:path, {:array, :string}, virtual: true)
   end
 
-  def changeset(data, attrs) do
+  def changeset(data, attrs, ctx) do
     attrs =
       attrs
-      |> Utils.accept_array_or_map_for_embed(:children)
-      |> Utils.accept_array_or_map_for_embed(:validators)
+      |> EctoHelpers.accept_array_or_map_for_embed(:children)
+      |> EctoHelpers.wrap_in_map(:default, :ast)
 
-    data
-    |> cast(attrs, [
-      :default,
-      :name,
-      :type,
-      :input,
-      :output,
-      :description,
-      :editor_data
-    ])
-    |> cast_embed(:validators)
-    |> cast_embed(:children)
-    |> validate_required([:name, :type, :input, :output])
-    |> validate_container()
-    |> validate_children_state()
+    changeset =
+      data
+      |> cast(attrs, [
+        :name,
+        :type,
+        :input,
+        :output,
+        :description
+      ])
+      |> change(blueprint_id: ctx.blueprint_id, workspace_id: ctx.workspace_id)
+      |> cast_assoc(:children, with: {Variable, :changeset, [ctx]})
+      |> cast_assoc(:default,
+        with: {Expression, :changeset, [ctx, nobindings: true]}
+      )
+      |> validate_required([:name, :type, :input, :output])
+      |> validate_container()
+      |> validate_children_state()
   end
 
   defp validate_container(changeset) do
