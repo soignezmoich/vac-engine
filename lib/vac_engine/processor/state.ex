@@ -5,6 +5,7 @@ defmodule VacEngine.Processor.State do
   alias VacEngine.Processor.Meta
   alias VacEngine.Processor.Convert
   require VacEngine.Processor.Meta
+  import VacEngine.TupleHelpers
 
   defstruct variables: nil,
             input_variables: nil,
@@ -43,6 +44,10 @@ defmodule VacEngine.Processor.State do
       output_variables: output_vars,
       variables: vars
     }
+    |> ok()
+  catch
+    {_code, msg} ->
+      {:error, msg}
   end
 
   def flatten_variables(vars, acc \\ {%{}, []})
@@ -66,6 +71,10 @@ defmodule VacEngine.Processor.State do
     stack = lists_to_maps(input, vars)
     # TODO required variables?
     %{state | input: input, stack: stack}
+    |> ok()
+  catch
+    {_code, msg} ->
+      {:error, msg}
   end
 
   def map_variables(vars, data, mapped_data, parents) do
@@ -229,6 +238,10 @@ defmodule VacEngine.Processor.State do
       |> maps_to_lists(vars)
 
     %{state | output: output}
+    |> ok()
+  catch
+    {_code, msg} ->
+      {:error, msg}
   end
 
   defp filter_vars(data, vars) do

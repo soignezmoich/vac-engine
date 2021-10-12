@@ -59,8 +59,8 @@ defmodule VacEngine.Processor.Expression do
 
       {:error, err} ->
         data
-        |> cast(attrs, [])
-        |> add_error(:ast, err)
+        |> cast(%{}, [])
+        |> add_error(:ast, to_string(err))
     end
   end
 

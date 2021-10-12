@@ -34,11 +34,11 @@ defmodule VacEngine.Processor.Compiler do
     compiled_ast
     |> Code.eval_quoted(state: state)
     |> case do
+      {:error, _} ->
+        {:error, "run error"}
+
       {state, _} ->
         {:ok, state}
-
-      _ ->
-        {:error, "run error"}
     end
   catch
     {_code, msg} ->
@@ -86,6 +86,9 @@ defmodule VacEngine.Processor.Compiler do
 
     ast = {:__block__, [], fn_asts}
     {:ok, ast}
+  catch
+    {_code, msg} ->
+      {:error, msg}
   end
 
   def compile_deduction(%Deduction{} = deduction) do
