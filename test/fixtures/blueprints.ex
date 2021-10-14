@@ -764,6 +764,10 @@ defmodule Fixtures.Blueprints do
           },
           %{
             description: "Pregnant",
+            variable: :pregnant
+          },
+          %{
+            description: "Need check pregnant",
             variable: [:flags, :need_determine_pregnant],
             type: "assignment"
           }
@@ -774,11 +778,15 @@ defmodule Fixtures.Blueprints do
               %{
                 expression: quote(do: eq(@gender, "f")),
                 column: 0
+              },
+              %{
+                expression: quote(do: eq(@pregnant, "unknown")),
+                column: 1
               }
             ],
             assignments: [
               %{
-                column: 1,
+                column: 2,
                 target: [:flags, :need_determine_pregnant],
                 expression: true
               }
