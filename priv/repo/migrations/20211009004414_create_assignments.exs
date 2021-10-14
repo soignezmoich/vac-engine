@@ -25,7 +25,6 @@ defmodule VacEngine.Repo.Migrations.CreateAssignments do
 
       add(:column_id, references(:columns, on_delete: :delete_all))
 
-      add(:position, :integer, null: false)
       add(:description, :string, size: 1000)
     end
 
@@ -37,7 +36,6 @@ defmodule VacEngine.Repo.Migrations.CreateAssignments do
     create(unique_index(:assignments, [:id, :branch_id]))
     create(unique_index(:assignments, [:id, :expression_id]))
     create(unique_index(:assignments, [:id, :column_id]))
-    create(unique_index(:assignments, [:position, :branch_id]))
 
     execute("
       ALTER TABLE assignments

@@ -25,7 +25,6 @@ defmodule VacEngine.Repo.Migrations.CreateConditions do
 
       add(:column_id, references(:columns, on_delete: :delete_all))
 
-      add(:position, :integer, null: false)
       add(:description, :string, size: 1000)
     end
 
@@ -37,7 +36,6 @@ defmodule VacEngine.Repo.Migrations.CreateConditions do
     create(unique_index(:conditions, [:id, :branch_id]))
     create(unique_index(:conditions, [:id, :expression_id]))
     create(unique_index(:conditions, [:id, :column_id]))
-    create(unique_index(:conditions, [:position, :branch_id]))
 
     execute("
       ALTER TABLE conditions

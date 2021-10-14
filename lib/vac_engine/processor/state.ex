@@ -21,14 +21,14 @@ defmodule VacEngine.Processor.State do
       vars
       |> Enum.reduce({%{}, %{}}, fn {path, var}, {input_vars, output_vars} ->
         input_vars =
-          if var.input do
+          if Variable.input?(var) do
             Map.put(input_vars, path, var)
           else
             input_vars
           end
 
         output_vars =
-          if var.output do
+          if Variable.output?(var) do
             Map.put(output_vars, path, var)
           else
             output_vars

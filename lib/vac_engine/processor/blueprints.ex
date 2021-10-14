@@ -57,7 +57,8 @@ defmodule VacEngine.Processor.Blueprints do
     |> Multi.run(:compute_hash, fn repo,
                                    %{{:blueprint, :deductions} => blueprint} ->
       from(v in Variable,
-        where: v.blueprint_id == ^blueprint.id and v.input == true,
+        where: v.blueprint_id == ^blueprint.id and
+        fragment("?::text like 'in%'", v.mapping),
         order_by: v.id
       )
       |> repo.all()
@@ -84,16 +85,16 @@ defmodule VacEngine.Processor.Blueprints do
   def fetch_blueprint(%Workspace{} = workspace, blueprint_id) do
     conditions_query =
       from(r in Condition,
-        order_by: r.position,
         preload: [
+          :column,
           expression: [bindings: :elements]
         ]
       )
 
     assignments_query =
       from(r in Assignment,
-        order_by: r.position,
         preload: [
+          :column,
           expression: [bindings: :elements]
         ]
       )
@@ -167,6 +168,20 @@ defmodule VacEngine.Processor.Blueprints do
         Assignment.insert_bindings(assign, blueprint)
       end
     )
+    |> update_in(
+      [
+        Access.key(:deductions),
+        Access.all(),
+        Access.key(:branches),
+        Access.all(),
+        Access.key(:assignments),
+      ],
+      fn assigns ->
+        Enum.sort_by(assigns, fn a ->
+          {a.id, a.column && a.column.position}
+        end)
+      end
+    )
   end
 
   defp arrange_conditions(blueprint) do
@@ -182,6 +197,20 @@ defmodule VacEngine.Processor.Blueprints do
       ],
       fn con ->
         Condition.insert_bindings(con, blueprint)
+      end
+    )
+    |> update_in(
+      [
+        Access.key(:deductions),
+        Access.all(),
+        Access.key(:branches),
+        Access.all(),
+        Access.key(:conditions),
+      ],
+      fn conds ->
+        Enum.sort_by(conds, fn a ->
+          {a.id, a.column && a.column.position}
+        end)
       end
     )
   end

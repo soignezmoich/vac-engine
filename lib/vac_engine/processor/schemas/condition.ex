@@ -21,21 +21,17 @@ defmodule VacEngine.Processor.Condition do
     belongs_to(:column, Column)
 
     field(:description, :string)
-    field(:position, :integer)
   end
 
   def changeset(data, attrs, ctx) do
     attrs = EctoHelpers.wrap_in_map(attrs, :expression, :ast)
 
     data
-    |> cast(attrs, [:description, :position])
+    |> cast(attrs, [:description])
     |> change(blueprint_id: ctx.blueprint_id, workspace_id: ctx.workspace_id)
     |> cast_assoc(:expression, with: {Expression, :changeset, [ctx]})
     |> validate_required([])
-    |> prepare_changes(fn changeset ->
-      branch = changeset.repo.get!(Branch, get_field(changeset, :branch_id))
-      change(changeset, deduction_id: branch.deduction_id)
-    end)
+    |> Branch.map_branch_element(attrs, :condition)
   end
 
   def insert_bindings(data, ctx) do

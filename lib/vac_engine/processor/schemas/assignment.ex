@@ -23,7 +23,6 @@ defmodule VacEngine.Processor.Assignment do
     belongs_to(:expression, Expression)
 
     field(:description, :string)
-    field(:position, :integer)
     field(:target, :map, virtual: true)
   end
 
@@ -39,14 +38,11 @@ defmodule VacEngine.Processor.Assignment do
       )
 
     data
-    |> cast(attrs, [:description, :position])
+    |> cast(attrs, [:description])
     |> change(blueprint_id: ctx.blueprint_id, workspace_id: ctx.workspace_id)
     |> cast_assoc(:expression, with: {Expression, :changeset, [ctx]})
     |> validate_required([])
-    |> prepare_changes(fn changeset ->
-      branch = changeset.repo.get!(Branch, get_field(changeset, :branch_id))
-      change(changeset, deduction_id: branch.deduction_id)
-    end)
+    |> Branch.map_branch_element(attrs, :assignment)
   end
 
   def insert_bindings(data, ctx) do

@@ -2,6 +2,12 @@ defmodule VacEngine.Repo.Migrations.CreateColumns do
   use Ecto.Migration
 
   def up do
+    execute("CREATE TYPE column_type AS ENUM
+      (
+        'condition',
+        'assignment'
+      )")
+
     create table(:columns) do
       timestamps()
 
@@ -17,6 +23,9 @@ defmodule VacEngine.Repo.Migrations.CreateColumns do
         null: false
       )
 
+      add(:variable_id, references(:variables, on_delete: :delete_all))
+
+      add(:type, :column_type, null: false, default: "condition")
       add(:position, :integer, null: false)
       add(:description, :string, size: 1000)
     end
@@ -24,6 +33,7 @@ defmodule VacEngine.Repo.Migrations.CreateColumns do
     create(unique_index(:columns, [:id, :blueprint_id]))
     create(unique_index(:columns, [:id, :workspace_id]))
     create(unique_index(:columns, [:id, :deduction_id]))
+    create(unique_index(:columns, [:id, :variable_id]))
     create(unique_index(:columns, [:position, :deduction_id]))
 
     execute("
@@ -41,9 +51,17 @@ defmodule VacEngine.Repo.Migrations.CreateColumns do
         REFERENCES deductions (id, blueprint_id)
         ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
     ")
+    execute("
+      ALTER TABLE columns
+        ADD CONSTRAINT columns_variable_blueprint
+        FOREIGN KEY (variable_id, blueprint_id)
+        REFERENCES variables (id, blueprint_id)
+        ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
+    ")
   end
 
   def down do
     drop(table(:columns))
+    execute("DROP TYPE column_type")
   end
 end

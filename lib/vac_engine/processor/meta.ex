@@ -75,4 +75,37 @@ defmodule VacEngine.Processor.Meta do
   def cast_path(name) do
     {:error, "invalid variable path #{inspect(name)}"}
   end
+
+  @mappings ~w(
+      in_required
+      in_optional
+      inout_required
+      inout_optional
+      out
+      none
+  )a
+
+  def mappings(), do: @mappings
+
+  def input?(mapping) do
+    case mapping do
+      :in_required -> true
+      :in_optional -> true
+      :inout_required -> true
+      :inout_optional -> true
+      :out -> false
+      :none -> false
+    end
+  end
+
+  def output?(mapping) do
+    case mapping do
+      :in_required -> false
+      :in_optional -> false
+      :inout_required -> true
+      :inout_optional -> true
+      :out -> true
+      :none -> false
+    end
+  end
 end

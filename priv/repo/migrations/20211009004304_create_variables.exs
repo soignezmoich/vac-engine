@@ -20,6 +20,16 @@ defmodule VacEngine.Repo.Migrations.CreateVariables do
         'map[]'
       )")
 
+    execute("CREATE TYPE variable_mapping AS ENUM
+      (
+        'none',
+        'in_required',
+        'in_optional',
+        'inout_required',
+        'inout_optional',
+        'out'
+      )")
+
     create table(:variables) do
       timestamps()
 
@@ -38,8 +48,7 @@ defmodule VacEngine.Repo.Migrations.CreateVariables do
       add(:type, :variable_type, null: false)
       add(:name, :string, size: 100, null: false)
       add(:description, :string, size: 1000)
-      add(:input, :boolean, null: false, default: false)
-      add(:output, :boolean, null: false, default: false)
+      add(:mapping, :variable_mapping, null: false, default: "none")
     end
 
     create(index(:variables, [:workspace_id]))
@@ -84,5 +93,6 @@ defmodule VacEngine.Repo.Migrations.CreateVariables do
   def down do
     drop(table(:variables))
     execute("DROP TYPE variable_type")
+    execute("DROP TYPE variable_mapping")
   end
 end

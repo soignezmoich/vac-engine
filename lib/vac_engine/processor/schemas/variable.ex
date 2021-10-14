@@ -21,8 +21,7 @@ defmodule VacEngine.Processor.Variable do
     belongs_to(:default, Expression)
 
     field(:type, Ecto.Enum, values: Meta.types())
-    field(:input, :boolean, default: false)
-    field(:output, :boolean, default: false)
+    field(:mapping, Ecto.Enum, values: Meta.mappings())
     field(:name, :string)
     field(:description, :string)
 
@@ -39,8 +38,7 @@ defmodule VacEngine.Processor.Variable do
     |> cast(attrs, [
       :name,
       :type,
-      :input,
-      :output,
+      :mapping,
       :description
     ])
     |> change(blueprint_id: ctx.blueprint_id, workspace_id: ctx.workspace_id)
@@ -48,9 +46,17 @@ defmodule VacEngine.Processor.Variable do
     |> cast_assoc(:default,
       with: {Expression, :changeset, [ctx, nobindings: true]}
     )
-    |> validate_required([:name, :type, :input, :output])
+    |> validate_required([:name, :type])
     |> validate_container()
     |> validate_children_state()
+  end
+
+  def input?(var) do
+    Meta.input?(var.mapping)
+  end
+
+  def output?(var) do
+    Meta.output?(var.mapping)
   end
 
   defp validate_container(changeset) do
@@ -63,13 +69,12 @@ defmodule VacEngine.Processor.Variable do
   end
 
   defp validate_children_state(changeset) do
-    input = get_field(changeset, :input)
-    output = get_field(changeset, :output)
+    mapping = get_field(changeset, :mapping)
 
     get_field(changeset, :children)
     |> Enum.any?(fn child ->
-      (!input && child.input) ||
-        (!output && child.output)
+      (input?(child) && !Meta.input?(mapping)) ||
+        (output?(child) && !Meta.output?(mapping))
     end)
     |> if do
       add_error(
