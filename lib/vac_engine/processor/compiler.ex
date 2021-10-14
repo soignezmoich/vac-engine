@@ -165,12 +165,4 @@ defmodule VacEngine.Processor.Compiler do
     {conditions_ast, assignments_ast}
   end
 
-  @doc false
-  defp debug_ast(ast) do
-    Macro.to_string(ast)
-    |> Code.format_string!()
-    |> IO.puts()
-
-    ast
-  end
 end
