@@ -112,7 +112,10 @@ defmodule VacEngine.Processor.Blueprints do
 
     columns_query =
       from(r in Column,
-        order_by: r.position
+        order_by: r.position,
+        preload: [
+          expression: [bindings: :elements]
+        ]
       )
 
     deductions_query =
@@ -139,6 +142,7 @@ defmodule VacEngine.Processor.Blueprints do
       br ->
         br
         |> arrange_variables()
+        |> arrange_columns()
         |> arrange_assignments()
         |> arrange_conditions()
         |> ok()
@@ -159,6 +163,21 @@ defmodule VacEngine.Processor.Blueprints do
     |> put_in([Access.key(:variables)], var_tree)
     |> put_in([Access.key(:variable_path_index)], path_index)
     |> put_in([Access.key(:variable_id_index)], id_index)
+  end
+
+  defp arrange_columns(blueprint) do
+    blueprint
+    |> update_in(
+      [
+        Access.key(:deductions),
+        Access.all(),
+        Access.key(:columns),
+        Access.all(),
+      ],
+      fn col ->
+        Column.insert_bindings(col, blueprint)
+      end
+    )
   end
 
   defp arrange_assignments(blueprint) do
