@@ -8,6 +8,7 @@ defmodule VacEngine.Processor.Variable do
   alias VacEngine.Processor.Meta
   alias VacEngine.Processor.Variable
   alias VacEngine.EctoHelpers
+  alias VacEngine.Processor.ListType
 
   schema "variables" do
     timestamps(type: :utc_datetime)
@@ -24,6 +25,7 @@ defmodule VacEngine.Processor.Variable do
     field(:mapping, Ecto.Enum, values: Meta.mappings())
     field(:name, :string)
     field(:description, :string)
+    field(:enum, ListType)
 
     field(:path, {:array, :string}, virtual: true)
   end
@@ -36,6 +38,7 @@ defmodule VacEngine.Processor.Variable do
 
     data
     |> cast(attrs, [
+      :enum,
       :name,
       :type,
       :mapping,
@@ -46,6 +49,7 @@ defmodule VacEngine.Processor.Variable do
     |> cast_assoc(:default,
       with: {Expression, :changeset, [ctx, nobindings: true]}
     )
+    |> validate_enum()
     |> validate_required([:name, :type])
     |> validate_container()
     |> validate_children_state()
@@ -88,6 +92,19 @@ defmodule VacEngine.Processor.Variable do
       )
     else
       changeset
+    end
+  end
+
+  defp validate_enum(changeset) do
+    type = get_field(changeset, :type)
+    enum = get_field(changeset, :enum)
+
+    cond do
+      Meta.enum_type?(type) && is_list(enum) && Enum.all?(enum, &is_binary/1) ->
+        put_change(changeset, :enum, enum)
+
+      true ->
+        put_change(changeset, :enum, nil)
     end
   end
 end

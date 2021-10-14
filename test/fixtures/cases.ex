@@ -38,6 +38,15 @@ defmodule Fixtures.Cases do
   cas(:nested_test) do
     %{
       input: %{
+        enum_string: "aa"
+      },
+      error: "value aa not found in enum v1,v2"
+    }
+  end
+
+  cas(:nested_test) do
+    %{
+      input: %{
         enum_string: "v1",
         obj_list: [
           %{child_int: 4, child_object: %{grand_child_int: 98}},

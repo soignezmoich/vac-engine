@@ -49,6 +49,7 @@ defmodule VacEngine.Repo.Migrations.CreateVariables do
       add(:name, :string, size: 100, null: false)
       add(:description, :string, size: 1000)
       add(:mapping, :variable_mapping, null: false, default: "none")
+      add(:enum, :jsonb)
     end
 
     create(index(:variables, [:workspace_id]))

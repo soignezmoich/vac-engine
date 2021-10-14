@@ -46,7 +46,8 @@ defmodule VacEngine.Processor.State.Input do
 
   defp map_variable(vars, value, mapped_data, path, hits) do
     vpath = Enum.reject(path, &is_function/1)
-    type = vars |> Map.get(vpath) |> get_type
+    var = vars |> Map.get(vpath)
+    type = var |> get_type
 
     in_list = is_function(List.last(path))
 
@@ -67,9 +68,15 @@ defmodule VacEngine.Processor.State.Input do
         map_variables(vars, value, mapped_data, path, hits)
 
       is_integer(value) && Meta.is_type?(type, :integer, in_list) ->
+        check_enum(var, value)
+        store(value, mapped_data, hits, path, vpath)
+
+      is_number(value) && Meta.is_type?(type, :number, in_list) ->
+        check_enum(var, value)
         store(value, mapped_data, hits, path, vpath)
 
       is_binary(value) && Meta.is_type?(type, :string, in_list) ->
+        check_enum(var, value)
         store(value, mapped_data, hits, path, vpath)
 
       is_boolean(value) && Meta.is_type?(type, :boolean, in_list) ->
@@ -77,9 +84,6 @@ defmodule VacEngine.Processor.State.Input do
 
       is_binary(value) && Meta.is_type?(type, :boolean, in_list) ->
         value = Convert.parse_bool(value)
-        store(value, mapped_data, hits, path, vpath)
-
-      is_number(value) && Meta.is_type?(type, :number, in_list) ->
         store(value, mapped_data, hits, path, vpath)
 
       is_binary(value) && Meta.is_type?(type, :date, in_list) ->
@@ -105,5 +109,22 @@ defmodule VacEngine.Processor.State.Input do
       end)
 
     {put_in(mapped_data, path, value), hits}
+  end
+
+  defp check_enum(%Variable{enum: nil}, value), do: value
+
+  defp check_enum(%Variable{enum: values}, value) do
+    values
+    |> Enum.member?(value)
+    |> case do
+      false ->
+        throw(
+          {:invalid_value,
+           "value #{value} not found in enum #{Enum.join(values, ",")}"}
+        )
+
+      true ->
+        value
+    end
   end
 end

@@ -33,6 +33,10 @@ defmodule VacEngine.Processor.Meta do
   def has_nested_type?(:map), do: true
   def has_nested_type?(_), do: false
 
+  def enum_type?(:integer), do: true
+  def enum_type?(:string), do: true
+  def enum_type?(_), do: false
+
   defmacro is_type?(type, tname, in_list) do
     quote do
       (!unquote(in_list) && unquote(type) == unquote(tname)) ||
