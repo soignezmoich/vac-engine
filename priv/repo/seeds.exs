@@ -6,6 +6,7 @@ alias Fixtures.Blueprints
 VacEngine.Repo.query("delete from publications;")
 VacEngine.Repo.query("delete from blueprints;")
 VacEngine.Repo.query("delete from roles;")
+VacEngine.Repo.query("delete from portals;")
 
 blueprint = Blueprints.blueprints() |> Map.get(:ruleset0)
 
@@ -29,11 +30,13 @@ blueprint = Blueprints.blueprints() |> Map.get(:ruleset0)
 
     {:ok, workspace} = Account.create_workspace(%{name: "Test workspace"})
 
-    {:ok, blueprint} =
-      Processor.create_blueprint(
-        workspace,
-        blueprint
-      )
+    {time, {:ok, blueprint}} =
+      :timer.tc(fn ->
+        Processor.create_blueprint(
+          workspace,
+          blueprint
+        )
+      end)
 
     {:ok, _publication} = Pub.publish_blueprint(blueprint)
 
@@ -43,6 +46,7 @@ blueprint = Blueprints.blueprints() |> Map.get(:ruleset0)
     {:ok, api_token} = Account.create_api_token(role)
 
     IO.puts("###########################")
+    IO.puts("Elapsed time to create blueprint: #{time / 1000}ms")
     IO.puts("Created admin account with email/password: #{email} / #{pass}")
     IO.puts("Created api key: #{api_token.secret}")
 
