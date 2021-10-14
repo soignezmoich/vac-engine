@@ -172,7 +172,7 @@ defmodule VacEngine.Processor.Blueprints do
         Access.key(:deductions),
         Access.all(),
         Access.key(:columns),
-        Access.all(),
+        Access.all()
       ],
       fn col ->
         Column.insert_bindings(col, blueprint)

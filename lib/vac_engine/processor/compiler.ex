@@ -164,5 +164,4 @@ defmodule VacEngine.Processor.Compiler do
 
     {conditions_ast, assignments_ast}
   end
-
 end
