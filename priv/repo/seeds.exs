@@ -54,3 +54,20 @@ blueprint = Blueprints.blueprints() |> Map.get(:ruleset0)
   end)
 
 {:ok, blueprint} = Processor.fetch_blueprint(workspace, blueprint.id)
+
+# blueprint.deductions
+# |> Enum.each(fn v ->
+#  v.columns
+#  |> Enum.each(fn v ->
+#    IO.inspect(v.description)
+#    IO.inspect(v.variable)
+#  end)
+# end)
+
+blueprint.variable_id_index
+|> Enum.map(fn {vid, v} ->
+  IO.puts("#{v.name} #{v.type}")
+  {v.path, v}
+end)
+|> Map.new()
+|> IO.inspect()

@@ -1,17 +1,22 @@
 defmodule VacEngine.Processor.ProcessorTest do
   use VacEngine.DataCase
 
-  import Fixtures.Blueprints
-  import Fixtures.Cases
   alias VacEngine.Account
   alias VacEngine.Processor
   alias VacEngine.Processor
 
-  test "run cases" do
+  setup_all do
+    [
+      blueprints: Fixtures.Blueprints.blueprints(),
+      cases: Fixtures.Cases.cases()
+    ]
+  end
+
+  test "run cases", %{blueprints: blueprints, cases: cases} do
     {:ok, workspace} = Account.create_workspace(%{name: "Test workspace"})
 
     processors =
-      blueprints()
+      blueprints
       |> Enum.map(fn {name, blueprint} ->
         assert {:ok, blueprint} =
                  Processor.create_blueprint(workspace, blueprint)
@@ -21,13 +26,18 @@ defmodule VacEngine.Processor.ProcessorTest do
       end)
       |> Map.new()
 
-    cases()
+    cases
     |> Enum.map(fn cs ->
       assert {:ok, processor} = Map.fetch(processors, cs.blueprint)
-      input = smap(cs.input)
-      expected_result = smap(cs.output)
-      assert {:ok, actual_result} = Processor.run(processor, input)
-      assert actual_result.output == expected_result
+      {res, actual_result} = Processor.run(processor, cs.input)
+
+      if Map.has_key?(cs, :error) do
+        assert res == :error
+        assert actual_result == cs.error
+      else
+        assert res == :ok
+        assert actual_result.output == cs.output
+      end
     end)
   end
 end

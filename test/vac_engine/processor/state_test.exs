@@ -1,13 +1,16 @@
 defmodule VacEngine.Processor.StateTest do
   use VacEngine.DataCase
 
-  import Fixtures.Blueprints
   alias VacEngine.Account
   alias VacEngine.Processor.State
   alias VacEngine.Processor
 
-  test "map inputs" do
-    br = Map.get(blueprints(), :map_test)
+  setup_all do
+    [blueprints: Fixtures.Blueprints.blueprints()]
+  end
+
+  test "map inputs", %{blueprints: blueprints} do
+    br = Map.get(blueprints, :map_test)
 
     input =
       %{

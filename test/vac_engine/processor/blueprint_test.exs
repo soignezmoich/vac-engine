@@ -1,7 +1,6 @@
 defmodule VacEngine.Processor.BlueprintTest do
   use VacEngine.DataCase
 
-  import Fixtures.Blueprints
   alias VacEngine.Account
   alias VacEngine.Processor
   alias VacEngine.Processor
@@ -15,11 +14,15 @@ defmodule VacEngine.Processor.BlueprintTest do
     "RKBZZXY82ZXTYS29EEB3YBC5R2FP7HKBGZY6AY4CB87H63T8T5X7WT95" => [:hash3_test]
   }
 
-  test "run cases" do
+  setup_all do
+    [blueprints: Fixtures.Blueprints.blueprints()]
+  end
+
+  test "run cases", %{blueprints: blueprints} do
     {:ok, workspace} = Account.create_workspace(%{name: "Test workspace"})
 
     brs =
-      blueprints()
+      blueprints
       |> Enum.map(fn {name, blueprint} ->
         assert {:ok, blueprint} =
                  Processor.create_blueprint(workspace, blueprint)

@@ -108,4 +108,15 @@ defmodule VacEngine.Processor.Meta do
       :none -> false
     end
   end
+
+  def required?(mapping) do
+    case mapping do
+      :in_required -> true
+      :in_optional -> false
+      :inout_required -> true
+      :inout_optional -> false
+      :out -> false
+      :none -> false
+    end
+  end
 end

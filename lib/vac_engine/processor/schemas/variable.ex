@@ -59,6 +59,10 @@ defmodule VacEngine.Processor.Variable do
     Meta.output?(var.mapping)
   end
 
+  def required?(var) do
+    Meta.required?(var.mapping)
+  end
+
   defp validate_container(changeset) do
     if length(get_field(changeset, :children)) > 0 &&
          !Meta.has_nested_type?(get_field(changeset, :type)) do
