@@ -8,6 +8,7 @@ defmodule VacEngine.Processor.Blueprints do
   alias VacEngine.Processor.Assignment
   alias VacEngine.Processor.Condition
   alias VacEngine.Processor.Branch
+  alias VacEngine.Processor.Column
   alias VacEngine.Processor.Deduction
   alias VacEngine.Hash
   import VacEngine.TupleHelpers
@@ -57,8 +58,9 @@ defmodule VacEngine.Processor.Blueprints do
     |> Multi.run(:compute_hash, fn repo,
                                    %{{:blueprint, :deductions} => blueprint} ->
       from(v in Variable,
-        where: v.blueprint_id == ^blueprint.id and
-        fragment("?::text like 'in%'", v.mapping),
+        where:
+          v.blueprint_id == ^blueprint.id and
+            fragment("?::text like 'in%'", v.mapping),
         order_by: v.id
       )
       |> repo.all()
@@ -108,11 +110,17 @@ defmodule VacEngine.Processor.Blueprints do
         ]
       )
 
+    columns_query =
+      from(r in Column,
+        order_by: r.position
+      )
+
     deductions_query =
       from(r in Deduction,
         order_by: r.position,
         preload: [
-          branches: ^branches_query
+          branches: ^branches_query,
+          columns: ^columns_query
         ]
       )
 
@@ -174,7 +182,7 @@ defmodule VacEngine.Processor.Blueprints do
         Access.all(),
         Access.key(:branches),
         Access.all(),
-        Access.key(:assignments),
+        Access.key(:assignments)
       ],
       fn assigns ->
         Enum.sort_by(assigns, fn a ->
@@ -205,7 +213,7 @@ defmodule VacEngine.Processor.Blueprints do
         Access.all(),
         Access.key(:branches),
         Access.all(),
-        Access.key(:conditions),
+        Access.key(:conditions)
       ],
       fn conds ->
         Enum.sort_by(conds, fn a ->

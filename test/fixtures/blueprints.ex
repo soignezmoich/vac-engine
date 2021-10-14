@@ -773,7 +773,7 @@ defmodule Fixtures.Blueprints do
             conditions: [
               %{
                 expression: quote(do: eq(@gender, "f")),
-                column: 0,
+                column: 0
               }
             ],
             assignments: [
