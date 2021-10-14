@@ -1,8 +1,6 @@
 defmodule VacEngine.Processor.ListType do
   use Ecto.Type
 
-  alias VacEngine.Processor.Ast
-
   def type, do: :map
 
   def cast(data) when is_list(data) do

@@ -3,7 +3,6 @@ defmodule VacEngine.Processor.State do
   alias VacEngine.Processor.Compiler
   alias VacEngine.Processor.Variable
   alias VacEngine.Processor.Meta
-  alias VacEngine.Processor.Convert
   alias VacEngine.Processor.State.Input
   require VacEngine.Processor.Meta
   import VacEngine.Processor.State.Helpers

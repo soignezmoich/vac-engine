@@ -9,7 +9,6 @@ defmodule VacEngine.Processor.Column do
   alias VacEngine.Processor.Assignment
   alias VacEngine.Processor.Expression
   alias VacEngine.Processor.Binding
-  alias VacEngine.Processor.Meta
   import VacEngine.EctoHelpers
 
   schema "columns" do
