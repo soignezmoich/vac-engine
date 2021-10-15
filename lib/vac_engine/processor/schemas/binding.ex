@@ -26,7 +26,7 @@ defmodule VacEngine.Processor.Binding do
       |> get_in_attrs(:path)
       |> Meta.cast_path()
 
-    {_, path_elements} =
+    elements_attrs =
       path
       |> Enum.reduce({[], []}, fn
         elem, {path, [{_, nil} | tail]} when is_integer(elem) ->
@@ -36,9 +36,7 @@ defmodule VacEngine.Processor.Binding do
           path = parents ++ [elem]
           {path, [{path, nil} | list]}
       end)
-
-    elements_attrs =
-      path_elements
+      |> elem(1)
       |> Enum.reverse()
       |> Enum.with_index()
       |> Enum.map(fn {{vpath, index}, position} ->
