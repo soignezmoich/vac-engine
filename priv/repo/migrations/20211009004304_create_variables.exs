@@ -66,6 +66,14 @@ defmodule VacEngine.Repo.Migrations.CreateVariables do
       )
     )
 
+    create(
+      constraint(
+        :variables,
+        "variables_max_enum_size",
+        check: "pg_column_size(enum) < 1000"
+      )
+    )
+
     execute("
       ALTER TABLE variables
         ADD CONSTRAINT variables_blueprint_workspace

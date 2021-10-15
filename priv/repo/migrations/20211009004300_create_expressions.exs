@@ -25,6 +25,14 @@ defmodule VacEngine.Repo.Migrations.CreateExpressions do
         REFERENCES blueprints (id, workspace_id)
         ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
     ")
+
+    create(
+      constraint(
+        :expressions,
+        "expressions_max_ast_size",
+        check: "pg_column_size(ast) < 10000"
+      )
+    )
   end
 
   def down do

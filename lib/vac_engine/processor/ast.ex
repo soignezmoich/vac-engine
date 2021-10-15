@@ -116,7 +116,6 @@ defmodule VacEngine.Processor.Ast do
   end
 
   def deserialize(json) do
-    # TODO limit json size
     ast =
       json
       |> unwrap_root()

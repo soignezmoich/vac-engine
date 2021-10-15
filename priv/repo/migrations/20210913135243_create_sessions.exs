@@ -16,5 +16,13 @@ defmodule VacEngine.Repo.Migrations.CreateSessions do
 
     create(index(:sessions, [:token], unique: true))
     create(index(:sessions, ["(inserted_at::date) DESC"]))
+
+    create(
+      constraint(
+        :sessions,
+        "sessions_max_client_info_size",
+        check: "pg_column_size(client_info) < 10000"
+      )
+    )
   end
 end

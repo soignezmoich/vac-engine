@@ -13,9 +13,6 @@ defmodule VacEngine.Repo.Migrations.CreateBlueprints do
 
       add(:name, :string, size: 100, null: false)
       add(:description, :string, size: 1000)
-      add(:editor_data, :jsonb)
-      add(:variables, :jsonb)
-      add(:deductions, :jsonb)
       add(:draft, :boolean, null: false, default: false)
       add(:interface_hash, :string, size: 300)
     end
