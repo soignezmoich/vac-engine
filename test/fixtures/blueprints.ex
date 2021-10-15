@@ -281,7 +281,8 @@ defmodule Fixtures.Blueprints do
         },
         pregnant: %{
           type: :string,
-          mapping: :in_required
+          mapping: :in_required,
+          enum: ["yes", "no", "unknown"]
         },
         high_risk: %{
           type: :boolean,
