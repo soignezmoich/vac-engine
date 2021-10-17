@@ -46,6 +46,7 @@ defmodule VacEngine.Pub do
   end
 
   def refresh_cache(), do: Cache.refresh()
+  def refresh_cache_api_keys(), do: Cache.refresh_api_keys()
 
   def run_cached(
         %{api_key: _api_key, portal_id: _portal_id, input: input} = args

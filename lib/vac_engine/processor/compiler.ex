@@ -65,7 +65,7 @@ defmodule VacEngine.Processor.Compiler do
     fref =
       {:., [],
        [
-         quote(do: VacEngine.Processor.Libraries),
+         quote(do: VacEngine.Processor.Library.Functions),
          fname
        ]}
 

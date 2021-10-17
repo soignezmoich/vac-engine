@@ -7,6 +7,7 @@ defmodule VacEngine.Processor.Expression do
   alias VacEngine.Processor.AstType
   alias VacEngine.Processor.Binding
   alias VacEngine.Processor.Ast
+  alias VacEngine.Processor.Meta
   import VacEngine.EctoHelpers
   import VacEngine.TupleHelpers
 
@@ -22,31 +23,13 @@ defmodule VacEngine.Processor.Expression do
   end
 
   def changeset(data, attrs, ctx, _opts \\ []) do
-    attrs =
-      attrs
-      |> get_in_attrs(:ast)
-      |> extract_bindings()
-      |> case do
-        {:ok, {ast, bindings}} ->
-          bindings =
-            bindings
-            |> Enum.with_index()
-            |> Enum.map(fn {path, idx} ->
-              %{position: idx, path: path}
-            end)
-
-          bindings = get_in_attrs(attrs, :bindings, []) ++ bindings
-
-          attrs
-          |> put_in_attrs(:ast, ast)
-          |> put_in_attrs(:bindings, bindings)
-          |> ok()
-
-        {:error, _err} = err ->
-          err
-      end
-
-    case attrs do
+    attrs
+    |> get_in_attrs(:ast)
+    |> extract_binding_names()
+    |> extract_binding_types(ctx)
+    |> insert_signatures()
+    |> insert_binding_attrs(attrs)
+    |> case do
       {:ok, attrs} ->
         data
         |> cast(attrs, [:ast])
@@ -60,20 +43,7 @@ defmodule VacEngine.Processor.Expression do
       {:error, err} ->
         data
         |> cast(%{}, [])
-        |> add_error(:ast, to_string(err))
-    end
-  end
-
-  defp extract_bindings(ast) do
-    ast
-    |> Ast.sanitize()
-    |> case do
-      {:ok, ast} ->
-        ast
-        |> Ast.extract_bindings()
-
-      err ->
-        err
+        |> add_error(:ast, err)
     end
   end
 
@@ -97,4 +67,87 @@ defmodule VacEngine.Processor.Expression do
         put_in(expression, [Access.key(:ast)], nil)
     end
   end
+
+  defp extract_binding_names(ast) do
+    ast
+    |> Ast.sanitize()
+    |> case do
+      {:ok, ast} ->
+        ast
+        |> Ast.extract_bindings()
+
+      err ->
+        err
+    end
+  end
+
+  defp extract_binding_types({:ok, {ast, bindings}}, ctx) do
+    bindings
+    |> Enum.reduce({:ok, []}, fn
+      _, {:error, msg} ->
+        {:error, msg}
+
+      path, {:ok, bindings} ->
+        vpath = path |> Enum.reject(&is_integer/1)
+
+        case Map.get(ctx.variable_path_index, vpath) do
+          nil ->
+            {:error, "variable #{path} not found"}
+
+          var ->
+            type =
+              if path |> List.last() |> is_integer() do
+                var.type |> Meta.itemize_type()
+              else
+                var.type
+              end
+
+            {:ok, bindings ++ [{path, type}]}
+        end
+    end)
+    |> case do
+      {:ok, bindings} ->
+        {:ok, {ast, bindings}}
+
+      {:error, err} ->
+        {:error, err}
+    end
+  end
+
+  defp extract_binding_types(err, _ctx), do: err
+
+  defp insert_signatures({:ok, {ast, bindings}}) do
+    types =
+      bindings
+      |> Enum.map(fn {_path, type} -> type end)
+
+    Ast.insert_signatures(ast, types)
+    |> case do
+      {:ok, ast} ->
+        {:ok, {ast, bindings}}
+
+      {:error, err} ->
+        {:error, err}
+    end
+  end
+
+  defp insert_signatures(err), do: err
+
+  defp insert_binding_attrs({:ok, {ast, bindings}}, attrs) do
+    bindings =
+      bindings
+      |> Enum.with_index()
+      |> Enum.map(fn {{path, _type}, idx} ->
+        %{position: idx, path: path}
+      end)
+
+    bindings = get_in_attrs(attrs, :bindings, []) ++ bindings
+
+    attrs
+    |> put_in_attrs(:ast, ast)
+    |> put_in_attrs(:bindings, bindings)
+    |> ok()
+  end
+
+  defp insert_binding_attrs(err, _), do: err
 end

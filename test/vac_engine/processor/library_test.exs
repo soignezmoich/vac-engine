@@ -1,10 +1,12 @@
-defmodule VacEngine.Processor.LibrariesTest do
+defmodule VacEngine.Processor.LibraryTest do
   use ExUnit.Case
 
-  alias VacEngine.Processor.Libraries
-  import VacEngine.Processor.Libraries
+  import VacEngine.Processor.Library
+  alias VacEngine.Processor.Library.Functions
+  import VacEngine.Processor.Library.Functions
 
   test "is_true(bool)" do
+    assert has_function?(:is_true, 1)
     assert is_true(true) == true
     assert is_true(1) == false
     assert is_true(false) == false
@@ -17,14 +19,14 @@ defmodule VacEngine.Processor.LibrariesTest do
   end
 
   test "not(bool)" do
-    assert Libraries.not(true) == false
-    assert Libraries.not(false) == true
+    assert Functions.not(true) == false
+    assert Functions.not(false) == true
   end
 
   test "not(any)" do
-    assert_raise RuntimeError, fn -> Libraries.not("a") end
-    assert_raise RuntimeError, fn -> Libraries.not(1) end
-    assert_raise RuntimeError, fn -> Libraries.not(0) end
+    assert_raise RuntimeError, fn -> Functions.not("a") end
+    assert_raise RuntimeError, fn -> Functions.not(1) end
+    assert_raise RuntimeError, fn -> Functions.not(0) end
   end
 
   test "eq(bool, bool)" do
@@ -138,9 +140,9 @@ defmodule VacEngine.Processor.LibrariesTest do
   end
 
   test "div(number, number)" do
-    assert Libraries.div(5, 4) == 1.25
-    assert Libraries.div(4, 4) == 1
-    assert Libraries.div(4.5, 3) == 1.5
+    assert Functions.div(5, 4) == 1.25
+    assert Functions.div(4, 4) == 1
+    assert Functions.div(4.5, 3) == 1.5
   end
 
   test "contains(list, number)" do
@@ -156,5 +158,10 @@ defmodule VacEngine.Processor.LibrariesTest do
   test "contains(string, string)" do
     assert contains("44", "4") == true
     assert contains("23", "4") == false
+  end
+
+  test "age(date)" do
+    assert age(Timex.parse!("1980-03-04", "{ISOdate}")) ==
+             Fixtures.Helpers.age("1980-03-04")
   end
 end

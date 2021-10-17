@@ -5,6 +5,7 @@ defmodule VacEngine.Account.Roles do
   alias VacEngine.Account.Session
   alias VacEngine.Account.Role
   alias VacEngine.Account.Permissions
+  alias VacEngine.Pub
 
   def create_role_multi(type, attrs \\ %{}) do
     Multi.new()
@@ -41,7 +42,6 @@ defmodule VacEngine.Account.Roles do
     update_role(role, %{"active" => true})
   end
 
-  # TODO signal pub cache to drop API key
   def deactivate_role(%Role{} = role) do
     Multi.new()
     |> Multi.update(:role, fn _ ->
@@ -59,6 +59,9 @@ defmodule VacEngine.Account.Roles do
       end,
       []
     )
+    |> Multi.run(:refresh_cache, fn _repo, _ctx ->
+      Pub.refresh_cache_api_keys()
+    end)
     |> Repo.transaction()
     |> case do
       {:ok, %{role: role}} -> {:ok, role}

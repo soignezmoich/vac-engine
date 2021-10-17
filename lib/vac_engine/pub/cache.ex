@@ -3,6 +3,9 @@ defmodule VacEngine.Pub.Cache do
 
   alias VacEngine.Account
   alias VacEngine.Processor
+  alias VacEngine.Pub.Cache
+
+  defstruct api_keys: %{}, processors: %{}
 
   def start_link(opts \\ []) do
     GenServer.start_link(__MODULE__, opts, name: __MODULE__)
@@ -18,6 +21,10 @@ defmodule VacEngine.Pub.Cache do
     GenServer.call(__MODULE__, :refresh)
   end
 
+  def refresh_api_keys() do
+    GenServer.call(__MODULE__, :refresh_api_keys)
+  end
+
   @impl true
   def init(_opts) do
     state = build_cache()
@@ -28,6 +35,13 @@ defmodule VacEngine.Pub.Cache do
   @impl true
   def handle_call(:refresh, _from, _state) do
     state = build_cache()
+
+    {:reply, :ok, state}
+  end
+
+  @impl true
+  def handle_call(:refresh_api_keys, _from, state) do
+    state = refresh_api_keys(state)
 
     {:reply, :ok, state}
   end
@@ -46,7 +60,7 @@ defmodule VacEngine.Pub.Cache do
          {:ok, state} <- ensure_processor_loaded(state, blueprint_id) do
       proc =
         state
-        |> get_in([:processors, blueprint_id])
+        |> get_in([Access.key(:processors), blueprint_id])
 
       {:reply, {:ok, proc}, state}
     else
@@ -56,6 +70,11 @@ defmodule VacEngine.Pub.Cache do
   end
 
   defp build_cache() do
+    %Cache{}
+    |> refresh_api_keys
+  end
+
+  defp refresh_api_keys(state) do
     keys =
       Account.list_api_keys()
       |> Enum.map(fn k ->
@@ -66,15 +85,12 @@ defmodule VacEngine.Pub.Cache do
       end)
       |> Map.new()
 
-    %{
-      api_keys: keys,
-      processors: %{}
-    }
+    %{state | api_keys: keys}
   end
 
   defp ensure_processor_loaded(state, blueprint_id) do
     state
-    |> get_in([:processors, blueprint_id])
+    |> get_in([Access.key(:processors), blueprint_id])
     |> case do
       nil ->
         blueprint_id
@@ -82,7 +98,7 @@ defmodule VacEngine.Pub.Cache do
         |> Processor.compile_blueprint()
         |> case do
           {:ok, proc} ->
-            {:ok, put_in(state, [:processors, blueprint_id], proc)}
+            {:ok, put_in(state, [Access.key(:processors), blueprint_id], proc)}
 
           err ->
             err

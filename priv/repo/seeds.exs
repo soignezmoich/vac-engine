@@ -54,4 +54,3 @@ blueprint = Blueprints.blueprints() |> Map.get(:ruleset0)
   end)
 
 {:ok, blueprint} = Processor.fetch_blueprint(workspace, blueprint.id)
-

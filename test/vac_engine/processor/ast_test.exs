@@ -1,9 +1,9 @@
-defmodule VacEngine.Processor.ExpressionTest do
+defmodule VacEngine.Processor.AstTest do
   use ExUnit.Case
 
   alias VacEngine.Processor.Ast
 
-  @elixir_expressions %{
+  @elixir_ast %{
     ok: [
       {quote(do: gt(4, a)), {:gt, [], [4, "a"]}},
       {quote(do: gt(4, 5)), {:gt, [], [4, 5]}},
@@ -16,7 +16,7 @@ defmodule VacEngine.Processor.ExpressionTest do
       {quote(do: gt(llt(1, 2), 5)), "undefined function llt/2"}
     ]
   }
-  @json_expressions %{
+  @json_ast %{
     ok: [
       {%{"l" => "gt", "r" => [4, "a"], "m" => %{}}, {:gt, [], [4, "a"]}},
       {%{
@@ -33,29 +33,46 @@ defmodule VacEngine.Processor.ExpressionTest do
     ]
   }
 
-  test "elixir expression conversions" do
-    for {from, to} <- @elixir_expressions.ok do
+  test "elixir ast conversions" do
+    for {from, to} <- @elixir_ast.ok do
       assert {:ok, expr} = Ast.sanitize(from)
       assert expr == to
     end
 
-    for {from, expected_err} <- @elixir_expressions.error do
+    for {from, expected_err} <- @elixir_ast.error do
       assert {:error, actual_err} = Ast.sanitize(from)
       assert actual_err == expected_err
     end
   end
 
-  test "json expression conversions" do
-    for {from, to} <- @json_expressions.ok do
+  test "json ast conversions" do
+    for {from, to} <- @json_ast.ok do
       assert {:ok, expr} = Ast.deserialize(%{"ast" => from})
       assert expr == to
       assert {:ok, json} = Ast.serialize(expr)
       assert json == %{"ast" => from}
     end
 
-    for {from, expected_err} <- @json_expressions.error do
+    for {from, expected_err} <- @json_ast.error do
       assert {:error, actual_err} = Ast.deserialize(%{"ast" => from})
       assert actual_err == expected_err
+    end
+  end
+
+  @sig_ast [
+    {quote(do: gt(4, 9)),
+     {:gt, [signature: {[:integer, :integer], :boolean}], [4, 9]}},
+    {quote(do: gt(4, @a)),
+     {:gt, [signature: {[:integer, :number], :boolean}],
+      [4, {:var, [signature: {[:name], :number}], [0]}]}}
+  ]
+
+  test "insert signature" do
+    for {from, to} <- @sig_ast do
+      assert {:ok, ast} = Ast.sanitize(from)
+      assert {:ok, {ast, _}} = Ast.extract_bindings(ast)
+      assert {:ok, ast} = Ast.insert_signatures(ast, [:number])
+      assert ast == to
     end
   end
 end

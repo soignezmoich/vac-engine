@@ -3,7 +3,6 @@ defmodule VacEngine.Processor.Binding do
   import Ecto.Changeset
 
   alias VacEngine.Account.Workspace
-  alias VacEngine.Processor.Meta
   alias VacEngine.Processor.BindingElement
   alias VacEngine.Processor.Blueprint
   alias VacEngine.Processor.Expression
@@ -21,13 +20,9 @@ defmodule VacEngine.Processor.Binding do
   end
 
   def changeset(data, attrs, ctx, _opts \\ []) do
-    {:ok, path} =
+    elements_attrs =
       attrs
       |> get_in_attrs(:path)
-      |> Meta.cast_path()
-
-    elements_attrs =
-      path
       |> Enum.reduce({[], []}, fn
         elem, {path, [{_, nil} | tail]} when is_integer(elem) ->
           {path, [{path, elem} | tail]}

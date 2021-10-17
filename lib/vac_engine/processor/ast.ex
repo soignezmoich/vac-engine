@@ -1,5 +1,6 @@
 defmodule VacEngine.Processor.Ast do
-  alias VacEngine.Processor.Libraries
+  alias VacEngine.Processor.Library
+  alias VacEngine.Processor.Meta
 
   def sanitize(data) do
     ast = sanitize!(data)
@@ -23,7 +24,7 @@ defmodule VacEngine.Processor.Ast do
   defp sanitize!({f, m, args}) when is_atom(f) and is_list(args) do
     ari = length(args)
 
-    unless function_exported?(Libraries, f, ari) do
+    unless Library.has_function?(f, ari) do
       throw({:undefined, "undefined function #{f}/#{ari}"})
     end
 
@@ -58,8 +59,8 @@ defmodule VacEngine.Processor.Ast do
     throw({:invalid_expression, "invalid expression"})
   end
 
-  def extract_bindings(data) do
-    {ast, bindings} = extract_bindings!(data, [])
+  def extract_bindings(ast) do
+    {ast, bindings} = extract_bindings!(ast, [])
     {:ok, {ast, Enum.reverse(bindings)}}
   catch
     {_code, msg} ->
@@ -67,6 +68,14 @@ defmodule VacEngine.Processor.Ast do
   end
 
   defp extract_bindings!({:var, m, [path]}, bindings) do
+    path =
+      path
+      |> Meta.cast_path()
+      |> case do
+        {:ok, path} -> path
+        _ -> throw({:invalid_binding, "path #{path} is not a valid binding"})
+      end
+
     {{:var, m, [length(bindings)]}, [path | bindings]}
   end
 
@@ -109,6 +118,67 @@ defmodule VacEngine.Processor.Ast do
 
   defp insert_bindings!(ast, _bindings) do
     ast
+  end
+
+  def insert_signatures(data, types) do
+    ast = insert_signatures!(data, types)
+    {:ok, ast}
+  catch
+    {_code, msg} ->
+      {:error, msg}
+  end
+
+  defp insert_signatures!({:var, m, [pos] = r}, bindings) do
+    type = Enum.at(bindings, pos)
+
+    if is_nil(type) do
+      throw({:type_missing, "type is missing for binding at index #{pos}"})
+    end
+
+    m = Keyword.put(m, :signature, {[:name], type})
+    {:var, m, r}
+  end
+
+  defp insert_signatures!({f, _m, r}, bindings) when is_atom(f) and is_list(r) do
+    {r, arg_types} =
+      r
+      |> Enum.map(fn el ->
+        val = insert_signatures!(el, bindings)
+        {val, typeof(val)}
+      end)
+      |> Enum.unzip()
+
+    Library.get_signature(f, arg_types)
+    |> case do
+      nil ->
+        f = "#{f}/#{length(arg_types)} (#{Enum.join(arg_types, ",")})"
+        throw({:signature_not_found, "signature for function #{f} not found"})
+
+      sig ->
+        {f, [signature: sig], r}
+    end
+  end
+
+  defp insert_signatures!(ast, _bindings) do
+    ast
+  end
+
+  defp typeof({_f, [signature: {_args, ret}], _r}), do: ret
+  defp typeof(v) when is_integer(v), do: :integer
+  defp typeof(v) when is_number(v), do: :number
+  defp typeof(v) when is_boolean(v), do: :boolean
+  defp typeof(v) when is_binary(v), do: :string
+
+  defp typeof([h | _]) do
+    "#{typeof(h)}[]" |> String.to_existing_atom()
+  end
+
+  defp typeof(v) when is_list(v) do
+    throw({:empty_list, "type cannot be infered from empty list"})
+  end
+
+  defp typeof(_v) do
+    throw({:unknown_type, "type cannot be infered"})
   end
 
   def serialize(ast) do
@@ -158,7 +228,7 @@ defmodule VacEngine.Processor.Ast do
     m =
       Map.get(m, "signature")
       |> case do
-        [[_ | _] = args, ret] ->
+        [args, ret] when is_list(args) ->
           if length(args) > 32 do
             throw({:invalid_signature, "invalid signature"})
           end

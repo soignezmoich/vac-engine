@@ -43,6 +43,9 @@ defmodule Fixtures.Blueprints do
 
   blueprint(:sig_test) do
     %{
+      variables: %{
+        age: %{type: :integer, mapping: :in_optional, default: 0}
+      },
       deductions: [
         %{
           branches: [
@@ -132,7 +135,17 @@ defmodule Fixtures.Blueprints do
           branches: [
             %{
               conditions: [
-                %{expression: quote(do: eq(@enum_string, "v1"))}
+                %{expression: quote(do: eq(@enum_string, "v1"))},
+                %{
+                  expression:
+                    quote(
+                      do:
+                        eq(
+                          var([:obj_list, 0, :child_object, :grand_child_int]),
+                          98
+                        )
+                    )
+                }
               ],
               assignments: [
                 %{

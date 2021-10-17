@@ -37,6 +37,15 @@ defmodule VacEngine.Processor.Meta do
   def enum_type?(:string), do: true
   def enum_type?(_), do: false
 
+  def itemize_type(:"boolean[]"), do: :boolean
+  def itemize_type(:"integer[]"), do: :integer
+  def itemize_type(:"number[]"), do: :number
+  def itemize_type(:"string[]"), do: :string
+  def itemize_type(:"date[]"), do: :date
+  def itemize_type(:"datetime[]"), do: :datetime
+  def itemize_type(:"map[]"), do: :map
+  def itemize_type(t), do: t
+
   defmacro is_type?(type, tname, in_list) do
     quote do
       (!unquote(in_list) && unquote(type) == unquote(tname)) ||

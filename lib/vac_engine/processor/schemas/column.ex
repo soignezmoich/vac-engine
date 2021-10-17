@@ -10,6 +10,8 @@ defmodule VacEngine.Processor.Column do
   alias VacEngine.Processor.Expression
   alias VacEngine.Processor.Binding
   import VacEngine.EctoHelpers
+  import VacEngine.TupleHelpers
+  alias VacEngine.Processor.Meta
 
   schema "columns" do
     timestamps(type: :utc_datetime)
@@ -28,21 +30,40 @@ defmodule VacEngine.Processor.Column do
   end
 
   def changeset(data, attrs, ctx) do
-    attrs =
-      attrs
-      |> put_in_attrs(:expression, %{})
-      |> put_in_attrs(
-        [:expression, :bindings],
-        [
-          %{position: -1, path: get_in_attrs(attrs, :variable)}
-        ]
-      )
+    attrs
+    |> get_in_attrs(:variable)
+    |> Meta.cast_path()
+    |> case do
+      {:ok, path} ->
+        attrs
+        |> put_in_attrs(:expression, %{})
+        |> put_in_attrs(
+          [:expression, :bindings],
+          [
+            %{position: -1, path: path}
+          ]
+        )
+        |> ok()
 
-    data
-    |> cast(attrs, [:description, :position, :type])
-    |> change(blueprint_id: ctx.blueprint_id, workspace_id: ctx.workspace_id)
-    |> cast_assoc(:expression, with: {Expression, :changeset, [ctx]})
-    |> validate_required([])
+      err ->
+        err
+    end
+    |> case do
+      {:ok, attrs} ->
+        data
+        |> cast(attrs, [:description, :position, :type])
+        |> change(
+          blueprint_id: ctx.blueprint_id,
+          workspace_id: ctx.workspace_id
+        )
+        |> cast_assoc(:expression, with: {Expression, :changeset, [ctx]})
+        |> validate_required([])
+
+      {:error, msg} ->
+        data
+        |> cast(%{}, [:description])
+        |> add_error(:variable, msg)
+    end
   end
 
   def insert_bindings(data, ctx) do
