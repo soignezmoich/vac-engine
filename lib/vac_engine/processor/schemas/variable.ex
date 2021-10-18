@@ -47,7 +47,7 @@ defmodule VacEngine.Processor.Variable do
     |> change(blueprint_id: ctx.blueprint_id, workspace_id: ctx.workspace_id)
     |> cast_assoc(:children, with: {Variable, :changeset, [ctx]})
     |> cast_assoc(:default,
-      with: {Expression, :changeset, [ctx, nobindings: true]}
+      with: {Expression, :changeset, [ctx, [nobindings: true]]}
     )
     |> validate_enum()
     |> validate_required([:name, :type])

@@ -22,10 +22,15 @@ defmodule VacEngine.Processor.Expression do
     field(:ast, AstType)
   end
 
-  def changeset(data, attrs, ctx, _opts \\ []) do
+  def changeset(data, attrs, ctx, opts \\ [])
+
+  def changeset(data, attrs, ctx, opts) do
+    nobindings = Keyword.get(opts, :nobindings, false)
+
     attrs
     |> get_in_attrs(:ast)
     |> extract_binding_names()
+    |> forbid_bindings(nobindings)
     |> extract_binding_types(ctx)
     |> insert_signatures()
     |> insert_binding_attrs(attrs)
@@ -79,6 +84,14 @@ defmodule VacEngine.Processor.Expression do
       err ->
         err
     end
+  end
+
+  defp forbid_bindings(res, false), do: res
+  defp forbid_bindings({:error, err}, true), do: {:error, err}
+  defp forbid_bindings({:ok, {_ast, []}} = res, true), do: res
+
+  defp forbid_bindings({:ok, {ast, bindings}}, true) do
+    {:error, "binding are forbidden in this context"}
   end
 
   defp extract_binding_types({:ok, {ast, bindings}}, ctx) do
