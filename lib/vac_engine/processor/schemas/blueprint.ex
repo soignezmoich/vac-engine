@@ -47,7 +47,7 @@ defmodule VacEngine.Processor.Blueprint do
 
     data
     |> cast(attrs, [])
-    |> cast_assoc(:variables, with: {Variable, :changeset, [ctx]})
+    |> cast_assoc(:variables, with: {Variable, :create_changeset, [ctx]})
   end
 
   def deductions_changeset(data, attrs, ctx) do

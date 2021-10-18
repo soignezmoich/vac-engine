@@ -1,14 +1,20 @@
 defmodule VacEngine.Processor do
+  alias VacEngine.Processor
   alias VacEngine.Processor.Blueprint
   alias VacEngine.Processor.Blueprints
   alias VacEngine.Processor.Compiler
   alias VacEngine.Processor.State
-  alias VacEngine.Processor
+  alias VacEngine.Processor.Variables
 
   defdelegate create_blueprint(workspace, attrs), to: Blueprints
   defdelegate fetch_blueprint(workspace, bid), to: Blueprints
   defdelegate list_blueprints(workspace), to: Blueprints
   defdelegate get_blueprint!(blueprint_id), to: Blueprints
+
+  defdelegate create_variable(parent, attrs), to: Variables
+  defdelegate update_variable(var, attrs), to: Variables
+  defdelegate delete_variable(var), to: Variables
+  defdelegate move_variable(var, new_parent), to: Variables
 
   defstruct blueprint: nil, compiled_ast: nil, state: nil
 

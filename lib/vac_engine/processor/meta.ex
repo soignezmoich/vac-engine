@@ -20,18 +20,36 @@ defmodule VacEngine.Processor.Meta do
 
   def types(), do: @types
 
-  def is_list_type?(:"boolean[]"), do: true
-  def is_list_type?(:"integer[]"), do: true
-  def is_list_type?(:"number[]"), do: true
-  def is_list_type?(:"string[]"), do: true
-  def is_list_type?(:"date[]"), do: true
-  def is_list_type?(:"datetime[]"), do: true
-  def is_list_type?(:"map[]"), do: true
-  def is_list_type?(_), do: false
+  def list_type?(t) when is_binary(t) do
+    list_type?(String.to_existing_atom(t))
+  rescue
+    _ -> false
+  end
 
-  def has_nested_type?(:"map[]"), do: true
-  def has_nested_type?(:map), do: true
-  def has_nested_type?(_), do: false
+  def list_type?(:"boolean[]"), do: true
+  def list_type?(:"integer[]"), do: true
+  def list_type?(:"number[]"), do: true
+  def list_type?(:"string[]"), do: true
+  def list_type?(:"date[]"), do: true
+  def list_type?(:"datetime[]"), do: true
+  def list_type?(:"map[]"), do: true
+  def list_type?(_), do: false
+
+  def container_type?(t) when is_binary(t) do
+    container_type?(String.to_existing_atom(t))
+  rescue
+    _ -> false
+  end
+
+  def container_type?(:"map[]"), do: true
+  def container_type?(:map), do: true
+  def container_type?(_), do: false
+
+  def enum_type?(t) when is_binary(t) do
+    enum_type?(String.to_existing_atom(t))
+  rescue
+    _ -> false
+  end
 
   def enum_type?(:integer), do: true
   def enum_type?(:string), do: true
@@ -45,6 +63,21 @@ defmodule VacEngine.Processor.Meta do
   def itemize_type(:"datetime[]"), do: :datetime
   def itemize_type(:"map[]"), do: :map
   def itemize_type(t), do: t
+
+  def of_type?(t, val) when is_binary(t) do
+    of_type?(String.to_existing_atom(t), val)
+  rescue
+    _ -> false
+  end
+
+  def of_type?(:string, val) when is_binary(val), do: true
+  def of_type?(:integer, val) when is_integer(val), do: true
+  def of_type?(:number, val) when is_number(val), do: true
+  def of_type?(:date, val) when is_struct(val, Date), do: true
+  def of_type?(:date, val) when is_struct(val, NaiveDateTime), do: true
+  def of_type?(:datetime, val) when is_struct(val, NaiveDateTime), do: true
+  def of_type?(:map, val) when is_map(val), do: true
+  def of_type?(_t, _val), do: false
 
   defmacro is_type?(type, tname, in_list) do
     quote do
@@ -100,6 +133,8 @@ defmodule VacEngine.Processor.Meta do
 
   def mappings(), do: @mappings
 
+  def input?(nil), do: false
+
   def input?(mapping) do
     case mapping do
       :in_required -> true
@@ -110,6 +145,8 @@ defmodule VacEngine.Processor.Meta do
       :none -> false
     end
   end
+
+  def output?(nil), do: false
 
   def output?(mapping) do
     case mapping do

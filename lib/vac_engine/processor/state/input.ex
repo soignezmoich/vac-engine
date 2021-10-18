@@ -52,7 +52,7 @@ defmodule VacEngine.Processor.State.Input do
     in_list = is_function(List.last(path))
 
     cond do
-      is_list(value) && Meta.is_list_type?(type) ->
+      is_list(value) && Meta.list_type?(type) ->
         {mapped_data, hits} =
           List.duplicate(nil, length(value))
           |> store(mapped_data, hits, path, vpath)

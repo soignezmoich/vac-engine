@@ -115,7 +115,7 @@ defmodule VacEngine.Processor.State do
     type = vars |> Map.get(vpath) |> get_type()
     ptype = vars |> Map.get(Enum.drop(vpath, -1)) |> get_type()
 
-    in_list = Meta.is_list_type?(type)
+    in_list = Meta.list_type?(type)
 
     cond do
       # We are setting the whole list at once, iterate it and recurse call
@@ -137,7 +137,7 @@ defmodule VacEngine.Processor.State do
 
       true ->
         compatible =
-          (is_list(value) && Meta.is_list_type?(ptype)) ||
+          (is_list(value) && Meta.list_type?(ptype)) ||
             (is_map(value) && Meta.is_type?(type, :map, in_list)) ||
             (is_integer(value) && Meta.is_type?(type, :integer, in_list)) ||
             (is_binary(value) && Meta.is_type?(type, :string, in_list)) ||
@@ -232,7 +232,7 @@ defmodule VacEngine.Processor.State do
       type = vars |> Map.get(vpath) |> get_type()
 
       {_, map} =
-        if Meta.is_list_type?(type) || type == :map do
+        if Meta.list_type?(type) || type == :map do
           get_and_update_in(map, path, fn current ->
             new = current || %{}
             {new, new}

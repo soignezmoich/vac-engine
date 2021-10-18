@@ -18,9 +18,12 @@ defmodule VacEngine.Processor.BlueprintTest do
     [blueprints: Fixtures.Blueprints.blueprints()]
   end
 
-  test "run cases", %{blueprints: blueprints} do
+  setup do
     {:ok, workspace} = Account.create_workspace(%{name: "Test workspace"})
+    [workspace: workspace]
+  end
 
+  test "interface hash", %{blueprints: blueprints, workspace: workspace} do
     brs =
       blueprints
       |> Enum.map(fn {name, blueprint} ->
@@ -37,5 +40,143 @@ defmodule VacEngine.Processor.BlueprintTest do
         assert n == br.interface_hash
       end
     end
+  end
+
+  test "manipulate variables", %{workspace: workspace} do
+    assert {:ok, blueprint} =
+             Processor.create_blueprint(workspace, %{name: "Test"})
+
+    assert {:error, changeset} =
+             Processor.create_variable(blueprint, %{
+               name: "gender",
+               type: :string,
+               enum: ["f", "m"],
+               children: [%{name: "sub", type: :string}]
+             })
+
+    assert {"only map and map[] can have children", []} =
+             changeset.errors[:children]
+
+    assert {:ok, %{blueprint: blueprint, variable: variable}} =
+             Processor.create_variable(blueprint, %{
+               name: "gender",
+               type: :map,
+               enum: ["f", "m"],
+               children: [%{name: "sub", type: :string}]
+             })
+
+    assert {:error, _} =
+             Processor.update_variable(variable, %{
+               name: "newname",
+               type: :integer
+             })
+
+    variable = Map.fetch!(blueprint.variable_path_index, ["gender", "sub"])
+
+    assert {:ok, %{blueprint: blueprint, variable: _variable}} =
+             Processor.delete_variable(variable)
+
+    variable = Map.fetch!(blueprint.variable_path_index, ["gender"])
+
+    assert {:ok, %{blueprint: _blueprint, variable: variable}} =
+             Processor.update_variable(variable, %{
+               name: "newname",
+               enum: [3, 4],
+               type: :integer
+             })
+
+    assert [3, 4] == variable.enum
+
+    assert "newname" == variable.name
+    assert :integer == variable.type
+
+    assert {:ok, %{blueprint: _blueprint, variable: variable}} =
+             Processor.update_variable(variable, %{
+               name: "newname",
+               type: :string
+             })
+
+    assert :string == variable.type
+    assert nil == variable.enum
+  end
+
+  test "move variables", %{workspace: workspace} do
+    assert {:ok, blueprint} =
+             Processor.create_blueprint(workspace, %{
+               name: "Test",
+               variables: %{
+                 parent: %{
+                   type: "map[]",
+                   children: %{
+                     sub: %{
+                       type: "map",
+                       children: %{
+                         subsub: %{
+                           type: "integer"
+                         }
+                       }
+                     }
+                   }
+                 },
+                 sib: %{
+                   type: "map[]"
+                 }
+               },
+               deductions: [
+                 %{
+                   branches: [
+                     %{
+                       conditions: [
+                         %{
+                           expression:
+                             quote(do: var(["parent", 4, "sub", "subsub"]))
+                         }
+                       ],
+                       assignments: [
+                         %{
+                           target: ["parent", 3, "sub"],
+                           expression: 23
+                         }
+                       ]
+                     }
+                   ]
+                 }
+               ]
+             })
+
+    var = Map.fetch!(blueprint.variable_path_index, ["parent", "sub"])
+    sib = Map.fetch!(blueprint.variable_path_index, ["sib"])
+
+    assert {:ok, %{blueprint: blueprint, variable: var}} =
+             Processor.move_variable(var, sib)
+
+    target =
+      get_in(blueprint, [
+        Access.key(:deductions),
+        Access.at(0),
+        Access.key(:branches),
+        Access.at(0),
+        Access.key(:assignments),
+        Access.at(0),
+        Access.key(:target)
+      ])
+
+    assert ["sib", 0, "sub"] == target
+
+    assert {:ok, %{blueprint: blueprint, variable: _var}} =
+             Processor.move_variable(var, blueprint)
+
+    target =
+      get_in(blueprint, [
+        Access.key(:deductions),
+        Access.at(0),
+        Access.key(:branches),
+        Access.at(0),
+        Access.key(:assignments),
+        Access.at(0),
+        Access.key(:target)
+      ])
+
+    assert ["sub"] == target
   end
 end

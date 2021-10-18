@@ -15,7 +15,7 @@ defmodule VacEngine.Processor.State.List do
 
       type = vars |> Map.get(path) |> get_type()
 
-      if Meta.is_list_type?(type) do
+      if Meta.list_type?(type) do
         unless is_list(value) do
           throw({:invalid_value, "value at #{path} must be a list"})
         end
@@ -49,7 +49,7 @@ defmodule VacEngine.Processor.State.List do
       path = path ++ [key]
       type = vars |> Map.get(path) |> get_type()
 
-      if Meta.is_list_type?(type) do
+      if Meta.list_type?(type) do
         unless is_map(value) do
           throw(
             {:invalid_value, "value at #{path} must be a map with integer keys"}

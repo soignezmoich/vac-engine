@@ -90,7 +90,7 @@ defmodule VacEngine.Processor.Expression do
   defp forbid_bindings({:error, err}, true), do: {:error, err}
   defp forbid_bindings({:ok, {_ast, []}} = res, true), do: res
 
-  defp forbid_bindings({:ok, {ast, bindings}}, true) do
+  defp forbid_bindings({:ok, {_ast, _bindings}}, true) do
     {:error, "binding are forbidden in this context"}
   end
 

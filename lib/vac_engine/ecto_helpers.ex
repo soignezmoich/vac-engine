@@ -110,7 +110,7 @@ defmodule VacEngine.EctoHelpers do
   defp put_key_in_children(vars, name) when is_map(vars) do
     vars
     |> Enum.map(fn {key, attrs} ->
-      Map.put_new(attrs, name, key)
+      Map.put_new(attrs, name, to_string(key))
     end)
   end
 

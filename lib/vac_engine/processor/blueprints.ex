@@ -7,6 +7,7 @@ defmodule VacEngine.Processor.Blueprints do
   alias VacEngine.Processor.Variable
   alias VacEngine.Processor.Assignment
   alias VacEngine.Processor.Condition
+  alias VacEngine.Processor.BindingElement
   alias VacEngine.Processor.Branch
   alias VacEngine.Processor.Column
   alias VacEngine.Processor.Deduction
@@ -85,11 +86,17 @@ defmodule VacEngine.Processor.Blueprints do
   end
 
   def fetch_blueprint(%Workspace{} = workspace, blueprint_id) do
+
+    elements_query =
+      from(r in BindingElement,
+        order_by: r.position
+      )
+
     conditions_query =
       from(r in Condition,
         preload: [
           :column,
-          expression: [bindings: :elements]
+          expression: [bindings: [elements: ^elements_query]]
         ]
       )
 
@@ -97,7 +104,7 @@ defmodule VacEngine.Processor.Blueprints do
       from(r in Assignment,
         preload: [
           :column,
-          expression: [bindings: :elements]
+          expression: [bindings: [elements: ^elements_query]]
         ]
       )
 
@@ -114,7 +121,7 @@ defmodule VacEngine.Processor.Blueprints do
       from(r in Column,
         order_by: r.position,
         preload: [
-          expression: [bindings: :elements]
+          expression: [bindings: [elements: ^elements_query]]
         ]
       )
 

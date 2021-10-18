@@ -57,7 +57,7 @@ defmodule VacEngine.Processor.Library do
 
   defp filter_candidates(funcs, {req_args, req_ret}, fname, candidates) do
     funcs
-    |> Enum.reduce(candidates, fn {arity, func}, candidates ->
+    |> Enum.reduce(candidates, fn {_arity, func}, candidates ->
       func.signatures
       |> Enum.reduce(candidates, fn {sig_args, sig_ret}, candidates ->
         if (req_ret == :any || req_ret == sig_ret) &&
