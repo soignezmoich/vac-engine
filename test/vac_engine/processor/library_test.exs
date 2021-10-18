@@ -164,4 +164,39 @@ defmodule VacEngine.Processor.LibraryTest do
     assert age(Timex.parse!("1980-03-04", "{ISOdate}")) ==
              Fixtures.Helpers.age("1980-03-04")
   end
+
+  test "candidates" do
+    assert [
+             %{
+               label: "Contains",
+               name: :contains,
+               short: "∋",
+               signatures: [{[:string, :string], :boolean}]
+             },
+             %{
+               label: "Equals to",
+               name: :eq,
+               short: "=",
+               signatures: [{[:string, :string], :boolean}]
+             },
+             %{
+               label: "Not equal to",
+               name: :neq,
+               short: "≠",
+               signatures: [{[:string, :string], :boolean}]
+             }
+           ] == candidates([:string, :string])
+
+    assert [
+             %{
+               label: "Add",
+               name: :add,
+               short: "+",
+               signatures: [
+                 {[:integer, :number], :number},
+                 {[:integer, :integer], :number}
+               ]
+             }
+           ] == func_candidates(:add, [:integer])
+  end
 end

@@ -8,7 +8,7 @@ defmodule VacEngine.Processor.Library.Functions do
   """
   @label "Return a variable value"
   @short "VAR"
-  @signature {[:name], :any}
+  @signature {[:varname], :vartype}
   def var(name), do: name
 
   @doc """
