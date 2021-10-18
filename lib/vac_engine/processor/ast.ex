@@ -139,7 +139,8 @@ defmodule VacEngine.Processor.Ast do
     {:var, m, r}
   end
 
-  defp insert_signatures!({f, _m, r}, bindings) when is_atom(f) and is_list(r) do
+  defp insert_signatures!({f, _m, r}, bindings)
+       when is_atom(f) and is_list(r) do
     {r, arg_types} =
       r
       |> Enum.map(fn el ->
