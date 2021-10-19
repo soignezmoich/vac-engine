@@ -141,6 +141,7 @@ defmodule VacEngine.Processor.Variable do
           _ -> raise "cannot insert new binding elements"
         end
       end)
+
       changeset
     end)
   end
@@ -163,15 +164,15 @@ defmodule VacEngine.Processor.Variable do
     Meta.required?(var.mapping)
   end
 
-  def container_type?(nil), do: false
+  def container?(nil), do: false
 
-  def container_type?(var) do
+  def container?(var) do
     Meta.container_type?(var.type)
   end
 
-  def list_type?(nil), do: false
+  def list?(nil), do: false
 
-  def list_type?(var) do
+  def list?(var) do
     Meta.list_type?(var.type)
   end
 
@@ -187,7 +188,7 @@ defmodule VacEngine.Processor.Variable do
       v ->
         current =
           v
-          |> list_type?()
+          |> list?()
           |> case do
             true -> {v.id, 0}
             _ -> {v.id, nil}
@@ -204,7 +205,7 @@ defmodule VacEngine.Processor.Variable do
              get_field(changeset, :parent_id),
            parent when not is_nil(parent) <-
              changeset.repo.get!(Variable, parent_id) do
-        if container_type?(parent) do
+        if container?(parent) do
           changeset
         else
           add_error(changeset, :parent, "parent type is not container")

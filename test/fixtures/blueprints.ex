@@ -95,7 +95,7 @@ defmodule Fixtures.Blueprints do
           mapping: :inout_required
         },
         dnest: %{
-          type: "map[]",
+          type: "map",
           mapping: :out,
           children: %{
             dnest2: %{
@@ -171,7 +171,7 @@ defmodule Fixtures.Blueprints do
                 },
                 %{target: [:int_list, 2], expression: 54},
                 %{
-                  target: [:dnest, 2, :dnest2, 4, :dnest3],
+                  target: [:dnest, :dnest2, 4, :dnest3],
                   expression: "nested"
                 },
                 %{target: [:map_list, 4, :child_int], expression: 45},

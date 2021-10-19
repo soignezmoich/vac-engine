@@ -68,7 +68,7 @@ defmodule Fixtures.Cases do
           %{child_object: %{grand_child_int: 35}},
           %{child_int: 45}
         ],
-        dnest: [%{dnest2: [%{dnest3: "nested"}]}],
+        dnest: %{dnest2: [%{dnest3: "nested"}]},
         int_list: [1, 2, 3]
       }
     }

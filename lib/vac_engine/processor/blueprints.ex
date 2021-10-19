@@ -86,7 +86,6 @@ defmodule VacEngine.Processor.Blueprints do
   end
 
   def fetch_blueprint(%Workspace{} = workspace, blueprint_id) do
-
     elements_query =
       from(r in BindingElement,
         order_by: r.position
@@ -302,7 +301,7 @@ defmodule VacEngine.Processor.Blueprints do
 
     vars =
       vars
-      |> Enum.sort_by(& &1.name)
+      |> Enum.sort_by(&{Variable.container?(&1), &1.name})
 
     {vars, index}
   end

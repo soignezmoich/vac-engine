@@ -5,6 +5,7 @@ defmodule VacEngine.Processor do
   alias VacEngine.Processor.Compiler
   alias VacEngine.Processor.State
   alias VacEngine.Processor.Variables
+  alias VacEngine.Processor.Info
 
   defdelegate create_blueprint(workspace, attrs), to: Blueprints
   defdelegate fetch_blueprint(workspace, bid), to: Blueprints
@@ -16,12 +17,19 @@ defmodule VacEngine.Processor do
   defdelegate delete_variable(var), to: Variables
   defdelegate move_variable(var, new_parent), to: Variables
 
-  defstruct blueprint: nil, compiled_ast: nil, state: nil
+  defstruct blueprint: nil, compiled_ast: nil, state: nil, info: nil
 
   def compile_blueprint(%Blueprint{} = blueprint) do
     with {:ok, compiled_ast} <- Compiler.compile_blueprint(blueprint),
+         {:ok, info} <- Info.describe(blueprint),
          {:ok, state} <- State.new(blueprint.variables) do
-      {:ok, %Processor{compiled_ast: compiled_ast, state: state}}
+      {:ok,
+       %Processor{
+         compiled_ast: compiled_ast,
+         state: state,
+         blueprint: blueprint,
+         info: info
+       }}
     else
       {:error, err} ->
         {:error, "cannot compile blueprint: #{err}"}

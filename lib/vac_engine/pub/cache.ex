@@ -48,15 +48,16 @@ defmodule VacEngine.Pub.Cache do
 
   @impl true
   def handle_call(
-        {:find_processor, %{api_key: api_key, portal_id: pid}},
+        {:find_processor, %{api_key: api_key, portal_id: portal_id}},
         _from,
         state
       ) do
-    with %{id: id, prefix: _prefix, secret: req_secret} <-
+    with {:ok, portal_id} <- flex_integer(portal_id),
+         %{id: id, prefix: _prefix, secret: req_secret} <-
            Account.explode_composite_secret(api_key),
          %{portals: portals, secret: secret} <- Map.get(state.api_keys, id),
          true <- Plug.Crypto.secure_compare(req_secret, secret),
-         %{blueprint_id: blueprint_id} <- Map.get(portals, pid),
+         %{blueprint_id: blueprint_id} <- Map.get(portals, portal_id),
          {:ok, state} <- ensure_processor_loaded(state, blueprint_id) do
       proc =
         state
@@ -106,6 +107,17 @@ defmodule VacEngine.Pub.Cache do
 
       _p ->
         {:ok, state}
+    end
+  end
+
+  defp flex_integer(i) when is_integer(i), do: i
+
+  defp flex_integer(i) when is_binary(i) do
+    i
+    |> Integer.parse()
+    |> case do
+      {i, _} -> {:ok, i}
+      _ -> {:error, "invalid integer"}
     end
   end
 end

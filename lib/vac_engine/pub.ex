@@ -62,6 +62,23 @@ defmodule VacEngine.Pub do
 
   def run_cached(_), do: :error
 
+  def info_cached(%{api_key: _api_key, portal_id: _portal_id} = args) do
+    args
+    |> Cache.find_processor()
+    |> case do
+      {:ok, processor} ->
+        {:ok, processor.info}
+
+      {:error, msg} ->
+        {:error, msg}
+
+      _err ->
+        {:error, "cannot run processor"}
+    end
+  end
+
+  def info_cached(_), do: :error
+
   def active_publication(%Portal{} = portal) do
     portal.publications
     |> Enum.find(fn pub ->

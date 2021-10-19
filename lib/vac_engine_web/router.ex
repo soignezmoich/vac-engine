@@ -51,6 +51,7 @@ defmodule VacEngineWeb.Router do
   scope "/api", VacEngineWeb.Api do
     pipe_through([:api])
     post("/p/:portal_id/run", PubController, :run)
+    get("/p/:portal_id/info", PubController, :info)
   end
 
   if Mix.env() in [:dev, :test] do
