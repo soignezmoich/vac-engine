@@ -333,6 +333,21 @@ defmodule Fixtures.Blueprints do
           type: :date,
           mapping: :in_optional
         },
+        previous_vaccination: %{
+          type: :map,
+          mapping: :in_optional,
+          children: %{
+            vaccine: %{
+              type: :string,
+              mapping: :in_optional,
+              enum: ["moderna", "pfizer"]
+            },
+            last_dose_date: %{
+              type: :date,
+              mapping: :in_optional
+            }
+          }
+        },
         vaccine_allergy: %{
           type: :boolean,
           mapping: :in_required
@@ -378,13 +393,18 @@ defmodule Fixtures.Blueprints do
         eligible: %{
           type: :boolean
         },
+        registrable_if_dose_within: %{
+          type: :integer,
+          mapping: :out
+        },
         flags: %{
           type: :map,
           mapping: :out,
           children: %{
             need_determine_pregnant: %{type: :boolean, mapping: :out},
             immuno_need_recommendation: %{type: :boolean, mapping: :out},
-            infection: %{type: :boolean, mapping: :out}
+            infection: %{type: :boolean, mapping: :out},
+            not_yet_eligible_for_booster: %{type: :boolean, mapping: :out}
           }
         },
         injection_sequence: %{
@@ -484,7 +504,7 @@ defmodule Fixtures.Blueprints do
       deductions: [
         %{
           columns: [
-            %{description: "Age", variable: :birthdate, type: "assignment"}
+            %{description: "Age", variable: :age, type: "assignment"}
           ],
           branches: [
             %{
@@ -501,11 +521,48 @@ defmodule Fixtures.Blueprints do
         },
         %{
           columns: [
+            %{description: "Infection date", variable: :infection_date},
+            %{
+              description: "Registrable if dose within",
+              variable: :registrable_if_dose_within,
+              type: "assignment"
+            }
+          ],
+          branches: [
+            %{
+              conditions: [
+                %{expression: quote(do: is_not_nil(@infection_date)), column: 0}
+              ],
+              assignments: [
+                %{
+                  target: :registrable_if_dose_within,
+                  expression: 20,
+                  column: 1
+                }
+              ]
+            },
+            %{
+              assignments: [
+                %{
+                  target: :registrable_if_dose_within,
+                  expression: 30,
+                  column: 1
+                }
+              ]
+            }
+          ]
+        },
+        %{
+          columns: [
             %{description: "Age", variable: :age},
             %{description: "Immuno", variable: :immuno},
             %{description: "Immuno recommended", variable: :immuno_recommended},
             %{description: "Rejects mrna", variable: :rejects_mrna},
             %{description: "Pregnant", variable: :pregnant},
+            %{
+              description: "Previous vaccine",
+              variable: [:previous_vaccination, :vaccine]
+            },
             %{
               description: "Moderna compatibility",
               variable: [:vaccine_compatibilities, :moderna, :compatible],
@@ -525,25 +582,102 @@ defmodule Fixtures.Blueprints do
           branches: [
             %{
               conditions: [
+                %{expression: quote(do: gte(@age, 65)), column: 0},
+                %{
+                  expression:
+                    quote(
+                      do: is_not_nil(var([:previous_vaccination, :vaccine]))
+                    ),
+                  column: 5
+                }
+              ],
+              assignments: [
+                %{
+                  target: [:vaccine_compatibilities, :moderna, :compatible],
+                  description: "previous_vaccination",
+                  column: 6,
+                  expression:
+                    quote(
+                      do:
+                        eq(
+                          var([:previous_vaccination, :vaccine]),
+                          "moderna"
+                        )
+                    )
+                },
+                %{
+                  target: [:vaccine_compatibilities, :pfizer, :compatible],
+                  description: "previous_vaccination",
+                  column: 7,
+                  expression:
+                    quote(
+                      do:
+                        eq(
+                          var([:previous_vaccination, :vaccine]),
+                          "pfizer"
+                        )
+                    )
+                },
+                %{
+                  target: [:vaccine_compatibilities, :janssen, :compatible],
+                  description: "previous_vaccination",
+                  column: 8,
+                  expression: false
+                }
+              ]
+            },
+            %{
+              conditions: [
+                %{
+                  expression:
+                    quote(
+                      do: is_not_nil(var([:previous_vaccination, :vaccine]))
+                    ),
+                  column: 5
+                }
+              ],
+              assignments: [
+                %{
+                  target: [:vaccine_compatibilities, :moderna, :compatible],
+                  description: "not_eligible_for_booster",
+                  column: 6,
+                  expression: false
+                },
+                %{
+                  target: [:vaccine_compatibilities, :pfizer, :compatible],
+                  description: "not_eligible_for_booster",
+                  column: 7,
+                  expression: false
+                },
+                %{
+                  target: [:vaccine_compatibilities, :janssen, :compatible],
+                  description: "not_eligible_for_booster",
+                  column: 8,
+                  expression: false
+                }
+              ]
+            },
+            %{
+              conditions: [
                 %{expression: quote(do: lt(@age, 12)), column: 0}
               ],
               assignments: [
                 %{
                   target: [:vaccine_compatibilities, :moderna, :compatible],
                   description: "younger_than_12",
-                  column: 5,
+                  column: 6,
                   expression: false
                 },
                 %{
                   target: [:vaccine_compatibilities, :pfizer, :compatible],
                   description: "younger_than_12",
-                  column: 6,
+                  column: 7,
                   expression: false
                 },
                 %{
                   target: [:vaccine_compatibilities, :janssen, :compatible],
                   description: "younger_than_12",
-                  column: 7,
+                  column: 8,
                   expression: false
                 }
               ]
@@ -560,19 +694,19 @@ defmodule Fixtures.Blueprints do
                 %{
                   target: [:vaccine_compatibilities, :moderna, :compatible],
                   description: "immuno_no_recommendation",
-                  column: 5,
+                  column: 6,
                   expression: false
                 },
                 %{
                   target: [:vaccine_compatibilities, :pfizer, :compatible],
                   description: "immuno_no_recommendation",
-                  column: 6,
+                  column: 7,
                   expression: false
                 },
                 %{
                   target: [:vaccine_compatibilities, :janssen, :compatible],
                   description: "immuno_no_recommendation",
-                  column: 7,
+                  column: 8,
                   expression: false
                 }
               ]
@@ -586,19 +720,19 @@ defmodule Fixtures.Blueprints do
                 %{
                   target: [:vaccine_compatibilities, :moderna, :compatible],
                   description: "rejects_mrna_vaccines",
-                  column: 5,
+                  column: 6,
                   expression: false
                 },
                 %{
                   target: [:vaccine_compatibilities, :pfizer, :compatible],
                   description: "rejects_mrna_vaccines",
-                  column: 6,
+                  column: 7,
                   expression: false
                 },
                 %{
                   target: [:vaccine_compatibilities, :janssen, :compatible],
                   description: "pregnant",
-                  column: 7,
+                  column: 8,
                   expression: false
                 }
               ]
@@ -612,19 +746,19 @@ defmodule Fixtures.Blueprints do
                 %{
                   target: [:vaccine_compatibilities, :moderna, :compatible],
                   description: "rejects_mrna_vaccines",
-                  column: 5,
+                  column: 6,
                   expression: false
                 },
                 %{
                   target: [:vaccine_compatibilities, :pfizer, :compatible],
                   description: "rejects_mrna_vaccines",
-                  column: 6,
+                  column: 7,
                   expression: false
                 },
                 %{
                   target: [:vaccine_compatibilities, :janssen, :compatible],
                   description: "younger_than_18",
-                  column: 7,
+                  column: 8,
                   expression: false
                 }
               ]
@@ -642,19 +776,19 @@ defmodule Fixtures.Blueprints do
                 %{
                   target: [:vaccine_compatibilities, :moderna, :compatible],
                   description: "rejects_mrna_vaccines",
-                  column: 5,
+                  column: 6,
                   expression: false
                 },
                 %{
                   target: [:vaccine_compatibilities, :pfizer, :compatible],
                   description: "rejects_mrna_vaccines",
-                  column: 6,
+                  column: 7,
                   expression: false
                 },
                 %{
                   target: [:vaccine_compatibilities, :janssen, :compatible],
                   description: "immuno",
-                  column: 7,
+                  column: 8,
                   expression: false
                 }
               ]
@@ -667,19 +801,19 @@ defmodule Fixtures.Blueprints do
                 %{
                   target: [:vaccine_compatibilities, :moderna, :compatible],
                   description: "rejects_mrna_vaccines",
-                  column: 5,
+                  column: 6,
                   expression: false
                 },
                 %{
                   target: [:vaccine_compatibilities, :pfizer, :compatible],
                   description: "rejects_mrna_vaccines",
-                  column: 6,
+                  column: 7,
                   expression: false
                 },
                 %{
                   target: [:vaccine_compatibilities, :janssen, :compatible],
                   description: "rejects_mrna_vaccines",
-                  column: 7,
+                  column: 8,
                   expression: true
                 }
               ]
@@ -690,19 +824,19 @@ defmodule Fixtures.Blueprints do
                 %{
                   target: [:vaccine_compatibilities, :moderna, :compatible],
                   description: "other",
-                  column: 5,
+                  column: 6,
                   expression: true
                 },
                 %{
                   target: [:vaccine_compatibilities, :pfizer, :compatible],
                   description: "other",
-                  column: 6,
+                  column: 7,
                   expression: true
                 },
                 %{
                   target: [:vaccine_compatibilities, :janssen, :compatible],
                   description: "other",
-                  column: 7,
+                  column: 8,
                   expression: false
                 }
               ]
@@ -781,9 +915,12 @@ defmodule Fixtures.Blueprints do
         },
         %{
           columns: [
+            %{
+              description: "Moderna compatibility",
+              variable: [:vaccine_compatibilities, :moderna, :compatible]
+            },
             %{description: "Age", variable: :age},
             %{description: "High risk", variable: :high_risk},
-            %{description: "Immuno", variable: :immuno},
             %{description: "Immuno recommended", variable: :immuno_recommended},
             %{description: "Healthcare worker", variable: :healthcare_worker},
             %{description: "High risk contact", variable: :high_risk_contact},
@@ -792,59 +929,34 @@ defmodule Fixtures.Blueprints do
               description: "Moderna priority",
               variable: [:vaccine_compatibilities, :moderna, :priority],
               type: "assignment"
-            },
-            %{
-              description: "Pfizer priority",
-              variable: [:vaccine_compatibilities, :pfizer, :priority],
-              type: "assignment"
             }
           ],
           branches: [
             %{
               conditions: [
-                %{expression: quote(do: is_true(@immuno)), column: 2},
                 %{
-                  expression: quote(do: is_false(@immuno_recommended)),
-                  column: 3
+                  column: 0,
+                  expression:
+                    quote(
+                      do:
+                        is_false(
+                          var([:vaccine_compatibilities, :moderna, :compatible])
+                        )
+                    )
                 }
               ],
               assignments: [
                 %{
                   target: [:vaccine_compatibilities, :moderna, :priority],
-                  description: "immuno_no_recommendation",
+                  description: "not_moderna_compatible",
                   column: 7,
-                  expression: -1
-                },
-                %{
-                  target: [:vaccine_compatibilities, :pfizer, :priority],
-                  description: "immuno_no_recommendation",
-                  column: 8,
                   expression: -1
                 }
               ]
             },
             %{
               conditions: [
-                %{expression: quote(do: lt(@age, 12)), column: 0}
-              ],
-              assignments: [
-                %{
-                  target: [:vaccine_compatibilities, :moderna, :priority],
-                  description: "younger_than_12",
-                  column: 7,
-                  expression: -1
-                },
-                %{
-                  target: [:vaccine_compatibilities, :pfizer, :priority],
-                  description: "younger_than_12",
-                  column: 8,
-                  expression: -1
-                }
-              ]
-            },
-            %{
-              conditions: [
-                %{expression: quote(do: gt(@age, 75)), column: 0}
+                %{expression: quote(do: gte(@age, 75)), column: 1}
               ],
               assignments: [
                 %{
@@ -852,18 +964,12 @@ defmodule Fixtures.Blueprints do
                   description: "older_than_75",
                   column: 7,
                   expression: 1
-                },
-                %{
-                  target: [:vaccine_compatibilities, :pfizer, :priority],
-                  description: "older_than_75",
-                  column: 8,
-                  expression: 1
                 }
               ]
             },
             %{
               conditions: [
-                %{expression: quote(do: is_true(@high_risk)), column: 1}
+                %{expression: quote(do: is_true(@high_risk)), column: 2}
               ],
               assignments: [
                 %{
@@ -871,18 +977,11 @@ defmodule Fixtures.Blueprints do
                   description: "high_risk",
                   column: 7,
                   expression: 1
-                },
-                %{
-                  target: [:vaccine_compatibilities, :pfizer, :priority],
-                  description: "high_risk",
-                  column: 8,
-                  expression: 1
                 }
               ]
             },
             %{
               conditions: [
-                %{expression: quote(do: is_true(@immuno)), column: 2},
                 %{
                   expression: quote(do: is_true(@immuno_recommended)),
                   column: 3
@@ -894,18 +993,12 @@ defmodule Fixtures.Blueprints do
                   description: "immuno",
                   column: 7,
                   expression: 1
-                },
-                %{
-                  target: [:vaccine_compatibilities, :pfizer, :priority],
-                  description: "immuno",
-                  column: 8,
-                  expression: 1
                 }
               ]
             },
             %{
               conditions: [
-                %{expression: quote(do: gt(@age, 65)), column: 0}
+                %{expression: quote(do: gte(@age, 65)), column: 1}
               ],
               assignments: [
                 %{
@@ -913,30 +1006,18 @@ defmodule Fixtures.Blueprints do
                   description: "older_than_65",
                   column: 7,
                   expression: 2
-                },
-                %{
-                  target: [:vaccine_compatibilities, :pfizer, :priority],
-                  description: "older_than_65",
-                  column: 8,
-                  expression: 2
                 }
               ]
             },
             %{
               conditions: [
-                %{expression: quote(do: gt(@age, 60)), column: 0}
+                %{expression: quote(do: gte(@age, 60)), column: 1}
               ],
               assignments: [
                 %{
                   target: [:vaccine_compatibilities, :moderna, :priority],
                   description: "older_than_60",
                   column: 7,
-                  expression: 3
-                },
-                %{
-                  target: [:vaccine_compatibilities, :pfizer, :priority],
-                  description: "older_than_60",
-                  column: 8,
                   expression: 3
                 }
               ]
@@ -951,12 +1032,6 @@ defmodule Fixtures.Blueprints do
                   description: "healthcare_worker",
                   column: 7,
                   expression: 4
-                },
-                %{
-                  target: [:vaccine_compatibilities, :pfizer, :priority],
-                  description: "healthcare_worker",
-                  column: 8,
-                  expression: 4
                 }
               ]
             },
@@ -969,12 +1044,6 @@ defmodule Fixtures.Blueprints do
                   target: [:vaccine_compatibilities, :moderna, :priority],
                   description: "high_risk_contact",
                   column: 7,
-                  expression: 5
-                },
-                %{
-                  target: [:vaccine_compatibilities, :pfizer, :priority],
-                  description: "high_risk_contact",
-                  column: 8,
                   expression: 5
                 }
               ]
@@ -992,12 +1061,6 @@ defmodule Fixtures.Blueprints do
                   description: "community_facility",
                   column: 7,
                   expression: 6
-                },
-                %{
-                  target: [:vaccine_compatibilities, :pfizer, :priority],
-                  description: "community_facility",
-                  column: 8,
-                  expression: 6
                 }
               ]
             },
@@ -1009,11 +1072,169 @@ defmodule Fixtures.Blueprints do
                   description: "other",
                   column: 7,
                   expression: 7
-                },
+                }
+              ]
+            }
+          ]
+        },
+        %{
+          columns: [
+            %{
+              description: "Pfizer compatibility",
+              variable: [:vaccine_compatibilities, :pfizer, :compatible]
+            },
+            %{description: "Age", variable: :age},
+            %{description: "High risk", variable: :high_risk},
+            %{description: "Immuno recommended", variable: :immuno_recommended},
+            %{description: "Healthcare worker", variable: :healthcare_worker},
+            %{description: "High risk contact", variable: :high_risk_contact},
+            %{description: "Community facility", variable: :community_facility},
+            %{
+              description: "Moderna priority",
+              variable: [:vaccine_compatibilities, :pfizer, :priority],
+              type: "assignment"
+            }
+          ],
+          branches: [
+            %{
+              conditions: [
+                %{
+                  column: 0,
+                  expression:
+                    quote(
+                      do:
+                        is_false(
+                          var([:vaccine_compatibilities, :pfizer, :compatible])
+                        )
+                    )
+                }
+              ],
+              assignments: [
+                %{
+                  target: [:vaccine_compatibilities, :pfizer, :priority],
+                  description: "not_pfizer_compatible",
+                  column: 7,
+                  expression: -1
+                }
+              ]
+            },
+            %{
+              conditions: [
+                %{expression: quote(do: gte(@age, 75)), column: 1}
+              ],
+              assignments: [
+                %{
+                  target: [:vaccine_compatibilities, :pfizer, :priority],
+                  description: "older_than_75",
+                  column: 7,
+                  expression: 1
+                }
+              ]
+            },
+            %{
+              conditions: [
+                %{expression: quote(do: is_true(@high_risk)), column: 2}
+              ],
+              assignments: [
+                %{
+                  target: [:vaccine_compatibilities, :pfizer, :priority],
+                  description: "high_risk",
+                  column: 7,
+                  expression: 1
+                }
+              ]
+            },
+            %{
+              conditions: [
+                %{
+                  expression: quote(do: is_true(@immuno_recommended)),
+                  column: 3
+                }
+              ],
+              assignments: [
+                %{
+                  target: [:vaccine_compatibilities, :pfizer, :priority],
+                  description: "immuno",
+                  column: 7,
+                  expression: 1
+                }
+              ]
+            },
+            %{
+              conditions: [
+                %{expression: quote(do: gte(@age, 65)), column: 1}
+              ],
+              assignments: [
+                %{
+                  target: [:vaccine_compatibilities, :pfizer, :priority],
+                  description: "older_than_65",
+                  column: 7,
+                  expression: 2
+                }
+              ]
+            },
+            %{
+              conditions: [
+                %{expression: quote(do: gte(@age, 60)), column: 1}
+              ],
+              assignments: [
+                %{
+                  target: [:vaccine_compatibilities, :pfizer, :priority],
+                  description: "older_than_60",
+                  column: 7,
+                  expression: 3
+                }
+              ]
+            },
+            %{
+              conditions: [
+                %{expression: quote(do: is_true(@healthcare_worker)), column: 4}
+              ],
+              assignments: [
+                %{
+                  target: [:vaccine_compatibilities, :pfizer, :priority],
+                  description: "healthcare_worker",
+                  column: 7,
+                  expression: 4
+                }
+              ]
+            },
+            %{
+              conditions: [
+                %{expression: quote(do: is_true(@high_risk_contact)), column: 5}
+              ],
+              assignments: [
+                %{
+                  target: [:vaccine_compatibilities, :pfizer, :priority],
+                  description: "high_risk_contact",
+                  column: 7,
+                  expression: 5
+                }
+              ]
+            },
+            %{
+              conditions: [
+                %{
+                  expression: quote(do: is_true(@community_facility)),
+                  column: 6
+                }
+              ],
+              assignments: [
+                %{
+                  target: [:vaccine_compatibilities, :pfizer, :priority],
+                  description: "community_facility",
+                  column: 7,
+                  expression: 6
+                }
+              ]
+            },
+            %{
+              conditions: [],
+              assignments: [
                 %{
                   target: [:vaccine_compatibilities, :pfizer, :priority],
                   description: "other",
-                  column: 8,
+                  column: 7,
                   expression: 7
                 }
               ]
@@ -1062,7 +1283,7 @@ defmodule Fixtures.Blueprints do
             },
             %{
               conditions: [
-                %{expression: quote(do: gt(@age, 75)), column: 1}
+                %{expression: quote(do: gte(@age, 75)), column: 1}
               ],
               assignments: [
                 %{
@@ -1088,7 +1309,7 @@ defmodule Fixtures.Blueprints do
             },
             %{
               conditions: [
-                %{expression: quote(do: gt(@age, 65)), column: 1}
+                %{expression: quote(do: gte(@age, 65)), column: 1}
               ],
               assignments: [
                 %{
@@ -1101,7 +1322,7 @@ defmodule Fixtures.Blueprints do
             },
             %{
               conditions: [
-                %{expression: quote(do: gt(@age, 60)), column: 1}
+                %{expression: quote(do: gte(@age, 60)), column: 1}
               ],
               assignments: [
                 %{
@@ -1204,7 +1425,7 @@ defmodule Fixtures.Blueprints do
               variable: :immuno
             },
             %{
-              description: "Immuno  discussed",
+              description: "Immuno discussed",
               variable: :immuno_discussed
             },
             %{
@@ -1217,7 +1438,7 @@ defmodule Fixtures.Blueprints do
             %{
               conditions: [
                 %{expression: quote(do: is_true(@immuno)), column: 0},
-                %{expression: quote(do: is_true(@immuno_discussed)), column: 1}
+                %{expression: quote(do: is_false(@immuno_discussed)), column: 1}
               ],
               assignments: [
                 %{
@@ -1267,8 +1488,47 @@ defmodule Fixtures.Blueprints do
         %{
           columns: [
             %{
+              description: "Last dose date",
+              variable: :previous_vaccination
+            },
+            %{
+              description: "Eligible",
+              variable: :eligible
+            },
+            %{
+              description: "Not yet eligible for booster",
+              variable: [:flags, :not_yet_eligible_for_booster],
+              type: "assignment"
+            }
+          ],
+          branches: [
+            %{
+              conditions: [
+                %{
+                  expression: quote(do: is_not_nil(@previous_vaccination)),
+                  column: 0
+                },
+                %{expression: quote(do: lt(@age, 65)), column: 1}
+              ],
+              assignments: [
+                %{
+                  target: [:flags, :not_yet_eligible_for_booster],
+                  column: 2,
+                  expression: true
+                }
+              ]
+            }
+          ]
+        },
+        %{
+          columns: [
+            %{
               description: "Moderna compatible",
               variable: [:vaccine_compatibilities, :moderna, :compatible]
+            },
+            %{
+              description: "Previous vaccination",
+              variable: :previous_vaccination
             },
             %{
               description: "Infection date",
@@ -1354,22 +1614,58 @@ defmodule Fixtures.Blueprints do
                 },
                 %{
                   column: 1,
+                  expression: quote(do: is_not_nil(@previous_vaccination))
+                }
+              ],
+              assignments: [
+                %{
+                  column: 3,
+                  target: [:injection_sequence, :moderna, :vaccine],
+                  expression: "moderna"
+                },
+                %{
+                  column: 4,
+                  target: [:injection_sequence, :moderna, :delay_min],
+                  expression: 182
+                },
+                %{
+                  column: 6,
+                  target: [:injection_sequence, :moderna, :reference_date],
+                  expression:
+                    quote(do: var([:previous_vaccination, :last_dose_date]))
+                }
+              ]
+            },
+            %{
+              conditions: [
+                %{
+                  column: 0,
+                  expression:
+                    quote(
+                      do:
+                        is_true(
+                          var([:vaccine_compatibilities, :moderna, :compatible])
+                        )
+                    )
+                },
+                %{
+                  column: 2,
                   expression: quote(do: is_not_nil(@infection_date))
                 }
               ],
               assignments: [
                 %{
-                  column: 2,
+                  column: 3,
                   target: [:injection_sequence, :moderna, :vaccine],
                   expression: "moderna"
                 },
                 %{
-                  column: 3,
+                  column: 4,
                   target: [:injection_sequence, :moderna, :delay_min],
                   expression: 28
                 },
                 %{
-                  column: 4,
+                  column: 6,
                   target: [:injection_sequence, :moderna, :reference_date],
                   expression: quote(do: @infection_date)
                 }
@@ -1391,17 +1687,17 @@ defmodule Fixtures.Blueprints do
               assignments: [
                 %{
                   target: [:injection_sequence, :moderna, :vaccine],
-                  column: 2,
+                  column: 3,
                   expression: "moderna"
                 },
                 %{
                   target: [:injection_sequence, :moderna, :delay_min],
-                  column: 3,
+                  column: 4,
                   expression: 0
                 },
                 %{
                   target: [:injection_sequence, :moderna, :reference_date],
-                  column: 5,
+                  column: 6,
                   expression: quote(do: now())
                 },
                 %{
@@ -1412,7 +1708,7 @@ defmodule Fixtures.Blueprints do
                     :moderna,
                     :vaccine
                   ],
-                  column: 6,
+                  column: 7,
                   expression: "moderna"
                 },
                 %{
@@ -1423,7 +1719,7 @@ defmodule Fixtures.Blueprints do
                     :moderna,
                     :delay_min
                   ],
-                  column: 7,
+                  column: 8,
                   expression: 28
                 },
                 %{
@@ -1434,7 +1730,7 @@ defmodule Fixtures.Blueprints do
                     :moderna,
                     :delay_max
                   ],
-                  column: 8,
+                  column: 9,
                   expression: 35
                 }
               ]
@@ -1446,6 +1742,10 @@ defmodule Fixtures.Blueprints do
             %{
               description: "Pfizer compatible",
               variable: [:vaccine_compatibilities, :pfizer, :compatible]
+            },
+            %{
+              description: "Previous vaccination",
+              variable: :previous_vaccination
             },
             %{
               description: "Infection date",
@@ -1531,22 +1831,58 @@ defmodule Fixtures.Blueprints do
                 },
                 %{
                   column: 1,
+                  expression: quote(do: is_not_nil(@previous_vaccination))
+                }
+              ],
+              assignments: [
+                %{
+                  column: 3,
+                  target: [:injection_sequence, :pfizer, :vaccine],
+                  expression: "pfizer"
+                },
+                %{
+                  column: 4,
+                  target: [:injection_sequence, :pfizer, :delay_min],
+                  expression: 182
+                },
+                %{
+                  column: 6,
+                  target: [:injection_sequence, :pfizer, :reference_date],
+                  expression:
+                    quote(do: var([:previous_vaccination, :last_dose_date]))
+                }
+              ]
+            },
+            %{
+              conditions: [
+                %{
+                  column: 0,
+                  expression:
+                    quote(
+                      do:
+                        is_true(
+                          var([:vaccine_compatibilities, :pfizer, :compatible])
+                        )
+                    )
+                },
+                %{
+                  column: 2,
                   expression: quote(do: is_not_nil(@infection_date))
                 }
               ],
               assignments: [
                 %{
-                  column: 2,
+                  column: 3,
                   target: [:injection_sequence, :pfizer, :vaccine],
                   expression: "pfizer"
                 },
                 %{
-                  column: 3,
+                  column: 4,
                   target: [:injection_sequence, :pfizer, :delay_min],
                   expression: 28
                 },
                 %{
-                  column: 5,
+                  column: 6,
                   target: [:injection_sequence, :pfizer, :reference_date],
                   expression: quote(do: @infection_date)
                 }
@@ -1567,22 +1903,22 @@ defmodule Fixtures.Blueprints do
               ],
               assignments: [
                 %{
-                  column: 2,
+                  column: 3,
                   target: [:injection_sequence, :pfizer, :vaccine],
                   expression: "pfizer"
                 },
                 %{
-                  column: 3,
+                  column: 4,
                   target: [:injection_sequence, :pfizer, :delay_min],
                   expression: 0
                 },
                 %{
-                  column: 5,
+                  column: 6,
                   target: [:injection_sequence, :pfizer, :reference_date],
                   expression: quote(do: now())
                 },
                 %{
-                  column: 6,
+                  column: 7,
                   target: [
                     :injection_sequence,
                     :pfizer,
@@ -1593,7 +1929,7 @@ defmodule Fixtures.Blueprints do
                   expression: "pfizer"
                 },
                 %{
-                  column: 7,
+                  column: 8,
                   target: [
                     :injection_sequence,
                     :pfizer,
@@ -1604,7 +1940,7 @@ defmodule Fixtures.Blueprints do
                   expression: 28
                 },
                 %{
-                  column: 8,
+                  column: 9,
                   target: [
                     :injection_sequence,
                     :pfizer,
@@ -1613,6 +1949,106 @@ defmodule Fixtures.Blueprints do
                     :delay_max
                   ],
                   expression: 35
+                }
+              ]
+            }
+          ]
+        },
+        %{
+          columns: [
+            %{
+              description: "Janssen compatible",
+              variable: [:vaccine_compatibilities, :janssen, :compatible]
+            },
+            %{
+              description: "Infection date",
+              variable: :infection_date
+            },
+            %{
+              description: "Vaccine",
+              variable: [:injection_sequence, :janssen, :vaccine],
+              type: "assignment"
+            },
+            %{
+              description: "Delay min",
+              variable: [:injection_sequence, :janssen, :delay_min],
+              type: "assignment"
+            },
+            %{
+              description: "Delay max",
+              variable: [:injection_sequence, :janssen, :delay_max],
+              type: "assignment"
+            },
+            %{
+              description: "Reference date",
+              variable: [:injection_sequence, :janssen, :reference_date],
+              type: "assignment"
+            }
+          ],
+          branches: [
+            %{
+              conditions: [
+                %{
+                  column: 0,
+                  expression:
+                    quote(
+                      do:
+                        is_true(
+                          var([:vaccine_compatibilities, :janssen, :compatible])
+                        )
+                    )
+                },
+                %{
+                  column: 1,
+                  expression: quote(do: is_not_nil(@infection_date))
+                }
+              ],
+              assignments: [
+                %{
+                  column: 2,
+                  target: [:injection_sequence, :janssen, :vaccine],
+                  expression: "janssen"
+                },
+                %{
+                  column: 3,
+                  target: [:injection_sequence, :janssen, :delay_min],
+                  expression: 28
+                },
+                %{
+                  column: 5,
+                  target: [:injection_sequence, :janssen, :reference_date],
+                  expression: quote(do: @infection_date)
+                }
+              ]
+            },
+            %{
+              conditions: [
+                %{
+                  column: 0,
+                  expression:
+                    quote(
+                      do:
+                        is_true(
+                          var([:vaccine_compatibilities, :janssen, :compatible])
+                        )
+                    )
+                }
+              ],
+              assignments: [
+                %{
+                  column: 2,
+                  target: [:injection_sequence, :janssen, :vaccine],
+                  expression: "janssen"
+                },
+                %{
+                  column: 3,
+                  target: [:injection_sequence, :janssen, :delay_min],
+                  expression: 0
+                },
+                %{
+                  column: 5,
+                  target: [:injection_sequence, :janssen, :reference_date],
+                  expression: quote(do: now())
                 }
               ]
             }
