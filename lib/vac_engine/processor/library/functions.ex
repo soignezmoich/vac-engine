@@ -230,11 +230,21 @@ defmodule VacEngine.Processor.Library.Functions do
   @doc """
     Calculate age in years given a birthdate
   """
-  @label "Contains"
+  @label "Age"
   @short "AGE()"
   @signature {[:date], :integer}
   def age(birthdate) do
     Timex.diff(NaiveDateTime.utc_now(), birthdate, :years)
+  end
+
+  @doc """
+    Whether a duration in days is elapsed since a given date.
+  """
+  @label "Elapsed"
+  @short "ELAPSED()"
+  @signature {[:date, :integer], :integer}
+  def elapsed(start_date, duration) do
+    Timex.diff(NaiveDateTime.utc_now(), start_date, :days) > duration
   end
 
   @doc """
