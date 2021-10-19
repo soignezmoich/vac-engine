@@ -22,6 +22,14 @@ defmodule VacEngine.Processor.Expression do
     field(:ast, AstType)
   end
 
+  def to_string(expression) do
+    expression.ast
+    |> Macro.to_string()
+    |> Code.format_string!()
+    |> Kernel.to_string()
+    |> String.replace(~r/"/, "")
+  end
+
   def changeset(data, attrs, ctx, opts \\ [])
 
   def changeset(data, attrs, ctx, opts) do
