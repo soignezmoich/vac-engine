@@ -8,7 +8,7 @@ defmodule VacEngine.Processor.Info.Schema do
     end
 
     blueprint.variables
-    |> map_vars(filter)
+    |> map_children(filter)
     |> wrap_props()
   end
 
@@ -18,15 +18,15 @@ defmodule VacEngine.Processor.Info.Schema do
     end
 
     blueprint.variables
-    |> map_vars(filter)
+    |> map_children(filter)
     |> wrap_props()
   end
 
   defp wrap_props(props) do
     %{
-      "$schema" => "https://json-schema.org/draft/2019-09/schema",
-      properties: props
+      "$schema" => "https://json-schema.org/draft/2019-09/schema"
     }
+    |> Map.merge(props)
   end
 
   defp map_vars(vars, filter) do
@@ -39,7 +39,7 @@ defmodule VacEngine.Processor.Info.Schema do
 
   defp map_var(%Variable{type: :map, name: name} = v, filter) do
     %{
-      name => map_children(v, filter)
+      name => map_children(v.children, filter)
     }
   end
 
@@ -48,7 +48,7 @@ defmodule VacEngine.Processor.Info.Schema do
       name =>
         %{
           type: "array",
-          items: map_children(v, filter)
+          items: map_children(v.children, filter)
         }
         |> append_if_not_empty(description: v.description)
     }
@@ -106,14 +106,14 @@ defmodule VacEngine.Processor.Info.Schema do
     }
   end
 
-  defp map_children(v, filter) do
+  defp map_children(children, filter) do
     props =
-      v.children
+      children
       |> Enum.filter(filter)
       |> map_vars(filter)
 
     required =
-      v.children
+      children
       |> Enum.filter(filter)
       |> Enum.filter(&Variable.required?/1)
       |> Enum.map(& &1.name)
