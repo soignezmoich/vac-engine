@@ -74,6 +74,13 @@ defmodule Fixtures.Cases do
     }
   end
 
+  cas(:sig_test) do
+    %{
+      input: %{age: "hello"},
+      error: "value hello is invalid for age"
+    }
+  end
+
   def injection_sequence() do
     %{
       moderna: %{

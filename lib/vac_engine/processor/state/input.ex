@@ -94,6 +94,12 @@ defmodule VacEngine.Processor.State.Input do
         value = Convert.parse_datetime(value)
         store(value, mapped_data, hits, path, vpath)
 
+      not is_nil(var) ->
+        throw(
+          {:invalid_value,
+           "value #{clean_inspect(value)} is invalid for #{clean_inspect(vpath)}"}
+        )
+
       true ->
         {mapped_data, hits}
     end
@@ -126,5 +132,15 @@ defmodule VacEngine.Processor.State.Input do
       true ->
         value
     end
+  end
+
+  defp clean_inspect([v]) do
+    clean_inspect(v)
+  end
+
+  defp clean_inspect(v) do
+    v
+    |> inspect()
+    |> String.replace(~r/"/, "")
   end
 end
