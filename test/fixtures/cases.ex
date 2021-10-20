@@ -128,7 +128,8 @@ defmodule Fixtures.Cases do
           moderna: %{compatible: false, priority: -1},
           pfizer: %{compatible: false, priority: -1},
           janssen: %{compatible: false, priority: -1}
-        }
+        },
+        registrable_if_dose_within: 30
       }
     }
   end
@@ -147,7 +148,8 @@ defmodule Fixtures.Cases do
           pfizer: %{compatible: true, priority: 1},
           janssen: %{compatible: false, priority: -1}
         },
-        injection_sequence: injection_sequence()
+        injection_sequence: injection_sequence(),
+        registrable_if_dose_within: 30
       }
     }
   end
@@ -166,7 +168,8 @@ defmodule Fixtures.Cases do
           pfizer: %{compatible: true, priority: 7},
           janssen: %{compatible: false, priority: -1}
         },
-        injection_sequence: injection_sequence()
+        injection_sequence: injection_sequence(),
+        registrable_if_dose_within: 30
       }
     }
   end
@@ -185,7 +188,8 @@ defmodule Fixtures.Cases do
           pfizer: %{compatible: true, priority: 1},
           janssen: %{compatible: false, priority: -1}
         },
-        injection_sequence: injection_sequence()
+        injection_sequence: injection_sequence(),
+        registrable_if_dose_within: 30
       }
     }
   end
@@ -204,7 +208,8 @@ defmodule Fixtures.Cases do
           pfizer: %{compatible: true, priority: 2},
           janssen: %{compatible: false, priority: -1}
         },
-        injection_sequence: injection_sequence()
+        injection_sequence: injection_sequence(),
+        registrable_if_dose_within: 30
       }
     }
   end
@@ -223,7 +228,8 @@ defmodule Fixtures.Cases do
           pfizer: %{compatible: true, priority: 3},
           janssen: %{compatible: false, priority: -1}
         },
-        injection_sequence: injection_sequence()
+        injection_sequence: injection_sequence(),
+        registrable_if_dose_within: 30
       }
     }
   end
@@ -243,7 +249,8 @@ defmodule Fixtures.Cases do
           pfizer: %{compatible: true, priority: 4},
           janssen: %{compatible: false, priority: -1}
         },
-        injection_sequence: injection_sequence()
+        injection_sequence: injection_sequence(),
+        registrable_if_dose_within: 30
       }
     }
   end
@@ -276,7 +283,8 @@ defmodule Fixtures.Cases do
             reference_date: "2020-05-04",
             vaccine: "pfizer"
           }
-        }
+        },
+        registrable_if_dose_within: 20
       }
     }
   end
@@ -293,9 +301,17 @@ defmodule Fixtures.Cases do
       output: %{
         age: age("1970-03-04"),
         vaccine_compatibilities: %{
-          moderna: %{compatible: false, priority: 5},
-          pfizer: %{compatible: false, priority: 5},
+          moderna: %{compatible: false, priority: -1},
+          pfizer: %{compatible: false, priority: -1},
           janssen: %{compatible: true, priority: 5}
+        },
+        registrable_if_dose_within: 30,
+        injection_sequence: %{
+          janssen: %{
+            delay_min: 0,
+            reference_date: "2021-10-19",
+            vaccine: "janssen"
+          }
         }
       }
     }
