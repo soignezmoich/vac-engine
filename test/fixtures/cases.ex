@@ -309,7 +309,7 @@ defmodule Fixtures.Cases do
         injection_sequence: %{
           janssen: %{
             delay_min: 0,
-            reference_date: "2021-10-19",
+            reference_date: now(),
             vaccine: "janssen"
           }
         }
