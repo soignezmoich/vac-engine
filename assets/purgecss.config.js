@@ -16,5 +16,5 @@ module.exports = {
     '../lib/**/*.eex'
   ],
   safelist: { greedy: [/phx-/] },
-  css: ['../priv/static/css/app.css']
+  css: ['../priv/static/assets/css/app.css']
 }

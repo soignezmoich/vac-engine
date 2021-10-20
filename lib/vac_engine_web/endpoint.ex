@@ -33,7 +33,7 @@ defmodule VacEngineWeb.Endpoint do
     at: "/",
     from: :vac_engine,
     gzip: false,
-    only: ~w(css fonts icons images js favicon.ico
+    only: ~w(assets fonts icons images favicon.ico
       favicon.svg favicon.png robots.txt
       docs)
   )

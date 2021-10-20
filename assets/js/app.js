@@ -1,4 +1,3 @@
-import css from '../css/app.css'
 import {
   Socket
 } from 'phoenix'

@@ -5,21 +5,28 @@ PATH := ./node_modules/.bin:$(PATH)
 .PHONY: build
 
 build: export NODE_ENV=production
-build: node_modules
-	webpack --mode production
-	purgecss -c purgecss.config.js -o ../priv/static/css/
-	csso ../priv/static/css/app.css --output ../priv/static/css/app.css
+build: node_modules js optimize
 
 .PHONY: watch
 
 watch: node_modules
-	webpack --color --mode development --watch
+	./build.js watch
+
+.PHONY: js
+
+js: node_modules
+	./build.js
+
+.PHONY: optimize
+optimize: node_modules
+	purgecss -c purgecss.config.js -o ../priv/static/assets/css/
+	csso ../priv/static/assets/css/app.css --output ../priv/static/assets/css/app.css
 
 .PHONY: clean
 
 clean:
 	rm -fr node_modules
-	rm -fr ../priv/static/
+	rm -fr ../priv/static/assets/
 	rm -fr npm-debug.log*
 
 yarn.lock:

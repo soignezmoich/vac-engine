@@ -10,8 +10,8 @@
 
     <title>VacEngine</title>
 
-    <link href="/css/app.css" rel="stylesheet" />
-    <script src="/js/app.js" type="text/javascript" async defer></script>
+    <link href="/assets/css/app.css" rel="stylesheet" />
+    <script src="/assets/js/app.js" type="text/javascript" async defer></script>
   </head>
   <body class="flex flex-col min-h-full h-full min-w-full w-full">
     <%= render "header.html", assigns %>
