@@ -91,14 +91,26 @@ function addClass (el, name) {
   el.setAttribute("class", classes)
 }
 
+function closeListener (evt) {
+  let current = evt.target
+  if (!current) return
+  while (current && current != document.body) {
+    if (current.dataset.dropdown && current.dataset.open) return
+    current = current.parentElement
+  }
+  const els = document.querySelectorAll("[data-dropdown][data-open]")
+  for (let el of els) {
+    closeDropdown(el)
+  }
+}
+
 function closeDropdown(el) {
-  if (!el.__close) return
   const target = document.getElementById(el.dataset.dropdown)
 
   removeClass(el, "bg-blue-600")
   removeClass(el, "text-gray-100")
   addClass(target, "hidden")
-  document.removeEventListener("click", el.__close)
+  delete el.dataset.open
 }
 
 function openDropdown(el) {
@@ -107,8 +119,7 @@ function openDropdown(el) {
   addClass(el, "bg-blue-600")
   addClass(el, "text-gray-100")
   removeClass(target, "hidden")
-  el.__close = () => closeDropdown(el)
-  setTimeout(() => document.addEventListener("click", el.__close), 0)
+  el.dataset.open = true
 }
 
 function installDropdowns () {
@@ -119,6 +130,9 @@ function installDropdowns () {
     el.addEventListener("click", () => openDropdown(el))
     el.__dropdown = true
   }
+  if (document.__dropdown) return
+  document.addEventListener("click", closeListener)
+  document.__dropdown = true
 }
 
 window.addEventListener('load', installDropdowns)
