@@ -4,7 +4,7 @@ defmodule VacEngineWeb.BlueprintLive.Edit do
   import VacEngineWeb.PermissionHelpers, only: [can!: 3]
   alias VacEngine.Processor
 
-  on_mount(VacEngineWeb.LivePermissions)
+  on_mount(VacEngineWeb.LiveRole)
 
   @impl true
   def mount(%{"blueprint_id" => blueprint_id}, _session, socket) do

@@ -7,8 +7,7 @@ defmodule VacEngine.Repo.Migrations.CreateGlobalPermissions do
 
       add(:role_id, references(:roles, on_delete: :delete_all), null: false)
 
-      add(:workspaces, :permissions, null: false)
-      add(:users, :permissions, null: false)
+      add(:super_admin, :boolean, null: false, default: false)
     end
 
     create(index(:global_permissions, [:role_id], unique: true))

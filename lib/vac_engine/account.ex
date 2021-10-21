@@ -1,10 +1,19 @@
 defmodule VacEngine.Account do
   alias VacEngine.Account.Permissions
 
-  defdelegate toggle_permission(user_role, path), to: Permissions
-  defdelegate grant_permission(user_role, path), to: Permissions
-  defdelegate revoke_permission(user_role, path), to: Permissions
-  defdelegate has_permission?(user_role, path), to: Permissions
+  defdelegate toggle_permission(role, action, scope), to: Permissions
+  defdelegate toggle_permission(role, action), to: Permissions
+  defdelegate grant_permission(role, action, scope), to: Permissions
+  defdelegate grant_permission(role, action), to: Permissions
+  defdelegate revoke_permission(role, action, scope), to: Permissions
+  defdelegate revoke_permission(role, action), to: Permissions
+  defdelegate has_permission?(role, action, scope), to: Permissions
+  defdelegate has_permission?(role, action), to: Permissions
+
+  alias VacEngine.Account.Policy
+
+  defdelegate can?(role, action, scope), to: Policy
+  defdelegate can?(role, action), to: Policy
 
   alias VacEngine.Account.Workspaces
 

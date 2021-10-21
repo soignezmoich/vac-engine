@@ -1,11 +1,9 @@
 <section class="p-4">
   <h1 class="font-bold text-xl mb-6">Users</h1>
-  <%= if can?(@role_session, :users, :write) do %>
-    <%= live_redirect("Create user",
-          to: Routes.live_path(@socket, UserLive.New),
-          class: "inline-block mb-4 btn-default"
-        ) %>
-  <% end %>
+  <%= live_redirect("Create user",
+        to: Routes.live_path(@socket, UserLive.New),
+        class: "inline-block mb-4 btn-default"
+      ) %>
   <table class="listing-table">
     <thead>
       <th>Name</th>

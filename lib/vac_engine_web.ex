@@ -40,13 +40,25 @@ defmodule VacEngineWeb do
 
       # Include shared imports and aliases for views
       unquote(view_helpers())
+      unquote(components())
     end
   end
 
   def live_view do
     quote do
       use Phoenix.LiveView,
-        container: {:div, class: "flex flex-col max-w-full min-w-full"}
+        namespace: VacEngineWeb,
+        container: {:div, class: "flex flex-col w-full h-full flex-grow"},
+        layout: {VacEngineWeb.LayoutView, "live.html"}
+
+      unquote(view_helpers())
+      unquote(components())
+    end
+  end
+
+  def component do
+    quote do
+      use Phoenix.Component
 
       unquote(view_helpers())
     end
@@ -89,6 +101,17 @@ defmodule VacEngineWeb do
       import VacEngineWeb.FormHelpers
       import VacEngineWeb.FormatHelpers
       alias VacEngineWeb.BlueprintLive
+    end
+  end
+
+  defp components do
+    quote do
+      import VacEngineWeb.ButtonComponent
+      import VacEngineWeb.ToggleComponent
+      import VacEngineWeb.HeaderComponent
+      import VacEngineWeb.TextCardComponent
+      import VacEngineWeb.LoaderCardComponent
+      import VacEngineWeb.FlexCenterComponent
     end
   end
 

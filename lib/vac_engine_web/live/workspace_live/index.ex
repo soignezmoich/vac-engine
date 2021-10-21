@@ -4,7 +4,7 @@ defmodule VacEngineWeb.WorkspaceLive.Index do
   import VacEngineWeb.PermissionHelpers, only: [can!: 3]
   alias VacEngine.Account
 
-  on_mount(VacEngineWeb.LivePermissions)
+  on_mount(VacEngineWeb.LiveRole)
 
   @impl true
   def mount(_params, _session, socket) do

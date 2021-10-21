@@ -5,17 +5,27 @@ PATH := ./node_modules/.bin:$(PATH)
 .PHONY: build
 
 build: export NODE_ENV=production
-build: node_modules js optimize
+build: node_modules js css optimize
 
-.PHONY: watch
+.PHONY: js-watch
 
-watch: node_modules
-	./build.js watch
+js-watch: node_modules
+	./build.js watch js
+
+.PHONY: css-watch
+
+css-watch: node_modules
+	./build.js watch css
 
 .PHONY: js
 
 js: node_modules
-	./build.js
+	./build.js js
+
+.PHONY: css
+
+css: node_modules
+	./build.js css
 
 .PHONY: optimize
 optimize: node_modules

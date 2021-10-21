@@ -4,21 +4,25 @@ defmodule VacEngineWeb.PermissionHelpers do
   alias VacEngine.Account.Session
   alias VacEngine.Account
 
-  def can?(%Role{} = role, name, key) do
-    Account.has_permission?(role, [:global, name, key])
+  def can?(target, action) do
+    can?(target, action, :global)
+  end
+
+  def can?(%Role{} = role, action, scope) do
+    Account.can?(role, action, scope)
   end
 
   def can?(
         %Phoenix.LiveView.Socket{assigns: %{role_session: %{role: role}}} =
           _socket,
-        name,
-        key
+        action,
+        scope
       ) do
-    can?(role, name, key)
+    can?(role, action, scope)
   end
 
-  def can?(%Session{role: role}, name, key) do
-    Account.has_permission?(role, [:global, name, key])
+  def can?(%Session{role: role}, action, scope) do
+    can?(role, action, scope)
   end
 
   def can?(_val, _name, _key), do: false
@@ -27,8 +31,12 @@ defmodule VacEngineWeb.PermissionHelpers do
     role_id(a) == role_id(b)
   end
 
-  def can!(val, name, key) do
-    unless can?(val, name, key) do
+  def can!(val, action) do
+    can!(val, action, :global)
+  end
+
+  def can!(val, action, scope) do
+    unless can?(val, action, scope) do
       denied!()
     end
   end

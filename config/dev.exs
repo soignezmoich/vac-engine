@@ -17,7 +17,8 @@ config :vac_engine, VacEngineWeb.Endpoint,
   code_reloader: true,
   check_origin: false,
   watchers: [
-    make: ["assets-watch"]
+    make: ["js-watch"],
+    make: ["css-watch"]
   ]
 
 config :vac_engine, login_delay: 100
@@ -52,7 +53,7 @@ config :vac_engine, VacEngineWeb.Endpoint,
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/vac_engine_web/(live|views)/.*(ex)$",
+      ~r"lib/vac_engine_web/(components|live|views)/.*(ex)$",
       ~r"lib/vac_engine_web/templates/.*(eex)$"
     ]
   ]

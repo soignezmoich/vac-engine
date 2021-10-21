@@ -10,7 +10,6 @@ defmodule VacEngineWeb.Router do
     plug(:put_secure_browser_headers)
     plug(:fetch_role_session)
     plug(:put_root_layout, {VacEngineWeb.LayoutView, :root})
-    plug(:put_layout, false)
     plug(:no_cache)
   end
 

@@ -1,15 +1,10 @@
 defmodule VacEngineWeb.UserLive.Index do
-  use Phoenix.LiveView,
-    container: {:div, class: "flex flex-col max-w-full min-w-full"}
+  use VacEngineWeb, :live_view
 
-  import VacEngineWeb.PermissionHelpers, only: [can!: 3]
-  alias VacEngineWeb.UserView
+  alias VacEngineWeb.UserLive
   alias VacEngine.Account
 
-  on_mount(VacEngineWeb.LivePermissions)
-
-  @impl true
-  def render(assigns), do: UserView.render("index.html", assigns)
+  on_mount(VacEngineWeb.LiveRole)
 
   @impl true
   def mount(_params, _session, socket) do

@@ -1,4 +1,8 @@
 <section class="p-4">
+  <%= live_redirect("← Back to list",
+        to: Routes.live_path(@socket, UserLive.Index),
+        class: "inline-block mb-4 btn"
+      ) %>
   <h1 class="font-bold text-xl mb-4">
     User details
     <%= if !@edit do %>
@@ -25,13 +29,12 @@
                   class="btn-sm">Hide</button>
         </div>
       <% else %>
-        <%= component(&button/1,
-              class: "btn-sm mr-4",
-              key: "generate_password",
-              click: "generate_password",
-              label: "Regenerate password",
-              tooltip_key: @current_tooltip
-        ) %>
+        <.button
+              class="btn-sm mr-4"
+              key="generate_password"
+              click="generate_password"
+              label="Regenerate password"
+              tooltip_key={ @current_tooltip} />
       <% end %>
     </div>
 
@@ -48,12 +51,15 @@
 
   <h2 class="font-bold text-lg mb-4 mt-6">Profile</h2>
 
-  <%= f = form_for @changeset, "#", [
-    id: "new_user_form",
-    class: "flex flex-col w-128",
-    phx_throttle: 100,
-    phx_change: "validate",
-    phx_submit: "update"] %>
+  <.form
+    let={f}
+    for={@changeset}
+    id="new_user_form"
+    class="flex flex-col w-128"
+    phx_throttle="100"
+    phx_change="validate"
+    phx_submit="update">
+
     <%= label_line_tag f, :name, "Full name" %>
     <%= text_input f, :name, class: "form-fld mb-4", autofocus: true, readonly: !@edit %>
 
@@ -69,72 +75,32 @@
     <%= if @edit do %>
       <%= submit "Update", class: "btn-default", phx_disable_with: "Creation in progress..." %>
     <% end %>
-  </form>
+
+  </.form>
 
   <h2 class="font-bold text-lg mb-4 mt-6">Permissions</h2>
   <h3 class="font-bold  mb-3 mt-4">Global</h3>
   <table class="permissions-table">
     <thead>
       <th></th>
-      <th>Read</th>
-      <th>Write</th>
+      <th>&nbsp;</th>
     </thead>
     <tbody>
       <tr>
-        <td>Users</td>
-        <%= if @edit do %>
-          <td>
-            <%= component(&toggle/1,
-                  value: @user.role.global_permission.users.read,
-                  click: "toggle_permission",
-                  key: "global.users.read",
-                  tooltip_key: @current_tooltip
-                ) %>
-          </td>
-          <td>
-            <%= component(&toggle/1,
-                  value: @user.role.global_permission.users.write,
-                  click: "toggle_permission",
-                  key: "global.users.write",
-                  tooltip_key: @current_tooltip
-                ) %>
-          </td>
-        <% else %>
-          <td class="text-center">
-            <%= format_bool(@user.role.global_permission.users.read) %>
-          </td>
-          <td class="text-center">
-            <%= format_bool(@user.role.global_permission.users.write) %>
-          </td>
-        <% end %>
-      </tr>
-      <tr>
-        <td>Workspaces</td>
-        <%= if @edit do %>
-          <td>
-            <%= component(&toggle/1,
-                  value: @user.role.global_permission.workspaces.read,
-                  click: "toggle_permission",
-                  key: "global.workspaces.read",
-                  tooltip_key: @current_tooltip
-                ) %>
-          </td>
-          <td>
-            <%= component(&toggle/1,
-                  value: @user.role.global_permission.workspaces.write,
-                  click: "toggle_permission",
-                  key: "global.workspaces.write",
-                  tooltip_key: @current_tooltip
-                ) %>
-          </td>
-        <% else %>
-          <td class="text-center">
-            <%= format_bool(@user.role.global_permission.workspaces.read) %>
-          </td>
-          <td class="text-center">
-            <%= format_bool(@user.role.global_permission.workspaces.write) %>
-          </td>
-        <% end %>
+        <td>Super admin</td>
+        <td>
+          <%= if @edit do %>
+          <.toggle
+              value={@user.role.global_permission.super_admin}
+              click="toggle_permission"
+              key="global.super_admin"
+              tooltip_key={@current_tooltip} />
+          <% else %>
+            <span class="font-bold">
+              <%= format_bool(@user.role.global_permission.super_admin) %>
+            </span>
+          <% end %>
+        </td>
       </tr>
     </tbody>
   </table>
@@ -196,3 +162,4 @@
   <% end %>
   <div class="mb-6"></div>
 </section>
+

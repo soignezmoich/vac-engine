@@ -17,6 +17,19 @@ defmodule VacEngineWeb.ErrorHelpers do
     end)
   end
 
+  def has_error?(form, field) do
+    field_error(form, field) |> is_nil() |> Kernel.not()
+  end
+
+  def field_error(form, field) do
+    form.errors
+    |> Keyword.get_values(field)
+    |> case do
+      [msg | _] -> translate_error(msg)
+      _ -> nil
+    end
+  end
+
   @doc """
   Translates an error message using gettext.
   """

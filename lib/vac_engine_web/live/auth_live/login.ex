@@ -1,26 +1,43 @@
 defmodule VacEngineWeb.AuthLive.Login do
-  use Phoenix.LiveView,
-    container: {:div, class: "flex flex-col max-w-full min-w-full"}
+  use VacEngineWeb, :live_view
 
-  alias VacEngineWeb.AuthView
+  import VacEngineWeb.AuthLive.LoginFormComponent
   alias VacEngine.Account
-  alias VacEngineWeb.Router.Helpers, as: Routes
 
-  @impl true
-  def render(assigns), do: AuthView.render("login.html", assigns)
+  defmodule LoginForm do
+    use Ecto.Schema
+    import Ecto.Changeset
+
+    embedded_schema do
+      field(:email, :string)
+      field(:password, :string)
+    end
+
+    def changeset(attrs \\ %{}) do
+      %__MODULE__{}
+      |> cast(attrs, [:email, :password])
+      |> validate_required([:email, :password])
+      |> validate_length(:email, min: 3)
+      |> validate_length(:password, min: 8)
+      |> validate_format(:email, ~r/@/)
+    end
+
+    def error_changeset(data) do
+      data
+      |> cast(%{}, [:email, :password])
+      |> add_error(:password, "is invalid")
+    end
+  end
 
   @impl true
   def mount(_params, session, socket) do
     {:ok,
      assign(socket,
-       email: nil,
-       password: nil,
-       show_password: false,
+       connected: connected?(socket),
+       changeset: LoginForm.changeset(),
        next_url: Map.get(session, "login_next_url", "/"),
-       password_error: false,
-       email_error: false,
-       login_disabled: true,
-       success: false
+       success: false,
+       show_password: false
      )}
   end
 
@@ -32,36 +49,32 @@ defmodule VacEngineWeb.AuthLive.Login do
   @impl true
   def handle_event(
         "validate",
-        %{"credentials" => %{"email" => email, "password" => password}},
+        %{"login_form" => attrs},
         socket
       ) do
-    {:noreply,
-     assign(socket,
-       email: email,
-       password: password,
-       email_error: false,
-       password_error: false,
-       login_disabled: String.length(email) <= 3 || String.length(password) <= 6
-     )}
+    changeset =
+      attrs
+      |> LoginForm.changeset()
+
+    {:noreply, assign(socket, changeset: changeset)}
   end
 
   @impl true
   def handle_event(
         "login",
-        %{"credentials" => %{"email" => email, "password" => password}},
+        %{"login_form" => attrs},
         socket
       ) do
-    if String.match?(email, ~r/.*@.*/) do
-      check_user(email, password, socket)
-    else
-      {:noreply,
-       assign(socket,
-         email: email,
-         password: password,
-         email_error: true,
-         password_error: false,
-         login_disabled: true
-       )}
+    attrs
+    |> LoginForm.changeset()
+    |> Ecto.Changeset.apply_action(:insert)
+    |> case do
+      {:ok, data} ->
+        LoginForm.changeset(attrs)
+        check_user(data, socket)
+
+      {:error, changeset} ->
+        {:noreply, assign(socket, changeset: changeset)}
     end
   end
 
@@ -75,7 +88,7 @@ defmodule VacEngineWeb.AuthLive.Login do
     {:noreply, redirect(socket, to: url)}
   end
 
-  defp check_user(email, password, socket) do
+  defp check_user(%{email: email, password: password} = data, socket) do
     Account.check_user(email, password)
     |> case do
       {:ok, user} ->
@@ -97,14 +110,11 @@ defmodule VacEngineWeb.AuthLive.Login do
         {:noreply, assign(socket, success: true)}
 
       _ ->
-        {:noreply,
-         assign(socket,
-           email: email,
-           password: password,
-           email_error: false,
-           password_error: true,
-           login_disabled: true
-         )}
+        {:error, changeset} =
+          LoginForm.error_changeset(data)
+          |> Ecto.Changeset.apply_action(:insert)
+
+        {:noreply, assign(socket, changeset: changeset)}
     end
   end
 end

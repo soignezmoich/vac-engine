@@ -1,5 +1,5 @@
 defmodule VacEngineWeb.ButtonComponent do
-  use Phoenix.Component
+  use VacEngineWeb, :component
 
   def button(assigns) do
     ~H"""

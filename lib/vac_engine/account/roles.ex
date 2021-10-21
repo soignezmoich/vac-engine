@@ -4,7 +4,7 @@ defmodule VacEngine.Account.Roles do
   alias VacEngine.Repo
   alias VacEngine.Account.Session
   alias VacEngine.Account.Role
-  alias VacEngine.Account.Permissions
+  alias VacEngine.Account.GlobalPermission
   alias VacEngine.Pub
 
   def create_role_multi(type, attrs \\ %{}) do
@@ -13,8 +13,8 @@ defmodule VacEngine.Account.Roles do
       %Role{active: true, type: type}
       |> Role.changeset(attrs)
     end)
-    |> Multi.merge(fn %{role: role} ->
-      Permissions.global_permissions_multi(role)
+    |> Multi.insert(:global_permissions, fn %{role: role} ->
+      %GlobalPermission{role_id: role.id}
     end)
   end
 
@@ -61,6 +61,10 @@ defmodule VacEngine.Account.Roles do
     )
     |> Multi.run(:refresh_cache, fn _repo, _ctx ->
       Pub.refresh_cache_api_keys()
+      |> case do
+        :ok -> {:ok, nil}
+        _ -> {:error, "cannot refresh cache"}
+      end
     end)
     |> Repo.transaction()
     |> case do

@@ -7,7 +7,7 @@
 
     <title>VacEngine</title>
 
-    <link href="/css/app.css" rel="stylesheet" />
+    <link href="/assets/css/app.css" rel="stylesheet" />
   </head>
   <body class="bg-cream-50 flex flex-col min-h-full h-full min-w-full w-full">
     <main class="flex flex-grow text-cream-900">

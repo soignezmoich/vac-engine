@@ -79,10 +79,15 @@ prod-test-server: release
 assets:
 	cd assets && make build
 
-.PHONY: assets-watch
+.PHONY: js-watch
 
-assets-watch:
-	cd assets && make watch
+js-watch:
+	cd assets && make js-watch
+
+.PHONY: css-watch
+
+css-watch:
+	cd assets && make css-watch
 
 .PHONY: db
 

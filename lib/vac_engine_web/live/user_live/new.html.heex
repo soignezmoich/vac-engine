@@ -1,12 +1,18 @@
 <section class="p-4">
+  <%= live_redirect("← Back to list",
+        to: Routes.live_path(@socket, UserLive.Index),
+        class: "inline-block mb-4 btn"
+      ) %>
   <h1 class="font-bold text-xl mb-6">Create user</h1>
 
-  <%= f = form_for @changeset, "#", [
-    id: "new_user_form",
-    class: "flex flex-col w-128",
-    phx_throttle: 100,
-    phx_change: "validate",
-    phx_submit: "create"] %>
+  <.form
+    let={f}
+    for={@changeset}
+    id="new_user_form"
+    class="flex flex-col w-128"
+    phx_throttle="100"
+    phx_change="validate"
+    phx_submit="create">
 
     <%= label_line_tag f, :name, "Full name" %>
     <%= text_input f, :name, class: "form-fld mb-4", autofocus: true %>
@@ -21,6 +27,5 @@
     <%= textarea f, :description, class: "form-fld mb-4" %>
 
     <%= submit "Create", class: "btn-default", phx_disable_with: "Creation in progress..." %>
-
-  </form>
+  </.form>
 </section>

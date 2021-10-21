@@ -1,21 +1,16 @@
 defmodule VacEngineWeb.UserLive.Edit do
-  use Phoenix.LiveView,
-    container: {:div, class: "flex flex-col max-w-full min-w-full"}
+  use VacEngineWeb, :live_view
 
   import VacEngineWeb.PermissionHelpers
-  alias VacEngineWeb.UserView
   alias VacEngine.Account
   alias VacEngineWeb.Router.Helpers, as: Routes
   alias VacEngineWeb.UserLive
 
-  on_mount(VacEngineWeb.LivePermissions)
-
-  @impl true
-  def render(assigns), do: UserView.render("edit.html", assigns)
+  on_mount(VacEngineWeb.LiveRole)
 
   @impl true
   def mount(%{"user_id" => uid}, _session, socket) do
-    can!(socket, :users, :read)
+    can!(socket, :admin_users)
 
     {:ok, user} = Account.fetch_user(uid)
 
@@ -56,7 +51,7 @@ defmodule VacEngineWeb.UserLive.Edit do
         %{assigns: %{user: user}} = socket
       ) do
     not_self!(socket, user)
-    can!(socket, :users, :write)
+    can!(socket, :admin_users)
 
     Account.update_user(socket.assigns.user, params)
     |> case do
@@ -77,7 +72,7 @@ defmodule VacEngineWeb.UserLive.Edit do
         %{assigns: %{current_tooltip: key, user: user}} = socket
       ) do
     not_self!(socket, user)
-    can!(socket, :users, :write)
+    can!(socket, :admin_users)
 
     pass = Account.generate_secret(8)
 
@@ -116,7 +111,7 @@ defmodule VacEngineWeb.UserLive.Edit do
         %{assigns: %{current_tooltip: permission, user: user}} = socket
       ) do
     not_self!(socket, user)
-    can!(socket, :users, :write)
+    can!(socket, :admin_users)
 
     {:ok, _role} = Account.toggle_permission(user.role, permission)
 
@@ -144,7 +139,7 @@ defmodule VacEngineWeb.UserLive.Edit do
         %{assigns: %{current_tooltip: key, user: user}} = socket
       ) do
     not_self!(socket, user)
-    can!(socket, :users, :write)
+    can!(socket, :admin_users)
 
     "revoke_session_" <> session_id = key
 
@@ -177,7 +172,7 @@ defmodule VacEngineWeb.UserLive.Edit do
         %{assigns: %{current_tooltip: key, user: user}} = socket
       ) do
     not_self!(socket, user)
-    can!(socket, :users, :write)
+    can!(socket, :admin_users)
 
     {:ok, role} =
       if user.role.active do

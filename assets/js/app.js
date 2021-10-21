@@ -56,10 +56,70 @@ Hooks.clipboardCopy = {
   copy (evt) {
     const text = this.el.innerHTML.trim()
     const r = this.el.getBoundingClientRect()
-    this.el.style.width = r.width + "px"
+    this.el.style.width = r.width + 'px'
     navigator.clipboard.writeText(text).then(() => {
-      this.el.innerHTML = "copied!"
+      this.el.innerHTML = 'copied!'
       setTimeout(() => this.el.innerHTML = text, 1500)
     })
   }
 }
+
+function get_classes (el) {
+  const classes = el
+    .getAttribute("class")
+    .split(/\s/)
+    .map((c) => c.trim())
+    .filter((c) => c.length > 0)
+
+  return classes
+}
+
+function removeClass (el, name) {
+  const classes = get_classes(el)
+    .filter((c) => c != name)
+    .join(" ")
+
+  el.setAttribute("class", classes)
+}
+
+function addClass (el, name) {
+  const classes = get_classes(el)
+    .filter((c) => c != name)
+    .concat([name])
+    .join(" ")
+
+  el.setAttribute("class", classes)
+}
+
+function closeDropdown(el) {
+  if (!el.__close) return
+  const target = document.getElementById(el.dataset.dropdown)
+
+  removeClass(el, "bg-blue-600")
+  removeClass(el, "text-gray-100")
+  addClass(target, "hidden")
+  document.removeEventListener("click", el.__close)
+}
+
+function openDropdown(el) {
+  const target = document.getElementById(el.dataset.dropdown)
+
+  addClass(el, "bg-blue-600")
+  addClass(el, "text-gray-100")
+  removeClass(target, "hidden")
+  el.__close = () => closeDropdown(el)
+  setTimeout(() => document.addEventListener("click", el.__close), 0)
+}
+
+function installDropdowns () {
+  const els = document.querySelectorAll("[data-dropdown]")
+
+  for (let el of els) {
+    if (el.__dropdown) continue
+    el.addEventListener("click", () => openDropdown(el))
+    el.__dropdown = true
+  }
+}
+
+window.addEventListener('load', installDropdowns)
+window.addEventListener("phx:page-loading-stop", installDropdowns)

@@ -1,114 +1,165 @@
 defmodule VacEngine.Account.Permissions do
   alias Ecto.Multi
+  import Ecto.Query
   alias VacEngine.Repo
   alias VacEngine.Account.GlobalPermission
-  alias VacEngine.Account.Role
+  alias VacEngine.Account.WorkspacePermission
+  alias VacEngine.Account.Workspace
+  alias VacEngine.Account.BlueprintPermission
+  alias VacEngine.Processor.Blueprint
 
-  def global_permissions_multi(role) do
-    Multi.new()
-    |> Multi.insert(:global_permissions, fn _ ->
-      GlobalPermission.new(role)
-    end)
+  def grant_permission(role, key) when is_binary(key) do
+    {action, scope} = break_key(key)
+    grant_permission(role, action, scope)
   end
 
-  def has_permission?(%Role{} = role, path) do
-    check_permission(role, path)
+  def grant_permission(role, action) do
+    grant_permission(role, action, :global)
   end
 
-  def grant_permission(%Role{} = role, path) do
-    change_permission(role, path, true)
+  def grant_permission(role, action, scope) do
+    change_permission(role, scope, %{action => true})
   end
 
-  def revoke_permission(%Role{} = role, path) do
-    change_permission(role, path, false)
+  def revoke_permission(role, key) when is_binary(key) do
+    {action, scope} = break_key(key)
+    revoke_permission(role, action, scope)
   end
 
-  def toggle_permission(%Role{} = role, path) do
-    change_permission(role, path, :toggle)
+  def revoke_permission(role, action) do
+    revoke_permission(role, action, :global)
   end
 
-  defp change_permission(role, path, value) when is_binary(path) do
-    String.split(path, ".")
+  def revoke_permission(role, action, scope) do
+    change_permission(role, scope, %{action => false})
+  end
+
+  def toggle_permission(role, key) when is_binary(key) do
+    {action, scope} = break_key(key)
+    toggle_permission(role, action, scope)
+  end
+
+  def toggle_permission(role, action) do
+    toggle_permission(role, action, :global)
+  end
+
+  def toggle_permission(role, action, scope) do
+    change_permission(role, scope, %{action => :toggle})
+  end
+
+  def has_permission?(role, action) do
+    has_permission?(role, action, :global)
+  end
+
+  # TODO implement
+  def has_permission?(_role, _action, _scope) do
+    false
+  end
+
+
+  defp break_key(key) do
+    key
+    |> String.split(".")
     |> case do
-      ["global", name, key] ->
-        change_permission(
-          role,
-          [
-            :global,
-            String.to_existing_atom(name),
-            String.to_existing_atom(key)
-          ],
-          value
-        )
-
-      _ ->
-        {:error, "not implemented"}
+      ["global", action] -> {action, :global}
+      ["workspace", id, action] -> {action, {:workspace, id}}
+      ["blurptint", id, action] -> {action, {:blueprint, id}}
+      _ -> {nil, nil}
     end
   end
 
-  defp change_permission(role, [:global, name, key], value) do
+  defp change_permission(_role, nil, _) do
+    {:error, "permission scope not found"}
+  end
+
+  defp change_permission(role, :global, attrs) do
     Multi.new()
     |> Multi.run(:perm, fn repo, _changes ->
-      {:ok,
-       repo.get_by(GlobalPermission, role_id: role.id) ||
-         GlobalPermission.new(role)}
+      {:ok, repo.get_by!(GlobalPermission, role_id: role.id)}
+    end)
+    |> Multi.update(:update, fn %{perm: perm} ->
+      GlobalPermission.changeset(perm, bake_toggle(perm, attrs))
+    end)
+    |> transaction()
+  end
+
+  defp change_permission(role, {:workspace, wid}, attrs) do
+    Multi.new()
+    |> Multi.run(:workspace_id, fn repo, _changes ->
+      from(r in Workspace, where: r.id == ^wid, select: r.id)
+      |> repo.one
+      |> case do
+        nil -> {:error, "workspace not found"}
+        wid -> {:ok, wid}
+      end
+    end)
+    |> Multi.run(:perm, fn repo, %{workspace_id: workspace_id} ->
+      perm =
+        repo.get_by(WorkspacePermission,
+          role_id: role.id,
+          workspace_id: workspace_id
+        ) ||
+          %WorkspacePermission{role_id: role.id, workspace_id: workspace_id}
+
+      {:ok, perm}
     end)
     |> Multi.insert_or_update(:update, fn %{perm: perm} ->
-      value =
-        if value == :toggle do
-          !(Map.get(perm, name) |> Map.get(key))
-        else
-          value
-        end
-
-      values =
-        Map.get(perm, name)
-        |> Map.put(key, value)
-
-      values =
-        cond do
-          value == false && key == :read ->
-            %{write: false, delegate: false, delete: false, read: false}
-
-          value == true && key != :read ->
-            Map.put(values, :read, true)
-
-          true ->
-            values
-        end
-
-      GlobalPermission.changeset(perm, %{
-        Atom.to_string(name) => values
-      })
+      WorkspacePermission.changeset(perm, bake_toggle(perm, attrs))
     end)
+    |> transaction()
+  end
+
+  defp change_permission(role, {:blueprint, bid}, attrs) do
+    Multi.new()
+    |> Multi.run(:workspace_id, fn repo, _changes ->
+      from(r in Blueprint, where: r.id == ^bid, select: {r.id, r.workspace_id})
+      |> repo.one
+      |> case do
+        nil -> {:error, "blueprint not found"}
+        ids -> {:ok, ids}
+      end
+    end)
+    |> Multi.run(:perm, fn repo, %{ids: {blueprint_id, workspace_id}} ->
+      perm =
+        repo.get_by(BlueprintPermission,
+          role_id: role.id,
+          blueprint_id: workspace_id
+        ) ||
+          %BlueprintPermission{
+            role_id: role.id,
+            blueprint_id: blueprint_id,
+            workspace_id: workspace_id
+          }
+
+      {:ok, perm}
+    end)
+    |> Multi.insert_or_update(:update, fn %{perm: perm} ->
+      BlueprintPermission.changeset(perm, bake_toggle(perm, attrs))
+    end)
+    |> transaction()
+  end
+
+  defp bake_toggle(perm, attrs) do
+    attrs
+    |> Enum.map(fn
+      {action, :toggle} ->
+        {action, !Map.get(perm, String.to_existing_atom(action))}
+
+      e ->
+        e
+    end)
+    |> Map.new()
+  rescue
+    _ ->
+    attrs
+  end
+
+  defp transaction(multi) do
+    multi
     |> Repo.transaction()
     |> case do
-      {:ok, _} -> {:ok, role}
+      {:ok, %{perm: perm}} -> {:ok, perm}
       err -> err
     end
-  end
-
-  defp check_permission(role, path) when is_binary(path) do
-    String.split(path, ".")
-    |> case do
-      ["global", name, key] ->
-        check_permission(
-          role,
-          [
-            :global,
-            String.to_existing_atom(name),
-            String.to_existing_atom(key)
-          ]
-        )
-
-      _ ->
-        false
-    end
-  end
-
-  defp check_permission(role, [:global, name, key]) do
-    role.global_permission
-    |> Map.get(name)
-    |> Map.get(key)
   end
 end

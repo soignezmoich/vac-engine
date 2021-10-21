@@ -14,6 +14,7 @@ blueprint = Blueprints.blueprints() |> Map.get(:ruleset0)
   VacEngine.Repo.transaction(fn ->
     email = "admin@admin.com"
     pass = Account.generate_secret(8) |> String.downcase() |> String.slice(0..8)
+    pass = "12341234"
 
     {:ok, user} =
       Account.create_user(%{
@@ -22,11 +23,7 @@ blueprint = Blueprints.blueprints() |> Map.get(:ruleset0)
         "password" => pass
       })
 
-    {:ok, _role} =
-      Account.grant_permission(user.role, [:global, :users, :write])
-
-    {:ok, _role} =
-      Account.grant_permission(user.role, [:global, :workspaces, :write])
+    {:ok, _perm} = Account.grant_permission(user.role, :super_admin)
 
     {:ok, workspace} = Account.create_workspace(%{name: "Test workspace"})
 
@@ -41,8 +38,7 @@ blueprint = Blueprints.blueprints() |> Map.get(:ruleset0)
     {:ok, _publication} = Pub.publish_blueprint(blueprint)
 
     {:ok, role} = Account.create_role(:api)
-    {:ok, role} = Account.grant_permission(role, [:global, :users, :read])
-    {:ok, role} = Account.grant_permission(role, [:global, :workspaces, :read])
+    {:ok, _perm} = Account.grant_permission(role, :super_admin)
     {:ok, api_token} = Account.create_api_token(role)
 
     IO.puts("###########################")

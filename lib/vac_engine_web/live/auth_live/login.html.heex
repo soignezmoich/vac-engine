@@ -1,0 +1,10 @@
+<.flex_center>
+  <%= cond do %>
+  <% not @connected -> %>
+    <.text_card title="Connecting" text="Please wait while the page is connecting."/>
+  <% @success -> %>
+    <.loader_card title="Login successful" text="Application loading in progress"/>
+  <% true -> %>
+    <.login_form changeset={@changeset} show_password={@show_password} />
+  <% end %>
+</.flex_center>

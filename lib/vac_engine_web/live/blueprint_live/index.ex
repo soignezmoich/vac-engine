@@ -5,7 +5,7 @@ defmodule VacEngineWeb.BlueprintLive.Index do
   alias VacEngine.Processor
   alias VacEngine.Account
 
-  on_mount(VacEngineWeb.LivePermissions)
+  on_mount(VacEngineWeb.LiveRole)
 
   @impl true
   def mount(%{"workspace_id" => workspace_id}, _session, socket) do
