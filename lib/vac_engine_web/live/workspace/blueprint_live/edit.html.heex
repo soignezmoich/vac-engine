@@ -18,7 +18,11 @@
       <%= inspect(blueprint, pretty: true) |> String.slice(0..100) %>
       </pre>
     <% :deductions -> %>
-      <p>Deductions tab</p>
+      <Deductions.deductions
+        deductions={@blueprint.deductions}
+        variables={@blueprint.variables}
+        path={["deductions"]} 
+        selection_path={nil} />
     <% end %>
     </div>
   </section>

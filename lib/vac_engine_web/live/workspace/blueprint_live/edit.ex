@@ -5,6 +5,7 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.Edit do
   import VacEngineWeb.Workspace.BlueprintLive.TabComponent
 
   alias VacEngine.Processor
+  alias VacEngineWeb.Editor.Deductions
   alias VacEngineWeb.Editor.VariablesSection
 
   on_mount(VacEngineWeb.LiveRole)
