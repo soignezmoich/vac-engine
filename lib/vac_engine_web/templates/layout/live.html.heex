@@ -1,4 +1,8 @@
-<.header role={Map.get(assigns, :role)} />
+<.header role={Map.get(assigns, :role)}
+  workspaces={Map.get(assigns, :workspaces)}
+  workspace={Map.get(assigns, :workspace)}
+  location={Map.get(assigns, :location)}
+/>
 <main class="flex flex-grow bg-cream-50 text-cream-900">
   <%= @inner_content %>
 </main>

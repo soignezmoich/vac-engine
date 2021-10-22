@@ -47,16 +47,6 @@ defmodule VacEngine.Account.Permissions do
     change_permission(role, scope, %{action => :toggle})
   end
 
-  def has_permission?(role, action) do
-    has_permission?(role, action, :global)
-  end
-
-  # TODO implement
-  def has_permission?(_role, _action, _scope) do
-    false
-  end
-
-
   defp break_key(key) do
     key
     |> String.split(".")
@@ -151,7 +141,7 @@ defmodule VacEngine.Account.Permissions do
     |> Map.new()
   rescue
     _ ->
-    attrs
+      attrs
   end
 
   defp transaction(multi) do

@@ -33,6 +33,7 @@ module.exports = {
         cream: genShades(60, 20),
         gray: genShades(60, 5),
         red: genShades(0, 70),
+        error: genShades(0, 50),
         blue: genShades(255, 50)
       },
       outline: {

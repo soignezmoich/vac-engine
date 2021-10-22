@@ -1,21 +1,19 @@
-defmodule VacEngineWeb.UserLive.New do
+defmodule VacEngineWeb.WorkspaceLive.New do
   use VacEngineWeb, :live_view
 
-  import VacEngineWeb.PermissionHelpers
-  alias VacEngine.Account.User
   alias VacEngine.Account
-  alias VacEngineWeb.Router.Helpers, as: Routes
+  alias VacEngine.Account.Workspace
 
   on_mount(VacEngineWeb.LiveRole)
-  on_mount({VacEngineWeb.LiveLocation, ~w(admin user)a})
+  on_mount({VacEngineWeb.LiveLocation, ~w(admin workspace)a})
 
   @impl true
   def mount(_params, _session, socket) do
-    can!(socket, :manage, :users)
+    can!(socket, :manage, :workspaces)
 
     changeset =
-      %User{}
-      |> Account.change_user()
+      %Workspace{}
+      |> Account.change_workspace()
       |> Map.put(:action, :insert)
 
     {:ok, assign(socket, changeset: changeset)}
@@ -24,12 +22,12 @@ defmodule VacEngineWeb.UserLive.New do
   @impl true
   def handle_event(
         "validate",
-        %{"user" => params},
+        %{"workspace" => params},
         socket
       ) do
     changeset =
-      %User{}
-      |> Account.change_user(params)
+      %Workspace{}
+      |> Account.change_workspace(params)
       |> Map.put(:action, :insert)
 
     {:noreply, assign(socket, changeset: changeset)}
@@ -38,18 +36,17 @@ defmodule VacEngineWeb.UserLive.New do
   @impl true
   def handle_event(
         "create",
-        %{"user" => params},
+        %{"workspace" => params},
         socket
       ) do
-    can!(socket, :manage, :users)
-    params = Map.put(params, "password", Account.generate_secret(16))
+    can!(socket, :manage, :workspaces)
 
-    Account.create_user(params)
+    Account.create_workspace(params)
     |> case do
       {:ok, _result} ->
         {:noreply,
          socket
-         |> push_redirect(to: Routes.user_path(socket, :index))}
+         |> push_redirect(to: Routes.workspace_path(socket, :index))}
 
       {:error, changeset} ->
         {:noreply, assign(socket, changeset: changeset)}

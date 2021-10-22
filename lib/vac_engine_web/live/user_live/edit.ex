@@ -1,16 +1,17 @@
 defmodule VacEngineWeb.UserLive.Edit do
   use VacEngineWeb, :live_view
+  use VacEngineWeb.TooltipHelpers
 
   import VacEngineWeb.PermissionHelpers
   alias VacEngine.Account
   alias VacEngineWeb.Router.Helpers, as: Routes
-  alias VacEngineWeb.UserLive
 
   on_mount(VacEngineWeb.LiveRole)
+  on_mount({VacEngineWeb.LiveLocation, ~w(admin user)a})
 
   @impl true
   def mount(%{"user_id" => uid}, _session, socket) do
-    can!(socket, :admin_users)
+    can!(socket, :manage, :users)
 
     {:ok, user} = Account.fetch_user(uid)
 
@@ -51,14 +52,14 @@ defmodule VacEngineWeb.UserLive.Edit do
         %{assigns: %{user: user}} = socket
       ) do
     not_self!(socket, user)
-    can!(socket, :admin_users)
+    can!(socket, :manage, :users)
 
     Account.update_user(socket.assigns.user, params)
     |> case do
       {:ok, user} ->
         {:noreply,
          socket
-         |> push_redirect(to: Routes.live_path(socket, UserLive.Edit, user))}
+         |> push_redirect(to: Routes.user_path(socket, :edit, user))}
 
       {:error, changeset} ->
         {:noreply, assign(socket, changeset: changeset)}
@@ -72,7 +73,7 @@ defmodule VacEngineWeb.UserLive.Edit do
         %{assigns: %{current_tooltip: key, user: user}} = socket
       ) do
     not_self!(socket, user)
-    can!(socket, :admin_users)
+    can!(socket, :manage, :users)
 
     pass = Account.generate_secret(8)
 
@@ -111,7 +112,7 @@ defmodule VacEngineWeb.UserLive.Edit do
         %{assigns: %{current_tooltip: permission, user: user}} = socket
       ) do
     not_self!(socket, user)
-    can!(socket, :admin_users)
+    can!(socket, :manage, :users)
 
     {:ok, _role} = Account.toggle_permission(user.role, permission)
 
@@ -139,7 +140,7 @@ defmodule VacEngineWeb.UserLive.Edit do
         %{assigns: %{current_tooltip: key, user: user}} = socket
       ) do
     not_self!(socket, user)
-    can!(socket, :admin_users)
+    can!(socket, :manage, :users)
 
     "revoke_session_" <> session_id = key
 
@@ -172,7 +173,7 @@ defmodule VacEngineWeb.UserLive.Edit do
         %{assigns: %{current_tooltip: key, user: user}} = socket
       ) do
     not_self!(socket, user)
-    can!(socket, :admin_users)
+    can!(socket, :manage, :users)
 
     {:ok, role} =
       if user.role.active do
@@ -196,29 +197,6 @@ defmodule VacEngineWeb.UserLive.Edit do
         socket
       ) do
     {:noreply, set_tooltip(socket, key)}
-  end
-
-  @impl true
-  def handle_info(:clear_tooltip, socket) do
-    {:noreply, assign(socket, current_tooltip: nil, clear_tooltip_ref: nil)}
-  end
-
-  defp set_tooltip(socket, key) do
-    ref = Process.send_after(self(), :clear_tooltip, 2000)
-
-    socket
-    |> clear_tooltip()
-    |> assign(current_tooltip: key, clear_tooltip_ref: ref)
-  end
-
-  defp clear_tooltip(socket) do
-    if socket.assigns.clear_tooltip_ref != nil do
-      if Process.cancel_timer(socket.assigns.clear_tooltip_ref) == false do
-        raise "cannot stop timer"
-      end
-    end
-
-    assign(socket, current_tooltip: nil, clear_tooltip_ref: nil)
   end
 
   def reload_user(%{assigns: %{user: user}} = socket) do

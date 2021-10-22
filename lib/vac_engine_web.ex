@@ -71,6 +71,7 @@ defmodule VacEngineWeb do
       import VacEngineWeb.RolePlug
       import VacEngineWeb.CachePlug
       import VacEngineWeb.ApiPlug
+      import VacEngineWeb.WorkspacePlug
       import Plug.Conn
       import Phoenix.Controller
       import Phoenix.LiveView.Router
@@ -106,6 +107,7 @@ defmodule VacEngineWeb do
 
   defp components do
     quote do
+      import VacEngineWeb.FlashComponent
       import VacEngineWeb.ButtonComponent
       import VacEngineWeb.ToggleComponent
       import VacEngineWeb.HeaderComponent

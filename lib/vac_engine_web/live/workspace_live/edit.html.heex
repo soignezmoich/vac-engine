@@ -1,0 +1,27 @@
+<section class="p-4">
+  <%= live_redirect("← Back to list",
+        to: Routes.workspace_path(@socket, :index),
+        class: "inline-block mb-4 btn"
+      ) %>
+  <h1 class="font-bold text-xl mb-6"><%= @edit_workspace.name %></h1>
+
+  <h2 class="font-bold text-lg mb-4 mt-6">Base info</h2>
+
+  <.form
+    let={f}
+    for={@changeset}
+    id="edit_workspace_form"
+    class="flex flex-col w-128"
+    phx_throttle="100"
+    phx_change="validate"
+    phx_submit="update">
+
+    <%= label_line_tag f, :name, "Name" %>
+    <%= text_input f, :name, class: "form-fld mb-4", autofocus: true %>
+
+    <%= label_line_tag f, :description, "Description" %>
+    <%= textarea f, :description, class: "form-fld mb-4" %>
+
+    <%= submit "Update", class: "btn-default", phx_disable_with: "Update in progress..." %>
+  </.form>
+</section>

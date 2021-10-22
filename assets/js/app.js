@@ -93,12 +93,14 @@ function addClass (el, name) {
 
 function closeListener (evt) {
   let current = evt.target
-  if (!current) return
+
   while (current && current != document.body) {
-    if (current.dataset.dropdown && current.dataset.open) return
+    if (current.dataset.dropdown && current.id == document.__currentDropdown) {
+      return
+    }
     current = current.parentElement
   }
-  const els = document.querySelectorAll("[data-dropdown][data-open]")
+  const els = document.querySelectorAll("[data-dropdown]")
   for (let el of els) {
     closeDropdown(el)
   }
@@ -107,19 +109,21 @@ function closeListener (evt) {
 function closeDropdown(el) {
   const target = document.getElementById(el.dataset.dropdown)
 
-  removeClass(el, "bg-blue-600")
-  removeClass(el, "text-gray-100")
   addClass(target, "hidden")
-  delete el.dataset.open
+  document.__currentDropdown = null
 }
 
-function openDropdown(el) {
+function openDropdown(el, force) {
+  const other = document.getElementById(document.__currentDropdown)
+  if (other) {
+    closeDropdown(other)
+  }
+  if (!other && ! force) return
+
   const target = document.getElementById(el.dataset.dropdown)
 
-  addClass(el, "bg-blue-600")
-  addClass(el, "text-gray-100")
   removeClass(target, "hidden")
-  el.dataset.open = true
+  document.__currentDropdown = el.id
 }
 
 function installDropdowns () {
@@ -127,7 +131,8 @@ function installDropdowns () {
 
   for (let el of els) {
     if (el.__dropdown) continue
-    el.addEventListener("click", () => openDropdown(el))
+    el.addEventListener("click", () => openDropdown(el, true))
+    el.addEventListener("mouseover", () => openDropdown(el, false))
     el.__dropdown = true
   }
   if (document.__dropdown) return

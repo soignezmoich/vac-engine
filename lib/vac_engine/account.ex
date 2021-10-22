@@ -7,19 +7,22 @@ defmodule VacEngine.Account do
   defdelegate grant_permission(role, action), to: Permissions
   defdelegate revoke_permission(role, action, scope), to: Permissions
   defdelegate revoke_permission(role, action), to: Permissions
-  defdelegate has_permission?(role, action, scope), to: Permissions
-  defdelegate has_permission?(role, action), to: Permissions
 
-  alias VacEngine.Account.Policy
+  alias VacEngine.Account.Can
 
-  defdelegate can?(role, action, scope), to: Policy
-  defdelegate can?(role, action), to: Policy
+  defdelegate can?(role, action, scope), to: Can
+  defdelegate can?(role, action), to: Can
 
   alias VacEngine.Account.Workspaces
 
   defdelegate list_workspaces(), to: Workspaces
+  defdelegate fetch_workspace(id), to: Workspaces
   defdelegate create_workspace(attrs), to: Workspaces
   defdelegate get_workspace!(id), to: Workspaces
+  defdelegate available_workspaces(role), to: Workspaces
+  defdelegate change_workspace(data, attrs \\ %{}), to: Workspaces
+  defdelegate update_workspace(data, attrs), to: Workspaces
+  defdelegate delete_workspace(data), to: Workspaces
 
   alias VacEngine.Account.Users
 

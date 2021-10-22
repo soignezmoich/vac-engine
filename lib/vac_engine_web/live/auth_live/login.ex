@@ -99,7 +99,7 @@ defmodule VacEngineWeb.AuthLive.Login do
             {user.id, socket.assigns.next_url}
           )
 
-        url = Routes.auth_path(socket, :login, token)
+        url = Routes.login_path(socket, :login, token)
 
         Process.send_after(
           self(),

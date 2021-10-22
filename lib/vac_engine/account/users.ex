@@ -1,6 +1,7 @@
 defmodule VacEngine.Account.Users do
   import Ecto.Query
   alias Ecto.Multi
+  alias Ecto.Changeset
   alias VacEngine.Repo
   alias VacEngine.Account.User
   alias VacEngine.Account.Session
@@ -82,6 +83,11 @@ defmodule VacEngine.Account.Users do
 
   def create_user(attrs) do
     Multi.new()
+    |> Multi.run(:validate, fn _, _ ->
+      %User{}
+      |> User.changeset(attrs)
+      |> Changeset.apply_action(:insert)
+    end)
     |> Multi.append(Roles.create_role_multi(:user))
     |> Multi.insert(:user, fn %{role: role} ->
       %User{role_id: role.id}
@@ -93,7 +99,7 @@ defmodule VacEngine.Account.Users do
     |> Repo.transaction()
     |> case do
       {:ok, %{user: user, role: role}} -> {:ok, %{user | role: role}}
-      err -> err
+      {:error, _, err, _} -> {:error, err}
     end
   end
 

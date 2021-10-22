@@ -4,7 +4,7 @@ defmodule VacEngineWeb.ButtonComponent do
   def button(assigns) do
     ~H"""
     <button class={"relative " <> @class}
-         phx-click={@click}"
+         phx-click={@click}
          phx-value-key={@key}>
       <%= @label %>
       <%= if @key == @tooltip_key do %>

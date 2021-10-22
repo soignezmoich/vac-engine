@@ -1,6 +1,6 @@
 <section class="p-4">
   <%= live_redirect("← Back to list",
-        to: Routes.live_path(@socket, UserLive.Index),
+        to: Routes.user_path(@socket, :index),
         class: "inline-block mb-4 btn"
       ) %>
   <h1 class="font-bold text-xl mb-4">
@@ -54,7 +54,7 @@
   <.form
     let={f}
     for={@changeset}
-    id="new_user_form"
+    id="edit_user_form"
     class="flex flex-col w-128"
     phx_throttle="100"
     phx_change="validate"
@@ -73,7 +73,7 @@
     <%= textarea f, :description, class: "form-fld mb-4", readonly: !@edit %>
 
     <%= if @edit do %>
-      <%= submit "Update", class: "btn-default", phx_disable_with: "Creation in progress..." %>
+      <%= submit "Update", class: "btn-default", phx_disable_with: "Update in progress..." %>
     <% end %>
 
   </.form>

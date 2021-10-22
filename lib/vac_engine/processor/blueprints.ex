@@ -266,8 +266,7 @@ defmodule VacEngine.Processor.Blueprints do
 
   def list_blueprints(%Workspace{} = workspace) do
     from(b in Blueprint,
-      where: b.workspace_id == ^workspace.id,
-      select: [:id, :name, :description]
+      where: b.workspace_id == ^workspace.id
     )
     |> Repo.all()
   end

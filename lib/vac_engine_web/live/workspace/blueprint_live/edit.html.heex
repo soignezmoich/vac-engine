@@ -1,0 +1,22 @@
+<%= case @blueprint do %>
+  <% nil -> %>
+    <.flex_center>
+    <.text_card title="Loading" text="Loading in progress."/>
+    </.flex_center>
+  <% blueprint -> %>
+  <section class="flex flex-col w-full">
+    <.tab_bar blueprint={@blueprint} current={@live_action} />
+    <div class="p-4">
+    <h1 class="font-bold text-xl mb-6">Blueprint editor</h1>
+    <%= case @live_action do %>
+    <% :editor -> %>
+      <p>Editor tab</p>
+      <pre>
+      <%= inspect(blueprint, pretty: true) |> String.slice(0..100) %>
+      </pre>
+    <% :deductions -> %>
+      <p>Deductions tab</p>
+    <% end %>
+    </div>
+  </section>
+<% end %>

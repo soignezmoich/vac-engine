@@ -19,38 +19,54 @@ defmodule VacEngineWeb.Router do
   end
 
   scope "/", VacEngineWeb do
-    pipe_through([:browser, :require_role])
+    pipe_through([:browser, :require_role, :fetch_workspaces])
 
-    get("/", DashboardController, :index)
+    get("/", WelcomeController, :index)
+    live("/nav", NavLive.Index, :index, as: :nav)
 
-    live("/users", UserLive.Index)
-    live("/users/new", UserLive.New)
-    live("/users/:user_id", UserLive.Edit)
+    live("/users", UserLive.Index, :index, as: :user)
+    live("/users/new", UserLive.New, :new, as: :user)
+    live("/users/:user_id", UserLive.Edit, :edit, as: :user)
 
-    live("/workspaces", WorkspaceLive.Index)
-    live("/workspaces/:workspace_id/blueprints", BlueprintLive.Index)
+    live("/workspaces", WorkspaceLive.Index, :index, as: :workspace)
+    live("/workspaces/new", WorkspaceLive.New, :new, as: :workspace)
 
-    live(
-      "/blueprints/:blueprint_id",
-      BlueprintLive.Edit
-    )
+    live("/workspaces/:workspace_id", WorkspaceLive.Edit, :edit, as: :workspace)
+
+    scope "/w/:workspace_id", Workspace, as: :workspace do
+      pipe_through([:fetch_current_workspace])
+
+      live("/", DashboardLive.Index, :index, as: :dashboard)
+      live("/blueprints", BlueprintLive.Index, :index, as: :blueprint)
+
+      live("/blueprints/:blueprint_id", BlueprintLive.Edit, :editor,
+        as: :blueprint
+      )
+
+      live(
+        "/blueprints/:blueprint_id/deductions",
+        BlueprintLive.Edit,
+        :deductions,
+        as: :blueprint
+      )
+    end
   end
 
   scope "/", VacEngineWeb do
     pipe_through([:browser, :require_no_role])
-    live("/login", AuthLive.Login, :login)
-    get("/login/:token", AuthController, :login)
+    live("/login", AuthLive.Login, :form, as: :login)
+    get("/login/:token", AuthController, :login, as: :login)
   end
 
   scope "/", VacEngineWeb do
     pipe_through([:browser])
-    match(:*, "/logout", AuthController, :logout)
+    match(:*, "/logout", AuthController, :logout, as: :logout)
   end
 
   scope "/api", VacEngineWeb.Api do
     pipe_through([:api])
-    post("/p/:portal_id/run", PubController, :run)
-    get("/p/:portal_id/info", PubController, :info)
+    post("/p/:portal_id/run", PubController, :run, as: :pub)
+    get("/p/:portal_id/info", PubController, :info, as: :pub)
   end
 
   if Mix.env() in [:dev, :test] do

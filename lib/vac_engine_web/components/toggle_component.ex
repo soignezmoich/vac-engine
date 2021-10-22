@@ -6,7 +6,7 @@ defmodule VacEngineWeb.ToggleComponent do
   def toggle(assigns) do
     ~H"""
     <div class="flex border-cream-200 border cursor-pointer relative select-none"
-         phx-click={@click}"
+         phx-click={@click}
          phx-value-key={@key}>
       <%= if @value do %>
         <div class="w-10 bg-blue-100"></div>
