@@ -17,7 +17,7 @@
             </td>
             <td>
               <%= live_redirect("Open editor",
-                    to: Routes.workspace_blueprint_path(@socket, :editor, b.workspace_id, b.id),
+                    to: Routes.workspace_blueprint_path(@socket, :variables, b.workspace_id, b.id),
                     class: "btn-sm inline-block"
                   ) %>
             </td>

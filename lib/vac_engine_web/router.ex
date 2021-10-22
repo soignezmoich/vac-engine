@@ -39,7 +39,7 @@ defmodule VacEngineWeb.Router do
       live("/", DashboardLive.Index, :index, as: :dashboard)
       live("/blueprints", BlueprintLive.Index, :index, as: :blueprint)
 
-      live("/blueprints/:blueprint_id", BlueprintLive.Edit, :editor,
+      live("/blueprints/:blueprint_id", BlueprintLive.Edit, :variables,
         as: :blueprint
       )
 

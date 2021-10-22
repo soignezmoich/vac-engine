@@ -2,8 +2,10 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.Edit do
   use VacEngineWeb, :live_view
 
   import VacEngineWeb.PermissionHelpers, only: [can!: 3]
-  alias VacEngine.Processor
   import VacEngineWeb.Workspace.BlueprintLive.TabComponent
+
+  alias VacEngine.Processor
+  alias VacEngineWeb.Editor.VariablesSection
 
   on_mount(VacEngineWeb.LiveRole)
   on_mount(VacEngineWeb.LiveWorkspace)
@@ -30,7 +32,7 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.Edit do
 
   @impl true
   def handle_params(_params, _session, socket) do
-    {:noreply, assign(socket, tab: :editor)}
+    {:noreply, assign(socket, tab: :variables)}
   end
 
   @impl true

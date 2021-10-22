@@ -5,7 +5,7 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.TabComponent do
   def tab_bar(assigns) do
     ~H"""
     <div class="flex justify-end bg-cream-200 shadow-md">
-      <.tab label="Editor" blueprint={@blueprint} target={:editor} current={@current} />
+      <.tab label="Variables" blueprint={@blueprint} target={:variables} current={@current} />
       <.tab label="Deductions" blueprint={@blueprint} target={:deductions} current={@current} />
     </div>
     """
