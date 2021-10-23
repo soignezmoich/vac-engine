@@ -30,6 +30,42 @@ defmodule VacEngineWeb.ErrorHelpers do
     end
   end
 
+  def inspect_changeset(changeset) do
+    Ecto.Changeset.traverse_errors(changeset, fn changeset, field, msg ->
+      s =
+        "#{changeset.data.__struct__}"
+        |> String.split(".")
+        |> List.last()
+
+      name = Ecto.Changeset.get_field(changeset, :name)
+      msg = translate_error(msg)
+
+      s =
+        [s, name, field]
+        |> VacEngine.MapHelpers.compact()
+        |> Enum.join(".")
+
+      "#{s}: #{msg}"
+    end)
+    |> flatten_all
+    |> Enum.join("\n")
+  end
+
+  defp flatten_all(map) when is_map(map) do
+    map
+    |> Map.values()
+    |> Enum.map(&flatten_all/1)
+    |> List.flatten()
+  end
+
+  defp flatten_all(list) when is_list(list) do
+    list
+    |> Enum.map(&flatten_all/1)
+    |> List.flatten()
+  end
+
+  defp flatten_all(v), do: v
+
   @doc """
   Translates an error message using gettext.
   """

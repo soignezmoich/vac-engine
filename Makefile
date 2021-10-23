@@ -156,3 +156,7 @@ docs-server:
 checks:
 	mix dialyzer || true
 	mix credo suggest -a
+
+.PHONY: update-blueprints
+update-blueprints:
+	mix run  -r test/fixtures/helpers.ex -r test/fixtures/blueprints.ex priv/repo/update_blueprints.exs

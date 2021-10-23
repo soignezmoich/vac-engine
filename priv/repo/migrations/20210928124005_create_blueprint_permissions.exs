@@ -37,6 +37,6 @@ defmodule VacEngine.Repo.Migrations.CreateBlueprintPermissions do
   end
 
   def down do
-    drop table(:blueprint_permissions) 
+    drop(table(:blueprint_permissions))
   end
 end
