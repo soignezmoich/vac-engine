@@ -54,7 +54,7 @@ defmodule VacEngineWeb.UserLive.Edit do
       ) do
     can!(socket, :manage, :users)
 
-    Account.update_user(socket.assigns.user, params)
+    Account.update_user(user, params)
     |> case do
       {:ok, user} ->
         {:noreply,
