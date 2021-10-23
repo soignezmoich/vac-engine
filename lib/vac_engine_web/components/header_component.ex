@@ -43,7 +43,7 @@ defmodule VacEngineWeb.HeaderComponent do
                 sel={at(@location, :workspace)} />
         <% end %>
 
-        <%= if Enum.count(@workspaces) > 1 do %>
+        <%= if @workspaces && Enum.count(@workspaces) > 1 do %>
           <.workspaces_menu workspace={@workspace}
                             workspaces={@workspaces}
                             sel={at(@location, :workspace)} />
