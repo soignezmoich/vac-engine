@@ -43,8 +43,6 @@ defmodule VacEngine.Repo.Migrations.CreateVariables do
 
       add(:parent_id, references(:variables, on_delete: :delete_all))
 
-      add(:default_id, references(:expressions, on_delete: :delete_all))
-
       add(:type, :variable_type, null: false)
       add(:name, :string, size: 100, null: false)
       add(:description, :string, size: 1000)
@@ -87,14 +85,6 @@ defmodule VacEngine.Repo.Migrations.CreateVariables do
         ADD CONSTRAINT variables_parent_blueprint
         FOREIGN KEY (parent_id, blueprint_id)
         REFERENCES variables (id, blueprint_id)
-        ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
-    ")
-
-    execute("
-      ALTER TABLE variables
-        ADD CONSTRAINT variables_default_blueprint
-        FOREIGN KEY (default_id, blueprint_id)
-        REFERENCES expressions (id, blueprint_id)
         ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
     ")
   end

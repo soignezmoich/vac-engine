@@ -11,6 +11,7 @@ defmodule VacEngine.Processor.Variable do
   alias VacEngine.Processor.Variable
   alias VacEngine.EctoHelpers
   alias VacEngine.Processor.ListType
+  import VacEngine.MapHelpers
 
   schema "variables" do
     timestamps(type: :utc_datetime)
@@ -21,7 +22,7 @@ defmodule VacEngine.Processor.Variable do
     has_many(:children, Variable, on_replace: :delete, foreign_key: :parent_id)
     belongs_to(:parent, Variable)
 
-    belongs_to(:default, Expression)
+    has_one(:default, Expression)
 
     field(:type, Ecto.Enum, values: Meta.types())
     field(:mapping, Ecto.Enum, values: Meta.mappings())
@@ -309,5 +310,18 @@ defmodule VacEngine.Processor.Variable do
       true ->
         put_change(changeset, :enum, nil)
     end
+  end
+
+  def to_map(%Variable{} = v) do
+    %{
+      type: v.type,
+      name: v.name,
+      mapping: v.mapping,
+      enum: v.enum,
+      default: Expression.to_map(v.default),
+      children: Enum.map(v.children, &Variable.to_map/1),
+      description: v.description
+    }
+    |> compact
   end
 end

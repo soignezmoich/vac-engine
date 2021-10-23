@@ -7,6 +7,7 @@ defmodule VacEngine.Processor.Blueprint do
   alias VacEngine.Processor.Blueprint
   alias VacEngine.Processor.Deduction
   alias VacEngine.Processor.Variable
+  import VacEngine.MapHelpers
 
   schema "blueprints" do
     timestamps(type: :utc_datetime)
@@ -58,5 +59,15 @@ defmodule VacEngine.Processor.Blueprint do
     data
     |> cast(attrs, [])
     |> cast_assoc(:deductions, with: {Deduction, :changeset, [ctx]})
+  end
+
+  def to_map(%Blueprint{} = b) do
+    %{
+      name: b.name,
+      description: b.description,
+      variables: Enum.map(b.variables, &Variable.to_map/1),
+      deductions: Enum.map(b.deductions, &Deduction.to_map/1)
+    }
+    |> compact
   end
 end

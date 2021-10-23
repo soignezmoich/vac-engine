@@ -6,11 +6,13 @@ defmodule VacEngine.Processor.Column do
   alias VacEngine.Processor.Blueprint
   alias VacEngine.Processor.Condition
   alias VacEngine.Processor.Deduction
+  alias VacEngine.Processor.Column
   alias VacEngine.Processor.Assignment
   alias VacEngine.Processor.Expression
   alias VacEngine.Processor.Binding
   import VacEngine.EctoHelpers
   import VacEngine.TupleHelpers
+  import VacEngine.MapHelpers
   alias VacEngine.Processor.Meta
 
   schema "columns" do
@@ -19,7 +21,7 @@ defmodule VacEngine.Processor.Column do
     belongs_to(:workspace, Workspace)
     belongs_to(:blueprint, Blueprint)
     belongs_to(:deduction, Deduction)
-    belongs_to(:expression, Expression)
+    has_one(:expression, Expression)
 
     has_many(:conditions, Condition)
     has_many(:assignments, Assignment)
@@ -27,6 +29,7 @@ defmodule VacEngine.Processor.Column do
     field(:type, Ecto.Enum, values: ~w(condition assignment)a)
     field(:position, :integer)
     field(:description, :string)
+    field(:variable, :map, virtual: true)
   end
 
   def changeset(data, attrs, ctx) do
@@ -82,5 +85,14 @@ defmodule VacEngine.Processor.Column do
     |> update_in([Access.key(:expression)], fn e ->
       Expression.insert_bindings(e, ctx)
     end)
+  end
+
+  def to_map(%Column{} = c) do
+    %{
+      variable: c.variable,
+      description: c.description,
+      type: c.type
+    }
+    |> compact
   end
 end

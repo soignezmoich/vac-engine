@@ -7,6 +7,11 @@ defmodule VacEngine.Processor.Expression do
   alias VacEngine.Processor.AstType
   alias VacEngine.Processor.Binding
   alias VacEngine.Processor.Ast
+  alias VacEngine.Processor.Column
+  alias VacEngine.Processor.Condition
+  alias VacEngine.Processor.Assignment
+  alias VacEngine.Processor.Expression
+  alias VacEngine.Processor.Variable
   alias VacEngine.Processor.Meta
   import VacEngine.EctoHelpers
   import VacEngine.TupleHelpers
@@ -16,6 +21,10 @@ defmodule VacEngine.Processor.Expression do
 
     belongs_to(:workspace, Workspace)
     belongs_to(:blueprint, Blueprint)
+    belongs_to(:variable, Variable)
+    belongs_to(:column, Column)
+    belongs_to(:condition, Condition)
+    belongs_to(:assignment, Assignment)
 
     has_many(:bindings, Binding, on_replace: :delete)
 
@@ -171,4 +180,10 @@ defmodule VacEngine.Processor.Expression do
   end
 
   defp insert_binding_attrs(err, _), do: err
+
+  def to_map(nil), do: nil
+
+  def to_map(%Expression{} = e) do
+    e.ast
+  end
 end

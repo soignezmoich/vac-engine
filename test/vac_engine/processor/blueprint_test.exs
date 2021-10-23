@@ -1,9 +1,13 @@
 defmodule VacEngine.Processor.BlueprintTest do
   use VacEngine.DataCase
 
+  import Ecto.Query
+  alias VacEngine.Repo
   alias VacEngine.Account
   alias VacEngine.Processor
-  alias VacEngine.Processor
+  alias VacEngine.Processor.Expression
+  alias VacEngine.Processor.Assignment
+  alias VacEngine.Processor.Condition
 
   @hashes %{
     "7XZBRP9BZ7KX564ZAX7FTAXBYPRCG68E8S2TY4XESZSRSF36G4ASF55S" => [
@@ -19,6 +23,10 @@ defmodule VacEngine.Processor.BlueprintTest do
   end
 
   setup do
+    Repo.query("delete from publications;")
+    Repo.query("delete from blueprints;")
+    Repo.query("delete from roles;")
+    Repo.query("delete from portals;")
     {:ok, workspace} = Account.create_workspace(%{name: "Test workspace"})
     [workspace: workspace]
   end
@@ -178,5 +186,45 @@ defmodule VacEngine.Processor.BlueprintTest do
       ])
 
     assert ["sub"] == target
+  end
+
+  test "update blueprint", %{workspace: workspace, blueprints: blueprints} do
+    assert {:ok, blueprint} =
+             Processor.create_blueprint(workspace, blueprints.simple_test)
+
+    assert 10 == from(e in Expression, select: count(e.id)) |> Repo.one()
+    assert 4 == from(e in Assignment, select: count(e.id)) |> Repo.one()
+    assert 3 == from(e in Condition, select: count(e.id)) |> Repo.one()
+
+    assert {:ok, blueprint} =
+             Processor.update_blueprint(blueprint, blueprints.sig_test)
+
+    assert 2 == from(e in Expression, select: count(e.id)) |> Repo.one()
+    assert 0 == from(e in Assignment, select: count(e.id)) |> Repo.one()
+    assert 1 == from(e in Condition, select: count(e.id)) |> Repo.one()
+
+    assert {:ok, blueprint} =
+             Processor.update_blueprint(blueprint, blueprints.nested_test)
+
+    assert 13 == from(e in Expression, select: count(e.id)) |> Repo.one()
+    assert 10 == from(e in Assignment, select: count(e.id)) |> Repo.one()
+    assert 3 == from(e in Condition, select: count(e.id)) |> Repo.one()
+
+    assert {:ok, _blueprint} =
+             Processor.update_blueprint(blueprint, blueprints.simple_test)
+
+    assert 10 == from(e in Expression, select: count(e.id)) |> Repo.one()
+    assert 4 == from(e in Assignment, select: count(e.id)) |> Repo.one()
+    assert 3 == from(e in Condition, select: count(e.id)) |> Repo.one()
+  end
+
+  test "serialize/deserialize blueprint", %{
+    workspace: workspace,
+    blueprints: blueprints
+  } do
+    assert {:ok, blueprint} =
+             Processor.create_blueprint(workspace, blueprints.ruleset0)
+
+    Processor.serialize_blueprint(blueprint)
   end
 end

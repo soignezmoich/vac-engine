@@ -16,23 +16,85 @@ defmodule VacEngine.Processor.Blueprints do
 
   def create_blueprint(%Workspace{} = workspace, attrs) do
     Multi.new()
-    |> Multi.insert({:blueprint, :create}, fn _ ->
+    |> multi_create_blueprint(workspace, attrs)
+    |> multi_update_and_fetch
+  end
+
+  def update_blueprint(%Blueprint{} = blueprint, attrs) do
+    Multi.new()
+    |> multi_update_blueprint(blueprint, attrs)
+    |> multi_update_and_fetch
+  end
+
+  defp multi_update_and_fetch(multi) do
+    multi
+    |> multi_update_variables
+    |> multi_put_variables
+    |> multi_update_deductions
+    |> multi_put_deductions
+    |> multi_compute_hash
+    |> multi_put_hash
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{{:blueprint, :hash} => br}} ->
+        fetch_blueprint(br.workspace_id, br.id)
+
+      {:error, msg} ->
+        {:error, msg}
+
+      {:error, _, msg, _} ->
+        {:error, msg}
+    end
+  end
+
+  defp multi_create_blueprint(multi, workspace, attrs) do
+    multi
+    |> Multi.put(:workspace, workspace)
+    |> Multi.put(:attrs, attrs)
+    |> Multi.insert({:blueprint, :base}, fn %{
+                                              attrs: attrs,
+                                              workspace: workspace
+                                            } ->
       %Blueprint{workspace_id: workspace.id}
       |> Blueprint.changeset(attrs)
     end)
-    |> Multi.merge(fn %{{:blueprint, :create} => blueprint} ->
+    |> Multi.merge(fn %{
+                        {:blueprint, :base} => blueprint,
+                        workspace: workspace
+                      } ->
       Multi.new()
       |> Multi.put(:blueprint_id, blueprint.id)
       |> Multi.put(:workspace_id, workspace.id)
     end)
+  end
+
+  defp multi_update_blueprint(multi, blueprint, attrs) do
+    multi
+    |> Multi.put(:attrs, attrs)
+    |> Multi.put(:blueprint_id, blueprint.id)
+    |> Multi.put(:workspace_id, blueprint.workspace_id)
+    |> Multi.update({:blueprint, :base}, fn %{
+                                              attrs: attrs
+                                            } ->
+      blueprint
+      |> Blueprint.changeset(attrs)
+    end)
+  end
+
+  defp multi_update_variables(multi) do
+    multi
     |> Multi.update(
       {:blueprint, :variables},
-      fn %{{:blueprint, :create} => blueprint} = ctx ->
+      fn %{{:blueprint, :base} => blueprint, attrs: attrs} = ctx ->
         blueprint
         |> Repo.preload(:variables)
         |> Blueprint.variables_changeset(attrs, ctx)
       end
     )
+  end
+
+  defp multi_put_variables(multi) do
+    multi
     |> Multi.merge(fn %{{:blueprint, :variables} => blueprint} ->
       {variables, path_index} =
         blueprint
@@ -44,18 +106,30 @@ defmodule VacEngine.Processor.Blueprints do
       |> Multi.put(:variables, variables)
       |> Multi.put(:variable_path_index, path_index)
     end)
+  end
+
+  defp multi_update_deductions(multi) do
+    multi
     |> Multi.update(
       {:blueprint, :deductions},
-      fn %{{:blueprint, :variables} => blueprint} = ctx ->
+      fn %{{:blueprint, :variables} => blueprint, attrs: attrs} = ctx ->
         blueprint
         |> Repo.preload(:deductions)
         |> Blueprint.deductions_changeset(attrs, ctx)
       end
     )
+  end
+
+  defp multi_put_deductions(multi) do
+    multi
     |> Multi.merge(fn %{{:blueprint, :deductions} => blueprint} ->
       Multi.new()
       |> Multi.put(:deductions, blueprint.deductions)
     end)
+  end
+
+  defp multi_compute_hash(multi) do
+    multi
     |> Multi.run(:compute_hash, fn repo,
                                    %{{:blueprint, :deductions} => blueprint} ->
       from(v in Variable,
@@ -68,6 +142,10 @@ defmodule VacEngine.Processor.Blueprints do
       |> variables_interface_hash()
       |> ok()
     end)
+  end
+
+  defp multi_put_hash(multi) do
+    multi
     |> Multi.update(
       {:blueprint, :hash},
       fn %{{:blueprint, :deductions} => blueprint, compute_hash: interface_hash} ->
@@ -75,17 +153,13 @@ defmodule VacEngine.Processor.Blueprints do
         |> Blueprint.interface_changeset(%{interface_hash: interface_hash})
       end
     )
-    |> Repo.transaction()
-    |> case do
-      {:ok, %{{:blueprint, :hash} => br}} ->
-        fetch_blueprint(workspace, br.id)
-
-      err ->
-        err
-    end
   end
 
   def fetch_blueprint(%Workspace{} = workspace, blueprint_id) do
+    fetch_blueprint(workspace.id, blueprint_id)
+  end
+
+  def fetch_blueprint(workspace_id, blueprint_id) do
     elements_query =
       from(r in BindingElement,
         order_by: r.position
@@ -134,7 +208,7 @@ defmodule VacEngine.Processor.Blueprints do
       )
 
     from(b in Blueprint,
-      where: b.workspace_id == ^workspace.id and b.id == ^blueprint_id,
+      where: b.workspace_id == ^workspace_id and b.id == ^blueprint_id,
       preload: [
         variables: :default,
         deductions: ^deductions_query
@@ -300,7 +374,7 @@ defmodule VacEngine.Processor.Blueprints do
 
     vars =
       vars
-      |> Enum.sort_by(&{Variable.container?(&1), &1.name})
+      |> Enum.sort_by(&{&1.mapping, Variable.container?(&1), &1.name})
 
     {vars, index}
   end
@@ -332,5 +406,9 @@ defmodule VacEngine.Processor.Blueprints do
     end)
     |> inspect()
     |> Hash.hash_string()
+  end
+
+  def serialize_blueprint(%Blueprint{} = blueprint) do
+    Blueprint.to_map(blueprint)
   end
 end

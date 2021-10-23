@@ -19,10 +19,6 @@ defmodule VacEngine.Repo.Migrations.CreateConditions do
 
       add(:branch_id, references(:branches, on_delete: :delete_all), null: false)
 
-      add(:expression_id, references(:expressions, on_delete: :delete_all),
-        null: false
-      )
-
       add(:column_id, references(:columns, on_delete: :delete_all))
 
       add(:description, :string, size: 1000)
@@ -34,7 +30,6 @@ defmodule VacEngine.Repo.Migrations.CreateConditions do
     create(unique_index(:conditions, [:id, :workspace_id]))
     create(unique_index(:conditions, [:id, :deduction_id]))
     create(unique_index(:conditions, [:id, :branch_id]))
-    create(unique_index(:conditions, [:id, :expression_id]))
     create(unique_index(:conditions, [:id, :column_id]))
 
     execute("
@@ -58,14 +53,6 @@ defmodule VacEngine.Repo.Migrations.CreateConditions do
         ADD CONSTRAINT conditions_branch_blueprint
         FOREIGN KEY (branch_id, blueprint_id)
         REFERENCES branches (id, blueprint_id)
-        ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
-    ")
-
-    execute("
-      ALTER TABLE conditions
-        ADD CONSTRAINT conditions_expression_blueprint
-        FOREIGN KEY (expression_id, blueprint_id)
-        REFERENCES expressions (id, blueprint_id)
         ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
     ")
 

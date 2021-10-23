@@ -5,10 +5,12 @@ defmodule VacEngine.Processor.Condition do
   alias VacEngine.Account.Workspace
   alias VacEngine.Processor.Expression
   alias VacEngine.Processor.Blueprint
+  alias VacEngine.Processor.Condition
   alias VacEngine.Processor.Deduction
   alias VacEngine.Processor.Column
   alias VacEngine.Processor.Branch
-  alias VacEngine.EctoHelpers
+  import VacEngine.EctoHelpers
+  import VacEngine.MapHelpers
 
   schema "conditions" do
     timestamps(type: :utc_datetime)
@@ -17,14 +19,14 @@ defmodule VacEngine.Processor.Condition do
     belongs_to(:blueprint, Blueprint)
     belongs_to(:deduction, Deduction)
     belongs_to(:branch, Branch)
-    belongs_to(:expression, Expression)
+    has_one(:expression, Expression)
     belongs_to(:column, Column)
 
     field(:description, :string)
   end
 
   def changeset(data, attrs, ctx) do
-    attrs = EctoHelpers.wrap_in_map(attrs, :expression, :ast)
+    attrs = wrap_in_map(attrs, :expression, :ast)
 
     data
     |> cast(attrs, [:description])
@@ -39,5 +41,14 @@ defmodule VacEngine.Processor.Condition do
     |> update_in([Access.key(:expression)], fn e ->
       Expression.insert_bindings(e, ctx)
     end)
+  end
+
+  def to_map(%Condition{} = c) do
+    %{
+      expression: Expression.to_map(c.expression),
+      description: c.description,
+      column: get?(c.column, :position)
+    }
+    |> compact
   end
 end

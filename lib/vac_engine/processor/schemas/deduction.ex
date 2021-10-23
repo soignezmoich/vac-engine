@@ -7,6 +7,8 @@ defmodule VacEngine.Processor.Deduction do
   alias VacEngine.Processor.Blueprint
   alias VacEngine.Processor.Branch
   alias VacEngine.Processor.Column
+  alias VacEngine.Processor.Deduction
+  import VacEngine.MapHelpers
 
   schema "deductions" do
     timestamps(type: :utc_datetime)
@@ -33,5 +35,14 @@ defmodule VacEngine.Processor.Deduction do
     |> cast_assoc(:branches, with: {Branch, :changeset, [ctx]})
     |> cast_assoc(:columns, with: {Column, :changeset, [ctx]})
     |> validate_required([])
+  end
+
+  def to_map(%Deduction{} = d) do
+    %{
+      description: d.description,
+      columns: Enum.map(d.columns, &Column.to_map/1),
+      branches: Enum.map(d.branches, &Branch.to_map/1)
+    }
+    |> compact
   end
 end

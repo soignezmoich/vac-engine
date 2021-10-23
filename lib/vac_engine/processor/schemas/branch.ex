@@ -11,6 +11,7 @@ defmodule VacEngine.Processor.Branch do
   alias VacEngine.Processor.Column
   alias VacEngine.Processor.Branch
   import VacEngine.EctoHelpers
+  import VacEngine.MapHelpers
 
   schema "branches" do
     timestamps(type: :utc_datetime)
@@ -71,5 +72,14 @@ defmodule VacEngine.Processor.Branch do
       end
       |> change(deduction_id: branch.deduction_id)
     end)
+  end
+
+  def to_map(%Branch{} = b) do
+    %{
+      conditions: Enum.map(b.conditions, &Condition.to_map/1),
+      assignments: Enum.map(b.assignments, &Assignment.to_map/1),
+      description: b.description
+    }
+    |> compact
   end
 end

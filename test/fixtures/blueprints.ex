@@ -5,7 +5,11 @@ defmodule Fixtures.Blueprints do
   blueprint(:simple_test) do
     %{
       variables: %{
-        aint: %{type: :integer, mapping: :in_required, default: 0},
+        aint: %{
+          type: :integer,
+          mapping: :in_required,
+          default: quote(do: now())
+        },
         bint: %{type: :integer, mapping: :inout_required, default: 0},
         cint: %{type: :integer, mapping: :inout_required, default: 0}
       },

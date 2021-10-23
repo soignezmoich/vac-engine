@@ -39,8 +39,7 @@ defmodule VacEngineWeb.Api.PubControllerTest do
     {:ok, publication} = Pub.publish_blueprint(blueprint)
 
     {:ok, role} = Account.create_role(:api)
-    {:ok, role} = Account.grant_permission(role, [:global, :users, :read])
-    {:ok, role} = Account.grant_permission(role, [:global, :workspaces, :read])
+    {:ok, _perm} = Account.grant_permission(role, :super_admin)
     {:ok, api_token} = Account.create_api_token(role)
 
     Pub.refresh_cache()

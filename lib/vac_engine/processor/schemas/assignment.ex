@@ -9,10 +9,12 @@ defmodule VacEngine.Processor.Assignment do
   alias VacEngine.Processor.Branch
   alias VacEngine.Processor.Column
   alias VacEngine.Processor.Expression
+  alias VacEngine.Processor.Assignment
   alias VacEngine.Processor.Branch
   alias VacEngine.Processor.Meta
   import VacEngine.EctoHelpers
   import VacEngine.TupleHelpers
+  import VacEngine.MapHelpers
 
   schema "assignments" do
     timestamps(type: :utc_datetime)
@@ -22,7 +24,7 @@ defmodule VacEngine.Processor.Assignment do
     belongs_to(:deduction, Deduction)
     belongs_to(:branch, Branch)
     belongs_to(:column, Column)
-    belongs_to(:expression, Expression)
+    has_one(:expression, Expression)
 
     field(:description, :string)
     field(:target, :map, virtual: true)
@@ -82,5 +84,14 @@ defmodule VacEngine.Processor.Assignment do
     |> update_in([Access.key(:expression)], fn e ->
       Expression.insert_bindings(e, ctx)
     end)
+  end
+
+  def to_map(%Assignment{} = a) do
+    %{
+      expression: Expression.to_map(a.expression),
+      target: a.target,
+      description: a.description
+    }
+    |> compact
   end
 end

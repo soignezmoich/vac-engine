@@ -10,8 +10,8 @@
 
     <title>VacEngine</title>
 
-    <link href="/assets/css/app.css" rel="stylesheet" />
-    <script src="/assets/js/app.js" type="text/javascript" async defer></script>
+    <link href={Routes.static_path(@conn, "/assets/css/app.css")} rel="stylesheet" />
+    <script src={Routes.static_path(@conn, "/assets/js/app.js")} type="text/javascript" async defer></script>
   </head>
   <body class="flex flex-col min-h-full h-full min-w-full w-full">
     <%= @inner_content %>

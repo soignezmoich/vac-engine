@@ -19,10 +19,6 @@ defmodule VacEngine.Repo.Migrations.CreateAssignments do
 
       add(:branch_id, references(:branches, on_delete: :delete_all), null: false)
 
-      add(:expression_id, references(:expressions, on_delete: :delete_all),
-        null: false
-      )
-
       add(:column_id, references(:columns, on_delete: :delete_all))
 
       add(:description, :string, size: 1000)
@@ -34,7 +30,6 @@ defmodule VacEngine.Repo.Migrations.CreateAssignments do
     create(unique_index(:assignments, [:id, :workspace_id]))
     create(unique_index(:assignments, [:id, :deduction_id]))
     create(unique_index(:assignments, [:id, :branch_id]))
-    create(unique_index(:assignments, [:id, :expression_id]))
     create(unique_index(:assignments, [:id, :column_id]))
 
     execute("
@@ -58,14 +53,6 @@ defmodule VacEngine.Repo.Migrations.CreateAssignments do
         ADD CONSTRAINT assignments_branch_blueprint
         FOREIGN KEY (branch_id, blueprint_id)
         REFERENCES branches (id, blueprint_id)
-        ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
-    ")
-
-    execute("
-      ALTER TABLE assignments
-        ADD CONSTRAINT assignments_expression_blueprint
-        FOREIGN KEY (expression_id, blueprint_id)
-        REFERENCES expressions (id, blueprint_id)
         ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
     ")
 

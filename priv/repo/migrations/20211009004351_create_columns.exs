@@ -23,10 +23,6 @@ defmodule VacEngine.Repo.Migrations.CreateColumns do
         null: false
       )
 
-      add(:expression_id, references(:expressions, on_delete: :delete_all),
-        null: false
-      )
-
       add(:type, :column_type, null: false, default: "condition")
       add(:position, :integer, null: false)
       add(:description, :string, size: 1000)
@@ -35,7 +31,6 @@ defmodule VacEngine.Repo.Migrations.CreateColumns do
     create(unique_index(:columns, [:id, :blueprint_id]))
     create(unique_index(:columns, [:id, :workspace_id]))
     create(unique_index(:columns, [:id, :deduction_id]))
-    create(unique_index(:columns, [:id, :expression_id]))
     create(unique_index(:columns, [:position, :deduction_id]))
 
     execute("
@@ -51,13 +46,6 @@ defmodule VacEngine.Repo.Migrations.CreateColumns do
         ADD CONSTRAINT columns_deduction_blueprint
         FOREIGN KEY (deduction_id, blueprint_id)
         REFERENCES deductions (id, blueprint_id)
-        ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
-    ")
-    execute("
-      ALTER TABLE columns
-        ADD CONSTRAINT columns_expression_blueprint
-        FOREIGN KEY (expression_id, blueprint_id)
-        REFERENCES expressions (id, blueprint_id)
         ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
     ")
   end
