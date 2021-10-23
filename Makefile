@@ -58,7 +58,7 @@ migrate: deps
 
 clean:
 	cd assets && make clean
-	mix phx.digest.clean --all
+	- mix phx.digest.clean --all
 	rm -fr _build
 	rm -fr deps
 	rm -fr erl_crash.dump
