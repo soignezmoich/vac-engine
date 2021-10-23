@@ -129,6 +129,11 @@ release: deps assets build
 psql:
 	psql ${DATABASE_URL}
 
+.PHONY: test-psql
+
+test-psql:
+	psql ${DATABASE_TEST_URL}
+
 .PHONY: format
 
 format:
