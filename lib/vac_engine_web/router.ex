@@ -32,12 +32,15 @@ defmodule VacEngineWeb.Router do
     live("/workspaces/new", WorkspaceLive.New, :new, as: :workspace)
 
     live("/workspaces/:workspace_id", WorkspaceLive.Edit, :edit, as: :workspace)
+    live("/blueprints/pick", BlueprintLive.Pick, :index, as: :blueprint_picker)
 
     scope "/w/:workspace_id", Workspace, as: :workspace do
       pipe_through([:fetch_current_workspace])
 
       live("/", DashboardLive.Index, :index, as: :dashboard)
       live("/blueprints", BlueprintLive.Index, :index, as: :blueprint)
+
+      live("/blueprints/pick", BlueprintLive.Pick, :pick, as: :blueprint)
 
       live("/blueprints/:blueprint_id", BlueprintLive.Edit, :variables,
         as: :blueprint

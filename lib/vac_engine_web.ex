@@ -97,6 +97,7 @@ defmodule VacEngineWeb do
       import VacEngineWeb.Gettext
       import Phoenix.LiveView.Helpers
       alias VacEngineWeb.Router.Helpers, as: Routes
+      alias VacEngineWeb.Endpoint
 
       import VacEngineWeb.PermissionHelpers
       import VacEngineWeb.FormHelpers
