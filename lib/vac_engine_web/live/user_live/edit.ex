@@ -22,7 +22,8 @@ defmodule VacEngineWeb.UserLive.Edit do
 
     {:ok,
      assign(socket,
-       edit: can?(socket, :users, :write) && !self?(socket, user),
+       edit: can?(socket, :users, :write),
+       myself: myself?(socket, user),
        user: user,
        changeset: changeset,
        current_tooltip: nil,
@@ -51,7 +52,6 @@ defmodule VacEngineWeb.UserLive.Edit do
         %{"user" => params},
         %{assigns: %{user: user}} = socket
       ) do
-    not_self!(socket, user)
     can!(socket, :manage, :users)
 
     Account.update_user(socket.assigns.user, params)
@@ -72,7 +72,7 @@ defmodule VacEngineWeb.UserLive.Edit do
         %{"key" => key},
         %{assigns: %{current_tooltip: key, user: user}} = socket
       ) do
-    not_self!(socket, user)
+    not_myself!(socket, user)
     can!(socket, :manage, :users)
 
     pass = Account.generate_secret(8)
@@ -111,7 +111,7 @@ defmodule VacEngineWeb.UserLive.Edit do
         %{"key" => permission},
         %{assigns: %{current_tooltip: permission, user: user}} = socket
       ) do
-    not_self!(socket, user)
+    not_myself!(socket, user)
     can!(socket, :manage, :users)
 
     {:ok, _role} = Account.toggle_permission(user.role, permission)
@@ -139,7 +139,7 @@ defmodule VacEngineWeb.UserLive.Edit do
         %{"key" => key},
         %{assigns: %{current_tooltip: key, user: user}} = socket
       ) do
-    not_self!(socket, user)
+    not_myself!(socket, user)
     can!(socket, :manage, :users)
 
     "revoke_session_" <> session_id = key
@@ -172,7 +172,7 @@ defmodule VacEngineWeb.UserLive.Edit do
         %{"key" => key},
         %{assigns: %{current_tooltip: key, user: user}} = socket
       ) do
-    not_self!(socket, user)
+    not_myself!(socket, user)
     can!(socket, :manage, :users)
 
     {:ok, role} =

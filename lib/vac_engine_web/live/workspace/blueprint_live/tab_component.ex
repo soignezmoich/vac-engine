@@ -7,6 +7,7 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.TabComponent do
     <div class="flex justify-end bg-cream-200 shadow-md">
       <.tab label="Variables" blueprint={@blueprint} target={:variables} current={@current} />
       <.tab label="Deductions" blueprint={@blueprint} target={:deductions} current={@current} />
+      <.tab label="Code" blueprint={@blueprint} target={:code} current={@current} />
     </div>
     """
   end

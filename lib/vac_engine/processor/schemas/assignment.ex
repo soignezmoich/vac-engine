@@ -90,7 +90,8 @@ defmodule VacEngine.Processor.Assignment do
     %{
       expression: Expression.to_map(a.expression),
       target: a.target,
-      description: a.description
+      description: a.description,
+      column: get?(a.column, :position)
     }
     |> compact
   end

@@ -1,6 +1,7 @@
 defmodule VacEngine.Processor.Blueprints do
   import Ecto.Query
   alias Ecto.Multi
+  alias Ecto.Changeset
   alias VacEngine.Repo
   alias VacEngine.Processor.Blueprint
   alias VacEngine.Account.Workspace
@@ -39,11 +40,17 @@ defmodule VacEngine.Processor.Blueprints do
       {:ok, %{{:blueprint, :hash} => br}} ->
         fetch_blueprint(br.workspace_id, br.id)
 
-      {:error, msg} ->
+      {:error, msg} when is_binary(msg) ->
         {:error, msg}
 
-      {:error, _, msg, _} ->
+      {:error, _, msg, _} when is_binary(msg) ->
         {:error, msg}
+
+      {:error, _, %Changeset{} = changeset, _} ->
+        {:error, changeset}
+
+      _ ->
+        {:error, "cannot save blueprint"}
     end
   end
 

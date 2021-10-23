@@ -259,4 +259,21 @@ defmodule VacEngine.Processor.Ast do
 
   defp wrap_root(val), do: %{"ast" => val}
   defp unwrap_root(%{"ast" => val}), do: val
+
+  def describe({:var, _, [path]}) do
+    "@#{Enum.join(path, ".")}"
+  end
+
+  def describe({f, _, args}) do
+    args =
+      args
+      |> Enum.map(&describe/1)
+      |> Enum.join(", ")
+
+    "#{f}(#{args})"
+  end
+
+  def describe(ast) do
+    inspect(ast)
+  end
 end

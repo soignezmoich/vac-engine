@@ -20,36 +20,48 @@ defmodule VacEngine.Processor.Binding do
   end
 
   def changeset(data, attrs, ctx, _opts \\ []) do
-    elements_attrs =
-      attrs
-      |> get_in_attrs(:path)
-      |> Enum.reduce({[], []}, fn
-        elem, {path, [{_, nil} | tail]} when is_integer(elem) ->
-          {path, [{path, elem} | tail]}
+    attrs
+    |> get_in_attrs(:path)
+    |> Enum.reduce({[], []}, fn
+      elem, {path, [{_, nil} | tail]} when is_integer(elem) ->
+        {path, [{path, elem} | tail]}
 
-        elem, {parents, list} ->
-          path = parents ++ [elem]
-          {path, [{path, nil} | list]}
-      end)
-      |> elem(1)
-      |> Enum.reverse()
-      |> Enum.with_index()
-      |> Enum.map(fn {{vpath, index}, position} ->
-        get_in(ctx, [:variable_path_index, vpath])
-        |> case do
-          nil -> nil
-          var -> %{position: position, index: index, variable_id: var.id}
-        end
-      end)
-      |> Enum.reject(&is_nil/1)
+      elem, {parents, list} ->
+        path = parents ++ [elem]
+        {path, [{path, nil} | list]}
+    end)
+    |> elem(1)
+    |> Enum.reverse()
+    |> Enum.with_index()
+    |> Enum.reduce_while([], fn {{vpath, index}, position}, elements_attrs ->
+      get_in(ctx, [:variable_path_index, vpath])
+      |> case do
+        nil ->
+          {:halt, {:error, "variable not found #{vpath}"}}
 
-    attrs = attrs |> put_in_attrs(:elements, elements_attrs)
+        var ->
+          e_attrs = %{position: position, index: index, variable_id: var.id}
+          {:cont, [e_attrs | elements_attrs]}
+      end
+    end)
+    |> case do
+      {:error, msg} ->
+        data
+        |> cast(attrs, [])
+        |> add_error(:elements, msg)
 
-    data
-    |> cast(attrs, [:position])
-    |> change(blueprint_id: ctx.blueprint_id, workspace_id: ctx.workspace_id)
-    |> cast_assoc(:elements, with: {BindingElement, :changeset, [ctx]})
-    |> validate_required([])
+      elements_attrs ->
+        attrs = attrs |> put_in_attrs(:elements, elements_attrs)
+
+        data
+        |> cast(attrs, [:position])
+        |> change(
+          blueprint_id: ctx.blueprint_id,
+          workspace_id: ctx.workspace_id
+        )
+        |> cast_assoc(:elements, with: {BindingElement, :changeset, [ctx]})
+        |> validate_required([])
+    end
   end
 
   def to_path(nil, _ctx), do: nil

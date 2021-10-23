@@ -10,7 +10,7 @@
     <% end %>
   </h1>
 
-  <%= if @edit do %>
+  <%= if @edit and not @myself do %>
     <div class="flex mb-2 h-8 flex-col items-start">
       <%= if @generated_password do %>
         <div class="flex items-baseline">
@@ -89,7 +89,7 @@
       <tr>
         <td>Super admin</td>
         <td>
-          <%= if @edit do %>
+          <%= if @edit and not @myself do %>
           <.toggle
               value={@user.role.global_permission.super_admin}
               click="toggle_permission"
@@ -104,11 +104,13 @@
       </tr>
     </tbody>
   </table>
-  <div class="text-sm mt-2">
-    <span class="font-bold text-red-600">Warning:</span>
-    those permissions are global and should only be given to trusted user
-    accounts.
-  </div>
+  <%= if @edit and not @myself do %>
+    <div class="text-sm mt-2">
+      <span class="font-bold text-red-600">Warning:</span>
+      those permissions are global and should only be given to trusted user
+      accounts.
+    </div>
+  <% end %>
 
   <h3 class="font-bold mb-3 mt-4">Workspaces</h3>
 
@@ -144,7 +146,7 @@
                 <%= cond do %>
                   <% current -> %>
                     <span class="font-bold">This is your current session</span>
-                  <% !expired && @edit -> %>
+                  <% !expired and @edit and not @myself -> %>
                     <%= component(&button/1,
                           class: "btn-sm",
                           key: "revoke_session_#{s.id}",

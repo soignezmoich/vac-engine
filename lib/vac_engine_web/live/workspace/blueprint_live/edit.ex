@@ -5,8 +5,9 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.Edit do
   import VacEngineWeb.Workspace.BlueprintLive.TabComponent
 
   alias VacEngine.Processor
-  alias VacEngineWeb.Editor.Deductions
-  alias VacEngineWeb.Editor.VariablesSection
+  import VacEngineWeb.Editor.Deductions, only: [deductions: 1]
+  import VacEngineWeb.Editor.VariablesSection, only: [variables_section: 1]
+  import VacEngineWeb.Workspace.BlueprintLive.CodeEditorComponent
 
   on_mount(VacEngineWeb.LiveRole)
   on_mount(VacEngineWeb.LiveWorkspace)
@@ -23,7 +24,15 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.Edit do
         nil
       end
 
-    {:ok, assign(socket, blueprint: blueprint)}
+    source =
+      if blueprint do
+        Processor.serialize_blueprint(blueprint)
+        |> Jason.encode!(pretty: true)
+      else
+        nil
+      end
+
+    {:ok, assign(socket, blueprint: blueprint, blueprint_source: source)}
   end
 
   @impl true

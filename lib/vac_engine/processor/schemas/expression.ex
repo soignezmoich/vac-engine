@@ -31,12 +31,9 @@ defmodule VacEngine.Processor.Expression do
     field(:ast, AstType)
   end
 
-  def to_string(expression) do
+  def describe(expression) do
     expression.ast
-    |> Macro.to_string()
-    |> Code.format_string!()
-    |> Kernel.to_string()
-    |> String.replace(~r/"/, "")
+    |> Ast.describe()
   end
 
   def changeset(data, attrs, ctx, opts \\ [])
@@ -46,6 +43,7 @@ defmodule VacEngine.Processor.Expression do
 
     attrs
     |> get_in_attrs(:ast)
+    |> deserialize_ast()
     |> extract_binding_names()
     |> forbid_bindings(nobindings)
     |> extract_binding_types(ctx)
@@ -90,7 +88,15 @@ defmodule VacEngine.Processor.Expression do
     end
   end
 
-  defp extract_binding_names(ast) do
+  defp deserialize_ast(%{"ast" => _content} = ast) do
+    Ast.deserialize(ast)
+  end
+
+  defp deserialize_ast(ast), do: {:ok, ast}
+
+  defp extract_binding_names({:error, msg}), do: {:error, msg}
+
+  defp extract_binding_names({:ok, ast}) do
     ast
     |> Ast.sanitize()
     |> case do
@@ -184,6 +190,10 @@ defmodule VacEngine.Processor.Expression do
   def to_map(nil), do: nil
 
   def to_map(%Expression{} = e) do
-    e.ast
+    Ast.serialize(e.ast)
+    |> case do
+      {:ok, ast} -> ast
+      _ -> nil
+    end
   end
 end

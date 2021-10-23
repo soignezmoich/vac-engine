@@ -15,7 +15,7 @@ defmodule VacEngine.Processor.Info.Logic do
     |> Enum.reduce(%{}, fn assign, map ->
       key = assign.target |> Enum.join(".")
       assign_logic = Map.get(map, key, %{})
-      expression = Expression.to_string(assign.expression)
+      expression = Expression.describe(assign.expression)
       descs = Map.get(assign_logic, expression, [])
 
       if is_nil(assign.description) do

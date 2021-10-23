@@ -27,7 +27,7 @@ defmodule VacEngineWeb.PermissionHelpers do
 
   def can?(_val, _name, _key), do: false
 
-  def self?(a, b) do
+  def myself?(a, b) do
     role_id(a) == role_id(b)
   end
 
@@ -41,8 +41,14 @@ defmodule VacEngineWeb.PermissionHelpers do
     end
   end
 
-  def not_self!(a, b) do
-    if self?(a, b) do
+  def not_myself!(a, b) do
+    if myself?(a, b) do
+      denied!()
+    end
+  end
+
+  def myself!(a, b) do
+    unless myself?(a, b) do
       denied!()
     end
   end

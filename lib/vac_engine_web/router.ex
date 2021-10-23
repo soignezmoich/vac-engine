@@ -49,6 +49,13 @@ defmodule VacEngineWeb.Router do
         :deductions,
         as: :blueprint
       )
+
+      live(
+        "/blueprints/:blueprint_id/code",
+        BlueprintLive.Edit,
+        :code,
+        as: :blueprint
+      )
     end
   end
 
