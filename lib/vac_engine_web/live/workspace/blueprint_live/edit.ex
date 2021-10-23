@@ -24,13 +24,8 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.Edit do
   end
 
   @impl true
-  def handle_params(%{"tab" => "deductions"}, _session, socket) do
-    {:noreply, assign(socket, tab: :deductions)}
-  end
-
-  @impl true
   def handle_params(_params, _session, socket) do
-    {:noreply, assign(socket, tab: :editor)}
+    {:noreply, socket}
   end
 
   @impl true
