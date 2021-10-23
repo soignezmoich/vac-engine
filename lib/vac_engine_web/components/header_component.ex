@@ -6,12 +6,12 @@ defmodule VacEngineWeb.HeaderComponent do
   def header(assigns) do
     ~H"""
     <header
-      class="flex font-bold bg-blue-700 flex-shrink-0 flex-col text-gray-100
-             flex-grow-0 shadow-md z-10">
+      class="flex font-bold flex-shrink-0 flex-col bg-gray-200
+             flex-grow-0 z-10 border-b border-black">
 
       <!-- MAIN MENU -->
 
-      <nav class="flex flex-grow">
+      <nav class="flex flex-grow shadow bg-blue-700 text-white text-xl">
         <div>
           <div class="h-10"/>
           <div class="h-5 w-2"/>
@@ -89,9 +89,11 @@ defmodule VacEngineWeb.HeaderComponent do
 
       <!-- SUB MENU -->
 
-      <nav class="bg-cream-300 text-cream-900 flex">
+      <nav class="flex text-xl">
 
         <!-- Admin sub menu -->
+
+        <div class="w-1"/>
 
         <%= if at(@location, :admin) do %>
           <div>
@@ -145,36 +147,45 @@ defmodule VacEngineWeb.HeaderComponent do
       |> case do
         "main-menu" ->
           assign(assigns,
-            style: "border border-grey-400 my-2 px-4 py-1 flex-grow opacity-50"
+            style_classes:
+              "border border-grey-400 my-2 px-4 py-1 flex-grow opacity-50"
           )
 
         "sub-menu" ->
-          assign(assigns, style: "flex-grow")
+          assign(assigns, style_classes: "flex-grow")
 
         _ ->
-          assign(assigns, style: "")
+          assign(assigns, style_classes: "")
+      end
+
+    assigns =
+      assigns
+      |> Map.get(:subtitle)
+      |> case do
+        nil -> assign(assigns, subtitle: nil)
+        _ -> assigns
       end
 
     ~H"""
     <div class="flex flex-shrink-0">
-      <div class={"#{@style}"}>
+      <div class={"#{@style_classes}"}>
         <div class="flex items-center h-full text-white">
           <div>
             <div class="px-8 text-center">
               <%= @label %>
             </div>
-            <%= case assigns do %>
-            <% %{subtitle: subtitle} -> %>
+            <%= if @subtitle do %>
               <div class="text-sm font-light text-center">
-                <%= subtitle %>
+                <%= @subtitle %>
               </div>
-            <% _ -> %>
             <% end %>
           </div>
-          <div>
-            <div class="h-6"/>
-            <div class="h-6"/>
-          </div>
+          <%= if @style == "main-menu" do %>
+            <div>
+              <div class="h-6"/>
+              <div class="h-6"/>
+            </div>
+          <% end %>
         </div>
       </div>
     </div>
@@ -186,49 +197,75 @@ defmodule VacEngineWeb.HeaderComponent do
       assigns
       |> Map.get(:sel)
       |> case do
-        true -> assign(assigns, sel: "bg-opacity-20 bg-white")
-        _ -> assign(assigns, sel: "")
+        nil -> assign(assigns, sel: false)
+        _ -> assigns
       end
 
     assigns =
       assigns
-      |> Map.get(:style)
       |> case do
-        "main-menu" ->
+        %{style: "main-menu", sel: sel} ->
+          sel_style =
+            if sel do
+              "bg-white bg-opacity-20"
+            else
+              ""
+            end
+
           assign(assigns,
-            style:
-              "shadow-lg border my-2 px-4 py-1 flex-grow hover:bg-white hover:bg-opacity-30"
+            style_classes:
+              "shadow-lg border text-white my-2 px-4 py-1 flex-grow hover:bg-white hover:bg-opacity-30 #{sel_style}",
+            padding: "px-8"
           )
 
-        "sub-menu" ->
-          assign(assigns, style: "flex-grow hover:bg-white hover:bg-opacity-10")
+        %{style: "sub-menu", sel: sel} ->
+          sel_style =
+            if sel do
+              "-mb-1 pb-px"
+            else
+              "bg-opacity-50"
+            end
 
-        _ ->
-          assign(assigns, style: "")
+          assign(assigns,
+            style_classes:
+              "flex-grow bg-cream-50 text-black border-t border-l border-r border-black mt-2 mx-1 #{sel_style}",
+            padding: "px-4 py-2"
+          )
+
+        %{} ->
+          assign(assigns, style_classes: "", padding: "px-4", style: nil)
+      end
+
+    assigns =
+      assigns
+      |> Map.get(:subtitle)
+      |> case do
+        nil -> assign(assigns, subtitle: nil)
+        _ -> assigns
       end
 
     ~H"""
     <div class="flex flex-shrink-0">
       <%= live_redirect to: @href,
-          class: " #{@sel} #{@style}" do %>
+          class: " #{@sel} #{@style_classes}" do %>
 
-        <div class="flex items-center h-full text-white hover:drop-shadow hover:filter">
+        <div class="flex items-center h-full hover:drop-shadow hover:filter">
           <div>
-            <div class="px-8 text-center">
+            <div class={"#{@padding} text-center"}>
               <%= @label %>
             </div>
-            <%= case assigns do %>
-            <% %{subtitle: subtitle} -> %>
+            <%= if @subtitle do %>
               <div class="text-sm font-light text-center">
-                <%= subtitle %>
+                <%= @subtitle %>
               </div>
-            <% _ -> %>
             <% end %>
           </div>
-          <div>
-            <div class="h-6"/>
-            <div class="h-6"/>
-          </div>
+          <%= if @style == "main-menu" do %>
+            <div>
+              <div class="h-6"/>
+              <div class="h-6"/>
+            </div>
+          <% end %>
         </div>
 
       <% end %>
