@@ -41,7 +41,7 @@ defmodule VacEngine.Processor.Binding do
 
         var ->
           e_attrs = %{position: position, index: index, variable_id: var.id}
-          {:cont, [e_attrs | elements_attrs]}
+          {:cont, elements_attrs ++ [e_attrs]}
       end
     end)
     |> case do
@@ -51,7 +51,8 @@ defmodule VacEngine.Processor.Binding do
         |> add_error(:elements, msg)
 
       elements_attrs ->
-        attrs = attrs |> put_in_attrs(:elements, elements_attrs)
+        attrs = attrs
+                |> put_in_attrs(:elements, elements_attrs)
 
         data
         |> cast(attrs, [:position])
