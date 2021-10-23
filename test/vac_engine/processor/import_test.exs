@@ -23,15 +23,13 @@ defmodule VacEngine.Processor.ImportTest do
 
     serialized = Processor.serialize_blueprint(blueprint)
 
-    assert {:ok, blueprint} =
-             Processor.update_blueprint(blueprint, serialized)
+    assert {:ok, blueprint} = Processor.update_blueprint(blueprint, serialized)
 
     serialized_two = Processor.serialize_blueprint(blueprint)
 
     assert serialized == serialized_two
 
-    assert {:ok, blueprint} =
-             Processor.create_blueprint(workspace, serialized)
+    assert {:ok, blueprint} = Processor.create_blueprint(workspace, serialized)
 
     serialized_two = Processor.serialize_blueprint(blueprint)
 
