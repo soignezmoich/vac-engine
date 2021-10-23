@@ -4,11 +4,17 @@
 
 1) Set environment variables ([direnv](https://direnv.net/) is good)
 
-    DATABASE_URL=postgres://user@host/db
+    DATABASE_URL=postgres://<user>:<password>@<host>/<db_name>
 
-2) Create database. This WILL DROP IT and recreate it.
+2) Create database. This will:
+    - drop database (if it exists)
+    - create database with <db_name> 
+    - apply migrations
+    - seed the database with an admin user (see below 4) and basic content
 
-    make db
+```
+make db
+```
 
 3) Start server
 
@@ -70,14 +76,14 @@ The application is configured throught environment variables.
 
 There is two types of environment variables.
 
-Compile time env var:
+Compile time env var (must be available on the system when compiling i.e. when executing "make release"):
 
 - `SESSION_SIGNING_SALT`
 - `SESSION_ENCRYPTION_SALT`
 - `SESSION_KEY`
 - `LIVE_VIEW_SALT`
 
-Run time env var:
+Run time env var (must be available on the machine that runs the application):
 
 - `DATABASE_URL`
 - `HOST`
@@ -140,7 +146,7 @@ added.
 
 ### `PORT`
 
-The HTTP port to listen on.
+The HTTP port on which Erlang will listen (can be proxied, but not necessary).
 
 ### `ADDRESS`
 
@@ -155,6 +161,8 @@ This is the secret used to derive all the keys used in the application.
 Must be a random string between 64 and 120 characters long.
 
 This is a secret and must be protected.
+
+Modifying this key will invalidate all cookies, sessions, activation tokens.
 
 ### `POOL_SIZE`
 

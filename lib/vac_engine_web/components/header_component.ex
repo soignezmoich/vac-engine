@@ -24,35 +24,39 @@ defmodule VacEngineWeb.HeaderComponent do
                 href={user_path(Endpoint, :index)}
                 style="main-menu"
                 sel={at(@location, :admin)} />
+
+          <div class="w-4"/>
         <% end %>
 
-        <div class="w-4"/>
 
         <!-- Workspace tab + selector -->
 
-        <%= if @workspace do %>
-          <.lnk label="Workspace"
-                href={workspace_dashboard_path(Endpoint, :index, @workspace.id)}
-                subtitle={"<#{@workspace.name}>"}
-                style="main-menu"
-                sel={at(@location, :workspace)} />
-        <% else %>
-          <.lnk label="Workspace"
-                href={nav_path(Endpoint, :index)}
-                style="main-menu"
-                sel={at(@location, :workspace)} />
-        <% end %>
+        <%= if can?(@role, :access, :workspaces) do %>
+          <%= if @workspace do %>
+            <.lnk label="Workspace"
+                  href={workspace_dashboard_path(Endpoint, :index, @workspace.id)}
+                  subtitle={"<#{@workspace.name}>"}
+                  style="main-menu"
+                  sel={at(@location, :workspace)} />
+          <% else %>
+            <.lnk label="Workspace"
+                  href={nav_path(Endpoint, :index)}
+                  style="main-menu"
+                  sel={at(@location, :workspace)} />
+          <% end %>
 
-        <%= if @workspaces && Enum.count(@workspaces) > 1 do %>
-          <.workspaces_menu workspace={@workspace}
-                            workspaces={@workspaces}
-                            sel={at(@location, :workspace)} />
-        <% end %>
+          <%= if @workspaces && Enum.count(@workspaces) > 1 do %>
+            <.workspaces_menu workspace={@workspace}
+                              workspaces={@workspaces}
+                              sel={at(@location, :workspace)} />
+          <% end %>
 
-        <div class="w-4"/>
+          <div class="w-4"/>
+        <% end %>
 
         <!-- Editor tab -->
 
+        <%= if can?(@role, :access, :editor) do %>
           <%= if @blueprint do %>
             <.lnk label="Editor"
                   href={workspace_blueprint_path(Endpoint, :index, @workspace.id)}
@@ -71,6 +75,8 @@ defmodule VacEngineWeb.HeaderComponent do
                     style="main-menu" />
             <% end %>
           <% end %>
+        <% end %>
+
 
         <div class="flex-grow"></div>
 
