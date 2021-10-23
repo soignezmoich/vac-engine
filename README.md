@@ -47,6 +47,23 @@ The binary to control the app is:
 
 `_build/prod/rel/vac_engine/bin/vac_engine`
 
+## Release tasks
+
+When the release is built, the
+`_build/prod/rel/vac_engine`
+folder is self contained.
+
+Release tasks can be run with:
+
+`./bin/vac_engine eval 'VacEngine.Release.<task_name>'`
+
+The following release tasks are available:
+
+- `migrate()` - Migrate the database to the last version
+- `rollback(version)` - Rollback the database to the provided version
+- `create_admin()` - Create a default admin user, the credentials will be logged
+                     to STDOUT
+
 ## Environment variables
 
 The application is configured throught environment variables.
