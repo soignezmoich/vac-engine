@@ -22,7 +22,9 @@ defmodule VacEngine.Release do
         email = "admin@admin.local"
 
         pass =
-          Account.generate_secret(12) |> String.downcase() |> String.slice(0..12)
+          Account.generate_secret(12)
+          |> String.downcase()
+          |> String.slice(0..12)
 
         Account.create_user(%{
           "name" => "Default Admin",
