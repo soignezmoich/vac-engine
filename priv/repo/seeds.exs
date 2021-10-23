@@ -8,13 +8,12 @@ VacEngine.Repo.query("delete from blueprints;")
 VacEngine.Repo.query("delete from roles;")
 VacEngine.Repo.query("delete from portals;")
 
-blueprint = Blueprints.blueprints() |> Map.get(:ruleset0)
+blueprints = Blueprints.blueprints()
 
 {:ok, {workspace, blueprint}} =
   VacEngine.Repo.transaction(fn ->
     email = "admin@admin.com"
     pass = Account.generate_secret(8) |> String.downcase() |> String.slice(0..8)
-    pass = "12341234"
 
     {:ok, user} =
       Account.create_user(%{
@@ -31,7 +30,7 @@ blueprint = Blueprints.blueprints() |> Map.get(:ruleset0)
       :timer.tc(fn ->
         Processor.create_blueprint(
           workspace,
-          blueprint
+          blueprints.ruleset0
         )
       end)
 
