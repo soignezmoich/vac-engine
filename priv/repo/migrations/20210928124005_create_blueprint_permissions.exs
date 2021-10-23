@@ -1,7 +1,7 @@
 defmodule VacEngine.Repo.Migrations.CreateBlueprintPermissions do
   use Ecto.Migration
 
-  def change do
+  def up do
     create table(:blueprint_permissions) do
       timestamps()
 
@@ -34,5 +34,9 @@ defmodule VacEngine.Repo.Migrations.CreateBlueprintPermissions do
         REFERENCES blueprints (id, workspace_id)
         ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
     ")
+  end
+
+  def down do
+    drop table(:blueprint_permissions) 
   end
 end
