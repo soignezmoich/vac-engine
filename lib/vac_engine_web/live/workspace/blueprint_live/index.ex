@@ -1,6 +1,8 @@
 defmodule VacEngineWeb.Workspace.BlueprintLive.Index do
   use VacEngineWeb, :live_view
 
+  import VacEngineWeb.BlueprintsListComponent
+
   alias VacEngine.Processor
 
   on_mount(VacEngineWeb.LiveRole)
