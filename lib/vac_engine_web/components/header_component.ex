@@ -224,7 +224,6 @@ defmodule VacEngineWeb.HeaderComponent do
     """
   end
 
-
   defp disabled_lnk(assigns) do
     assigns =
       assigns
@@ -276,7 +275,6 @@ defmodule VacEngineWeb.HeaderComponent do
     </div>
     """
   end
-
 
   defp at([a | _], a), do: true
   defp at(_, _), do: false

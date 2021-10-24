@@ -81,27 +81,6 @@ defmodule Fixtures.Cases do
     }
   end
 
-  def injection_sequence() do
-    %{
-      moderna: %{
-        delay_min: 0,
-        next_injections: %{
-          moderna: %{delay_max: 35, delay_min: 28, vaccine: "moderna"}
-        },
-        reference_date: now(),
-        vaccine: "moderna"
-      },
-      pfizer: %{
-        delay_min: 0,
-        next_injections: %{
-          pfizer: %{delay_max: 35, delay_min: 28, vaccine: "pfizer"}
-        },
-        reference_date: now(),
-        vaccine: "pfizer"
-      }
-    }
-  end
-
   def default(input) do
     Map.merge(
       %{
@@ -140,18 +119,30 @@ defmodule Fixtures.Cases do
           moderna: %{
             delay_min: 0,
             next_injections: %{
-              moderna: %{delay_max: 35, delay_min: 28, vaccine: "moderna"}
+              moderna: %{
+                delay_max: 35,
+                delay_min: 28,
+                vaccine: "moderna",
+                dose_type: "2"
+              }
             },
             reference_date: now(),
-            vaccine: "moderna"
+            vaccine: "moderna",
+            dose_type: "1"
           },
           pfizer: %{
             delay_min: 0,
             next_injections: %{
-              pfizer: %{delay_max: 35, delay_min: 28, vaccine: "pfizer"}
+              pfizer: %{
+                delay_max: 35,
+                delay_min: 28,
+                vaccine: "pfizer",
+                dose_type: "2"
+              }
             },
             reference_date: now(),
-            vaccine: "pfizer"
+            vaccine: "pfizer",
+            dose_type: "1"
           }
         },
         registrable_if_dose_within: 30
@@ -178,12 +169,14 @@ defmodule Fixtures.Cases do
           moderna: %{
             delay_min: 28,
             reference_date: "2020-05-04",
-            vaccine: "moderna"
+            vaccine: "moderna",
+            dose_type: "1"
           },
           pfizer: %{
             delay_min: 28,
             reference_date: "2020-05-04",
-            vaccine: "pfizer"
+            vaccine: "pfizer",
+            dose_type: "1"
           }
         },
         registrable_if_dose_within: 30
@@ -211,7 +204,8 @@ defmodule Fixtures.Cases do
           janssen: %{
             delay_min: 0,
             reference_date: now(),
-            vaccine: "janssen"
+            vaccine: "janssen",
+            dose_type: "1"
           }
         }
       }
