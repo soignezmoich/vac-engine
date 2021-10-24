@@ -10,8 +10,6 @@ use Mix.Config
 config :vac_engine,
   ecto_repos: [VacEngine.Repo]
 
-config :vac_engine, VacEngine.Repo, socket_options: [:inet6]
-
 # Configures the endpoint
 config :vac_engine, VacEngineWeb.Endpoint,
   url: [host: "localhost"],
