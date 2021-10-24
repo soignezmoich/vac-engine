@@ -12,7 +12,10 @@ defmodule VacEngineWeb.HeaderComponent do
       <!-- MAIN MENU -->
 
       <nav class="flex flex-grow shadow bg-blue-700 text-white">
-        <div class="w-1.5"/>
+        <div>
+          <div class="w-1.5 h-10"/>
+          <div class="w-1.5 h-5"/>
+        </div>
 
          <!-- Admin tab -->
 
