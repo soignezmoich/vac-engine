@@ -51,8 +51,9 @@ defmodule VacEngine.Processor.Binding do
         |> add_error(:elements, msg)
 
       elements_attrs ->
-        attrs = attrs
-                |> put_in_attrs(:elements, elements_attrs)
+        attrs =
+          attrs
+          |> put_in_attrs(:elements, elements_attrs)
 
         data
         |> cast(attrs, [:position])

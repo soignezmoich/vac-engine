@@ -142,6 +142,7 @@ defmodule VacEngineWeb.Editor.Deductions do
 
     </div>
     """
+
     # <tr>
     #   <td colspan={Enum.count(@cond_columns) +Enum.count(@target_columns) + 1}>
     #     <div class="h-1"/>

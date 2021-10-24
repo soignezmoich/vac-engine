@@ -1535,19 +1535,19 @@ defmodule Fixtures.Blueprints do
             },
             %{
               type: "assignment",
-              variable: [:injection_sequence, :janssen, :delay_min],
+              variable: [:injection_sequence, :janssen, :delay_min]
             },
             %{
               type: "assignment",
-              variable: [:injection_sequence, :janssen, :delay_max],
+              variable: [:injection_sequence, :janssen, :delay_max]
             },
             %{
               type: "assignment",
-              variable: [:injection_sequence, :janssen, :reference_date],
+              variable: [:injection_sequence, :janssen, :reference_date]
             },
             %{
               type: "assignment",
-              variable: [:injection_sequence, :janssen, :dose_type],
+              variable: [:injection_sequence, :janssen, :dose_type]
             }
           ],
           branches: [
@@ -1634,7 +1634,10 @@ defmodule Fixtures.Blueprints do
           columns: [
             %{variable: :immuno},
             %{variable: :immuno_discussed},
-            %{type: "assignment", variable: [:flags, :immuno_need_recommendation]}
+            %{
+              type: "assignment",
+              variable: [:flags, :immuno_need_recommendation]
+            }
           ],
           branches: [
             %{
@@ -1663,7 +1666,10 @@ defmodule Fixtures.Blueprints do
             %{
               conditions: [
                 %{expression: quote(do: is_true(@immuno_discussed)), column: 0},
-                %{expression: quote(do: is_false(@immuno_recommended)), column: 1}
+                %{
+                  expression: quote(do: is_false(@immuno_recommended)),
+                  column: 1
+                }
               ],
               assignments: [
                 %{
@@ -1684,7 +1690,7 @@ defmodule Fixtures.Blueprints do
           branches: [
             %{
               conditions: [
-                %{expression: quote(do: lt(@age, 12)), column: 0},
+                %{expression: quote(do: lt(@age, 12)), column: 0}
               ],
               assignments: [
                 %{
@@ -1707,7 +1713,7 @@ defmodule Fixtures.Blueprints do
             %{
               conditions: [
                 %{expression: quote(do: is_true(@rejects_mrna)), column: 0},
-                %{expression: quote(do: neq(@pregnant, "no")), column: 1},
+                %{expression: quote(do: neq(@pregnant, "no")), column: 1}
               ],
               assignments: [
                 %{
@@ -1730,7 +1736,7 @@ defmodule Fixtures.Blueprints do
             %{
               conditions: [
                 %{expression: quote(do: is_true(@rejects_mrna)), column: 0},
-                %{expression: quote(do: is_true(@immuno)), column: 1},
+                %{expression: quote(do: is_true(@immuno)), column: 1}
               ],
               assignments: [
                 %{
@@ -1753,7 +1759,7 @@ defmodule Fixtures.Blueprints do
             %{
               conditions: [
                 %{expression: quote(do: is_true(@rejects_mrna)), column: 0},
-                %{expression: quote(do: lt(@age, 18)), column: 1},
+                %{expression: quote(do: lt(@age, 18)), column: 1}
               ],
               assignments: [
                 %{

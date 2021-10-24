@@ -94,7 +94,7 @@ defmodule VacEngine.Processor.State.Input do
         value = Convert.parse_datetime(value)
         store(value, mapped_data, hits, path, vpath)
 
-      not is_nil(var) ->
+      not is_nil(var) and not is_nil(value) ->
         throw(
           {:invalid_value,
            "value #{clean_inspect(value)} is invalid for #{clean_inspect(vpath)}"}
