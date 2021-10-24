@@ -37,7 +37,7 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.Edit do
 
   @impl true
   def handle_params(_params, _session, socket) do
-    {:noreply, socket}
+    {:noreply, assign(socket, location: [:blueprint, socket.assigns.live_action])}
   end
 
   @impl true

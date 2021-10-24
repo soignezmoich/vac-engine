@@ -5,9 +5,7 @@
     </.flex_center>
   <% blueprint -> %>
   <section class="flex flex-col w-full">
-    <.tab_bar blueprint={@blueprint} current={@live_action} />
     <div class="p-4 flex-grow flex flex-col">
-    <h1 class="font-bold text-xl mb-6">Blueprint editor</h1>
     <%= case @live_action do %>
     <% :variables -> %>
       <.variables_section

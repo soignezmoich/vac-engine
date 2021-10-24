@@ -131,10 +131,28 @@ defmodule VacEngineWeb.HeaderComponent do
         <% end %>
 
         <!-- Blueprint sub menu -->
-
-        <%= if at(@location, :blueprint) && @location != [:blueprint, :none] do %>
+        <%= if at(@location, :blueprint) && !at(@location,:blueprint, :none) && !is_nil(@blueprint) do %>
+          <div>
+            <.lnk label="Variables"
+                  href={workspace_blueprint_path(Endpoint, :variables, @workspace.id, @blueprint.id)}
+                  style="sub-menu"
+                  sel={at(@location, :blueprint, :variables)} />
+          </div>
+          <div>
+            <.lnk label="Deductions"
+                  href={workspace_blueprint_path(Endpoint, :deductions, @workspace.id, @blueprint.id)}
+                  style="sub-menu"
+                  sel={at(@location, :blueprint, :deductions)} />
+          </div>
+          <div>
+            <.lnk label="Import"
+              href={workspace_blueprint_path(Endpoint, :code, @workspace.id, @blueprint.id)}
+              style="sub-menu"
+              sel={at(@location, :blueprint, :code)} />
+          </div>
+          <div class="flex-grow" />
           <div phx-click="save"
-               class="px-4 py-1 cursor-default hover:bg-white hover:bg-opacity-30">
+            class="px-4 py-1 cursor-default hover:bg-white hover:bg-opacity-30">
             Save
           </div>
         <% end %>
@@ -224,7 +242,6 @@ defmodule VacEngineWeb.HeaderComponent do
     """
   end
 
-
   defp disabled_lnk(assigns) do
     assigns =
       assigns
@@ -276,7 +293,6 @@ defmodule VacEngineWeb.HeaderComponent do
     </div>
     """
   end
-
 
   defp at([a | _], a), do: true
   defp at(_, _), do: false
