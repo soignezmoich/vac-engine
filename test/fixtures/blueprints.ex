@@ -1130,7 +1130,7 @@ defmodule Fixtures.Blueprints do
                 },
                 %{
                   column: 6,
-                  target: [:injection_sequence, :moderna, :reference_date],
+                  target: [:injection_sequence, :moderna, :dose_type],
                   expression: 1
                 }
               ]
@@ -1166,7 +1166,7 @@ defmodule Fixtures.Blueprints do
                 },
                 %{
                   column: 6,
-                  target: [:injection_sequence, :moderna, :reference_date],
+                  target: [:injection_sequence, :moderna, :dose_type],
                   expression: 1
                 }
               ]
@@ -1287,7 +1287,7 @@ defmodule Fixtures.Blueprints do
                     :moderna,
                     :next_injections,
                     :moderna,
-                    :delay_max
+                    :dose_type
                   ],
                   column: 6,
                   expression: 2
@@ -1358,7 +1358,7 @@ defmodule Fixtures.Blueprints do
                 },
                 %{
                   column: 6,
-                  target: [:injection_sequence, :pfizer, :reference_date],
+                  target: [:injection_sequence, :pfizer, :dose_type],
                   expression: 1
                 }
               ]
@@ -1394,7 +1394,7 @@ defmodule Fixtures.Blueprints do
                 },
                 %{
                   column: 6,
-                  target: [:injection_sequence, :pfizer, :reference_date],
+                  target: [:injection_sequence, :pfizer, :dose_type],
                   expression: 1
                 }
               ]
@@ -1515,7 +1515,7 @@ defmodule Fixtures.Blueprints do
                     :pfizer,
                     :next_injections,
                     :pfizer,
-                    :delay_max
+                    :dose_type
                   ],
                   column: 6,
                   expression: 2

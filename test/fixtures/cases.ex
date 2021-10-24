@@ -126,137 +126,34 @@ defmodule Fixtures.Cases do
     %{
       input:
         %{
-          birthdate: "2018-03-04"
-        }
-        |> default(),
-      output: %{
-        age: age("2018-03-04"),
-        vaccine_compatibilities: %{
-          moderna: %{compatible: false, priority: -1},
-          pfizer: %{compatible: false, priority: -1},
-          janssen: %{compatible: false, priority: -1}
-        },
-        registrable_if_dose_within: 30
-      }
-    }
-  end
-
-  cas(:ruleset0) do
-    %{
-      input:
-        %{
-          birthdate: "1902-03-04"
-        }
-        |> default(),
-      output: %{
-        age: age("1902-03-04"),
-        vaccine_compatibilities: %{
-          moderna: %{compatible: true, priority: 1},
-          pfizer: %{compatible: true, priority: 1},
-          janssen: %{compatible: false, priority: -1}
-        },
-        injection_sequence: injection_sequence(),
-        registrable_if_dose_within: 30
-      }
-    }
-  end
-
-  cas(:ruleset0) do
-    %{
-      input:
-        %{
-          birthdate: "1982-03-04"
-        }
-        |> default(),
-      output: %{
-        age: age("1982-03-04"),
-        vaccine_compatibilities: %{
-          moderna: %{compatible: true, priority: 7},
-          pfizer: %{compatible: true, priority: 7},
-          janssen: %{compatible: false, priority: -1}
-        },
-        injection_sequence: injection_sequence(),
-        registrable_if_dose_within: 30
-      }
-    }
-  end
-
-  cas(:ruleset0) do
-    %{
-      input:
-        %{
-          birthdate: "1940-03-04"
-        }
-        |> default(),
-      output: %{
-        age: age("1940-03-04"),
-        vaccine_compatibilities: %{
-          moderna: %{compatible: true, priority: 1},
-          pfizer: %{compatible: true, priority: 1},
-          janssen: %{compatible: false, priority: -1}
-        },
-        injection_sequence: injection_sequence(),
-        registrable_if_dose_within: 30
-      }
-    }
-  end
-
-  cas(:ruleset0) do
-    %{
-      input:
-        %{
-          birthdate: "1955-03-04"
-        }
-        |> default(),
-      output: %{
-        age: age("1955-03-04"),
-        vaccine_compatibilities: %{
-          moderna: %{compatible: true, priority: 2},
-          pfizer: %{compatible: true, priority: 2},
-          janssen: %{compatible: false, priority: -1}
-        },
-        injection_sequence: injection_sequence(),
-        registrable_if_dose_within: 30
-      }
-    }
-  end
-
-  cas(:ruleset0) do
-    %{
-      input:
-        %{
-          birthdate: "1960-03-04"
-        }
-        |> default(),
-      output: %{
-        age: age("1960-03-04"),
-        vaccine_compatibilities: %{
-          moderna: %{compatible: true, priority: 3},
-          pfizer: %{compatible: true, priority: 3},
-          janssen: %{compatible: false, priority: -1}
-        },
-        injection_sequence: injection_sequence(),
-        registrable_if_dose_within: 30
-      }
-    }
-  end
-
-  cas(:ruleset0) do
-    %{
-      input:
-        %{
           birthdate: "1971-03-04",
           healthcare_worker: true
         }
         |> default(),
       output: %{
-        age: age("1971-03-04"),
         vaccine_compatibilities: %{
-          moderna: %{compatible: true, priority: 4},
-          pfizer: %{compatible: true, priority: 4},
+          moderna: %{compatible: true, priority: 3},
+          pfizer: %{compatible: true, priority: 3},
           janssen: %{compatible: false, priority: -1}
         },
-        injection_sequence: injection_sequence(),
+        injection_sequence: %{
+          moderna: %{
+            delay_min: 0,
+            next_injections: %{
+              moderna: %{delay_max: 35, delay_min: 28, vaccine: "moderna"}
+            },
+            reference_date: now(),
+            vaccine: "moderna"
+          },
+          pfizer: %{
+            delay_min: 0,
+            next_injections: %{
+              pfizer: %{delay_max: 35, delay_min: 28, vaccine: "pfizer"}
+            },
+            reference_date: now(),
+            vaccine: "pfizer"
+          }
+        },
         registrable_if_dose_within: 30
       }
     }
@@ -272,13 +169,11 @@ defmodule Fixtures.Cases do
         }
         |> default(),
       output: %{
-        age: age("1970-03-04"),
         vaccine_compatibilities: %{
-          moderna: %{compatible: true, priority: 5},
-          pfizer: %{compatible: true, priority: 5},
+          moderna: %{compatible: true, priority: 3},
+          pfizer: %{compatible: true, priority: 3},
           janssen: %{compatible: false, priority: -1}
         },
-        flags: %{infection: true},
         injection_sequence: %{
           moderna: %{
             delay_min: 28,
@@ -291,7 +186,7 @@ defmodule Fixtures.Cases do
             vaccine: "pfizer"
           }
         },
-        registrable_if_dose_within: 20
+        registrable_if_dose_within: 30
       }
     }
   end
@@ -306,11 +201,10 @@ defmodule Fixtures.Cases do
         }
         |> default(),
       output: %{
-        age: age("1970-03-04"),
         vaccine_compatibilities: %{
           moderna: %{compatible: false, priority: -1},
           pfizer: %{compatible: false, priority: -1},
-          janssen: %{compatible: true, priority: 5}
+          janssen: %{compatible: true, priority: 1}
         },
         registrable_if_dose_within: 30,
         injection_sequence: %{
