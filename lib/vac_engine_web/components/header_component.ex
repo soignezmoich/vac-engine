@@ -11,11 +11,8 @@ defmodule VacEngineWeb.HeaderComponent do
 
       <!-- MAIN MENU -->
 
-      <nav class="flex flex-grow shadow bg-blue-700 text-white text-xl">
-        <div>
-          <div class="h-10"/>
-          <div class="h-5 w-2"/>
-        </div>
+      <nav class="flex flex-grow shadow bg-blue-700 text-white">
+        <div class="w-1.5"/>
 
          <!-- Admin tab -->
 
@@ -25,7 +22,7 @@ defmodule VacEngineWeb.HeaderComponent do
                 style="main-menu"
                 sel={at(@location, :admin)} />
 
-          <div class="w-4"/>
+          <div class="w-3"/>
         <% end %>
 
 
@@ -51,7 +48,7 @@ defmodule VacEngineWeb.HeaderComponent do
                               sel={at(@location, :workspace)} />
           <% end %>
 
-          <div class="w-4"/>
+          <div class="w-3"/>
         <% end %>
 
         <!-- Editor tab -->
@@ -90,16 +87,16 @@ defmodule VacEngineWeb.HeaderComponent do
                 href={login_path(Endpoint, :form)} />
         <% end %>
 
-        <div class="w-2"/>
+        <div class="w-1.5"/>
       </nav>
 
       <!-- SUB MENU -->
 
-      <nav class="flex text-xl">
+      <nav class="flex">
+
+        <div class="w-5"/>
 
         <!-- Admin sub menu -->
-
-        <div class="w-1"/>
 
         <%= if at(@location, :admin) do %>
           <div>
@@ -146,6 +143,88 @@ defmodule VacEngineWeb.HeaderComponent do
     """
   end
 
+  defp lnk(assigns) do
+    assigns =
+      assigns
+      |> Map.get(:sel)
+      |> case do
+        nil -> assign(assigns, sel: false)
+        _ -> assigns
+      end
+
+    assigns =
+      assigns
+      |> case do
+        %{style: "main-menu", sel: sel} ->
+          sel_style =
+            if sel do
+              "bg-white bg-opacity-20"
+            else
+              ""
+            end
+
+          assign(assigns,
+            style_classes:
+              "shadow-lg border text-white my-1.5 px-4 flex-grow hover:bg-white hover:bg-opacity-30 #{sel_style}",
+            padding: "px-8"
+          )
+
+        %{style: "sub-menu", sel: sel} ->
+          sel_style =
+            if sel do
+              "-mb-1 pb-px"
+            else
+              "bg-opacity-50"
+            end
+
+          assign(assigns,
+            style_classes:
+              "flex-grow bg-cream-50 text-black border-t border-l border-r border-black mt-2 mx-1 #{sel_style}",
+            padding: "px-4 pt-1"
+          )
+
+        %{} ->
+          assign(assigns, style_classes: "", padding: "px-4", style: nil)
+      end
+
+    assigns =
+      assigns
+      |> Map.get(:subtitle)
+      |> case do
+        nil -> assign(assigns, subtitle: nil)
+        _ -> assigns
+      end
+
+    ~H"""
+    <div class="flex flex-shrink-0">
+      <%= live_redirect to: @href,
+          class: " #{@sel} #{@style_classes}" do %>
+
+        <div class="flex items-center h-full hover:drop-shadow hover:filter">
+          <div>
+            <div class={"#{@padding} text-center"}>
+              <%= @label %>
+            </div>
+            <%= if @subtitle do %>
+              <div class="text-sm font-light text-center">
+                <%= @subtitle %>
+              </div>
+            <% end %>
+          </div>
+          <%= if @style == "main-menu" do %>
+            <div>
+              <div class="h-6"/>
+              <div class="h-6"/>
+            </div>
+          <% end %>
+        </div>
+
+      <% end %>
+    </div>
+    """
+  end
+
+
   defp disabled_lnk(assigns) do
     assigns =
       assigns
@@ -154,7 +233,7 @@ defmodule VacEngineWeb.HeaderComponent do
         "main-menu" ->
           assign(assigns,
             style_classes:
-              "border border-grey-400 my-2 px-4 py-1 flex-grow opacity-50"
+              "border border-grey-400 my-1.5 px-4 flex-grow opacity-50"
           )
 
         "sub-menu" ->
@@ -198,86 +277,6 @@ defmodule VacEngineWeb.HeaderComponent do
     """
   end
 
-  defp lnk(assigns) do
-    assigns =
-      assigns
-      |> Map.get(:sel)
-      |> case do
-        nil -> assign(assigns, sel: false)
-        _ -> assigns
-      end
-
-    assigns =
-      assigns
-      |> case do
-        %{style: "main-menu", sel: sel} ->
-          sel_style =
-            if sel do
-              "bg-white bg-opacity-20"
-            else
-              ""
-            end
-
-          assign(assigns,
-            style_classes:
-              "shadow-lg border text-white my-2 px-4 py-1 flex-grow hover:bg-white hover:bg-opacity-30 #{sel_style}",
-            padding: "px-8"
-          )
-
-        %{style: "sub-menu", sel: sel} ->
-          sel_style =
-            if sel do
-              "-mb-1 pb-px"
-            else
-              "bg-opacity-50"
-            end
-
-          assign(assigns,
-            style_classes:
-              "flex-grow bg-cream-50 text-black border-t border-l border-r border-black mt-2 mx-1 #{sel_style}",
-            padding: "px-4 py-2"
-          )
-
-        %{} ->
-          assign(assigns, style_classes: "", padding: "px-4", style: nil)
-      end
-
-    assigns =
-      assigns
-      |> Map.get(:subtitle)
-      |> case do
-        nil -> assign(assigns, subtitle: nil)
-        _ -> assigns
-      end
-
-    ~H"""
-    <div class="flex flex-shrink-0">
-      <%= live_redirect to: @href,
-          class: " #{@sel} #{@style_classes}" do %>
-
-        <div class="flex items-center h-full hover:drop-shadow hover:filter">
-          <div>
-            <div class={"#{@padding} text-center"}>
-              <%= @label %>
-            </div>
-            <%= if @subtitle do %>
-              <div class="text-sm font-light text-center">
-                <%= @subtitle %>
-              </div>
-            <% end %>
-          </div>
-          <%= if @style == "main-menu" do %>
-            <div>
-              <div class="h-6"/>
-              <div class="h-6"/>
-            </div>
-          <% end %>
-        </div>
-
-      <% end %>
-    </div>
-    """
-  end
 
   defp at([a | _], a), do: true
   defp at(_, _), do: false
