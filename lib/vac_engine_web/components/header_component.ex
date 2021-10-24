@@ -45,7 +45,10 @@ defmodule VacEngineWeb.HeaderComponent do
                   sel={at(@location, :workspace)} />
           <% end %>
 
-          <%= if @workspaces && Enum.count(@workspaces) > 1 do %>
+          <%= if (
+            @workspaces
+            && Enum.count(@workspaces) > 1
+          ) do %>
             <.workspaces_menu workspace={@workspace}
                               workspaces={@workspaces}
                               sel={at(@location, :workspace)} />
@@ -204,6 +207,20 @@ defmodule VacEngineWeb.HeaderComponent do
             padding: "px-4 pt-1"
           )
 
+        %{style: "menu-option", sel: sel} ->
+          sel_style =
+            if sel do
+              "bg-white bg-opacity-20"
+            else
+              "bg-opacity-50"
+            end
+
+          assign(assigns,
+            style_classes:
+              "flex-grow bg-blue-800 border-black m-1 hover:bg-white hover:bg-opacity-30 #{sel_style}",
+            padding: "px-4 py-1"
+          )
+
         %{} ->
           assign(assigns, style_classes: "", padding: "px-4", style: nil)
       end
@@ -328,7 +345,7 @@ defmodule VacEngineWeb.HeaderComponent do
     ~H"""
     <div class="relative flex">
       <div class={"flex cursor-default
-                  hover:bg-white hover:bg-opacity-30 #{@sel} my-2 border-t border-b border-r items-center"}
+                  hover:bg-white hover:bg-opacity-30 #{@sel} my-1.5 border-t border-b border-r items-center"}
            id="workspaces-menu"
            phx_update="ignore"
            data-dropdown="workspaces-menu-content">
@@ -336,12 +353,12 @@ defmodule VacEngineWeb.HeaderComponent do
           <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
         </svg>
       </div>
-      <div class="hidden absolute bg-blue-600 flex flex-col
+      <div class="hidden absolute bg-blue-700 flex flex-col
                   top-full right-0 min-w-max" id="workspaces-menu-content">
         <%= for w <- @workspaces do %>
           <.lnk label={tr(w.name, 32)}
                 href={workspace_dashboard_path(Endpoint, :index, w.id)}
-                style="sub-menu"
+                style="menu-option"
              />
         <% end %>
         <%= if @truncated do %>
