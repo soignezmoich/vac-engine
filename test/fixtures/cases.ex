@@ -44,6 +44,13 @@ defmodule Fixtures.Cases do
     }
   end
 
+  cas(:sig_test) do
+    %{
+      input: %{age: nil},
+      output: %{}
+    }
+  end
+
   cas(:nested_test) do
     %{
       input: %{
@@ -154,6 +161,7 @@ defmodule Fixtures.Cases do
     %{
       input:
         %{
+          extremely_vulnerable: nil,
           birthdate: "1970-03-04",
           high_risk_contact: true,
           infection_date: "2020-05-04"
