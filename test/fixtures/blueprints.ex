@@ -789,8 +789,8 @@ defmodule Fixtures.Blueprints do
           description: "MODERNA PRIORITY",
           columns: [
             %{variable: [:vaccine_compatibilities, :moderna, :compatible]},
-            %{variable: :extremely_vulnerable},
             %{variable: :immuno_recommended},
+            %{variable: :extremely_vulnerable},
             %{variable: :age},
             %{
               type: "assignment",
@@ -836,14 +836,14 @@ defmodule Fixtures.Blueprints do
             %{
               conditions: [
                 %{
-                  expression: quote(do: is_true(@extremely_vulnerable)),
+                  expression: quote(do: is_true(@immuno_recommended)),
                   column: 1
                 }
               ],
               assignments: [
                 %{
                   target: [:vaccine_compatibilities, :moderna, :priority],
-                  description: "extremely_vulnerable",
+                  description: "immuno",
                   column: 4,
                   expression: 2
                 }
@@ -852,14 +852,14 @@ defmodule Fixtures.Blueprints do
             %{
               conditions: [
                 %{
-                  expression: quote(do: is_true(@immuno_recommended)),
+                  expression: quote(do: is_true(@extremely_vulnerable)),
                   column: 2
                 }
               ],
               assignments: [
                 %{
                   target: [:vaccine_compatibilities, :moderna, :priority],
-                  description: "immuno",
+                  description: "extremely_vulnerable",
                   column: 4,
                   expression: 2
                 }
@@ -908,8 +908,8 @@ defmodule Fixtures.Blueprints do
           description: "PFIZER PRIORITY",
           columns: [
             %{variable: [:vaccine_compatibilities, :pfizer, :compatible]},
-            %{variable: :extremely_vulnerable},
             %{variable: :immuno_recommended},
+            %{variable: :extremely_vulnerable},
             %{variable: :age},
             %{
               type: "assignment",
@@ -955,30 +955,30 @@ defmodule Fixtures.Blueprints do
             %{
               conditions: [
                 %{
-                  expression: quote(do: is_true(@extremely_vulnerable)),
+                  expression: quote(do: is_true(@immuno_recommended)),
                   column: 1
                 }
               ],
               assignments: [
                 %{
                   target: [:vaccine_compatibilities, :pfizer, :priority],
-                  description: "extremely_vulnerable",
+                  description: "immuno",
                   column: 4,
-                  expression: 2
+                  expression: 1
                 }
               ]
             },
             %{
               conditions: [
                 %{
-                  expression: quote(do: is_true(@immuno_recommended)),
+                  expression: quote(do: is_true(@extremely_vulnerable)),
                   column: 2
                 }
               ],
               assignments: [
                 %{
                   target: [:vaccine_compatibilities, :pfizer, :priority],
-                  description: "immuno",
+                  description: "extremely_vulnerable",
                   column: 4,
                   expression: 2
                 }
@@ -1131,7 +1131,7 @@ defmodule Fixtures.Blueprints do
                 %{
                   column: 6,
                   target: [:injection_sequence, :moderna, :dose_type],
-                  expression: 1
+                  expression: "1"
                 }
               ]
             },
@@ -1167,7 +1167,7 @@ defmodule Fixtures.Blueprints do
                 %{
                   column: 6,
                   target: [:injection_sequence, :moderna, :dose_type],
-                  expression: 1
+                  expression: "1"
                 }
               ]
             }
@@ -1290,7 +1290,7 @@ defmodule Fixtures.Blueprints do
                     :dose_type
                   ],
                   column: 6,
-                  expression: 2
+                  expression: "2"
                 }
               ]
             }
@@ -1359,7 +1359,7 @@ defmodule Fixtures.Blueprints do
                 %{
                   column: 6,
                   target: [:injection_sequence, :pfizer, :dose_type],
-                  expression: 1
+                  expression: "1"
                 }
               ]
             },
@@ -1395,7 +1395,7 @@ defmodule Fixtures.Blueprints do
                 %{
                   column: 6,
                   target: [:injection_sequence, :pfizer, :dose_type],
-                  expression: 1
+                  expression: "1"
                 }
               ]
             }
@@ -1518,7 +1518,7 @@ defmodule Fixtures.Blueprints do
                     :dose_type
                   ],
                   column: 6,
-                  expression: 2
+                  expression: "2"
                 }
               ]
             }
@@ -1587,7 +1587,7 @@ defmodule Fixtures.Blueprints do
                 %{
                   column: 6,
                   target: [:injection_sequence, :janssen, :dose_type],
-                  expression: 1
+                  expression: "1"
                 }
               ]
             },
@@ -1623,7 +1623,7 @@ defmodule Fixtures.Blueprints do
                 %{
                   column: 6,
                   target: [:injection_sequence, :janssen, :dose_type],
-                  expression: 1
+                  expression: "1"
                 }
               ]
             }
