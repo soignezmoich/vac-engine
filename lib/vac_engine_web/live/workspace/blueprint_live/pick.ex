@@ -7,7 +7,7 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.Pick do
 
   on_mount(VacEngineWeb.LiveRole)
   on_mount(VacEngineWeb.LiveWorkspace)
-  on_mount({VacEngineWeb.LiveLocation, ~w(blueprint none)a})
+  on_mount({VacEngineWeb.LiveLocation, ~w(blueprint pick)a})
 
   @impl true
   def mount(_params, _session, socket) do
