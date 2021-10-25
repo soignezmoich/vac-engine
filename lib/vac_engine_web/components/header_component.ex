@@ -154,6 +154,7 @@ defmodule VacEngineWeb.HeaderComponent do
                     style="sub-menu"
                     sel={at(@location, :blueprint, :summary)} />
             </div>
+            <div>
               <.lnk label="Variables"
                     href={workspace_blueprint_path(Endpoint, :variables, @workspace.id, @blueprint.id)}
                     style="sub-menu"
