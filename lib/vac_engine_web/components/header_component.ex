@@ -11,8 +11,8 @@ defmodule VacEngineWeb.HeaderComponent do
 
       <!-- MAIN MENU -->
 
-      <nav class="flex flex-grow shadow bg-blue-700 text-white">
-        <div>
+      <nav class="flex bg-blue-700 text-white">
+        <div class="flex-grow">
           <div class="w-1.5 h-10"/>
           <div class="w-1.5 h-5"/>
         </div>
@@ -80,16 +80,15 @@ defmodule VacEngineWeb.HeaderComponent do
           <% end %>
         <% end %>
 
-
-        <div class="flex-grow"></div>
+        <div class="w-20"/>
 
         <!-- login/logout button -->
 
         <%= if @role do %>
-          <.lnk label="Logout"
+          <.lnk label="Logout ->"
                 href={logout_path(Endpoint, :logout)} />
         <% else %>
-          <.lnk label="Login"
+          <.lnk label="-> Login"
                 href={login_path(Endpoint, :form)} />
         <% end %>
 
@@ -98,7 +97,8 @@ defmodule VacEngineWeb.HeaderComponent do
 
       <!-- SUB MENU -->
 
-      <nav class="flex">
+      <nav class="-mt-9 w-1/3">
+        <div class="flex -mt-px">
 
         <div class="w-5"/>
 
@@ -136,38 +136,51 @@ defmodule VacEngineWeb.HeaderComponent do
           </div>
         <% end %>
 
-        <!-- Blueprint sub menu -->
-        <%= if at(@location, :blueprint) && !at(@location,:blueprint, :none) && !is_nil(@blueprint) do %>
-          <div>
-            <.lnk label="Summary"
-                  href={workspace_blueprint_path(Endpoint, :summary, @workspace.id, @blueprint.id)}
+        <%= if at(@location, :workspace, :nav) do %>
+          <div class="flex-grow">
+            <.lnk label="Available workspaces"
+                  href={nav_path(Endpoint, :index)}
                   style="sub-menu"
-                  sel={at(@location, :blueprint, :summary)} />
-          </div>
-          <div>
-            <.lnk label="Variables"
-                  href={workspace_blueprint_path(Endpoint, :variables, @workspace.id, @blueprint.id)}
-                  style="sub-menu"
-                  sel={at(@location, :blueprint, :variables)} />
-          </div>
-          <div>
-            <.lnk label="Deductions"
-                  href={workspace_blueprint_path(Endpoint, :deductions, @workspace.id, @blueprint.id)}
-                  style="sub-menu"
-                  sel={at(@location, :blueprint, :deductions)} />
-          </div>
-          <div>
-            <.lnk label="Import"
-                  href={workspace_blueprint_path(Endpoint, :import, @workspace.id, @blueprint.id)}
-                  style="sub-menu"
-                  sel={at(@location, :blueprint, :import)} />
-          </div>
-          <div class="flex-grow" />
-          <div phx-click="save"
-            class="px-4 py-1 cursor-default hover:bg-white hover:bg-opacity-30">
-            Save
+                  sel={true} />
           </div>
         <% end %>
+
+        <!-- Blueprint sub menu -->
+        <%= if at(@location, :blueprint) do %>
+          <%= if !at(@location,:blueprint, :pick) && !is_nil(@blueprint) do %>
+            <div>
+              <.lnk label="Summary"
+                    href={workspace_blueprint_path(Endpoint, :summary, @workspace.id, @blueprint.id)}
+                    style="sub-menu"
+                    sel={at(@location, :blueprint, :summary)} />
+            </div>
+              <.lnk label="Variables"
+                    href={workspace_blueprint_path(Endpoint, :variables, @workspace.id, @blueprint.id)}
+                    style="sub-menu"
+                    sel={at(@location, :blueprint, :variables)} />
+            </div>
+            <div>
+              <.lnk label="Deductions"
+                    href={workspace_blueprint_path(Endpoint, :deductions, @workspace.id, @blueprint.id)}
+                    style="sub-menu"
+                    sel={at(@location, :blueprint, :deductions)} />
+            </div>
+            <div>
+              <.lnk label="Import"
+                href={workspace_blueprint_path(Endpoint, :code, @workspace.id, @blueprint.id)}
+                style="sub-menu"
+                sel={at(@location, :blueprint, :code)} />
+            </div>
+          <% else %>
+            <div>
+              <.lnk label="Available blueprints"
+                    href={workspace_blueprint_path(Endpoint, :pick, @workspace.id)}
+                    style="sub-menu"
+                    sel={true} />
+            </div>
+          <% end %>
+        <% end %>
+        </div>
       </nav>
     </header>
     """
@@ -202,14 +215,14 @@ defmodule VacEngineWeb.HeaderComponent do
         %{style: "sub-menu", sel: sel} ->
           sel_style =
             if sel do
-              "-mb-1 pb-px"
+              "-mb-1 pb-px bg-cream-50"
             else
-              "bg-opacity-50"
+              "bg-gray-300"
             end
 
           assign(assigns,
             style_classes:
-              "flex-grow bg-cream-50 text-black border-t border-l border-r border-black mt-2 mx-1 #{sel_style}",
+              "flex-grow text-black border-t border-l border-r border-black mt-2 mx-1 #{sel_style}",
             padding: "px-4 pt-1"
           )
 
@@ -228,7 +241,7 @@ defmodule VacEngineWeb.HeaderComponent do
           )
 
         %{} ->
-          assign(assigns, style_classes: "", padding: "px-4", style: nil)
+          assign(assigns, style_classes: "italic", padding: "px-4", style: nil)
       end
 
     assigns =
@@ -242,7 +255,7 @@ defmodule VacEngineWeb.HeaderComponent do
     ~H"""
     <div class="flex flex-shrink-0">
       <%= live_redirect to: @href,
-          class: " #{@sel} #{@style_classes}" do %>
+          class: "#{@sel} #{@style_classes}" do %>
 
         <div class="flex items-center h-full hover:drop-shadow hover:filter">
           <div>
@@ -250,7 +263,7 @@ defmodule VacEngineWeb.HeaderComponent do
               <%= @label %>
             </div>
             <%= if @subtitle do %>
-              <div class="text-sm font-light text-center">
+              <div class="text-sm font-light text-center cursor-pointer">
                 <%= @subtitle %>
               </div>
             <% end %>
