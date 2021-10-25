@@ -1,4 +1,4 @@
-defmodule VacEngine.MapHelpers do
+defmodule VacEngine.EnumHelpers do
   def get?(nil, _), do: nil
   def get?(map, key), do: Map.get(map, key)
 
@@ -18,6 +18,12 @@ defmodule VacEngine.MapHelpers do
       nil -> false
       [] -> false
       _ -> true
+    end)
+  end
+
+  def find_by(list, key, value) do
+    Enum.find(list, fn el ->
+      Map.get(el, key) == value
     end)
   end
 end

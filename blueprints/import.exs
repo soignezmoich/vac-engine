@@ -46,7 +46,7 @@ defmodule Importer do
 
       s =
         [s, name, field]
-        |> VacEngine.MapHelpers.compact()
+        |> VacEngine.EnumHelpers.compact()
         |> Enum.join(".")
 
       "#{s}: #{msg}"

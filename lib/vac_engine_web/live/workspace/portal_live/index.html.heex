@@ -1,0 +1,43 @@
+<div class="p-4">
+  <%= case @portals do %>
+  <% [] -> %>
+    <p class="font-bold">
+      No portals in workspace.
+      Use publish from a blueprint to create one.
+    </p>
+  <% portals -> %>
+    <table class="listing-table select-none">
+      <thead>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Active?</th>
+        <th></th>
+      </thead>
+      <tbody>
+        <%= for p <- portals do %>
+          <tr>
+            <td>
+              <%= p.id %>
+            </td>
+            <td>
+              <%= p.name %>
+            </td>
+            <td>
+              <%= format_bool(Portal.active?(p)) %>
+            </td>
+            <td>
+              <%= live_redirect("Details",
+                    to: Routes.workspace_portal_path(@socket, :edit,
+                          @workspace.id, p.id),
+                    class: "btn-sm inline-block"
+                  ) %>
+              <button phx-click="delete" phx-value-id={p.id} class="btn-sm ml-2">
+                Delete
+              </button>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</div>

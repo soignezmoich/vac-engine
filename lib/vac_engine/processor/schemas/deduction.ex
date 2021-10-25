@@ -8,7 +8,7 @@ defmodule VacEngine.Processor.Deduction do
   alias VacEngine.Processor.Branch
   alias VacEngine.Processor.Column
   alias VacEngine.Processor.Deduction
-  import VacEngine.MapHelpers
+  import VacEngine.EnumHelpers
 
   schema "deductions" do
     timestamps(type: :utc_datetime)

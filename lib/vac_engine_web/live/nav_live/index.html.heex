@@ -14,7 +14,7 @@
             <%= w.name %>
           </td>
           <td>
-            <%= live_redirect("open",
+            <%= live_redirect("Select",
                   to: Routes.workspace_dashboard_path(@socket, :index, w.id),
                   class: "btn-sm inline-block"
                 ) %>

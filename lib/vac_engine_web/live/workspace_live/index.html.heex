@@ -14,10 +14,10 @@
       <%= for w <- @workspaces do %>
         <tr>
           <td>
-            <%= w.name %>
+            <%= tr(w.name, 32) %>
           </td>
           <td>
-            <%= live_redirect("Edit",
+            <%= live_redirect("Details",
                   to: Routes.workspace_path(@socket, :edit, w.id),
                   class: "btn-sm inline-block"
                 ) %>

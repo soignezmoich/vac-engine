@@ -1,6 +1,6 @@
 <div>
-  <h2 class="font-bold text-xl">
-    Blueprint: <%= @blueprint.name %>
+  <h2 class="font-bold text-xl mb-4">
+    Blueprint #<%= @blueprint.id %>: <%= @blueprint.name %>
   </h2>
 
   <.form
@@ -21,4 +21,65 @@
 
     <%= submit "Update", class: "btn-default", phx_disable_with: "Update in progress..." %>
   </.form>
+
+  <h2 class="font-bold text-lg mt-8 mb-4">
+    Publications
+  </h2>
+  <.form
+    let={f}
+    for={@portal_changeset}
+    class="w-128"
+    phx-throttle="100"
+    phx-target={@myself}
+    phx-change="validate_portal"
+    phx-submit="publish_new_portal">
+
+    <%= label_line_tag f, :name, "New portal name" %>
+    <div class="flex w-full items-baseline">
+    <%= text_input f, :name, class: "form-fld mb-4 flex-grow mr-2", autofocus: true %>
+    <%= submit "Publish in new portal",
+          class: "btn-default",
+          phx_disable_with: "Publishing in progress..." %>
+    </div>
+
+  </.form>
+  <%= case @publications do %>
+  <% [] -> %>
+    <p class="italic">
+      Blueprint has no existing publication.
+    </p>
+  <% publications -> %>
+    <table class="listing-table">
+      <thead>
+        <th>Portal ID</th>
+        <th>Portal Name</th>
+        <th>Active?</th>
+        <th></th>
+      </thead>
+      <tbody>
+        <%= for p <- publications do %>
+          <%= if Publication.active?(p) do %>
+            <tr>
+              <td>
+                <%= p.portal.id %>
+              </td>
+              <td>
+                <%= p.portal.name %>
+              </td>
+              <td>
+                <%= Publication.active?(p) %>
+              </td>
+              <td>
+                <%= live_redirect("Portal details",
+                      to: Routes.workspace_portal_path(@socket, :edit,
+                            p.workspace_id, p.portal_id),
+                      class: "btn-sm inline-block"
+                    ) %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
 </div>

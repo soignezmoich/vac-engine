@@ -4,12 +4,14 @@ defmodule VacEngine.Account.Workspace do
 
   alias VacEngine.Account.WorkspacePermission
   alias VacEngine.Processor.Blueprint
+  alias VacEngine.Pub.Portal
 
   schema "workspaces" do
     timestamps(type: :utc_datetime)
 
     has_many(:permissions, WorkspacePermission)
     has_many(:blueprints, Blueprint)
+    has_many(:portals, Portal)
 
     field(:name, :string)
     field(:description, :string)

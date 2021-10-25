@@ -11,7 +11,7 @@ defmodule VacEngine.Processor.Branch do
   alias VacEngine.Processor.Column
   alias VacEngine.Processor.Branch
   import VacEngine.EctoHelpers
-  import VacEngine.MapHelpers
+  import VacEngine.EnumHelpers
 
   schema "branches" do
     timestamps(type: :utc_datetime)

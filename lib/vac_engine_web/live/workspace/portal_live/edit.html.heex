@@ -1,0 +1,56 @@
+<%= case @portal do %>
+  <% nil -> %>
+    <.flex_center>
+    <.text_card title="Loading" text="Loading in progress."/>
+    </.flex_center>
+  <% portal -> %>
+    <div class="p-4">
+      <%= live_redirect("← Back to list",
+            to: Routes.workspace_portal_path(@socket, :index, @workspace),
+            class: "mb-4 btn inline-block"
+      ) %>
+      <h2 class="font-bold text-xl mb-4">
+        Portal #<%= portal.id %>: <%= portal.name %>
+      </h2>
+
+      <div>
+        <div class="font-bold">
+          URL <span class="text-sm font-normal">(click to copy)</span>
+        </div>
+        <button phx-hook="clipboardCopy" class="text-xs btn-sm inline-block" id="url">
+          <%= Routes.api_pub_url(@socket, :run, @portal) %>
+        </button>
+      </div>
+
+      <div class="mt-8">
+        <%= if @active_publication do %>
+          <div class="font-bold">
+            Latest publication
+          </div>
+          <div>
+            <%= format_date(@active_publication.activated_at)  %>
+          </div>
+          <div class="font-bold mt-4">
+            Blueprint
+          </div>
+          <div>
+            <%= live_redirect("View blueprint",
+                  to: Routes.workspace_blueprint_path(@socket, :summary, @workspace, @active_publication.blueprint_id),
+                  class: "mb-4 btn inline-block"
+            ) %>
+          </div>
+        <% else %>
+          <div class="font-bold">
+            Portal is not published
+          </div>
+        <% end %>
+      </div>
+
+      <div class="mt-8">
+        <button phx-click="delete" class="btn inline-block">
+          Delete portal
+        </button>
+      </div>
+
+    </div>
+<% end %>

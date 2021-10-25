@@ -12,7 +12,7 @@ defmodule VacEngine.Processor.Column do
   alias VacEngine.Processor.Binding
   import VacEngine.EctoHelpers
   import VacEngine.TupleHelpers
-  import VacEngine.MapHelpers
+  import VacEngine.EnumHelpers
   alias VacEngine.Processor.Meta
 
   schema "columns" do

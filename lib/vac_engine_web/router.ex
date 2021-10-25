@@ -67,6 +67,9 @@ defmodule VacEngineWeb.Router do
         :import,
         as: :blueprint
       )
+
+      live("/portals", PortalLive.Index, :index, as: :portal)
+      live("/portals/:portal_id", PortalLive.Edit, :edit, as: :portal)
     end
   end
 
@@ -81,7 +84,7 @@ defmodule VacEngineWeb.Router do
     match(:*, "/logout", AuthController, :logout, as: :logout)
   end
 
-  scope "/api", VacEngineWeb.Api do
+  scope "/api", VacEngineWeb.Api, as: :api do
     pipe_through([:api])
     post("/p/:portal_id/run", PubController, :run, as: :pub)
     get("/p/:portal_id/info", PubController, :info, as: :pub)

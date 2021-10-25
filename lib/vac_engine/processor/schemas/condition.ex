@@ -10,7 +10,7 @@ defmodule VacEngine.Processor.Condition do
   alias VacEngine.Processor.Column
   alias VacEngine.Processor.Branch
   import VacEngine.EctoHelpers
-  import VacEngine.MapHelpers
+  import VacEngine.EnumHelpers
 
   schema "conditions" do
     timestamps(type: :utc_datetime)

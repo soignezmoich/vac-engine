@@ -35,7 +35,7 @@ defmodule VacEngineWeb.HeaderComponent do
           <%= if @workspace do %>
             <.lnk label="Workspace"
                   href={workspace_dashboard_path(Endpoint, :index, @workspace.id)}
-                  subtitle={"<#{@workspace.name}>"}
+                  subtitle={@workspace.name}
                   style="main-menu"
                   sel={at(@location, :workspace)} />
           <% else %>
@@ -63,7 +63,7 @@ defmodule VacEngineWeb.HeaderComponent do
           <%= if @blueprint do %>
             <.lnk label="Editor"
                   href={workspace_blueprint_path(Endpoint, :index, @workspace.id)}
-                  subtitle={"<#{@blueprint.name}>"}
+                  subtitle={@blueprint.name}
                   style="main-menu"
                   sel={at(@location, :blueprint)} />
           <% else %>
@@ -97,7 +97,7 @@ defmodule VacEngineWeb.HeaderComponent do
 
       <!-- SUB MENU -->
 
-      <nav class="-mt-9 w-1/3">
+      <nav class="xl:-mt-9 w-1/3">
         <div class="flex -mt-px">
 
         <div class="w-5"/>
@@ -133,6 +133,12 @@ defmodule VacEngineWeb.HeaderComponent do
                   href={workspace_blueprint_path(Endpoint, :index, @workspace.id)}
                   style="sub-menu"
                   sel={at(@location, :workspace, :blueprint)} />
+          </div>
+          <div>
+            <.lnk label="Portals"
+                  href={workspace_portal_path(Endpoint, :index, @workspace.id)}
+                  style="sub-menu"
+                  sel={at(@location, :workspace, :pub)} />
           </div>
         <% end %>
 
@@ -264,7 +270,7 @@ defmodule VacEngineWeb.HeaderComponent do
               <%= @label %>
             </div>
             <%= if @subtitle do %>
-              <div class="text-sm font-light text-center cursor-pointer">
+              <div class="text-xs italic font-light text-center max-w-2xs truncate">
                 <%= @subtitle %>
               </div>
             <% end %>

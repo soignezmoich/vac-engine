@@ -14,7 +14,7 @@ defmodule VacEngine.Processor.Assignment do
   alias VacEngine.Processor.Meta
   import VacEngine.EctoHelpers
   import VacEngine.TupleHelpers
-  import VacEngine.MapHelpers
+  import VacEngine.EnumHelpers
 
   schema "assignments" do
     timestamps(type: :utc_datetime)

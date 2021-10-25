@@ -8,7 +8,7 @@ defmodule VacEngine.Processor.Blueprint do
   alias VacEngine.Processor.Deduction
   alias VacEngine.Processor.Variable
   alias VacEngine.Pub.Publication
-  import VacEngine.MapHelpers
+  import VacEngine.EnumHelpers
 
   schema "blueprints" do
     timestamps(type: :utc_datetime)

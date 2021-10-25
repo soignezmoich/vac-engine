@@ -20,7 +20,7 @@ defmodule VacEngineWeb.BlueprintsListComponent do
                   <%= tr(b.name, 32) %>
                 </td>
                 <td>
-                  <%= live_redirect("Open",
+                  <%= live_redirect("Details",
                         to: Routes.workspace_blueprint_path(Endpoint, :summary, b.workspace_id, b.id),
                         class: "btn-sm inline-block"
                       ) %>

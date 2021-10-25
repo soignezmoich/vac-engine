@@ -11,7 +11,7 @@ defmodule VacEngine.Processor.Variable do
   alias VacEngine.Processor.Variable
   alias VacEngine.EctoHelpers
   alias VacEngine.Processor.ListType
-  import VacEngine.MapHelpers
+  import VacEngine.EnumHelpers
 
   schema "variables" do
     timestamps(type: :utc_datetime)
