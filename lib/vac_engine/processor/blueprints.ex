@@ -21,6 +21,11 @@ defmodule VacEngine.Processor.Blueprints do
     |> multi_update_and_fetch
   end
 
+  def change_blueprint(%Blueprint{} = blueprint, attrs) do
+    blueprint
+    |> Blueprint.changeset(attrs)
+  end
+
   def update_blueprint(%Blueprint{} = blueprint, attrs) do
     Multi.new()
     |> multi_update_blueprint(blueprint, attrs)

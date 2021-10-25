@@ -11,6 +11,7 @@
       <.live_component
          module={SummaryComponent}
          id="summary"
+         role={@role}
          blueprint={@blueprint} />
     <% :variables -> %>
       <.variables_section
@@ -27,6 +28,7 @@
       <.live_component
          module={ImportComponent}
          id="import"
+         role={@role}
          blueprint={@blueprint} />
     <% end %>
     </div>

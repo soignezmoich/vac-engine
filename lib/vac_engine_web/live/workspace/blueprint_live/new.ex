@@ -1,22 +1,25 @@
-defmodule VacEngineWeb.Workspace.BlueprintLive.SummaryComponent do
-  use VacEngineWeb, :live_component
+defmodule VacEngineWeb.Workspace.BlueprintLive.New do
+  use VacEngineWeb, :live_view
+
+  import VacEngineWeb.PermissionHelpers, only: [can!: 3]
 
   alias VacEngine.Processor
   alias VacEngine.Processor.Blueprint
 
+  on_mount(VacEngineWeb.LiveRole)
+  on_mount(VacEngineWeb.LiveWorkspace)
+  on_mount({VacEngineWeb.LiveLocation, ~w(workspace blueprint new)a})
+
   @impl true
-  def update(assigns, socket) do
+  def mount(_params, _session, socket) do
+    can!(socket, :create, :blueprint)
+
     changeset =
-      assigns.blueprint
+      %Blueprint{}
       |> Processor.change_blueprint()
       |> Map.put(:action, :insert)
 
-    {:ok,
-     assign(socket,
-       changeset: changeset,
-       blueprint: assigns.blueprint,
-       role: assigns.role
-     )}
+    {:ok, assign(socket, changeset: changeset)}
   end
 
   @impl true
@@ -26,7 +29,7 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.SummaryComponent do
         socket
       ) do
     changeset =
-      socket.assigns.blueprint
+      %Blueprint{}
       |> Processor.change_blueprint(params)
       |> Map.put(:action, :insert)
 
@@ -35,13 +38,13 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.SummaryComponent do
 
   @impl true
   def handle_event(
-        "update",
+        "create",
         %{"blueprint" => params},
-        %{assigns: %{blueprint: blueprint}} = socket
+        %{assigns: %{workspace: workspace}} = socket
       ) do
-    can!(socket, :update, :blueprint)
+    can!(socket, :create, :blueprint)
 
-    Processor.update_blueprint(blueprint, params)
+    Processor.create_blueprint(workspace, params)
     |> case do
       {:ok, br} ->
         {:noreply,
@@ -51,7 +54,7 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.SummaryComponent do
              Routes.workspace_blueprint_path(
                socket,
                :summary,
-               br.workspace_id,
+               workspace.id,
                br.id
              )
          )}

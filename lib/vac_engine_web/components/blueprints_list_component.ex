@@ -3,8 +3,7 @@ defmodule VacEngineWeb.BlueprintsListComponent do
 
   def blueprints_list(assigns) do
     ~H"""
-    <section class="p-4">
-      <h1 class="font-bold text-xl mb-6">Available blueprints</h1>
+    <div>
       <%= case @blueprints do %>
       <% [] -> %>
         <p class="font-medium text-lg">No blueprint in workspace</p>
@@ -22,7 +21,7 @@ defmodule VacEngineWeb.BlueprintsListComponent do
                 </td>
                 <td>
                   <%= live_redirect("Open",
-                        to: Routes.workspace_blueprint_path(Endpoint, :variables, b.workspace_id, b.id),
+                        to: Routes.workspace_blueprint_path(Endpoint, :summary, b.workspace_id, b.id),
                         class: "btn-sm inline-block"
                       ) %>
                 </td>
@@ -31,7 +30,7 @@ defmodule VacEngineWeb.BlueprintsListComponent do
           </tbody>
         </table>
       <% end %>
-    </section>
+    </div>
     """
   end
 end

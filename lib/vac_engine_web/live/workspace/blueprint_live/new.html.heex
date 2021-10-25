@@ -1,27 +1,21 @@
 <div class="p-4">
   <%= live_redirect("← Back to list",
-        to: Routes.user_path(@socket, :index),
+        to: Routes.workspace_blueprint_path(@socket, :index, @workspace),
         class: "inline-block mb-4 btn"
       ) %>
-  <h1 class="font-bold text-xl mb-6">Create user</h1>
+  <h1 class="font-bold text-xl mb-6">Create blueprint</h1>
 
   <.form
     let={f}
     for={@changeset}
-    id="new_user_form"
+    id="new_blueprint_form"
     class="flex flex-col w-128"
-    phx_throttle="100"
-    phx_change="validate"
-    phx_submit="create">
+    phx-throttle="100"
+    phx-change="validate"
+    phx-submit="create">
 
-    <%= label_line_tag f, :name, "Full name" %>
+    <%= label_line_tag f, :name, "Name" %>
     <%= text_input f, :name, class: "form-fld mb-4", autofocus: true %>
-
-    <%= label_line_tag f, :email, "Email address" %>
-    <%= text_input f, :email, class: "form-fld mb-4" %>
-
-    <%= label_line_tag f, :phone, "Phone number" %>
-    <%= text_input f, :phone, class: "form-fld mb-4" %>
 
     <%= label_line_tag f, :description, "Description" %>
     <%= textarea f, :description, class: "form-fld mb-4" %>

@@ -146,12 +146,12 @@ defmodule Importer do
       where: b.name == ^name and b.workspace_id == ^workspace.id,
       select: b.id
     )
-    |> Repo.one()
+    |> Repo.all()
     |> case do
-      nil ->
+      [] ->
         Processor.create_blueprint(workspace, %{name: name})
 
-      id ->
+      [id|_] ->
         Processor.fetch_blueprint(workspace, id)
     end
     |> case do
@@ -193,8 +193,10 @@ defmodule Importer do
 
   def update_blueprint(res), do: res
 
-  def serialize_blueprint({:ok, %{blueprint: blueprint} = state}) do
+  def serialize_blueprint({:ok, %{blueprint: blueprint, name: name} = state}) do
+    name = "#{name} at #{Timex.format!(NaiveDateTime.utc_now(), "{ISOdate} {h24}:{m}:{s}")}"
     Processor.serialize_blueprint(blueprint)
+    |> Map.put(:name, name)
     |> Jason.encode()
     |> case do
       {:ok, json} ->

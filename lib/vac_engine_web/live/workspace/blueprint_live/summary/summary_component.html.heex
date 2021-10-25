@@ -2,4 +2,23 @@
   <h2 class="font-bold text-xl">
     Blueprint: <%= @blueprint.name %>
   </h2>
+
+  <.form
+    let={f}
+    for={@changeset}
+    id="summary_blueprint_form"
+    class="flex flex-col w-128"
+    phx-target={@myself}
+    phx-throttle="100"
+    phx-change="validate"
+    phx-submit="update">
+
+    <%= label_line_tag f, :name, "Name" %>
+    <%= text_input f, :name, class: "form-fld mb-4", autofocus: true %>
+
+    <%= label_line_tag f, :description, "Description" %>
+    <%= textarea f, :description, class: "form-fld mb-4" %>
+
+    <%= submit "Update", class: "btn-default", phx_disable_with: "Update in progress..." %>
+  </.form>
 </div>

@@ -23,6 +23,7 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.ImportComponent do
 
   @impl Phoenix.LiveComponent
   def handle_event("save", _params, socket) do
+    can!(socket, :update, :blueprint)
     blueprint = socket.assigns.blueprint
 
     uploaded_files =
