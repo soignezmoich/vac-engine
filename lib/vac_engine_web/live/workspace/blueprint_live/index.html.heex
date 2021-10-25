@@ -1,1 +1,9 @@
+
+<div class="flex flex-col p-4 items-start">
+<%= live_redirect("Create blueprint",
+      to: Routes.workspace_blueprint_path(@socket, :new, @workspace),
+      class: "mb-4 btn-default"
+    ) %>
+
 <.blueprints_list blueprints={@blueprints}  />
+</div>

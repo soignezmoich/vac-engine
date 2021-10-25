@@ -40,3 +40,6 @@ npm-debug.log
 .envrc
 .idea/
 .elixir_ls/
+
+/blueprints/json/
+*.log

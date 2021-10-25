@@ -26,7 +26,7 @@ defmodule VacEngineWeb.Api.PubControllerTest do
   end
 
   test "POST /api/p/run with data", %{conn: conn} do
-    blueprint = Blueprints.blueprints() |> Map.get(:ruleset0)
+    blueprint = Blueprints.blueprints() |> Map.get(:nested_test)
 
     {:ok, workspace} = Account.create_workspace(%{name: "Test workspace"})
 
@@ -45,8 +45,9 @@ defmodule VacEngineWeb.Api.PubControllerTest do
     Pub.refresh_cache()
 
     Cases.cases()
+    |> Enum.filter(fn cs -> is_nil(Map.get(cs, :error)) end)
     |> Enum.each(fn
-      %{blueprint: :ruleset0} = cas ->
+      %{blueprint: :nested_test} = cas ->
         data = %{input: cas.input}
 
         conn =

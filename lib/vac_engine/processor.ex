@@ -8,11 +8,13 @@ defmodule VacEngine.Processor do
   alias VacEngine.Processor.Info
 
   defdelegate create_blueprint(workspace, attrs), to: Blueprints
+  defdelegate change_blueprint(blueprint, attrs \\ %{}), to: Blueprints
   defdelegate update_blueprint(blueprint, attrs), to: Blueprints
   defdelegate fetch_blueprint(workspace, bid), to: Blueprints
   defdelegate list_blueprints(workspace), to: Blueprints
   defdelegate get_blueprint!(blueprint_id), to: Blueprints
   defdelegate serialize_blueprint(blueprint), to: Blueprints
+  defdelegate update_blueprint_from_file(blueprint, path), to: Blueprints
 
   defdelegate create_variable(parent, attrs), to: Variables
   defdelegate update_variable(var, attrs), to: Variables

@@ -7,7 +7,8 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.Edit do
   alias VacEngine.Processor
   import VacEngineWeb.Editor.Deductions, only: [deductions: 1]
   import VacEngineWeb.Editor.VariablesSection, only: [variables_section: 1]
-  import VacEngineWeb.Workspace.BlueprintLive.CodeEditorComponent
+  alias VacEngineWeb.Workspace.BlueprintLive.SummaryComponent
+  alias VacEngineWeb.Workspace.BlueprintLive.ImportComponent
 
   on_mount(VacEngineWeb.LiveRole)
   on_mount(VacEngineWeb.LiveWorkspace)
@@ -24,25 +25,23 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.Edit do
         nil
       end
 
-    source =
-      if blueprint do
-        Processor.serialize_blueprint(blueprint)
-        |> Jason.encode!(pretty: true)
-      else
-        nil
-      end
-
-    {:ok, assign(socket, blueprint: blueprint, blueprint_source: source)}
+    {:ok, assign(socket, blueprint: blueprint)}
   end
 
   @impl true
   def handle_params(_params, _session, socket) do
-    {:noreply, assign(socket, location: [:blueprint, socket.assigns.live_action])}
+    {:noreply,
+     assign(socket, location: [:blueprint, socket.assigns.live_action])}
   end
 
   @impl true
   def handle_event("save", _params, socket) do
     IO.inspect("save blueprint triggered from header")
     {:noreply, socket}
+  end
+
+  @impl true
+  def handle_info({:update_blueprint, br}, socket) do
+    {:noreply, assign(socket, blueprint: br)}
   end
 end

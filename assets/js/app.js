@@ -12,13 +12,6 @@ const Hooks = {}
 const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute('content')
 const liveSocket = new LiveSocket('/live', Socket, {
   params: { _csrf_token: csrfToken },
-  dom: {
-    onBeforeElUpdated (from, to) {
-      for (const i in window.DROPDOWNS) {
-        window.DROPDOWNS[i].close()
-      }
-    }
-  },
   hooks: Hooks
 })
 

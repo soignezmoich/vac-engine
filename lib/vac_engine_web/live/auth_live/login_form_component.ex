@@ -9,9 +9,9 @@ defmodule VacEngineWeb.AuthLive.LoginFormComponent do
         let={f}
         for={@changeset}
         id="login_form"
-        phx_throttle="100"
-        phx_change="validate"
-        phx_submit="login"
+        phx-throttle="100"
+        phx-change="validate"
+        phx-submit="login"
         class="flex flex-col w-full">
         <.login_label f={f} field={:email} name="Email" />
         <.email_field f={f} />

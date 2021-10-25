@@ -1,17 +1,14 @@
-<section class="p-4">
-  <%= live_redirect("← Back to list",
-        to: Routes.workspace_path(@socket, :index),
-        class: "inline-block mb-4 btn"
-      ) %>
-  <h1 class="font-bold text-xl mb-6"><%= @edit_workspace.name %></h1>
-
-  <h2 class="font-bold text-lg mb-4 mt-6">Base info</h2>
+<div>
+  <h2 class="font-bold text-xl">
+    Blueprint: <%= @blueprint.name %>
+  </h2>
 
   <.form
     let={f}
     for={@changeset}
-    id="edit_workspace_form"
+    id="summary_blueprint_form"
     class="flex flex-col w-128"
+    phx-target={@myself}
     phx-throttle="100"
     phx-change="validate"
     phx-submit="update">
@@ -24,4 +21,4 @@
 
     <%= submit "Update", class: "btn-default", phx_disable_with: "Update in progress..." %>
   </.form>
-</section>
+</div>

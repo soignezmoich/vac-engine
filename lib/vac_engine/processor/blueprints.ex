@@ -21,6 +21,11 @@ defmodule VacEngine.Processor.Blueprints do
     |> multi_update_and_fetch
   end
 
+  def change_blueprint(%Blueprint{} = blueprint, attrs) do
+    blueprint
+    |> Blueprint.changeset(attrs)
+  end
+
   def update_blueprint(%Blueprint{} = blueprint, attrs) do
     Multi.new()
     |> multi_update_blueprint(blueprint, attrs)
@@ -417,5 +422,23 @@ defmodule VacEngine.Processor.Blueprints do
 
   def serialize_blueprint(%Blueprint{} = blueprint) do
     Blueprint.to_map(blueprint)
+  end
+
+  def update_blueprint_from_file(%Blueprint{} = blueprint, path) do
+    File.read(path)
+    |> case do
+      {:ok, json} ->
+        Jason.decode(json)
+        |> case do
+          {:ok, data} ->
+            update_blueprint(blueprint, data)
+
+          {:error, _} ->
+            {:error, "cannot decode json"}
+        end
+
+      {:error, _} ->
+        {:error, "cannot read file"}
+    end
   end
 end

@@ -217,14 +217,4 @@ defmodule VacEngine.Processor.BlueprintTest do
     assert 4 == from(e in Assignment, select: count(e.id)) |> Repo.one()
     assert 3 == from(e in Condition, select: count(e.id)) |> Repo.one()
   end
-
-  test "serialize/deserialize blueprint", %{
-    workspace: workspace,
-    blueprints: blueprints
-  } do
-    assert {:ok, blueprint} =
-             Processor.create_blueprint(workspace, blueprints.ruleset0)
-
-    Processor.serialize_blueprint(blueprint)
-  end
 end

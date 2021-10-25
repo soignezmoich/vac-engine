@@ -7,6 +7,12 @@
   <section class="flex flex-col w-full">
     <div class="p-4 flex-grow flex flex-col">
     <%= case @live_action do %>
+    <% :summary -> %>
+      <.live_component
+         module={SummaryComponent}
+         id="summary"
+         role={@role}
+         blueprint={@blueprint} />
     <% :variables -> %>
       <.variables_section
         variables={blueprint.variables}
@@ -18,8 +24,12 @@
         variables={blueprint.variables}
         path={["deductions"]}
         selection_path={nil} />
-    <% :code -> %>
-      <.code_editor source={@blueprint_source} />
+    <% :import -> %>
+      <.live_component
+         module={ImportComponent}
+         id="import"
+         role={@role}
+         blueprint={@blueprint} />
     <% end %>
     </div>
   </section>

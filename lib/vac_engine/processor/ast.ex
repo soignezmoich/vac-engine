@@ -12,7 +12,7 @@ defmodule VacEngine.Processor.Ast do
   end
 
   defp sanitize!({f, m, args}) when is_list(args) and is_binary(f) do
-    fname = String.to_existing_atom(f)
+    fname = convert_atom(f)
     sanitize!({fname, m, args})
   catch
     _ ->
@@ -171,7 +171,7 @@ defmodule VacEngine.Processor.Ast do
   defp typeof(v) when is_binary(v), do: :string
 
   defp typeof([h | _]) do
-    "#{typeof(h)}[]" |> String.to_existing_atom()
+    "#{typeof(h)}[]" |> convert_atom()
   end
 
   defp typeof(v) when is_list(v) do
@@ -236,9 +236,9 @@ defmodule VacEngine.Processor.Ast do
 
           args =
             args
-            |> Enum.map(&String.to_existing_atom/1)
+            |> Enum.map(&convert_atom/1)
 
-          ret = String.to_existing_atom(ret)
+          ret = convert_atom(ret)
           sig = {args, ret}
           [signature: sig]
 
@@ -246,7 +246,7 @@ defmodule VacEngine.Processor.Ast do
           []
       end
 
-    l = String.to_existing_atom(l)
+    l = convert_atom(l)
 
     {l, m, Enum.map(r, &json_to_ast!/1)}
   end
@@ -275,5 +275,18 @@ defmodule VacEngine.Processor.Ast do
 
   def describe(ast) do
     inspect(ast)
+  end
+
+  defp convert_atom(a) when is_atom(a), do: a
+
+  defp convert_atom(a) when is_binary(a) do
+    String.to_existing_atom(a)
+  rescue
+    _ ->
+      throw({:name_not_found, "name #{a} not found"})
+  end
+
+  defp convert_atom(a) do
+    throw({:invalid_name, "invalid name"})
   end
 end

@@ -48,6 +48,13 @@ svg * {
   }
 }
 
+.btn-cancel {
+  @apply px-2 py-1 bg-cream-200 text-gray-800 font-bold;
+  &:hover {
+    @apply bg-gray-600 text-gray-50;
+  }
+}
+
 .form-fld {
   @apply bg-gray-100 text-gray-900 px-2 py-1;
 
@@ -90,4 +97,12 @@ textarea.form-fld {
   td:first-child {
     @apply font-bold text-right;
   }
+}
+
+progress::-moz-progress-bar {
+  @apply bg-blue-600;
+}
+
+progress::-webkit-progress-value {
+  @apply bg-blue-600;
 }
