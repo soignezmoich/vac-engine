@@ -22,18 +22,22 @@ defmodule VacEngineWeb.Editor.Deductions do
 
     ~H"""
     <div class="h-3" />
-    <div class="grid grid-cols-4 gap-8">
-      <div class="w-full">
-        <.form_actions />
-        <div class="h-4" />
-        <.deductions_actions />
-        <div class="h-4" />
-        <.expression_editor />
+    <div class="flex min-h-0">
+      <div class="w-64 mr-2 flex flex-col overflow-y-auto">
+        <div class="flex-shrink ">
+          <.form_actions />
+          <div class="h-4" />
+          <.deductions_actions />
+          <div class="h-4" />
+          <.expression_editor />
+        </div>
       </div>
-      <div class="col-span-3 h-screen overflow-scroll">
-        <%= for {path, deduction} <- @deductions_with_path do %>
-          <.deduction deduction={deduction} path={path} selection_path={@selection_path}/>
-        <% end %>
+      <div class="flex-grow flex flex-col overflow-y-auto">
+        <div class="flex-shrink text-xs">
+          <%= for {path, deduction} <- @deductions_with_path do %>
+            <.deduction deduction={deduction} path={path} selection_path={@selection_path}/>
+          <% end %>
+        </div>
       </div>
       <br/>
     </div>
