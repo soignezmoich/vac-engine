@@ -139,6 +139,12 @@ defmodule VacEngineWeb.HeaderComponent do
         <!-- Blueprint sub menu -->
         <%= if at(@location, :blueprint) && !at(@location,:blueprint, :none) && !is_nil(@blueprint) do %>
           <div>
+            <.lnk label="Summary"
+                  href={workspace_blueprint_path(Endpoint, :summary, @workspace.id, @blueprint.id)}
+                  style="sub-menu"
+                  sel={at(@location, :blueprint, :summary)} />
+          </div>
+          <div>
             <.lnk label="Variables"
                   href={workspace_blueprint_path(Endpoint, :variables, @workspace.id, @blueprint.id)}
                   style="sub-menu"
@@ -152,9 +158,9 @@ defmodule VacEngineWeb.HeaderComponent do
           </div>
           <div>
             <.lnk label="Import"
-              href={workspace_blueprint_path(Endpoint, :code, @workspace.id, @blueprint.id)}
-              style="sub-menu"
-              sel={at(@location, :blueprint, :code)} />
+                  href={workspace_blueprint_path(Endpoint, :import, @workspace.id, @blueprint.id)}
+                  style="sub-menu"
+                  sel={at(@location, :blueprint, :import)} />
           </div>
           <div class="flex-grow" />
           <div phx-click="save"

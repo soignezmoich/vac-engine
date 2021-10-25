@@ -418,4 +418,22 @@ defmodule VacEngine.Processor.Blueprints do
   def serialize_blueprint(%Blueprint{} = blueprint) do
     Blueprint.to_map(blueprint)
   end
+
+  def update_blueprint_from_file(%Blueprint{} = blueprint, path) do
+    File.read(path)
+    |> case do
+      {:ok, json} ->
+        Jason.decode(json)
+        |> case do
+          {:ok, data} ->
+            update_blueprint(blueprint, data)
+
+          {:error, _} ->
+            {:error, "cannot decode json"}
+        end
+
+      {:error, _} ->
+        {:error, "cannot read file"}
+    end
+  end
 end
