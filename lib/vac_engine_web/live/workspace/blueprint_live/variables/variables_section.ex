@@ -3,6 +3,9 @@ defmodule VacEngineWeb.Editor.VariablesSection do
   alias VacEngineWeb.Editor.Variable
   alias VacEngineWeb.Editor.VariableRenderables
   import Elixir.Integer
+  import VacEngineWeb.Editor.FormActionsComponent
+  import VacEngineWeb.Editor.VariableEditorComponent
+  import VacEngineWeb.Editor.VariablesActionsComponent
 
   def variables_section(assigns) do
     # variables_with_path =
@@ -36,8 +39,15 @@ defmodule VacEngineWeb.Editor.VariablesSection do
 
     ~H"""
       <div class="h-3" />
-      <div class="grid grid-cols-2 gap-8">
-        <div>
+      <div class="grid grid-cols-4 gap-8">
+        <div class="w-full">
+          <.form_actions />
+          <div class="h-4" />
+          <.variables_actions />
+          <div class="h-4" />
+          <.variable_editor />
+        </div>
+        <div class="col-span-3 h-screen overflow-scroll">
           <table class="w-full">
             <thead>
               <tr>
@@ -85,11 +95,8 @@ defmodule VacEngineWeb.Editor.VariablesSection do
                   even={is_even(index)}
                   in_out="output" />
               <% end %>
+              <tr><td><br/><br/></td></tr>
             </tbody>
-          </table>
-        </div>
-        <div>
-          <table class="w-full">
             <thead>
               <tr>
                 <th colspan="3" class="whitespace-nowrap bg-blue-500 text-white py-1 px-4">

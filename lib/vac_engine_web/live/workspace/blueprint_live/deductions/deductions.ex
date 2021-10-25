@@ -2,6 +2,10 @@ defmodule VacEngineWeb.Editor.Deductions do
   use Phoenix.Component
 
   import VacEngineWeb.PathHelpers
+  import VacEngineWeb.Editor.FormActionsComponent
+  import VacEngineWeb.Editor.DeductionsActionsComponent
+  import VacEngineWeb.Editor.FormActionsComponent
+  import VacEngineWeb.Editor.ExpressionEditorComponent
 
   def deductions(assigns) do
     deductions_with_path =
@@ -17,14 +21,22 @@ defmodule VacEngineWeb.Editor.Deductions do
       )
 
     ~H"""
-      <div class="overflow-x-scroll">
-
+    <div class="h-3" />
+    <div class="grid grid-cols-4 gap-8">
+      <div class="w-full">
+        <.form_actions />
+        <div class="h-4" />
+        <.deductions_actions />
+        <div class="h-4" />
+        <.expression_editor />
+      </div>
+      <div class="col-span-3 h-screen overflow-scroll">
         <%= for {path, deduction} <- @deductions_with_path do %>
           <.deduction deduction={deduction} path={path} selection_path={@selection_path}/>
         <% end %>
       </div>
       <br/>
-
+    </div>
     """
 
     # <%= if @selected do %>
@@ -86,61 +98,56 @@ defmodule VacEngineWeb.Editor.Deductions do
       )
 
     ~H"""
-    <div>
-      <br/>
-      <br/>
-      <div>
-        <table class="min-w-full">
-          <thead>
-            <tr>
-              <%= if Enum.count(@cond_columns) > 0 do %>
-              <th colspan={Enum.count(@cond_columns)} class="bg-cream-500 text-white px-4">
-              </th>
-              <th><div class="w-2"/></th>
-              <% end %>
-              <th colspan={Enum.count(@target_columns)} class="whitespace-nowrap bg-blue-500 text-white py-1 px-4">
-                <%= @target_paths_prefix |> Enum.join(".") %> ->
-              </th>
-            </tr>
-            <tr>
-              <%= if Enum.count(@cond_columns) > 0 do %>
-                <%= for cond_path <- @cond_paths do %>
-                  <th class="bg-cream-400 text-white py-1 px-4">
-                    <div class="mx-1">
-                      <%= cond_path |> Enum.join(".") %>
-                    </div>
-                  </th>
-                <% end %>
-                <th class="bg-white">
-                </th>
-              <% end %>
-              <%= for target_path <- @truncated_target_paths do %>
-                <% target_path = if Enum.count(target_path) > 0 do target_path else [List.last(@target_paths_prefix)] end %>
-                <th class="bg-blue-400 text-white py-1 px-4">
+    <div class="shadow-lg">
+      <table class="min-w-full">
+        <thead>
+          <tr>
+            <%= if Enum.count(@cond_columns) > 0 do %>
+            <th colspan={Enum.count(@cond_columns)} class="bg-cream-500 text-white px-4">
+            </th>
+            <th class="bg-white w-5"></th>
+            <% end %>
+            <th colspan={Enum.count(@target_columns)} class="whitespace-nowrap bg-blue-500 text-white py-1 px-4">
+              <%= @target_paths_prefix |> Enum.join(".") %> ->
+            </th>
+          </tr>
+          <tr>
+            <%= if Enum.count(@cond_columns) > 0 do %>
+              <%= for cond_path <- @cond_paths do %>
+                <th class="bg-cream-400 text-white py-1 px-4">
                   <div class="mx-1">
-                    <%= target_path |> Enum.join(".") %>
+                    <%= cond_path |> Enum.join(".") %>
                   </div>
                 </th>
               <% end %>
-            </tr>
-          </thead>
-          <tbody>
-            <%= for {index, path, branch} <- @branches_with_path do %>
-              <tr>
-                <.branch
-                  branch={branch}
-                  index={index}
-                  path={path}
-                  cond_columns={cond_columns}
-                  target_columns={target_columns}
-                  selection_path={@selection_path} />
-              </tr>
+              <th class="bg-white"></th>
             <% end %>
-          </tbody>
-        </table>
-      </div>
-
+            <%= for target_path <- @truncated_target_paths do %>
+              <% target_path = if Enum.count(target_path) > 0 do target_path else [List.last(@target_paths_prefix)] end %>
+              <th class="bg-blue-400 text-white py-1 px-4">
+                <div class="mx-1">
+                  <%= target_path |> Enum.join(".") %>
+                </div>
+              </th>
+            <% end %>
+          </tr>
+        </thead>
+        <tbody>
+          <%= for {index, path, branch} <- @branches_with_path do %>
+            <tr>
+              <.branch
+                branch={branch}
+                index={index}
+                path={path}
+                cond_columns={cond_columns}
+                target_columns={target_columns}
+                selection_path={@selection_path} />
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     </div>
+    <div class="h-8" />
     """
 
     # <tr>
@@ -245,7 +252,7 @@ defmodule VacEngineWeb.Editor.Deductions do
           is_condition={true}
           even={rem(@index, 2) == 0} />
       <% end %>
-      <td class="bg-white text-gray-300 w-5">
+      <td class="text-gray-500 bg-white w-5">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
         </svg>
