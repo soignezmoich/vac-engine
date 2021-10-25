@@ -19,7 +19,7 @@ defmodule VacEngine.Processor.ImportTest do
 
   test "serialize", %{workspace: workspace, blueprints: blueprints} do
     assert {:ok, blueprint} =
-             Processor.create_blueprint(workspace, blueprints.ruleset0)
+             Processor.create_blueprint(workspace, blueprints.nested_test)
 
     serialized = Processor.serialize_blueprint(blueprint)
 

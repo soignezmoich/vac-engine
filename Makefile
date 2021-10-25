@@ -62,6 +62,7 @@ clean:
 	rm -fr _build
 	rm -fr deps
 	rm -fr erl_crash.dump
+	rm -fr blueprints/json
 
 
 .PHONY: server
