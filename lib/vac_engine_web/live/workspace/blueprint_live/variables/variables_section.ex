@@ -8,25 +8,6 @@ defmodule VacEngineWeb.Editor.VariablesSection do
   import VacEngineWeb.Editor.VariablesActionsComponent
 
   def variables_section(assigns) do
-    # variables_with_path =
-    #   assigns.variables
-    #   |> Enum.map(fn value ->
-    #     {[value.name | assigns.path], Map.merge(%{name: value.name}, value)}
-    #   end)
-
-    # input_with_path =
-    #   variables_with_path
-    #   |> Enum.filter(fn {_path, variable} -> PVariable.input?(variable) end)
-
-    # output_with_path =
-    #   variables_with_path
-    #   |> Enum.filter(fn {_path, variable} -> PVariable.output?(variable) end)
-
-    # middle_with_path =
-    #   variables_with_path
-    #   |> Enum.filter(fn {_path, variable} ->
-    #     !PVariable.input?(variable) && !PVariable.output?(variable)
-    #   end)
 
     renderable_variables = VariableRenderables.build(assigns.variables, nil)
 

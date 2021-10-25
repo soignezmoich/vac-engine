@@ -9,10 +9,10 @@ defmodule VacEngineWeb.Editor.FormActionsComponent do
       </div>
       <hr class="mb-2" />
       <div class="grid grid-cols-2 gap-1.5">
-        <button class="btn">Open</button>
-        <button class="btn">Save</button>
-        <button class="btn">Publish</button>
-        <button class="btn">Save as</button>
+        <button class="btn btn-default">Open</button>
+        <button class="btn btn-default">Save</button>
+        <button class="btn btn-default">Publish</button>
+        <button class="btn btn-default">Save as</button>
       </div>
     </div>
     """

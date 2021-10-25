@@ -3,8 +3,7 @@ defmodule VacEngineWeb.Editor.Deductions do
 
   import VacEngineWeb.PathHelpers
   import VacEngineWeb.Editor.FormActionsComponent
-  import VacEngineWeb.Editor.DeductionsActionsComponent
-  import VacEngineWeb.Editor.FormActionsComponent
+  import VacEngineWeb.Editor.DeductionActionsComponent
   import VacEngineWeb.Editor.ExpressionEditorComponent
 
   def deductions(assigns) do
@@ -24,10 +23,10 @@ defmodule VacEngineWeb.Editor.Deductions do
     <div class="h-3" />
     <div class="flex min-h-0">
       <div class="w-64 mr-2 flex flex-col overflow-y-auto">
-        <div class="flex-shrink ">
+        <div class="flex-shrink-0 mx-2">
           <.form_actions />
           <div class="h-4" />
-          <.deductions_actions />
+          <.deduction_actions />
           <div class="h-4" />
           <.expression_editor />
         </div>
