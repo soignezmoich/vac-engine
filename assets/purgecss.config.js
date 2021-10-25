@@ -1,5 +1,5 @@
 const extract = (content) => {
-  return content.match(/[A-z0-9-:\/@]+/g) || []
+  return content.match(/[A-z0-9-:.\/@]+/g) || []
 }
 
 module.exports = {
