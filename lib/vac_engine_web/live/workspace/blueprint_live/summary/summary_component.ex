@@ -44,17 +44,8 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.SummaryComponent do
     Processor.update_blueprint(blueprint, params)
     |> case do
       {:ok, br} ->
-        {:noreply,
-         socket
-         |> push_redirect(
-           to:
-             Routes.workspace_blueprint_path(
-               socket,
-               :summary,
-               br.workspace_id,
-               br.id
-             )
-         )}
+        send(self(), {:update_blueprint, br})
+        {:noreply, socket}
 
       {:error, changeset} ->
         {:noreply, assign(socket, changeset: changeset)}
