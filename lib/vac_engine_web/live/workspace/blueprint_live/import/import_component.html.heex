@@ -34,10 +34,12 @@
           <%= case f do %>
             <% {:ok, br} -> %>
               <div class="px-2">
-                Upload success, blueprint updated.
+                Success, blueprint updated.
               </div>
             <% {:error, msg} -> %>
               <div class="bg-red-200 border-2 border-red-400 p-2">
+                Error, blueprint NOT updated.
+                <br>
                 <%= msg %>
               </div>
           <% end %>

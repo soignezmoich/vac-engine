@@ -34,8 +34,11 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.ImportComponent do
           send(self(), {:update_blueprint, br})
           res
 
-        res ->
-          res
+        {:error, err} when is_binary(err) ->
+          {:error, err}
+
+        {:error, _} ->
+          {:error, "error while processing blueprint"}
       end)
 
     {:noreply, update(socket, :upload_files, &(&1 ++ uploaded_files))}
