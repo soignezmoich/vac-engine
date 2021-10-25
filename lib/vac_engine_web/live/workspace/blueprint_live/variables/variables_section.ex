@@ -22,7 +22,7 @@ defmodule VacEngineWeb.Editor.VariablesSection do
       <div class="h-3" />
       <div class="flex min-h-0">
         <div class="w-64 mr-2 flex flex-col overflow-y-auto">
-          <div class="flex-shrink ">
+          <div class="flex-shrink-0 mx-2">
             <.form_actions />
             <div class="h-4" />
             <.variables_actions />
