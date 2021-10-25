@@ -168,9 +168,9 @@ defmodule VacEngineWeb.HeaderComponent do
             </div>
             <div>
               <.lnk label="Import"
-                href={workspace_blueprint_path(Endpoint, :code, @workspace.id, @blueprint.id)}
+                href={workspace_blueprint_path(Endpoint, :pick, @workspace.id, @blueprint.id)}
                 style="sub-menu"
-                sel={at(@location, :blueprint, :code)} />
+                sel={at(@location, :blueprint, :pick)} />
             </div>
           <% else %>
             <div>
