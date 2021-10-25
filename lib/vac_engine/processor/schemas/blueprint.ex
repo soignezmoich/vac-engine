@@ -7,6 +7,7 @@ defmodule VacEngine.Processor.Blueprint do
   alias VacEngine.Processor.Blueprint
   alias VacEngine.Processor.Deduction
   alias VacEngine.Processor.Variable
+  alias VacEngine.Pub.Publication
   import VacEngine.MapHelpers
 
   schema "blueprints" do
@@ -20,6 +21,8 @@ defmodule VacEngine.Processor.Blueprint do
     field(:interface_hash, :string)
     has_many(:variables, Variable, on_replace: :delete)
     has_many(:deductions, Deduction, on_replace: :delete)
+
+    has_many(:publications, Publication)
 
     field(:draft, :boolean)
 
