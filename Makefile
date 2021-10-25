@@ -66,7 +66,7 @@ clean:
 
 .PHONY: server
 
-server: deps
+server: deps assets-deps
 	iex -S mix phx.server
 
 .PHONY: prod-test-server
@@ -78,6 +78,11 @@ prod-test-server: release
 
 assets:
 	cd assets && make build
+
+.PHONY: assets-deps
+
+assets-deps:
+	cd assets && make deps
 
 .PHONY: js-watch
 
@@ -157,6 +162,6 @@ checks:
 	mix dialyzer || true
 	mix credo suggest -a
 
-.PHONY: update-blueprints
-update-blueprints:
-	mix run  -r test/fixtures/helpers.ex -r test/fixtures/blueprints.ex priv/repo/update_blueprints.exs
+.PHONY: import-blueprints
+import-blueprints: deps
+	mix run blueprints/import.exs

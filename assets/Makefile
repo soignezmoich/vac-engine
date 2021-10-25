@@ -45,3 +45,7 @@ yarn.lock:
 node_modules: yarn.lock package.json
 	yarn
 
+
+.PHONY: deps
+
+deps: node_modules
