@@ -12,9 +12,9 @@
     for={@changeset}
     id="edit_workspace_form"
     class="flex flex-col w-128"
-    phx_throttle="100"
-    phx_change="validate"
-    phx_submit="update">
+    phx-throttle="100"
+    phx-change="validate"
+    phx-submit="update">
 
     <%= label_line_tag f, :name, "Name" %>
     <%= text_input f, :name, class: "form-fld mb-4", autofocus: true %>
