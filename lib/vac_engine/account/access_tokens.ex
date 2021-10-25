@@ -52,8 +52,17 @@ defmodule VacEngine.Account.AccessTokens do
     |> Repo.insert()
   end
 
-  def list_api_tokens(%Role{} = role) do
-    from(t in AccessToken, where: t.type == :api_key and t.role_id == ^role.id)
+  def load_api_tokens(%Role{} = role) do
+    token_query = from(t in AccessToken, where: t.type == :api_key)
+    Repo.preload(role, api_tokens: token_query)
+  end
+
+  def list_api_tokens() do
+    from(t in AccessToken,
+      where: t.type == :api_key,
+      order_by: [desc: t.id],
+      preload: :role
+    )
     |> Repo.all()
   end
 end

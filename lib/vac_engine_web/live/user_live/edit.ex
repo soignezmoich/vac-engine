@@ -88,11 +88,7 @@ defmodule VacEngineWeb.UserLive.Edit do
   end
 
   @impl true
-  def handle_event(
-        "generate_password",
-        %{"key" => key},
-        socket
-      ) do
+  def handle_event("generate_password", %{"key" => key}, socket) do
     {:noreply, set_tooltip(socket, key)}
   end
 

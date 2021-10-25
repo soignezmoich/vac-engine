@@ -1,0 +1,47 @@
+<div class="p-4 w-full max-w-3xl">
+  <%= live_redirect("← Back to list",
+        to: Routes.api_key_path(@socket, :index),
+        class: "inline-block mb-4 btn"
+      ) %>
+  <h1 class="font-bold text-xl mb-6">Edit API key</h1>
+
+  <.form
+    let={f}
+    for={@changeset}
+    class="flex flex-col w-96"
+    phx-throttle="100"
+    phx-change="validate"
+    phx-submit="update">
+
+    <%= label_line_tag f, :description, "Description" %>
+    <%= textarea f, :description, class: "form-fld mb-4" %>
+
+    <%= submit "Update", class: "btn-default", phx_disable_with: "Update in progress..." %>
+  </.form>
+
+  <div>
+    <div class="font-bold mt-8">Secret</div>
+    <%= if @secret_visible do %>
+      <div class="bg-cream-400 text-gray-100 p-1 text-xs"
+           phx-hook="clipboardCopy"
+           id="api-secret" >
+        <%= @secret %>
+      </div>
+      <span class="text-sm">(click to copy)</span>
+    <% else %>
+      <.button class="btn"
+            click="reveal_secret"
+            key="reveal_secret"
+            tooltip_key={@current_tooltip}
+            label="Secret is hidden, click to reveal" />
+    <% end %>
+  </div>
+
+  <.button
+   class="btn mt-8"
+   click="delete"
+   key="delete"
+   tooltip_key={@current_tooltip}
+   label="Delete API key" />
+</div>
+

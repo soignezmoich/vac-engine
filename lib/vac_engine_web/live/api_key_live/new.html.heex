@@ -1,0 +1,21 @@
+<div class="p-4">
+  <%= live_redirect("← Back to list",
+        to: Routes.api_key_path(@socket, :index),
+        class: "inline-block mb-4 btn"
+      ) %>
+  <h1 class="font-bold text-xl mb-6">Create API key</h1>
+
+  <.form
+    let={f}
+    for={@changeset}
+    class="flex flex-col w-96"
+    phx-throttle="100"
+    phx-change="validate"
+    phx-submit="create">
+
+    <%= label_line_tag f, :description, "Description" %>
+    <%= textarea f, :description, class: "form-fld mb-4" %>
+
+    <%= submit "Create", class: "btn-default", phx_disable_with: "Creation in progress..." %>
+  </.form>
+</div>

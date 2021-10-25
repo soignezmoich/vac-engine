@@ -1,0 +1,25 @@
+<div class="p-4 w-full max-w-3xl">
+  <%= live_redirect("Create new API key",
+        to: Routes.api_key_path(@socket, :new),
+        class: "inline-block mb-4 btn-default"
+      ) %>
+  <%= case @tokens do %>
+  <% [] -> %>
+    <p class="font-bold">No API key.</p>
+  <% tokens -> %>
+    <%= for token <- tokens do %>
+      <div class="border-b flex px-2 py-4 w-full">
+        <div class="flex flex-col flex-grow">
+          <span class="font-bold">Created <%= format_date(token.inserted_at) %></span>
+          <span><%= token.role.description %></span>
+        </div>
+        <div class="flex flex-col flex-shrink-0">
+          <%= live_redirect("Details",
+                to: Routes.api_key_path(@socket, :edit, token.role_id),
+                class: "inline-block mb-4 btn"
+              ) %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>

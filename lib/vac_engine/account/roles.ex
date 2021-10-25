@@ -18,24 +18,38 @@ defmodule VacEngine.Account.Roles do
     end)
   end
 
-  def create_role(type, _attrs) do
-    create_role_multi(type)
+  def create_role(type, attrs) do
+    create_role_multi(type, attrs)
     |> Repo.transaction()
     |> case do
       {:ok, %{role: role}} -> {:ok, role}
-      err -> err
+      {:error, _, err, _} -> {:error, err}
     end
+  end
+
+  def change_role(%Role{} = role, attrs) do
+    role
+    |> Role.changeset(attrs)
   end
 
   def update_role(%Role{} = role, attrs) do
     role
-    |> Role.changeset(attrs)
+    |> change_role(attrs)
     |> Repo.update()
+  end
+
+  def delete_role(%Role{} = role) do
+    role
+    |> Repo.delete()
   end
 
   def list_roles(type) do
     from(r in Role, where: r.type == ^type)
     |> Repo.all()
+  end
+
+  def get_role!(id) do
+    Repo.get!(Role, id)
   end
 
   def activate_role(%Role{} = role) do

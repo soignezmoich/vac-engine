@@ -28,6 +28,10 @@ defmodule VacEngineWeb.Router do
     live("/users/new", UserLive.New, :new, as: :user)
     live("/users/:user_id", UserLive.Edit, :edit, as: :user)
 
+    live("/api-keys", ApiKeyLive.Index, :index, as: :api_key)
+    live("/api-keys/new", ApiKeyLive.New, :new, as: :api_key)
+    live("/api-keys/:role_id", ApiKeyLive.Edit, :edit, as: :api_key)
+
     live("/workspaces", WorkspaceLive.Index, :index, as: :workspace)
     live("/workspaces/new", WorkspaceLive.New, :new, as: :workspace)
 

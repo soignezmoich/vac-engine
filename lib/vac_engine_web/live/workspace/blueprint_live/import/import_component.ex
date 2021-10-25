@@ -3,7 +3,7 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.ImportComponent do
 
   alias VacEngine.Processor
 
-  @impl Phoenix.LiveComponent
+  @impl true
   def mount(socket) do
     {:ok,
      socket
@@ -11,17 +11,17 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.ImportComponent do
      |> allow_upload(:json_import, accept: ~w(.json), max_entries: 1)}
   end
 
-  @impl Phoenix.LiveComponent
+  @impl true
   def handle_event("validate", _params, socket) do
     {:noreply, assign(socket, upload_files: [])}
   end
 
-  @impl Phoenix.LiveComponent
+  @impl true
   def handle_event("cancel-upload", %{"ref" => ref}, socket) do
     {:noreply, cancel_upload(socket, :json_import, ref)}
   end
 
-  @impl Phoenix.LiveComponent
+  @impl true
   def handle_event("save", _params, socket) do
     can!(socket, :update, :blueprint)
     blueprint = socket.assigns.blueprint

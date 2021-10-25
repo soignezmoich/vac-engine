@@ -112,6 +112,12 @@ defmodule VacEngineWeb.HeaderComponent do
                   sel={at(@location, :admin, :user)} />
           </div>
           <div>
+            <.lnk label="API Keys"
+                  href={api_key_path(Endpoint, :index)}
+                  style="sub-menu"
+                  sel={at(@location, :admin, :api_key)} />
+          </div>
+          <div>
             <.lnk label="Workspaces"
                   href={workspace_path(Endpoint, :index)}
                   style="sub-menu"

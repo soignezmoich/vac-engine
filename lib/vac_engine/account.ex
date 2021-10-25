@@ -43,13 +43,18 @@ defmodule VacEngine.Account do
 
   alias VacEngine.Account.Roles
 
+  defdelegate get_role!(id), to: Roles
   defdelegate create_role(type, attrs \\ %{}), to: Roles
-  defdelegate update_role(role, attrs), to: Roles
+  defdelegate update_role(role, attrs \\ %{}), to: Roles
+  defdelegate change_role(role, attrs \\ %{}), to: Roles
+  defdelegate delete_role(role), to: Roles
   defdelegate activate_role(role), to: Roles
   defdelegate deactivate_role(role), to: Roles
 
   alias VacEngine.Account.AccessTokens
 
+  defdelegate list_api_tokens(), to: AccessTokens
+  defdelegate load_api_tokens(role), to: AccessTokens
   defdelegate generate_secret(length \\ 16), to: AccessTokens
   defdelegate create_api_token(role), to: AccessTokens
 
@@ -78,7 +83,9 @@ defmodule VacEngine.Account do
 
     Roles.list_roles(:api)
     |> Enum.map(fn r ->
-      AccessTokens.list_api_tokens(r)
+      r
+      |> AccessTokens.load_api_tokens()
+      |> Map.get(:api_tokens)
       |> Enum.map(fn t ->
         %{secret: t.secret, portals: portals}
       end)
