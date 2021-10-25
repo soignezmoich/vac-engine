@@ -87,5 +87,4 @@ defmodule Fixtures.Cases do
       error: "value hello is invalid for age"
     }
   end
-
 end
