@@ -13,7 +13,7 @@ defmodule VacEngineWeb.Workspace.PortalLive.Index do
   def mount(
         _params,
         _session,
-        %{assigns: %{workspace: workspace, role: role}} = socket
+        %{assigns: %{workspace: workspace}} = socket
       ) do
     can!(socket, :publish, workspace)
     portals = Pub.load_portals(workspace).portals
@@ -24,8 +24,7 @@ defmodule VacEngineWeb.Workspace.PortalLive.Index do
   def handle_event(
         "delete",
         %{"id" => id},
-        %{assigns: %{workspace: workspace, role: role, portals: portals}} =
-          socket
+        %{assigns: %{workspace: workspace, portals: portals}} = socket
       ) do
     {id, _} = Integer.parse(id)
 

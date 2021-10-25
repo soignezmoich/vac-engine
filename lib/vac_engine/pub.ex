@@ -9,7 +9,6 @@ defmodule VacEngine.Pub do
   alias VacEngine.Processor.Blueprint
   alias VacEngine.Processor
   alias VacEngine.Account.Workspace
-  alias VacEngine.Account.Role
 
   # TODO change to reuse portal when possible
   def publish_blueprint(%Blueprint{} = br, attrs \\ %{}) do

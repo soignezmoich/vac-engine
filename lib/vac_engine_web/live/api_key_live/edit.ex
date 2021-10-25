@@ -3,7 +3,6 @@ defmodule VacEngineWeb.ApiKeyLive.Edit do
   use VacEngineWeb.TooltipHelpers
 
   alias VacEngine.Account
-  alias VacEngine.Account.Role
 
   on_mount(VacEngineWeb.LiveRole)
   on_mount({VacEngineWeb.LiveLocation, ~w(admin api_key new)a})
@@ -12,7 +11,7 @@ defmodule VacEngineWeb.ApiKeyLive.Edit do
   def mount(
         %{"role_id" => role_id},
         _session,
-        %{assigns: %{role: role}} = socket
+        socket
       ) do
     can!(socket, :manage, :api_keys)
 

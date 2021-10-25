@@ -2,7 +2,6 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.SummaryComponent do
   use VacEngineWeb, :live_component
 
   alias VacEngine.Processor
-  alias VacEngine.Processor.Blueprint
   alias VacEngine.Pub.Publication
   alias VacEngine.Pub.Portal
   alias VacEngine.Pub
@@ -65,7 +64,7 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.SummaryComponent do
   def handle_event(
         "validate_portal",
         %{"portal" => params},
-        %{assigns: %{blueprint: blueprint}} = socket
+        socket
       ) do
     changeset =
       %Portal{}
@@ -93,7 +92,7 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.SummaryComponent do
       ch ->
         Pub.publish_blueprint(blueprint, ch.changes)
         |> case do
-          {:ok, pub} ->
+          {:ok, _pub} ->
             publications = Pub.load_publications(blueprint).publications
             changeset = %Portal{} |> Pub.change_portal()
 
@@ -103,7 +102,7 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.SummaryComponent do
                portal_changeset: changeset
              )}
 
-          err ->
+          _err ->
             {:noreply, socket}
         end
     end

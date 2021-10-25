@@ -12,7 +12,7 @@ defmodule VacEngineWeb.Workspace.PortalLive.Edit do
   def mount(
         %{"portal_id" => portal_id},
         _session,
-        %{assigns: %{workspace: workspace, role: role}} = socket
+        socket
       ) do
     can!(socket, :edit, {:portal, portal_id})
 
@@ -30,7 +30,7 @@ defmodule VacEngineWeb.Workspace.PortalLive.Edit do
   def handle_event(
         "delete",
         _,
-        %{assigns: %{workspace: workspace, role: role, portal: portal}} = socket
+        %{assigns: %{workspace: workspace, portal: portal}} = socket
       ) do
     can!(socket, :delete, portal)
     {:ok, _} = Pub.delete_portal(portal)

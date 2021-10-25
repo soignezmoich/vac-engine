@@ -286,7 +286,7 @@ defmodule VacEngine.Processor.Ast do
       throw({:name_not_found, "name #{a} not found"})
   end
 
-  defp convert_atom(a) do
+  defp convert_atom(_a) do
     throw({:invalid_name, "invalid name"})
   end
 end

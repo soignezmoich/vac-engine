@@ -2,7 +2,6 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.Edit do
   use VacEngineWeb, :live_view
 
   import VacEngineWeb.PermissionHelpers, only: [can!: 3]
-  import VacEngineWeb.Workspace.BlueprintLive.TabComponent
 
   alias VacEngine.Processor
   import VacEngineWeb.Editor.Deductions, only: [deductions: 1]
