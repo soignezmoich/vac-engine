@@ -12,6 +12,7 @@ defmodule VacEngine.Processor.Blueprints do
   alias VacEngine.Processor.Branch
   alias VacEngine.Processor.Column
   alias VacEngine.Processor.Deduction
+  alias VacEngine.Pub
   alias VacEngine.Hash
   import VacEngine.TupleHelpers
 
@@ -43,6 +44,7 @@ defmodule VacEngine.Processor.Blueprints do
     |> Repo.transaction()
     |> case do
       {:ok, %{{:blueprint, :hash} => br}} ->
+        Pub.refresh_blueprint_cache(br)
         fetch_blueprint(br.workspace_id, br.id)
 
       {:error, msg} when is_binary(msg) ->

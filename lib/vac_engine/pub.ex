@@ -42,6 +42,22 @@ defmodule VacEngine.Pub do
     end
   end
 
+  def refresh_blueprint_cache(%Blueprint{} = blueprint) do
+    from(p in Publication,
+      where:
+        p.blueprint_id == ^blueprint.id and
+          is_nil(p.deactivated_at)
+    )
+    |> Repo.all()
+    |> case do
+      [] ->
+        nil
+
+      _ ->
+        refresh_cache()
+    end
+  end
+
   def change_portal(data, attrs \\ %{}) do
     Portal.changeset(data, attrs)
   end
