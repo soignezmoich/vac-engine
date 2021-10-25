@@ -142,6 +142,13 @@ defmodule VacEngineWeb.HeaderComponent do
                   href={nav_path(Endpoint, :index)}
                   style="sub-menu"
                   sel={true} />
+          <div class="flex-grow" />
+        <% end %>
+
+        <!-- Blueprint sub menu -->
+        <%= if at(@location, :blueprint) do %>
+          <%= if !at(@location,:blueprint, :pick) && !is_nil(@blueprint) do %>
+          <div>
             <.lnk label="Summary"
                   href={workspace_blueprint_path(Endpoint, :summary, @workspace.id, @blueprint.id)}
                   style="sub-menu"
@@ -165,34 +172,6 @@ defmodule VacEngineWeb.HeaderComponent do
                   style="sub-menu"
                   sel={at(@location, :blueprint, :import)} />
           </div>
-          <div class="flex-grow" />
-          <div phx-click="save"
-            class="px-4 py-1 cursor-default hover:bg-white hover:bg-opacity-30">
-            Save
-          </div>
-        <% end %>
-
-        <!-- Blueprint sub menu -->
-        <%= if at(@location, :blueprint) do %>
-          <%= if !at(@location,:blueprint, :pick) && !is_nil(@blueprint) do %>
-            <div>
-              <.lnk label="Variables"
-                    href={workspace_blueprint_path(Endpoint, :variables, @workspace.id, @blueprint.id)}
-                    style="sub-menu"
-                    sel={at(@location, :blueprint, :variables)} />
-            </div>
-            <div>
-              <.lnk label="Deductions"
-                    href={workspace_blueprint_path(Endpoint, :deductions, @workspace.id, @blueprint.id)}
-                    style="sub-menu"
-                    sel={at(@location, :blueprint, :deductions)} />
-            </div>
-            <div>
-              <.lnk label="Import"
-                href={workspace_blueprint_path(Endpoint, :code, @workspace.id, @blueprint.id)}
-                style="sub-menu"
-                sel={at(@location, :blueprint, :code)} />
-            </div>
           <% else %>
             <div>
               <.lnk label="Available blueprints"
