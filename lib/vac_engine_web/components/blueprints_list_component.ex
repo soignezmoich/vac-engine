@@ -17,7 +17,7 @@ defmodule VacEngineWeb.BlueprintsListComponent do
             <%= for b <- brs do %>
               <tr>
                 <td>
-                  <%= b.name %>
+                  <%= tr(b.name, 32) %>
                 </td>
                 <td>
                   <%= live_redirect("Open",
