@@ -72,5 +72,4 @@ defmodule VacEngineWeb.Editor.VariableInspectorComponent do
 
     """
   end
-
 end

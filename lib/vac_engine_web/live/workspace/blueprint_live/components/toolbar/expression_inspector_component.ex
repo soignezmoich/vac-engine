@@ -22,8 +22,6 @@ defmodule VacEngineWeb.Editor.ExpressionEditorComponent do
     """
   end
 
-
-
   defp constant_picker(assigns) do
     ~H"""
     <div class="p-1 border border-black bg-gray-100 opacity-50 cursor-pointer">
@@ -102,6 +100,4 @@ defmodule VacEngineWeb.Editor.ExpressionEditorComponent do
     </div>
     """
   end
-
-
 end

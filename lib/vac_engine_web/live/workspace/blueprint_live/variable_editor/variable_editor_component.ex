@@ -10,13 +10,13 @@ defmodule VacEngineWeb.Editor.VariableEditorComponent do
   alias VacEngineWeb.Editor.VariableRenderable
 
   def update(assigns, socket) do
-
     renderable_variables = VariableRenderable.build(assigns.variables, nil)
 
-    {:ok, assign(socket,
-        input_variables: renderable_variables.input,
-        output_variables: renderable_variables.output,
-        intermediate_variables: renderable_variables.intermediate
-    )}
+    {:ok,
+     assign(socket,
+       input_variables: renderable_variables.input,
+       output_variables: renderable_variables.output,
+       intermediate_variables: renderable_variables.intermediate
+     )}
   end
 end

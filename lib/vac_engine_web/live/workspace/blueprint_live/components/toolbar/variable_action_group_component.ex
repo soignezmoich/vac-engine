@@ -27,5 +27,4 @@ defmodule VacEngineWeb.Editor.VariableActionGroupComponent do
     </div>
     """
   end
-
 end

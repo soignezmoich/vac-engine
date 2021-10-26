@@ -1,5 +1,4 @@
 defmodule VacEngineWeb.Icons do
-
   use Phoenix.Component
 
   def add(assigns) do
@@ -49,7 +48,6 @@ defmodule VacEngineWeb.Icons do
     </svg>
     """
   end
-
 
   def check(assigns) do
     ~H"""
@@ -217,5 +215,4 @@ defmodule VacEngineWeb.Icons do
     </svg>
     """
   end
-
 end

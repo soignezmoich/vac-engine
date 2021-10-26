@@ -60,5 +60,4 @@ defmodule VacEngineWeb.Editor.DeductionActionGroupComponent do
     </div>
     """
   end
-
 end

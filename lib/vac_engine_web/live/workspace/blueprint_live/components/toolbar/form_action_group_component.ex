@@ -17,5 +17,4 @@ defmodule VacEngineWeb.Editor.FormActionGroupComponent do
     </div>
     """
   end
-
 end
