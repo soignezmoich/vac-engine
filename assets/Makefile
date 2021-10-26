@@ -20,12 +20,12 @@ css-watch: node_modules
 .PHONY: js
 
 js: node_modules
-	./zombie.sh ./build.js js
+	./build.js js
 
 .PHONY: css
 
 css: node_modules
-	./zombie.sh ./build.js css
+	./build.js css
 
 .PHONY: optimize
 optimize: node_modules
