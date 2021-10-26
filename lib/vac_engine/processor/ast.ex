@@ -38,6 +38,7 @@ defmodule VacEngine.Processor.Ast do
     {f, m, Enum.map(args, &sanitize!/1)}
   end
 
+  # Handle @name notation (args is Elixir)
   defp sanitize!({f, _m, args}) when not is_list(args) do
     to_string(f)
   end
