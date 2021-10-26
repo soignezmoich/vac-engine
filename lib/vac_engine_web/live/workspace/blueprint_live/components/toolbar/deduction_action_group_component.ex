@@ -1,9 +1,9 @@
-defmodule VacEngineWeb.Editor.DeductionActionsComponent do
+defmodule VacEngineWeb.Editor.DeductionActionGroupComponent do
   use Phoenix.Component
 
   alias VacEngineWeb.Icons
 
-  def deduction_actions(assigns) do
+  def deduction_action_group(assigns) do
     ~H"""
     <div class="w-full border-pink-600 border-r-4 border-black bg-white filter drop-shadow-lg p-3">
       <div class="font-bold mb-2 border-b border-black">

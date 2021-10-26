@@ -1,4 +1,4 @@
-defmodule VacEngineWeb.Editor.VariableRenderables do
+defmodule VacEngineWeb.Editor.VariableRenderable do
   alias VacEngine.Processor.Variable, as: PVariable
 
   def build(variables, selection_dot_path) do

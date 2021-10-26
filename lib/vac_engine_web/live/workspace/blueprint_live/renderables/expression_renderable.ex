@@ -1,4 +1,4 @@
-defmodule VacEngineWeb.Editor.ExpressionRenderables do
+defmodule VacEngineWeb.Editor.ExpressionRenderable do
   def build(_use_case, nil) do
     "-"
   end

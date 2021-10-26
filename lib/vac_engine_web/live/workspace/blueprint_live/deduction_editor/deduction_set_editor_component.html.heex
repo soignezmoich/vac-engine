@@ -1,0 +1,19 @@
+<div class="flex min-h-0">
+  <div class="w-64 mr-2 flex flex-col overflow-y-auto mt-3">
+    <div class="flex-shrink-0 mx-2">
+      <.form_action_group />
+      <div class="h-4" />
+      <.deduction_action_group />
+      <div class="h-4" />
+      <.expression_editor />
+    </div>
+  </div>
+  <div class="flex-grow flex flex-col overflow-y-auto mt-3">
+    <div class="flex-shrink text-xs">
+      <%= for {path, deduction} <- @deductions_with_path do %>
+        <.deduction deduction={deduction} path={path} selection_path={@selection_path}/>
+      <% end %>
+    </div>
+  </div>
+  <br/>
+</div>

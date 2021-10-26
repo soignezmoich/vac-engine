@@ -1,53 +1,7 @@
-defmodule VacEngineWeb.Editor.Deductions do
+defmodule VacEngineWeb.Editor.DeductionComponent do
   use Phoenix.Component
 
   import VacEngineWeb.PathHelpers
-  import VacEngineWeb.Editor.FormActionsComponent
-  import VacEngineWeb.Editor.DeductionActionsComponent
-  import VacEngineWeb.Editor.ExpressionEditorComponent
-
-  def deductions(assigns) do
-    deductions_with_path =
-      assigns.deductions
-      |> Enum.with_index()
-      |> Enum.map(fn {deduction, index} ->
-        {[index | assigns.path], deduction}
-      end)
-
-    assigns =
-      assign(assigns,
-        deductions_with_path: deductions_with_path
-      )
-
-    ~H"""
-    <div class="h-3" />
-    <div class="flex min-h-0">
-      <div class="w-64 mr-2 flex flex-col overflow-y-auto">
-        <div class="flex-shrink-0 mx-2">
-          <.form_actions />
-          <div class="h-4" />
-          <.deduction_actions />
-          <div class="h-4" />
-          <.expression_editor />
-        </div>
-      </div>
-      <div class="flex-grow flex flex-col overflow-y-auto">
-        <div class="flex-shrink text-xs">
-          <%= for {path, deduction} <- @deductions_with_path do %>
-            <.deduction deduction={deduction} path={path} selection_path={@selection_path}/>
-          <% end %>
-        </div>
-      </div>
-      <br/>
-    </div>
-    """
-
-    # <%= if @selected do %>
-    #   <.cell_edit_panel
-    #     dot_path={@selection_path}
-    #   />
-    # <% end %>
-  end
 
   def deduction(assigns) do
     %{deduction: %{branches: branches, columns: columns}, path: path} = assigns
@@ -86,8 +40,6 @@ defmodule VacEngineWeb.Editor.Deductions do
         ""
       end
 
-    # IO.inspect(cond_columns)
-
     assigns =
       assign(assigns,
         cond_columns: cond_columns,
@@ -101,7 +53,7 @@ defmodule VacEngineWeb.Editor.Deductions do
       )
 
     ~H"""
-    <div class="shadow-lg">
+    <div class="shadow-lg border-l-4 border-pink-600">
       <table class="min-w-full">
         <thead>
           <tr>
@@ -152,33 +104,6 @@ defmodule VacEngineWeb.Editor.Deductions do
     </div>
     <div class="h-8" />
     """
-
-    # <tr>
-    #   <td colspan={Enum.count(@cond_columns) +Enum.count(@target_columns) + 1}>
-    #     <div class="h-1"/>
-    #     <button class="btn-light m-1">
-    #       <svg class="h-5 w-5 inline-block m-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    #         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="fill: none;" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-    #       </svg>
-    #     </button>
-    #     <button class="btn-light m-1">
-    #       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block m-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    #         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
-    #       </svg>
-    #     </button>
-    #     <button class="btn-light m-1">
-    #       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block m-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    #         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-    #       </svg>
-    #     </button>
-    #     <button class="btn-light m-1">
-    #       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block m-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    #         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-    #       </svg>
-    #     </button>
-    #     <hr/>
-    #   </td>
-    # </tr>
   end
 
   def branch(assigns) do
@@ -227,16 +152,6 @@ defmodule VacEngineWeb.Editor.Deductions do
             path: [column_id | ["assignments" | path]]
           }
       end)
-
-    # target_columns
-    # |> Enum.map(fn
-    #   %{id: column_id} -> Enum.find(assignments, &(&1.column_id == column_id))
-    #  end)
-    # |> Enum.map(fn
-    #     nil -> "nil"
-    #     a -> a.description
-    #   end)
-    # |> IO.inspect()
 
     assigns =
       assign(assigns,

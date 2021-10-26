@@ -5,7 +5,7 @@
     </.flex_center>
   <% not is_nil(@blueprint) -> %>
   <section class="flex flex-col w-full min-h-0">
-    <div class="p-4 pt-2 flex-grow flex flex-shrink-0 flex-col min-h-0">
+    <div class="p-4 pt-2 flex-grow flex flex-col min-h-0">
     <%= case @live_action do %>
     <% :summary -> %>
       <.live_component
@@ -14,12 +14,16 @@
          role={@role}
          blueprint={@blueprint} />
     <% :variables -> %>
-      <.variables_section
+      <.live_component
+        module={VariableEditorComponent}
+        id="variable_editor"
         variables={@blueprint.variables}
         path={["variables"]}
         focus_path={[]} />
     <% :deductions -> %>
-      <.deductions
+      <.live_component
+        module={DeductionSetEditorComponent}
+        id="deduction_editor"
         deductions={@blueprint.deductions}
         variables={@blueprint.variables}
         path={["deductions"]}

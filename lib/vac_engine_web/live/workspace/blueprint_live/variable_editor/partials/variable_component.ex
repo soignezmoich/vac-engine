@@ -1,4 +1,4 @@
-defmodule VacEngineWeb.Editor.Variable do
+defmodule VacEngineWeb.Editor.VariableComponent do
   use Phoenix.Component
 
   def variable(assigns) do

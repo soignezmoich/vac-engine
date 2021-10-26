@@ -1,7 +1,7 @@
-defmodule VacEngineWeb.Editor.FormActionsComponent do
+defmodule VacEngineWeb.Editor.FormActionGroupComponent do
   use Phoenix.Component
 
-  def form_actions(assigns) do
+  def form_action_group(assigns) do
     ~H"""
     <div class="w-full disabled divide-black border-pink-600 border-l-4 border-black bg-white filter drop-shadow-lg p-3">
       <div class="font-bold">

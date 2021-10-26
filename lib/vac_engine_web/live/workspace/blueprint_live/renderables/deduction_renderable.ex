@@ -1,4 +1,4 @@
-defmodule VacEngineWeb.Editor.DeductionRenderables do
+defmodule VacEngineWeb.Editor.DeductionRenderable do
   def build(_deductions) do
     ["deductions"]
   end

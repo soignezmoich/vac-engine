@@ -1,7 +1,7 @@
-defmodule VacEngineWeb.Editor.VariableEditorComponent do
+defmodule VacEngineWeb.Editor.VariableInspectorComponent do
   use Phoenix.Component
 
-  def variable_editor(assigns) do
+  def variable_inspector(assigns) do
     ~H"""
     <div class="w-full divide-black border-pink-600 border-r-4 border-black bg-white filter drop-shadow-lg p-3">
       <div class="font-bold">
