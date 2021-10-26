@@ -61,7 +61,7 @@ defmodule VacEngine.Processor.StateTest do
       }
       |> smap()
 
-    expected_stack =
+    expected_heap =
       %{
         list: %{
           0 => %{
@@ -106,7 +106,7 @@ defmodule VacEngine.Processor.StateTest do
     {:ok, state} = State.finalize_output(state)
 
     assert state.input == expected_input
-    assert state.stack == expected_stack
+    assert state.heap == expected_heap
     assert state.output == expected_output
   end
 end

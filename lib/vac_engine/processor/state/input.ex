@@ -11,7 +11,7 @@ defmodule VacEngine.Processor.State.Input do
   def map_input(%State{input_variables: vars} = state, input)
       when is_map(input) do
     {input, hits} = map_variables(vars, input, %{}, [], %{})
-    stack = lists_to_maps(input, vars)
+    heap = lists_to_maps(input, vars)
 
     vars
     |> Enum.each(fn {path, var} ->
@@ -26,7 +26,7 @@ defmodule VacEngine.Processor.State.Input do
       end
     end)
 
-    %{state | input: input, stack: stack}
+    %{state | input: input, heap: heap}
     |> ok()
   catch
     {_code, msg} ->
@@ -108,10 +108,10 @@ defmodule VacEngine.Processor.State.Input do
   defp store(value, mapped_data, hits, path, vpath) do
     {_, hits} =
       vpath
-      |> Enum.reduce({[], hits}, fn path, {stack, hits} ->
-        stack = stack ++ [path]
-        hits = Map.put(hits, stack, true)
-        {stack, hits}
+      |> Enum.reduce({[], hits}, fn path, {heap, hits} ->
+        heap = heap ++ [path]
+        hits = Map.put(hits, heap, true)
+        {heap, hits}
       end)
 
     {put_in(mapped_data, path, value), hits}

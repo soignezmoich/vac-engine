@@ -9,7 +9,7 @@ defmodule VacEngine.Processor.Compiler do
   def eval_expression(expr, input \\ %{})
 
   def eval_expression(%Expression{} = expr, bindings) do
-    state = %State{stack: bindings}
+    state = %State{heap: bindings}
 
     expr
     |> compile_expression!()
@@ -36,6 +36,9 @@ defmodule VacEngine.Processor.Compiler do
     |> case do
       {:error, _} ->
         {:error, "run error"}
+
+      {nil, _} ->
+        {:ok, state}
 
       {state, _} ->
         {:ok, state}

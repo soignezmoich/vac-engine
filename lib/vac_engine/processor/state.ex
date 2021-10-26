@@ -12,7 +12,7 @@ defmodule VacEngine.Processor.State do
   defstruct variables: nil,
             input_variables: nil,
             output_variables: nil,
-            stack: %{},
+            heap: %{},
             input: %{},
             output: %{}
 
@@ -82,7 +82,7 @@ defmodule VacEngine.Processor.State do
       end
 
       try do
-        get_in(state.stack, gpath)
+        get_in(state.heap, gpath)
       rescue
         _e in KeyError ->
           {:ok, res} = Compiler.eval_ast(var.default, %{state | variables: nil})
@@ -90,7 +90,7 @@ defmodule VacEngine.Processor.State do
       end
     else
       try do
-        get_in(state.stack, gpath)
+        get_in(state.heap, gpath)
       rescue
         _e in KeyError ->
           throw({:invalid_path, "variable #{to_string(path)} not found"})
@@ -106,7 +106,7 @@ defmodule VacEngine.Processor.State do
   end
 
   def set_var(
-        %State{stack: stack, variables: vars} = state,
+        %State{heap: heap, variables: vars} = state,
         path,
         value
       ) do
@@ -151,20 +151,20 @@ defmodule VacEngine.Processor.State do
                Meta.is_type?(type, :datetime, in_list))
 
         if compatible do
-          stack =
-            create_parents(vars, stack, path)
+          heap =
+            create_parents(vars, heap, path)
             |> put_in(path, value)
 
-          %{state | stack: stack}
+          %{state | heap: heap}
         else
           state
         end
     end
   end
 
-  def finalize_output(%State{stack: stack, output_variables: vars} = state) do
+  def finalize_output(%State{heap: heap, output_variables: vars} = state) do
     output =
-      stack
+      heap
       |> filter_vars(vars)
       |> maps_to_lists(vars)
 
