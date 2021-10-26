@@ -1,5 +1,6 @@
 SHELL := /bin/sh
 MDCAT:=$(firstword $(shell which mdcat cat 2>/dev/null))
+PATH := ./assets/node_modules/.bin:$(PATH)
 
 .PHONY: help
 
@@ -148,7 +149,7 @@ format:
 
 .PHONY: docs
 
-docs: deps
+docs: deps assets-deps
 	redoc-cli bundle docs/swagger.yaml -o priv/static/docs/api.html
 
 .PHONY: docs-server
