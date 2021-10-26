@@ -42,7 +42,7 @@ defmodule VacEngineWeb.Api.PubControllerTest do
     {:ok, _perm} = Account.grant_permission(role, :super_admin)
     {:ok, api_token} = Account.create_api_token(role)
 
-    Pub.refresh_cache()
+    Pub.bust_cache()
 
     Cases.cases()
     |> Enum.filter(fn cs -> is_nil(Map.get(cs, :error)) end)

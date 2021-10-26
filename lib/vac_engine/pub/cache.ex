@@ -1,11 +1,16 @@
 defmodule VacEngine.Pub.Cache do
   use GenServer
 
+  import Ecto.Query
+  alias VacEngine.Repo
   alias VacEngine.Account
   alias VacEngine.Processor
   alias VacEngine.Pub.Cache
 
-  defstruct api_keys: %{}, processors: %{}
+  defstruct api_keys: %{},
+            processors: %{},
+            blueprints_version: 0,
+            api_keys_version: 0
 
   def start_link(opts \\ []) do
     GenServer.start_link(__MODULE__, opts, name: __MODULE__)
@@ -17,33 +22,57 @@ defmodule VacEngine.Pub.Cache do
 
   def find_processor(_), do: :error
 
-  def refresh() do
-    GenServer.call(__MODULE__, :refresh)
+  def bust() do
+    GenServer.call(__MODULE__, :bust)
   end
 
-  def refresh_api_keys() do
-    GenServer.call(__MODULE__, :refresh_api_keys)
+  def bust_api_keys() do
+    GenServer.call(__MODULE__, :bust_api_keys)
   end
 
   @impl true
   def init(_opts) do
-    state = build_cache()
+    send(self(), :check_version)
 
-    {:ok, state}
+    {:ok, %Cache{}}
   end
 
   @impl true
-  def handle_call(:refresh, _from, _state) do
-    state = build_cache()
+  def handle_call(:bust, _from, cache) do
+    {:ok, %{rows: [[api_keys_version]]}} =
+      "SELECT nextval('pub_cache_api_keys_version')"
+      |> Repo.query()
 
-    {:reply, :ok, state}
+    {:ok, %{rows: [[blueprints_version]]}} =
+      "SELECT nextval('pub_cache_blueprints_version')"
+      |> Repo.query()
+
+    cache =
+      %{
+        cache
+        | api_keys_version: api_keys_version,
+          blueprints_version: blueprints_version
+      }
+      |> refresh()
+      |> refresh_api_keys()
+
+    {:reply, :ok, cache}
   end
 
   @impl true
-  def handle_call(:refresh_api_keys, _from, state) do
-    state = refresh_api_keys(state)
+  def handle_call(:bust_api_keys, _from, cache) do
+    {:ok, %{rows: [[api_keys_version]]}} =
+      "SELECT nextval('pub_cache_api_keys_version')"
+      |> Repo.query()
 
-    {:reply, :ok, state}
+    cache =
+      %{
+        cache
+        | api_keys_version: api_keys_version
+      }
+      |> refresh_api_keys()
+
+    {:reply, :ok, cache}
   end
 
   @impl true
@@ -70,23 +99,55 @@ defmodule VacEngine.Pub.Cache do
     end
   end
 
-  defp build_cache() do
-    %Cache{}
-    |> refresh_api_keys
+  @impl true
+  def handle_info(:check_version, cache) do
+    api_keys_version =
+      from(v in "pub_cache_api_keys_version", select: v.last_value)
+      |> Repo.one()
+
+    blueprints_version =
+      from(v in "pub_cache_blueprints_version", select: v.last_value)
+      |> Repo.one()
+
+    cache =
+      cond do
+        blueprints_version > cache.blueprints_version ->
+          %{
+            cache
+            | api_keys_version: api_keys_version,
+              blueprints_version: blueprints_version
+          }
+          |> refresh()
+          |> refresh_api_keys()
+
+        api_keys_version > cache.api_keys_version ->
+          %{cache | api_keys_version: api_keys_version}
+          |> refresh_api_keys()
+
+        true ->
+          cache
+      end
+
+    Process.send_after(self(), :check_version, 5000)
+    {:noreply, cache}
   end
 
-  defp refresh_api_keys(state) do
-    keys =
-      Account.list_api_keys()
-      |> Enum.map(fn k ->
-        %{id: id, prefix: _prefix, secret: secret} =
-          Account.explode_composite_secret(k.secret)
+  defp refresh(cache) do
+    %{cache | processors: %{}}
+  end
 
-        {id, %{secret: secret, portals: k.portals}}
-      end)
-      |> Map.new()
+  defp refresh_api_keys(cache) do
+    Account.list_api_keys()
+    |> Enum.map(fn k ->
+      %{id: id, prefix: _prefix, secret: secret} =
+        Account.explode_composite_secret(k.secret)
 
-    %{state | api_keys: keys}
+      {id, %{secret: secret, portals: k.portals}}
+    end)
+    |> Map.new()
+    |> then(fn keys ->
+      %{cache | api_keys: keys}
+    end)
   end
 
   defp ensure_processor_loaded(state, blueprint_id) do

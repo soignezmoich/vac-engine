@@ -1,8 +1,11 @@
 defmodule VacEngine.Account.AccessTokens do
   import Ecto.Query
+  alias Ecto.Multi
   alias VacEngine.Repo
   alias VacEngine.Account.AccessToken
   alias VacEngine.Account.Role
+  import VacEngine.EctoHelpers, only: [transaction: 2]
+  import VacEngine.Pub, only: [bust_api_keys_cache: 1]
 
   def generate_secret(length \\ 16) do
     :crypto.strong_rand_bytes(length) |> Base24.encode24()
@@ -47,9 +50,13 @@ defmodule VacEngine.Account.AccessTokens do
   def create_api_token(%Role{} = role) do
     secret = generate_composite_secret(:api, role.id)
 
-    %AccessToken{role_id: role.id, type: :api_key, secret: secret}
-    |> AccessToken.changeset()
-    |> Repo.insert()
+    Multi.new()
+    |> Multi.insert(:token, fn _ ->
+      %AccessToken{role_id: role.id, type: :api_key, secret: secret}
+      |> AccessToken.changeset()
+    end)
+    |> transaction(:token)
+    |> bust_api_keys_cache()
   end
 
   def load_api_tokens(%Role{} = role) do

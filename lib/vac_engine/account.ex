@@ -81,7 +81,7 @@ defmodule VacEngine.Account do
       |> Enum.reject(&is_nil/1)
       |> Map.new()
 
-    Roles.list_roles(:api)
+    Roles.active_roles(:api)
     |> Enum.map(fn r ->
       r
       |> AccessTokens.load_api_tokens()

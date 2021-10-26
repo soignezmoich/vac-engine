@@ -6,6 +6,7 @@ defmodule VacEngine.Processor.Variables do
   alias VacEngine.Processor.Variable
   alias VacEngine.Processor.Meta
   alias VacEngine.Processor
+  import VacEngine.EctoHelpers, only: [transaction: 2]
 
   def create_variable(%Variable{} = parent, attrs) do
     Variable.create_changeset(
@@ -39,14 +40,11 @@ defmodule VacEngine.Processor.Variables do
       end
     end)
     |> Multi.delete(:delete, var)
-    |> Repo.transaction()
+    |> transaction(:delete)
     |> case do
-      {:ok, %{delete: var}} ->
+      {:ok, var} ->
         blueprint = var.blueprint_id |> Processor.get_blueprint!()
         {:ok, %{blueprint: blueprint, variable: var}}
-
-      {:error, _, msg} ->
-        {:error, msg}
 
       err ->
         err
@@ -68,14 +66,8 @@ defmodule VacEngine.Processor.Variables do
       end
     end)
     |> Multi.update(:update, Variable.parent_changeset(var, new_parent.id))
-    |> Repo.transaction()
-    |> case do
-      {:ok, %{update: var}} ->
-        var_ok(var)
-
-      {:error, _, msg} ->
-        {:error, msg}
-    end
+    |> transaction(:update)
+    |> var_ok()
   end
 
   def move_variable(
@@ -84,33 +76,23 @@ defmodule VacEngine.Processor.Variables do
       ) do
     Multi.new()
     |> Multi.update(:update, Variable.parent_changeset(var, nil))
-    |> Repo.transaction()
-    |> case do
-      {:ok, %{update: var}} ->
-        var_ok(var)
-
-      {:error, _, msg} ->
-        {:error, msg}
-    end
+    |> transaction(:update)
+    |> var_ok()
   end
 
   defp insert_variable(changeset) do
     changeset
     |> Repo.insert_or_update()
-    |> case do
-      {:ok, var} ->
-        var_ok(var)
-
-      err ->
-        err
-    end
+    |> var_ok()
   end
 
-  defp var_ok(var) do
+  defp var_ok({:ok, var}) do
     blueprint = var.blueprint_id |> Processor.get_blueprint!()
     var = Map.fetch!(blueprint.variable_id_index, var.id)
     {:ok, %{blueprint: blueprint, variable: var}}
   end
+
+  defp var_ok(res), do: res
 
   defp create_context(%Blueprint{} = parent) do
     %{blueprint_id: parent.id, workspace_id: parent.workspace_id}

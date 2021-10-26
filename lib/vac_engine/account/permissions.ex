@@ -1,12 +1,12 @@
 defmodule VacEngine.Account.Permissions do
   alias Ecto.Multi
   import Ecto.Query
-  alias VacEngine.Repo
   alias VacEngine.Account.GlobalPermission
   alias VacEngine.Account.WorkspacePermission
   alias VacEngine.Account.Workspace
   alias VacEngine.Account.BlueprintPermission
   alias VacEngine.Processor.Blueprint
+  import VacEngine.EctoHelpers, only: [transaction: 2]
 
   def grant_permission(role, key) when is_binary(key) do
     {action, scope} = break_key(key)
@@ -70,7 +70,7 @@ defmodule VacEngine.Account.Permissions do
     |> Multi.update(:update, fn %{perm: perm} ->
       GlobalPermission.changeset(perm, bake_toggle(perm, attrs))
     end)
-    |> transaction()
+    |> transaction(:update)
   end
 
   defp change_permission(role, {:workspace, wid}, attrs) do
@@ -96,7 +96,7 @@ defmodule VacEngine.Account.Permissions do
     |> Multi.insert_or_update(:update, fn %{perm: perm} ->
       WorkspacePermission.changeset(perm, bake_toggle(perm, attrs))
     end)
-    |> transaction()
+    |> transaction(:update)
   end
 
   defp change_permission(role, {:blueprint, bid}, attrs) do
@@ -126,7 +126,7 @@ defmodule VacEngine.Account.Permissions do
     |> Multi.insert_or_update(:update, fn %{perm: perm} ->
       BlueprintPermission.changeset(perm, bake_toggle(perm, attrs))
     end)
-    |> transaction()
+    |> transaction(:update)
   end
 
   defp bake_toggle(perm, attrs) do
@@ -142,14 +142,5 @@ defmodule VacEngine.Account.Permissions do
   rescue
     _ ->
       attrs
-  end
-
-  defp transaction(multi) do
-    multi
-    |> Repo.transaction()
-    |> case do
-      {:ok, %{perm: perm}} -> {:ok, perm}
-      err -> err
-    end
   end
 end

@@ -1,4 +1,5 @@
 defmodule VacEngine.EctoHelpers do
+  alias VacEngine.Repo
   def get_in_attrs(attrs, path, default \\ nil)
 
   def get_in_attrs(_attrs, path, _default) when is_binary(path) do
@@ -125,4 +126,16 @@ defmodule VacEngine.EctoHelpers do
   end
 
   defp put_position_in_children(children, _name), do: children
+
+  def transaction(multi, key) do
+    multi
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{^key => value}} ->
+        {:ok, value}
+
+      {:error, _, err, _} ->
+        {:error, err}
+    end
+  end
 end

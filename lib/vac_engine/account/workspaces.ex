@@ -6,6 +6,7 @@ defmodule VacEngine.Account.Workspaces do
   alias VacEngine.Account.Role
   alias VacEngine.Processor.Blueprint
   alias VacEngine.Pub.Portal
+  import VacEngine.EctoHelpers, only: [transaction: 2]
 
   def list_workspaces() do
     from(w in Workspace, order_by: :id)
@@ -56,11 +57,7 @@ defmodule VacEngine.Account.Workspaces do
       end
     end)
     |> Multi.delete(:delete, workspace)
-    |> Repo.transaction()
-    |> case do
-      {:ok, _} -> {:ok, workspace}
-      {:error, _, err, _} -> {:error, err}
-    end
+    |> transaction(:delete)
   end
 
   def fetch_workspace(wid) do

@@ -44,7 +44,7 @@ defmodule VacEngine.Processor.Blueprints do
     |> Repo.transaction()
     |> case do
       {:ok, %{{:blueprint, :hash} => br}} ->
-        Pub.refresh_blueprint_cache(br)
+        Pub.bust_blueprint_cache(br)
         fetch_blueprint(br.workspace_id, br.id)
 
       {:error, msg} when is_binary(msg) ->

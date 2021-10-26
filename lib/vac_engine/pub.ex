@@ -9,6 +9,7 @@ defmodule VacEngine.Pub do
   alias VacEngine.Processor.Blueprint
   alias VacEngine.Processor
   alias VacEngine.Account.Workspace
+  import VacEngine.EctoHelpers, only: [transaction: 2]
 
   # TODO change to reuse portal when possible
   def publish_blueprint(%Blueprint{} = br, attrs \\ %{}) do
@@ -32,29 +33,13 @@ defmodule VacEngine.Pub do
       })
     end)
     |> Repo.transaction()
+    |> bust_cache()
     |> case do
       {:ok, %{publication: pub, portal: portal}} ->
-        refresh_cache()
         {:ok, %{pub | portal: portal}}
 
       err ->
         err
-    end
-  end
-
-  def refresh_blueprint_cache(%Blueprint{} = blueprint) do
-    from(p in Publication,
-      where:
-        p.blueprint_id == ^blueprint.id and
-          is_nil(p.deactivated_at)
-    )
-    |> Repo.all()
-    |> case do
-      [] ->
-        nil
-
-      _ ->
-        refresh_cache()
     end
   end
 
@@ -72,11 +57,8 @@ defmodule VacEngine.Pub do
       from(r in Publication, where: r.portal_id == ^portal.id)
     end)
     |> Multi.delete(:delete_portal, portal)
-    |> Repo.transaction()
-    |> case do
-      {:ok, _} -> {:ok, portal}
-      {:error, _, err, _} -> {:error, err}
-    end
+    |> transaction(:delete_portal)
+    |> bust_cache()
   end
 
   def deactivate_publication(%Publication{} = pub) do
@@ -98,9 +80,6 @@ defmodule VacEngine.Pub do
     from(p in Portal, preload: [:publications])
     |> Repo.all()
   end
-
-  def refresh_cache(), do: Cache.refresh()
-  def refresh_cache_api_keys(), do: Cache.refresh_api_keys()
 
   def run_cached(
         %{api_key: _api_key, portal_id: _portal_id, input: input} = args
@@ -132,6 +111,40 @@ defmodule VacEngine.Pub do
   end
 
   def info_cached(_), do: :error
+
+  def bust_blueprint_cache(%Blueprint{} = blueprint) do
+    from(p in Publication,
+      where:
+        p.blueprint_id == ^blueprint.id and
+          is_nil(p.deactivated_at)
+    )
+    |> Repo.all()
+    |> case do
+      [] ->
+        nil
+
+      _ ->
+        bust_cache()
+    end
+  end
+
+  def bust_cache(), do: Cache.bust()
+
+  def bust_cache({:ok, res}) do
+    bust_cache()
+    {:ok, res}
+  end
+
+  def bust_cache(res), do: res
+
+  def bust_api_keys_cache(), do: Cache.bust_api_keys()
+
+  def bust_api_keys_cache({:ok, res}) do
+    bust_api_keys_cache()
+    {:ok, res}
+  end
+
+  def bust_api_keys_cache(res), do: res
 
   def active_publications(%Portal{} = portal) do
     portal.publications
@@ -177,4 +190,5 @@ defmodule VacEngine.Pub do
 
     Repo.preload(portal, [publications: publications_query], force: force)
   end
+
 end

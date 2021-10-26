@@ -5,7 +5,8 @@ defmodule VacEngine.Account.Roles do
   alias VacEngine.Account.Session
   alias VacEngine.Account.Role
   alias VacEngine.Account.GlobalPermission
-  alias VacEngine.Pub
+  import VacEngine.EctoHelpers, only: [transaction: 2]
+  import VacEngine.Pub, only: [bust_api_keys_cache: 1]
 
   def create_role_multi(type, attrs \\ %{}) do
     Multi.new()
@@ -20,11 +21,7 @@ defmodule VacEngine.Account.Roles do
 
   def create_role(type, attrs) do
     create_role_multi(type, attrs)
-    |> Repo.transaction()
-    |> case do
-      {:ok, %{role: role}} -> {:ok, role}
-      {:error, _, err, _} -> {:error, err}
-    end
+    |> transaction(:role)
   end
 
   def change_role(%Role{} = role, attrs) do
@@ -33,18 +30,21 @@ defmodule VacEngine.Account.Roles do
   end
 
   def update_role(%Role{} = role, attrs) do
-    role
-    |> change_role(attrs)
-    |> Repo.update()
+    Multi.new()
+    |> Multi.update(:role, change_role(role, attrs))
+    |> transaction(:role)
+    |> bust_api_keys_cache()
   end
 
   def delete_role(%Role{} = role) do
-    role
-    |> Repo.delete()
+    Multi.new()
+    |> Multi.delete(:role, role)
+    |> transaction(:role)
+    |> bust_api_keys_cache()
   end
 
-  def list_roles(type) do
-    from(r in Role, where: r.type == ^type)
+  def active_roles(type) do
+    from(r in Role, where: r.type == ^type and r.active == true)
     |> Repo.all()
   end
 
@@ -73,17 +73,7 @@ defmodule VacEngine.Account.Roles do
       end,
       []
     )
-    |> Multi.run(:refresh_cache, fn _repo, _ctx ->
-      Pub.refresh_cache_api_keys()
-      |> case do
-        :ok -> {:ok, nil}
-        _ -> {:error, "cannot refresh cache"}
-      end
-    end)
-    |> Repo.transaction()
-    |> case do
-      {:ok, %{role: role}} -> {:ok, role}
-      err -> err
-    end
+    |> transaction(:role)
+    |> bust_api_keys_cache()
   end
 end
