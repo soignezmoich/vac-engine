@@ -37,11 +37,8 @@ defmodule VacEngine.Processor.Compiler do
       {:error, _} ->
         {:error, "run error"}
 
-      {nil, _} ->
-        {:ok, state}
-
-      {state, _} ->
-        {:ok, state}
+      {result, _} ->
+        {:ok, result}
     end
   catch
     {_code, msg} ->
@@ -76,6 +73,10 @@ defmodule VacEngine.Processor.Compiler do
   end
 
   def compile_ast!(const), do: const
+
+  def compile_blueprint(%Blueprint{deductions: []}) do
+    {:ok, quote(do: var!(state))}
+  end
 
   def compile_blueprint(%Blueprint{} = blueprint) do
     fn_asts =
