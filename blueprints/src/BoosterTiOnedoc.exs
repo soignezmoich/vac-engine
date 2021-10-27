@@ -388,7 +388,7 @@
           conditions: [
             %{expression: quote(do: is_true(@immuno)), column: 2},
             %{
-              expression: quote(do: is_not_true(@immuno_recommended)),
+              expression: quote(do: is_false(@immuno_recommended)),
               column: 3
             }
           ],
@@ -499,7 +499,7 @@
         },
         %{
           conditions: [
-            %{expression: quote(do: is_not_true(@rejects_mrna)), column: 1}
+            %{expression: quote(do: is_false(@rejects_mrna)), column: 1}
           ],
           assignments: [
             %{
@@ -1616,7 +1616,7 @@
         %{
           conditions: [
             %{expression: quote(do: is_true(@immuno)), column: 0},
-            %{expression: quote(do: is_not_true(@immuno_discussed)), column: 1}
+            %{expression: quote(do: is_false(@immuno_discussed)), column: 1}
           ],
           assignments: [
             %{
@@ -1640,7 +1640,7 @@
           conditions: [
             %{expression: quote(do: is_true(@immuno_discussed)), column: 0},
             %{
-              expression: quote(do: is_not_true(@immuno_recommended)),
+              expression: quote(do: is_false(@immuno_recommended)),
               column: 1
             }
           ],
