@@ -42,7 +42,7 @@ defmodule VacEngine.Processor.Library.Functions do
   def not false, do: true
 
   def not _ do
-    raise "not cannot be used for non boolean"
+    throw({:argument_error, "not cannot be used for non boolean"})
   end
 
   @doc """
@@ -69,7 +69,7 @@ defmodule VacEngine.Processor.Library.Functions do
 
   @doc false
   def eq(a, b) when is_float(a) or is_float(b) do
-    raise "eq cannot be used for non integer"
+    throw({:argument_error, "eq cannot be used for non integer"})
   end
 
   @doc """
