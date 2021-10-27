@@ -42,7 +42,7 @@ defmodule VacEngine.Processor.CompilerTest do
   end
 
   test "expressions error" do
-    assert_expr_err("variable age not found", %{}) do
+    assert_expr_err("invalid_path: variable age not found", %{}) do
       add(4, @age)
     end
 

@@ -1,6 +1,9 @@
 defmodule VacEngine.Processor.Library.Functions do
   use VacEngine.Processor.Library.Define
 
+  import Kernel, except: [is_nil: 1, not: 1]
+  alias Kernel, as: K
+
   # This is a placeholder for AST compilation
   # that will be replaced by the compiler
   @doc """
@@ -18,7 +21,7 @@ defmodule VacEngine.Processor.Library.Functions do
   """
   @label "Check if value is false"
   @short "FALSE"
-  @signature {[:any], :boolean}
+  @signature {[:boolean], :boolean}
   def is_false(false), do: true
   def is_false(nil), do: true
   def is_false(_), do: false
@@ -38,12 +41,9 @@ defmodule VacEngine.Processor.Library.Functions do
   @label "Inverse"
   @short "!"
   @signature {[:boolean], :boolean}
-  def not true, do: false
+  def not nil, do: true
   def not false, do: true
-
-  def not _ do
-    throw({:argument_error, "not cannot be used for non boolean"})
-  end
+  def not _, do: false
 
   @doc """
     Check if variable is nil
@@ -82,8 +82,15 @@ defmodule VacEngine.Processor.Library.Functions do
   @signature {[:boolean, :boolean], :boolean}
   @signature {[:datetime, :datetime], :boolean}
   @signature {[:date, :date], :boolean}
+  def eq(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+
   def eq(a, b) do
     a == b
+  end
+
+  @doc false
+  def neq(a, b) when is_float(a) or is_float(b) do
+    throw({:argument_error, "neq cannot be used for non integer"})
   end
 
   @doc """
@@ -96,6 +103,8 @@ defmodule VacEngine.Processor.Library.Functions do
   @signature {[:boolean, :boolean], :boolean}
   @signature {[:datetime, :datetime], :boolean}
   @signature {[:date, :date], :boolean}
+  def neq(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+
   def neq(a, b) do
     !eq(a, b)
   end
@@ -111,6 +120,8 @@ defmodule VacEngine.Processor.Library.Functions do
   @signature {[:integer, :number], :boolean}
   @signature {[:datetime, :datetime], :boolean}
   @signature {[:date, :date], :boolean}
+  def gt(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+
   def gt(a, b) do
     a > b
   end
@@ -126,6 +137,8 @@ defmodule VacEngine.Processor.Library.Functions do
   @signature {[:integer, :number], :boolean}
   @signature {[:datetime, :datetime], :boolean}
   @signature {[:date, :date], :boolean}
+  def gte(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+
   def gte(a, b) do
     a >= b
   end
@@ -141,6 +154,8 @@ defmodule VacEngine.Processor.Library.Functions do
   @signature {[:integer, :number], :boolean}
   @signature {[:datetime, :datetime], :boolean}
   @signature {[:date, :date], :boolean}
+  def lt(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+
   def lt(a, b) do
     a < b
   end
@@ -156,6 +171,8 @@ defmodule VacEngine.Processor.Library.Functions do
   @signature {[:integer, :number], :boolean}
   @signature {[:datetime, :datetime], :boolean}
   @signature {[:date, :date], :boolean}
+  def lte(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+
   def lte(a, b) do
     a <= b
   end
@@ -169,6 +186,8 @@ defmodule VacEngine.Processor.Library.Functions do
   @signature {[:number, :number], :number}
   @signature {[:number, :integer], :number}
   @signature {[:integer, :number], :number}
+  def add(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+
   def add(a, b) do
     a + b
   end
@@ -182,6 +201,8 @@ defmodule VacEngine.Processor.Library.Functions do
   @signature {[:number, :number], :number}
   @signature {[:number, :integer], :number}
   @signature {[:integer, :number], :number}
+  def sub(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+
   def sub(a, b) do
     a - b
   end
@@ -195,6 +216,8 @@ defmodule VacEngine.Processor.Library.Functions do
   @signature {[:number, :number], :number}
   @signature {[:number, :integer], :number}
   @signature {[:integer, :number], :number}
+  def mult(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+
   def mult(a, b) do
     a * b
   end
@@ -208,6 +231,8 @@ defmodule VacEngine.Processor.Library.Functions do
   @signature {[:number, :number], :number}
   @signature {[:number, :integer], :number}
   @signature {[:integer, :number], :number}
+  def div(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+
   def div(a, b) do
     a / b
   end
@@ -215,7 +240,7 @@ defmodule VacEngine.Processor.Library.Functions do
   @doc """
     Check if a contains b.
 
-    If a is a string, then check if b is a substring of a
+    If a is a string, then check if b is a substring of a (case sensitive)
   """
   @label "Contains"
   @short "∋"
@@ -225,11 +250,12 @@ defmodule VacEngine.Processor.Library.Functions do
   @signature {[:"date[]", :date], :boolean}
   @signature {[:"datetime[]", :datetime], :boolean}
   @signature {[:string, :string], :boolean}
+  def contains(list, el) when K.is_nil(list) or K.is_nil(el), do: nil
+
   def contains(list, el) when is_list(list) do
     el in list
   end
 
-  # TODO case insensitive contains? split functions for string?
   def contains(str, el) when is_binary(str) do
     String.contains?(str, to_string(el))
   end
@@ -240,6 +266,8 @@ defmodule VacEngine.Processor.Library.Functions do
   @label "Age"
   @short "AGE()"
   @signature {[:date], :integer}
+  def age(nil), do: nil
+
   def age(birthdate) do
     Timex.diff(NaiveDateTime.utc_now(), birthdate, :years)
   end
@@ -250,6 +278,11 @@ defmodule VacEngine.Processor.Library.Functions do
   @label "Elapsed"
   @short "ELAPSED()"
   @signature {[:date, :integer], :integer}
+  def elapsed(start_date, duration)
+      when K.is_nil(start_date) or
+             K.is_nil(duration),
+      do: nil
+
   def elapsed(start_date, duration) do
     Timex.diff(NaiveDateTime.utc_now(), start_date, :days) > duration
   end
