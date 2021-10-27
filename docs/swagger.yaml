@@ -136,7 +136,7 @@ paths:
                       The processed data output.
 
                       The complete format of the output can be queried via the
-                      [GET /p/:portal_id](#operation/get-portal) endpoint.
+                      [GET /p/{portal_id}](#operation/get-portal) endpoint.
 
         '400':
           description: The provided input does not complies with the given portal's processor input.
@@ -145,7 +145,7 @@ paths:
                        Or the api-key does not grant the right to access the given portal.
 
 
-  /p/:portal_id:/info:
+  /p/{portal_id}/info:
     get:
       operationId: get-portal
       summary: Get portal description
