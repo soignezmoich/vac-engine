@@ -24,11 +24,7 @@ make db
 
 <https://localhost:4000>
 
-Log in with:
-
-Email: **admin@admin.com**
-
-Password: **12341234**
+Log in with the credentials `make db` printed.
 
 
 ## Compiling a release
@@ -87,7 +83,8 @@ The application is configured throught environment variables.
 
 There is two types of environment variables.
 
-Compile time env var (must be available on the system when compiling i.e. when executing "make release"):
+Compile time env var (must be available on the system when compiling i.e. when
+executing "make release"):
 
 - `SESSION_SIGNING_SALT`
 - `SESSION_ENCRYPTION_SALT`

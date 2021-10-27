@@ -9,7 +9,7 @@ VacEngine.Repo.query("delete from portals;")
 
 {:ok, user} =
   VacEngine.Repo.transaction(fn ->
-    email = "admin@admin.com"
+    email = "admin@admin.local"
     pass = Account.generate_secret(8) |> String.downcase() |> String.slice(0..8)
 
     {:ok, user} =
