@@ -13,13 +13,14 @@ defmodule VacEngine.Processor.Library.Functions do
 
   @doc """
     Check if boolean is false
-    If you want to check that the value is false or nil,
-    use the is_not_true/1 function
+
+    Returns true if the boolean is nil
   """
   @label "Check if value is false"
   @short "FALSE"
   @signature {[:boolean], :boolean}
   def is_false(false), do: true
+  def is_false(nil), do: true
   def is_false(_), do: false
 
   @doc """
@@ -30,12 +31,6 @@ defmodule VacEngine.Processor.Library.Functions do
   @signature {[:boolean], :boolean}
   def is_true(true), do: true
   def is_true(_), do: false
-
-  @label "Check if the value is not true"
-  @short "NOT TRUE"
-  @signature {[:boolean], :boolean}
-  def is_not_true(true), do: false
-  def is_not_true(_), do: true
 
   @doc """
     Inverse boolean
