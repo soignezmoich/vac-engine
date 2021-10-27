@@ -8,7 +8,7 @@
 
 2) Create database. This will:
     - drop database (if it exists)
-    - create database with <db_name> 
+    - create database with <db_name>
     - apply migrations
     - seed the database with an admin user (see below 4) and basic content
 
@@ -69,6 +69,17 @@ The following release tasks are available:
 - `rollback(version)` - Rollback the database to the provided version
 - `create_admin()` - Create a default admin user, the credentials will be logged
                      to STDOUT
+
+## SSL
+
+The application MUST be served on HTTPS.
+
+Two configurations are possible:
+
+- Put a reverse proxy terminating SSL in front of the application, the
+  application listener will be on HTTP on the given `PORT`.
+- Configure `SSL_KEY_PATH` and `SSL_CERT_PATH` and the application
+  will terminate SSL itself, `PORT` must be 443.
 
 ## Environment variables
 
