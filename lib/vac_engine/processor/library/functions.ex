@@ -47,6 +47,8 @@ defmodule VacEngine.Processor.Library.Functions do
 
   @doc """
     Check if variable is nil
+
+    Returns false only for nil
   """
   @label "Is nil"
   @short "NIL"
@@ -56,6 +58,8 @@ defmodule VacEngine.Processor.Library.Functions do
 
   @doc """
     Check if variable is not nil
+
+    Returns true only for nil
   """
   @label "Is not nil"
   @short "NOT NIL"
