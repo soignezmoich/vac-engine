@@ -190,5 +190,4 @@ defmodule VacEngine.Pub do
 
     Repo.preload(portal, [publications: publications_query], force: force)
   end
-
 end

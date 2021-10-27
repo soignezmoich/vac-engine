@@ -31,8 +31,6 @@ defmodule VacEngine.Processor.Library.Functions do
   def is_true(true), do: true
   def is_true(_), do: false
 
-
-
   @label "Check if the value is not true"
   @short "NOT TRUE"
   @signature {[:boolean], :boolean}
