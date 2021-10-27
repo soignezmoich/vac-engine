@@ -8,6 +8,7 @@ config :vac_engine, VacEngineWeb.Endpoint,
   session_signing_salt: System.fetch_env!("SESSION_SIGNING_SALT"),
   session_encryption_salt: System.fetch_env!("SESSION_ENCRYPTION_SALT"),
   session_key: System.fetch_env!("SESSION_KEY"),
+  force_ssl: [hsts: true],
   live_view: [
     signing_salt: System.fetch_env!("LIVE_VIEW_SALT")
   ]

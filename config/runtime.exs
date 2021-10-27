@@ -30,14 +30,32 @@ case Config.config_env() do
         |> to_charlist
       )
 
+    ssl_key = System.get_env("SSL_KEY_PATH")
+    ssl_cert = System.get_env("SSL_CERT_PATH")
+
     config :vac_engine, VacEngineWeb.Endpoint,
       url: [host: host, port: 443, scheme: "https"],
-      http: [
-        ip: address,
-        port: port,
-        transport_options: [num_acceptors: 1000, max_connections: 10000]
-      ],
       secret_key_base: secret_key_base
+
+    if ssl_key && ssl_cert do
+      config :vac_engine, VacEngineWeb.Endpoint,
+        https: [
+          :inet6,
+          ip: address,
+          port: port,
+          cipher_suite: :strong,
+          keyfile: ssl_key,
+          certfile: ssl_cert,
+          transport_options: [num_acceptors: 1000, max_connections: 10_000]
+        ]
+    else
+      config :vac_engine, VacEngineWeb.Endpoint,
+        http: [
+          ip: address,
+          port: port,
+          transport_options: [num_acceptors: 1000, max_connections: 10_000]
+        ]
+    end
 
     config :vac_engine, VacEngineWeb.Endpoint, server: true
 

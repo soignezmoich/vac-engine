@@ -91,6 +91,14 @@ Run time env var (must be available on the machine that runs the application):
 - `SECRET_KEY_BASE`
 - `POOL_SIZE`
 
+Optional:
+
+- `SSL_KEY_PATH`
+- `SSL_CERT_PATH`
+
+If both `SSL_KEY_PATH` and `SSL_CERT_PATH` are set, the application
+will terminate SSL itself, and `PORT` should be set to `443`.
+
 ### `SESSION_SIGNING_SALT`
 
 This is the session signing salt. This is a salt and not a secret.
@@ -169,6 +177,20 @@ Modifying this key will invalidate all cookies, sessions, activation tokens.
 The postgresql pool size. This is the number of database connection to open.
 
 Default to 10.
+
+### `SSL_KEY_PATH`
+
+Path to a `.pem` file containing the private key.
+
+If both `SSL_KEY_PATH` and `SSL_CERT_PATH` are set, the application
+will terminate SSL itself, and `PORT` should be set to `443`.
+
+### `SSL_CERT_PATH`
+
+Path to a `.pem` file containing the FULL CHAIN certificate.
+
+If both `SSL_KEY_PATH` and `SSL_CERT_PATH` are set, the application
+will terminate SSL itself, and `PORT` should be set to `443`.
 
 ## Processor expressions
 
