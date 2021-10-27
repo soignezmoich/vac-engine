@@ -8,7 +8,8 @@ info:
 
     ### Blueprint
 
-    A blueprint is a deductive process definition that describes a set of outcome computations.
+    A blueprint is a deductive process definition that describes a set of
+    outcome computations.
 
     A blueprint is composed of:
 
@@ -16,15 +17,17 @@ info:
         * input variables expected from the api request
         * output variables returned in the api response
         * intermediate variables user as helpers in the computation process
-        
+
         Any of these three categories can contain nested variables (objects).
       2. A set of deduction tables which defines its behaviour.
 
-        Each table is used to determine the outcome value of one or several output variables,
-        using a sequence of subsidiary conditions: conditions are tested one after the other
-        until one is fulfilled, then the related outcome is applied.
+        Each table is used to determine the outcome value of one or several
+        output variables, using a sequence of subsidiary conditions: conditions
+        are tested one after the other until one is fulfilled, then the related
+        outcome is applied.
 
-        If no condition is fulfilled to determine an outcome for a given output variable, the latter is not returned.
+        If no condition is fulfilled to determine an outcome for a given output
+        variable, the latter is not returned.
 
     ### Processor
 
@@ -34,7 +37,8 @@ info:
     ### Portal
 
     A portal is an endpoint on which a (single) blueprint/processor is published.
-    Api calls made to a portal will be treated using the published processor and returns the computed outcomes.
+    Api calls made to a portal will be treated using the published processor and
+    returns the computed outcomes.
 
     ### Publication
 
@@ -99,15 +103,17 @@ paths:
 
                     The input format is defined in the blueprint definition.
 
-                    It's root is an object containing an arbitrary number of fields of the following types:
-                    <br/> - null values
-                    <br/> - boolean values
-                    <br/> - integer values
-                    <br/> - number values (arbitrary-precision)
-                    <br/> - string values (possibly restricted to a set of enum values)
-                    <br/> - date values as "yyyy-mm-dd" strings
-                    <br/> - objects whose values is of the above type or nested objects
-                    
+                    It's root is an object containing an arbitrary number of
+                    fields of the following types: 
+
+                    - null values
+                    - boolean values
+                    - integer values
+                    - number values (arbitrary-precision)
+                    - string values (possibly restricted to a set of enum values)
+                    - date values as "yyyy-mm-dd" strings
+                    - objects whose values is of the above type or nested objects
+
 
       responses:
         '200':
@@ -139,17 +145,24 @@ paths:
                       [GET /p/{portal_id}](#operation/get-portal) endpoint.
 
         '400':
-          description: The provided input does not complies with the given portal's processor input.
+          description: |
+            The provided input does not complies with the given portal's
+            processor input.
+
         '404':
-          description: The url or the api-key is invalid.
-                       Or the api-key does not grant the right to access the given portal.
+          description: |
+            The url or the api-key is invalid.  Or the api-key does not grant
+            the right to access the given portal.
 
 
   /p/{portal_id}/info:
     get:
       operationId: get-portal
       summary: Get portal description
-      description: Get the description of the blueprint/processor published on the given portal.
+      description: |
+        Get the description of the blueprint/processor published on the given
+        portal.
+
       responses:
         '200':
           description: Portal description successfully retrieved
@@ -160,8 +173,10 @@ paths:
                 properties:
                   input:
                     type: object
-                    description: >
-                      The json schema describing the structure of the portal's input.
+                    description: |
+                      The json schema describing the structure of the portal's
+                      input.
+
                     example:
                       properties:
                         birthdate:
@@ -172,7 +187,9 @@ paths:
                   output:
                     type: object
                     description: |
-                      The json schema describing the structure of the portal's output.
+                      The json schema describing the structure of the portal's
+                      output.
+
                     example:
                       properties:
                         age:
@@ -188,11 +205,14 @@ paths:
                   logic:
                     type: object
                     description: |
-                      The partial and human readable explanation of the way output is computed.
-                      
-                      It contains a selection of output variables as keys.
-                      The values associated to these keys are lists of possible outcomes
-                      along with snake case keywords describing the cases that can lead to this outcome.
+                      The partial and human readable explanation of the way
+                      output is computed.
+
+                      It contains a selection of output variables as keys.  The
+                      values associated to these keys are lists of possible
+                      outcomes along with snake case keywords describing the
+                      cases that can lead to this outcome.
+
                     example:
                       vaccine_compatibilities.pfizer:
                         false:
@@ -208,7 +228,8 @@ paths:
                         - others
 
         '404':
-          description: The url or the api-key is invalid
-                       or the api-key does not grant the right to access the given portal.
-   
+          description: |
+            The url or the api-key is invalid or the api-key does not grant the
+            right to access the given portal.
+
 
