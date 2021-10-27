@@ -47,7 +47,8 @@ Hooks.clipboardCopy = {
     this.el.addEventListener('click', (evt) => this.copy(evt))
   },
   copy (evt) {
-    const text = this.el.innerHTML.trim()
+    const text = this.el.__text || this.el.innerText.trim()
+    this.el.__text = text
     const r = this.el.getBoundingClientRect()
     this.el.style.width = r.width + 'px'
     navigator.clipboard.writeText(text).then(() => {
