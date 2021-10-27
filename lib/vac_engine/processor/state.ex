@@ -69,32 +69,35 @@ defmodule VacEngine.Processor.State do
 
   defdelegate map_input(state, input), to: Input
 
+  def get_var(%State{variables: nil} = state, name_path) do
+    path = cast_path(name_path)
+    gpath = path |> Enum.map(&Access.key!/1)
+
+    try do
+      get_in(state.heap, gpath)
+    rescue
+      _e in KeyError ->
+        throw({:invalid_path, "variable #{to_string(path)} not found"})
+    end
+  end
+
   def get_var(%State{variables: vars} = state, name_path) do
     path = cast_path(name_path)
     vpath = path |> Enum.reject(&is_integer/1)
     gpath = path |> Enum.map(&Access.key!/1)
 
-    if vars != nil do
-      var = Map.get(vars, vpath)
+    var = Map.get(vars, vpath)
 
-      if is_nil(var) do
-        throw({:invalid_path, "invalid variable path #{inspect(path)}"})
-      end
+    if is_nil(var) do
+      throw({:invalid_path, "invalid variable path #{inspect(path)}"})
+    end
 
-      try do
-        get_in(state.heap, gpath)
-      rescue
-        _e in KeyError ->
-          {:ok, res} = Compiler.eval_ast(var.default, %{state | variables: nil})
-          res
-      end
-    else
-      try do
-        get_in(state.heap, gpath)
-      rescue
-        _e in KeyError ->
-          throw({:invalid_path, "variable #{to_string(path)} not found"})
-      end
+    try do
+      get_in(state.heap, gpath)
+    rescue
+      _e in KeyError ->
+        {:ok, res} = Compiler.eval_ast(var.default, %{state | variables: nil})
+        res
     end
   end
 

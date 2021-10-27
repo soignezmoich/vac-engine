@@ -39,7 +39,9 @@ defmodule VacEngine.Processor.Info.Schema do
 
   defp map_var(%Variable{type: :map, name: name} = v, filter) do
     %{
-      name => map_children(v.children, filter)
+      name =>
+        map_children(v.children, filter)
+        |> append_if_not_empty(description: v.description)
     }
   end
 
