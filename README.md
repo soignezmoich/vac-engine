@@ -81,6 +81,39 @@ Two configurations are possible:
 - Configure `SSL_KEY_PATH` and `SSL_CERT_PATH` and the application
   will terminate SSL itself, `PORT` must be 443.
 
+### Reverse proxy
+
+If you use a reverse proxy, you must pass the following headers:
+
+- `X-Real-IP`
+- `X-Forwarded-For`
+- `X-Forwarded-Proto`
+
+Example Nginx configuration:
+
+
+```
+server {
+        listen 443 ssl http2;
+        listen [::]:443 ssl http2;
+        include ssl.conf;
+        include errors.conf;
+        server_name vac-engine.goyman.com;
+
+        location / {
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection $http_connection;
+                proxy_read_timeout 86400;
+                proxy_pass http://127.0.0.1:3003;
+        }
+}
+```
+
 ## Environment variables
 
 The application is configured throught environment variables.
