@@ -57,6 +57,7 @@ defmodule VacEngine.Processor.Variable do
     |> validate_container()
     |> validate_children_state()
     |> validate_parent_type()
+    |> check_constraint(:name, name: :variables_name_slug)
   end
 
   def update_changeset(data, attrs, ctx) do
