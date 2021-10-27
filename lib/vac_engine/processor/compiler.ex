@@ -15,8 +15,8 @@ defmodule VacEngine.Processor.Compiler do
     |> compile_expression!()
     |> eval_ast(state)
   catch
-    {_code, msg} ->
-      {:error, msg}
+    {code, msg} ->
+      {:error, "#{code}: #{msg}"}
   end
 
   def eval_expression(expression_ast, bindings) do
@@ -41,8 +41,8 @@ defmodule VacEngine.Processor.Compiler do
         {:ok, result}
     end
   catch
-    {_code, msg} ->
-      {:error, msg}
+    {code, msg} ->
+      {:error, "#{code}: #{msg}"}
   end
 
   def compile_expression!(nil), do: nil
@@ -91,8 +91,8 @@ defmodule VacEngine.Processor.Compiler do
     ast = {:__block__, [], fn_asts}
     {:ok, ast}
   catch
-    {_code, msg} ->
-      {:error, msg}
+    {code, msg} ->
+      {:error, "#{code}: #{msg}"}
   end
 
   def compile_deduction(%Deduction{} = deduction) do

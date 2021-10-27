@@ -95,6 +95,20 @@ defmodule Fixtures.Cases do
     }
   end
 
+  cas(:nil_test) do
+    %{
+      input: %{a0: false},
+      output: %{b0: 20}
+    }
+  end
+
+  cas(:nil_test) do
+    %{
+      input: %{a0: true},
+      output: %{b0: 10}
+    }
+  end
+
   cas(:empty_test) do
     %{
       input: %{},

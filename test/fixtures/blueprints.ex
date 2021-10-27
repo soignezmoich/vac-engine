@@ -323,7 +323,7 @@ defmodule Fixtures.Blueprints do
   blueprint(:nil_test) do
     %{
       variables: [
-        %{name: :a0, type: :integer, mapping: :in_optional},
+        %{name: :a0, type: :boolean, mapping: :in_optional},
         %{name: :b0, type: :integer, mapping: :out}
       ],
       deductions: [
@@ -331,16 +331,16 @@ defmodule Fixtures.Blueprints do
           branches: [
             %{
               conditions: [
-                %{expression: quote(do: is_not_nil(@a0))}
+                %{expression: quote(do: is_false(@a0))}
               ],
               assignments: [
-                %{target: :b0, expression: 10}
+                %{target: :b0, expression: 20}
               ]
             },
             %{
               conditions: [],
               assignments: [
-                %{target: :b0, expression: 20}
+                %{target: :b0, expression: 10}
               ]
             }
           ]

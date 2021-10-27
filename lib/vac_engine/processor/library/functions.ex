@@ -18,7 +18,7 @@ defmodule VacEngine.Processor.Library.Functions do
   """
   @label "Check if value is false"
   @short "FALSE"
-  @signature {[:boolean], :boolean}
+  @signature {[:any], :boolean}
   def is_false(false), do: true
   def is_false(nil), do: true
   def is_false(_), do: false
