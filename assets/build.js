@@ -11,6 +11,11 @@ let entries = []
 if (js) entries.push('js/app.js')
 if (css) entries.push('css/app.css')
 
+if (watch) {
+  process.stdin.on('end', () => process.exit(0))
+  process.stdin.resume()
+}
+
 require('esbuild')
   .build({
     plugins: [

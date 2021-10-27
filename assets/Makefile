@@ -10,12 +10,12 @@ build: node_modules js css optimize
 .PHONY: js-watch
 
 js-watch: node_modules
-	./zombie.sh ./build.js watch js
+	./build.js watch js
 
 .PHONY: css-watch
 
 css-watch: node_modules
-	./zombie.sh ./build.js watch css
+	./build.js watch css
 
 .PHONY: js
 
