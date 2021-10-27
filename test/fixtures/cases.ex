@@ -87,4 +87,18 @@ defmodule Fixtures.Cases do
       error: "value hello is invalid for age"
     }
   end
+
+  cas(:nil_test) do
+    %{
+      input: %{},
+      output: %{b0: 20}
+    }
+  end
+
+  cas(:empty_test) do
+    %{
+      input: %{},
+      output: %{}
+    }
+  end
 end

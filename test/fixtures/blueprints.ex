@@ -313,11 +313,46 @@ defmodule Fixtures.Blueprints do
 
   blueprint(:hash3_test) do
     %{
-      name: :hash3_test,
       variables: [
         %{name: :bint, type: :integer, mapping: :in_required, default: 0},
         %{name: :aint, type: :integer, mapping: :in_required, default: 0}
       ]
+    }
+  end
+
+  blueprint(:nil_test) do
+    %{
+      variables: [
+        %{name: :a0, type: :integer, mapping: :in_optional},
+        %{name: :b0, type: :integer, mapping: :out}
+      ],
+      deductions: [
+        %{
+          branches: [
+            %{
+              conditions: [
+                %{expression: quote(do: is_not_nil(@a0))}
+              ],
+              assignments: [
+                %{target: :b0, expression: 10}
+              ]
+            },
+            %{
+              conditions: [],
+              assignments: [
+                %{target: :b0, expression: 20}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  end
+
+  blueprint(:empty_test) do
+    %{
+      variables: [],
+      deductions: []
     }
   end
 end
