@@ -7,6 +7,9 @@ defmodule VacEngineWeb.Editor.DeductionSetEditorComponent do
   import VacEngineWeb.Editor.ExpressionEditorComponent
 
   def update(assigns, socket) do
+
+    IO.inspect(List.first(assigns.deductions))
+
     deductions_with_path =
       assigns.deductions
       |> Enum.with_index()
