@@ -46,5 +46,4 @@ defmodule VacEngineWeb.AuthControllerTest do
     conn = get(conn, "/logout")
     assert html_response(conn, 200) =~ "Logout"
   end
-
 end

@@ -261,7 +261,19 @@ defmodule VacEngine.Processor.Library.Functions do
   end
 
   @doc """
+    Get the current time
+  """
+  @label "Now"
+  @short "NOW()"
+  @signature {[], :datetime}
+  def now() do
+    NaiveDateTime.utc_now()
+  end
+
+  @doc """
     Calculate age in years given a birthdate
+
+    Value returned in years.
   """
   @label "Age"
   @short "AGE()"
@@ -273,27 +285,124 @@ defmodule VacEngine.Processor.Library.Functions do
   end
 
   @doc """
-    Whether a duration in days is elapsed since a given date.
+    Return earliest date
   """
-  @label "Elapsed"
-  @short "ELAPSED()"
-  @signature {[:date, :integer], :integer}
-  def elapsed(start_date, duration)
-      when K.is_nil(start_date) or
-             K.is_nil(duration),
-      do: nil
+  @label "Earliest"
+  @short "EARLIEST()"
+  @signature {[:date, :date], :date}
+  @signature {[:datetime, :datetime], :datetime}
+  def earliest(a, b) when K.is_nil(a) and K.is_nil(b), do: nil
 
-  def elapsed(start_date, duration) do
-    Timex.diff(NaiveDateTime.utc_now(), start_date, :days) > duration
+  def earliest(a, b) when K.is_nil(a), do: b
+  def earliest(a, b) when K.is_nil(b), do: a
+
+  def earliest(a, b) do
+    min(a, b)
   end
 
   @doc """
-    Get the current time
+    Return latest date
   """
-  @label "Now"
-  @short "NOW()"
-  @signature {[], :datetime}
-  def now() do
-    NaiveDateTime.utc_now()
+  @label "Latest"
+  @short "LATEST()"
+  @signature {[:date, :date], :date}
+  @signature {[:datetime, :datetime], :datetime}
+  def latest(a, b) when K.is_nil(a) and K.is_nil(b), do: nil
+
+  def latest(a, b) when K.is_nil(a), do: b
+  def latest(a, b) when K.is_nil(b), do: a
+
+  def latest(a, b) do
+    max(a, b)
+  end
+
+  @doc """
+    Add years to date
+  """
+  @label "Add years"
+  @short "ADD_YEARS()"
+  @signature {[:date, :int], :date}
+  @signature {[:datetime, :int], :datetime}
+  def add_years(date, years) when K.is_nil(date) or K.is_nil(years), do: nil
+
+  def add_years(date, years) do
+    Timex.shift(date, years: years)
+  end
+
+  @doc """
+    Add months to date
+  """
+  @label "Add months"
+  @short "ADD_MONTHS()"
+  @signature {[:date, :int], :date}
+  @signature {[:datetime, :int], :datetime}
+  def add_months(date, months) when K.is_nil(date) or K.is_nil(months), do: nil
+
+  def add_months(date, months) do
+    Timex.shift(date, months: months)
+  end
+
+  @doc """
+    Add weeks to date
+  """
+  @label "Add weeks"
+  @short "ADD_WEEKS()"
+  @signature {[:date, :int], :date}
+  @signature {[:datetime, :int], :datetime}
+  def add_weeks(date, weeks) when K.is_nil(date) or K.is_nil(weeks), do: nil
+
+  def add_weeks(date, weeks) do
+    Timex.shift(date, weeks: weeks)
+  end
+
+  @doc """
+    Add days to date
+  """
+  @label "Add days"
+  @short "ADD_DAYS()"
+  @signature {[:date, :int], :date}
+  @signature {[:datetime, :int], :datetime}
+  def add_days(date, days) when K.is_nil(date) or K.is_nil(days), do: nil
+
+  def add_days(date, days) do
+    Timex.shift(date, days: days)
+  end
+
+  @doc """
+    Add hours to date
+  """
+  @label "Add hours"
+  @short "ADD_HOURS()"
+  @signature {[:datetime, :int], :datetime}
+  def add_hours(date, hours) when K.is_nil(date) or K.is_nil(hours), do: nil
+
+  def add_hours(date, hours) do
+    Timex.shift(date, hours: hours)
+  end
+
+  @doc """
+    Add minutes to date
+  """
+  @label "Add minutes"
+  @short "ADD_MINUTES()"
+  @signature {[:datetime, :int], :datetime}
+  def add_minutes(date, minutes) when K.is_nil(date) or K.is_nil(minutes),
+    do: nil
+
+  def add_minutes(date, minutes) do
+    Timex.shift(date, minutes: minutes)
+  end
+
+  @doc """
+    Add seconds to date
+  """
+  @label "Add seconds"
+  @short "ADD_SECONDS()"
+  @signature {[:datetime, :int], :datetime}
+  def add_seconds(date, seconds) when K.is_nil(date) or K.is_nil(seconds),
+    do: nil
+
+  def add_seconds(date, seconds) do
+    Timex.shift(date, seconds: seconds)
   end
 end

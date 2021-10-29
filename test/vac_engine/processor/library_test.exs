@@ -6,6 +6,11 @@ defmodule VacEngine.Processor.LibraryTest do
   alias VacEngine.Processor.Library.Functions
   import VacEngine.Processor.Library.Functions
 
+  test "var(name)" do
+    assert has_function?(:var, 1)
+    assert var(true) == true
+  end
+
   test "is_true(bool)" do
     assert has_function?(:is_true, 1)
     assert is_true(true) == true
@@ -200,6 +205,101 @@ defmodule VacEngine.Processor.LibraryTest do
 
     assert age(Timex.parse!("1980-03-04", "{ISOdate}")) ==
              Fixtures.Helpers.age("1980-03-04")
+  end
+
+  test "now()" do
+    assert has_function?(:now, 0)
+    assert now() != nil
+  end
+
+  test "earliest()" do
+    a = Timex.parse!("1980-03-04", "{ISOdate}")
+    b = Timex.parse!("1985-03-04", "{ISOdate}")
+    assert has_function?(:earliest, 2)
+    assert earliest(nil, nil) == nil
+    assert earliest(a, nil) == a
+    assert earliest(nil, a) == a
+    assert earliest(a, b) == a
+  end
+
+  test "latest()" do
+    a = Timex.parse!("1980-03-04", "{ISOdate}")
+    b = Timex.parse!("1985-03-04", "{ISOdate}")
+    assert has_function?(:latest, 2)
+    assert latest(nil, nil) == nil
+    assert latest(a, nil) == a
+    assert latest(nil, a) == a
+    assert latest(a, b) == b
+  end
+
+  test "add_years()" do
+    a = Timex.parse!("1980-03-04", "{ISOdate}")
+    b = Timex.parse!("1985-03-04", "{ISOdate}")
+    assert has_function?(:add_years, 2)
+    assert add_years(nil, nil) == nil
+    assert add_years(a, nil) == nil
+    assert add_years(nil, 3) == nil
+    assert add_years(a, 5) == b
+  end
+
+  test "add_months()" do
+    a = Timex.parse!("1980-03-04", "{ISOdate}")
+    b = Timex.parse!("1980-08-04", "{ISOdate}")
+    assert has_function?(:add_months, 2)
+    assert add_months(nil, nil) == nil
+    assert add_months(a, nil) == nil
+    assert add_months(nil, 3) == nil
+    assert add_months(a, 5) == b
+  end
+
+  test "add_weeks()" do
+    a = Timex.parse!("1980-04-08", "{ISOdate}")
+    b = Timex.parse!("1980-05-13", "{ISOdate}")
+    assert has_function?(:add_weeks, 2)
+    assert add_weeks(nil, nil) == nil
+    assert add_weeks(a, nil) == nil
+    assert add_weeks(nil, 3) == nil
+    assert add_weeks(a, 5) == b
+  end
+
+  test "add_days()" do
+    a = Timex.parse!("1980-03-04", "{ISOdate}")
+    b = Timex.parse!("1980-03-09", "{ISOdate}")
+    assert has_function?(:add_days, 2)
+    assert add_days(nil, nil) == nil
+    assert add_days(a, nil) == nil
+    assert add_days(nil, 3) == nil
+    assert add_days(a, 5) == b
+  end
+
+  test "add_hours()" do
+    a = Timex.parse!("1980-03-04 10:00", "{RFC3339}")
+    b = Timex.parse!("1980-03-04 15:00", "{RFC3339}")
+    assert has_function?(:add_hours, 2)
+    assert add_hours(nil, nil) == nil
+    assert add_hours(a, nil) == nil
+    assert add_hours(nil, 3) == nil
+    assert add_hours(a, 5) == b
+  end
+
+  test "add_minutes()" do
+    a = Timex.parse!("1980-03-04 10:00", "{RFC3339}")
+    b = Timex.parse!("1980-03-04 11:15", "{RFC3339}")
+    assert has_function?(:add_minutes, 2)
+    assert add_minutes(nil, nil) == nil
+    assert add_minutes(a, nil) == nil
+    assert add_minutes(nil, 3) == nil
+    assert add_minutes(a, 75) == b
+  end
+
+  test "add_seconds()" do
+    a = Timex.parse!("1980-03-04 10:00:04", "{RFC3339}")
+    b = Timex.parse!("1980-03-04 10:01:49", "{RFC3339}")
+    assert has_function?(:add_seconds, 2)
+    assert add_seconds(nil, nil) == nil
+    assert add_seconds(a, nil) == nil
+    assert add_seconds(nil, 3) == nil
+    assert add_seconds(a, 105) == b
   end
 
   test "candidates" do
