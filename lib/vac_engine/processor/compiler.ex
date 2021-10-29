@@ -58,7 +58,7 @@ defmodule VacEngine.Processor.Compiler do
   end
 
   def compile_ast!({:var, _m, _arg}) do
-    raise "invalid call of var/1"
+    throw({:invalid_var, "invalid call of var/1"})
   end
 
   def compile_ast!({fname, _m, args}) do
