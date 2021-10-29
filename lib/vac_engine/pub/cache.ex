@@ -7,6 +7,8 @@ defmodule VacEngine.Pub.Cache do
   alias VacEngine.Processor
   alias VacEngine.Pub.Cache
 
+  @check_interval Application.compile_env!(:vac_engine, :cache_check_interval)
+
   defstruct api_keys: %{},
             processors: %{},
             blueprints_version: 0,
@@ -128,7 +130,7 @@ defmodule VacEngine.Pub.Cache do
           cache
       end
 
-    Process.send_after(self(), :check_version, 5000)
+    Process.send_after(self(), :check_version, @check_interval)
     {:noreply, cache}
   end
 
