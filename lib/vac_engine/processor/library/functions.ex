@@ -267,6 +267,7 @@ defmodule VacEngine.Processor.Library.Functions do
   @short "NOW()"
   @signature {[], :datetime}
   def now() do
+    # TODO bake now() to avoid having side effects within the blueprint
     NaiveDateTime.utc_now()
   end
 
