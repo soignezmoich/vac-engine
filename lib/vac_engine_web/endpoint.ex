@@ -1,6 +1,7 @@
 defmodule VacEngineWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :vac_engine
 
+  # credo:disable-for-lines:14
   @session_options [
     store: :cookie,
     key:
