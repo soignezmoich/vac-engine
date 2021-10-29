@@ -322,8 +322,8 @@ defmodule VacEngine.Processor.Library.Functions do
   """
   @label "Add years"
   @short "ADD_YEARS()"
-  @signature {[:date, :int], :date}
-  @signature {[:datetime, :int], :datetime}
+  @signature {[:date, :integer], :date}
+  @signature {[:datetime, :integer], :datetime}
   def add_years(date, years) when K.is_nil(date) or K.is_nil(years), do: nil
 
   def add_years(date, years) do
@@ -335,8 +335,8 @@ defmodule VacEngine.Processor.Library.Functions do
   """
   @label "Add months"
   @short "ADD_MONTHS()"
-  @signature {[:date, :int], :date}
-  @signature {[:datetime, :int], :datetime}
+  @signature {[:date, :integer], :date}
+  @signature {[:datetime, :integer], :datetime}
   def add_months(date, months) when K.is_nil(date) or K.is_nil(months), do: nil
 
   def add_months(date, months) do
@@ -348,8 +348,8 @@ defmodule VacEngine.Processor.Library.Functions do
   """
   @label "Add weeks"
   @short "ADD_WEEKS()"
-  @signature {[:date, :int], :date}
-  @signature {[:datetime, :int], :datetime}
+  @signature {[:date, :integer], :date}
+  @signature {[:datetime, :integer], :datetime}
   def add_weeks(date, weeks) when K.is_nil(date) or K.is_nil(weeks), do: nil
 
   def add_weeks(date, weeks) do
@@ -361,8 +361,8 @@ defmodule VacEngine.Processor.Library.Functions do
   """
   @label "Add days"
   @short "ADD_DAYS()"
-  @signature {[:date, :int], :date}
-  @signature {[:datetime, :int], :datetime}
+  @signature {[:date, :integer], :date}
+  @signature {[:datetime, :integer], :datetime}
   def add_days(date, days) when K.is_nil(date) or K.is_nil(days), do: nil
 
   def add_days(date, days) do
@@ -374,7 +374,7 @@ defmodule VacEngine.Processor.Library.Functions do
   """
   @label "Add hours"
   @short "ADD_HOURS()"
-  @signature {[:datetime, :int], :datetime}
+  @signature {[:datetime, :integer], :datetime}
   def add_hours(date, hours) when K.is_nil(date) or K.is_nil(hours), do: nil
 
   def add_hours(date, hours) do
@@ -386,7 +386,7 @@ defmodule VacEngine.Processor.Library.Functions do
   """
   @label "Add minutes"
   @short "ADD_MINUTES()"
-  @signature {[:datetime, :int], :datetime}
+  @signature {[:datetime, :integer], :datetime}
   def add_minutes(date, minutes) when K.is_nil(date) or K.is_nil(minutes),
     do: nil
 
@@ -399,7 +399,7 @@ defmodule VacEngine.Processor.Library.Functions do
   """
   @label "Add seconds"
   @short "ADD_SECONDS()"
-  @signature {[:datetime, :int], :datetime}
+  @signature {[:datetime, :integer], :datetime}
   def add_seconds(date, seconds) when K.is_nil(date) or K.is_nil(seconds),
     do: nil
 
