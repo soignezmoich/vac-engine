@@ -5,6 +5,10 @@ defmodule VacEngine.Processor.BlueprintTest do
   alias VacEngine.Repo
   alias VacEngine.Account
   alias VacEngine.Processor
+  alias VacEngine.Processor.Compiler
+  alias VacEngine.Processor.Branch
+  alias VacEngine.Processor.Deduction
+  alias VacEngine.Processor.Blueprint
   alias VacEngine.Processor.Expression
   alias VacEngine.Processor.Assignment
   alias VacEngine.Processor.Condition
@@ -216,5 +220,27 @@ defmodule VacEngine.Processor.BlueprintTest do
     assert 10 == from(e in Expression, select: count(e.id)) |> Repo.one()
     assert 4 == from(e in Assignment, select: count(e.id)) |> Repo.one()
     assert 3 == from(e in Condition, select: count(e.id)) |> Repo.one()
+  end
+
+  test "invalid expressions" do
+    br = %Blueprint{
+      variables: [],
+      deductions: [
+        %Deduction{
+          branches: [
+            %Branch{
+              conditions: [
+                %Condition{
+                  expression: %Expression{ast: {:var, [], []}}
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+
+    assert {:error, "invalid_var: invalid call of var/1"} ==
+             Compiler.compile_blueprint(br)
   end
 end

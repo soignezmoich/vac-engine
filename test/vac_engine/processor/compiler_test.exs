@@ -2,6 +2,7 @@ defmodule VacEngine.Processor.CompilerTest do
   use VacEngine.DataCase
 
   alias VacEngine.Processor.Compiler
+  alias VacEngine.Processor.Expression
 
   defmacro assert_expr(status, result, binding, do: block) do
     quote bind_quoted: [
@@ -53,5 +54,10 @@ defmodule VacEngine.Processor.CompilerTest do
     assert_expr_err("undefined function thingy/3", %{}) do
       thingy(1, 2, 3)
     end
+  end
+
+  test "invalid call" do
+    assert {:error, "invalid_var: invalid call of var/1"} ==
+             Compiler.eval_expression(%Expression{ast: {:var, [], []}})
   end
 end

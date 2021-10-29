@@ -235,5 +235,7 @@ defmodule VacEngine.Processor.LibraryTest do
                ]
              }
            ] == func_candidates(:add, [:integer])
+
+    assert [] == func_candidates(:non_existing, [:any])
   end
 end
