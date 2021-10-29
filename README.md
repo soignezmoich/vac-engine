@@ -266,38 +266,7 @@ will terminate SSL itself, and `PORT` should be set to `443`.
 
 
 
-### date
 
-Predicate operators:
-
-| name | arguments |
-|------|-----------|
-| =    |a:date|
-| !=   |a:date|
-| olderThanDays | a:number |
-| olderThanMonths |a:number |
-| olderThanYears |a:number |
-| older=ThanDays | a:number |
-| older=ThanMonths |a:number |
-| older=ThanYears |a:number |
-| youngerThanDays | a:number |
-| youngerThanMonths | a:number |
-| youngerThanYears | a:number |
-| younger=ThanDays | a:number |
-| younger=ThanMonths | a:number |
-| younger=ThanYears | a:number |
-
-> note 2: if you need to define a "between a and b", use two predicates
-
-Assignation operators:
-
-| name | arguments |
-|------|-----------|
-|addDays|a:number|
-|addMonths|a:number|
-|addYears|a:number|
-
-> note: a can be a variable or a constant
 
 
 
