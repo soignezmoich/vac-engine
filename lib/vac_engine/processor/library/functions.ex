@@ -405,4 +405,109 @@ defmodule VacEngine.Processor.Library.Functions do
   def add_seconds(date, seconds) do
     Timex.shift(date, seconds: seconds)
   end
+
+  @doc """
+    Return the year difference between two dates
+
+    Always return a positive  number.
+  """
+  @label "Years between"
+  @short "YEARS_BETWEEN()"
+  @signature {[:date, :date], :integer}
+  @signature {[:datetime, :datetime], :integer}
+  def years_between(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+
+  def years_between(a, b) do
+    Timex.diff(a, b, :years) |> abs()
+  end
+
+  @doc """
+    Return the month difference between two dates
+
+    Always return a positive  number.
+  """
+  @label "Months between"
+  @short "MONTHS_BETWEEN()"
+  @signature {[:date, :date], :integer}
+  @signature {[:datetime, :datetime], :integer}
+  def months_between(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+
+  def months_between(a, b) do
+    Timex.diff(a, b, :months) |> abs()
+  end
+
+  @doc """
+    Return the week difference between two dates
+
+    Always return a positive  number.
+  """
+  @label "Weeks between"
+  @short "WEEKS_BETWEEN()"
+  @signature {[:date, :date], :integer}
+  @signature {[:datetime, :datetime], :integer}
+  def weeks_between(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+
+  def weeks_between(a, b) do
+    Timex.diff(a, b, :weeks) |> abs()
+  end
+
+  @doc """
+    Return the day difference between two dates
+
+    Always return a positive  number.
+  """
+  @label "Days between"
+  @short "DAYS_BETWEEN()"
+  @signature {[:date, :date], :integer}
+  @signature {[:datetime, :datetime], :integer}
+  def days_between(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+
+  def days_between(a, b) do
+    Timex.diff(a, b, :days) |> abs()
+  end
+
+  @doc """
+    Return the hour difference between two dates
+
+    Always return a positive  number.
+  """
+  @label "Hours between"
+  @short "HOURS_BETWEEN()"
+  @signature {[:date, :date], :integer}
+  @signature {[:datetime, :datetime], :integer}
+  def hours_between(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+
+  def hours_between(a, b) do
+    Timex.diff(a, b, :hours) |> abs()
+  end
+
+  @doc """
+    Return the minute difference between two dates
+
+    Always return a positive  number.
+  """
+  @label "Minutes between"
+  @short "MINUTES_BETWEEN()"
+  @signature {[:date, :date], :integer}
+  @signature {[:datetime, :datetime], :integer}
+  def minutes_between(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+
+  def minutes_between(a, b) do
+    Timex.diff(a, b, :minutes) |> abs()
+  end
+
+  @doc """
+    Return the second difference between two dates
+
+    Always return a positive  number.
+  """
+  @label "Seconds between"
+  @short "SECONDS_BETWEEN()"
+  @signature {[:date, :date], :integer}
+  @signature {[:datetime, :datetime], :integer}
+  def seconds_between(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+
+  def seconds_between(a, b) do
+    Timex.diff(a, b, :seconds) |> abs()
+  end
 end

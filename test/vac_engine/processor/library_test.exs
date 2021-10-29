@@ -302,6 +302,76 @@ defmodule VacEngine.Processor.LibraryTest do
     assert add_seconds(a, 105) == b
   end
 
+  test "years_between()" do
+    a = Timex.parse!("1980-03-04", "{ISOdate}")
+    b = Timex.parse!("1985-03-04", "{ISOdate}")
+    assert has_function?(:years_between, 2)
+    assert years_between(nil, nil) == nil
+    assert years_between(a, nil) == nil
+    assert years_between(nil, 3) == nil
+    assert years_between(a, b) == 5
+  end
+
+  test "months_between()" do
+    a = Timex.parse!("1980-03-04", "{ISOdate}")
+    b = Timex.parse!("1985-08-04", "{ISOdate}")
+    assert has_function?(:months_between, 2)
+    assert months_between(nil, nil) == nil
+    assert months_between(a, nil) == nil
+    assert months_between(nil, 3) == nil
+    assert months_between(a, b) == 65
+  end
+
+  test "weeks_between()" do
+    a = Timex.parse!("1980-03-04", "{ISOdate}")
+    b = Timex.parse!("1982-03-04", "{ISOdate}")
+    assert has_function?(:weeks_between, 2)
+    assert weeks_between(nil, nil) == nil
+    assert weeks_between(a, nil) == nil
+    assert weeks_between(nil, 3) == nil
+    assert weeks_between(a, b) == 104
+  end
+
+  test "days_between()" do
+    a = Timex.parse!("1980-03-04", "{ISOdate}")
+    b = Timex.parse!("1980-08-04", "{ISOdate}")
+    assert has_function?(:days_between, 2)
+    assert days_between(nil, nil) == nil
+    assert days_between(a, nil) == nil
+    assert days_between(nil, 3) == nil
+    assert days_between(a, b) == 153
+  end
+
+  test "hours_between()" do
+    a = Timex.parse!("1980-03-04 10:00", "{RFC3339}")
+    b = Timex.parse!("1980-03-04 13:00", "{RFC3339}")
+    assert has_function?(:hours_between, 2)
+    assert hours_between(nil, nil) == nil
+    assert hours_between(a, nil) == nil
+    assert hours_between(nil, 3) == nil
+    assert hours_between(a, b) == 3
+  end
+
+  test "minutes_between()" do
+    a = Timex.parse!("1980-03-04 10:00", "{RFC3339}")
+    b = Timex.parse!("1980-03-04 13:41", "{RFC3339}")
+    assert has_function?(:minutes_between, 2)
+    assert minutes_between(nil, nil) == nil
+    assert minutes_between(a, nil) == nil
+    assert minutes_between(nil, 3) == nil
+    assert minutes_between(a, b) == 221
+  end
+
+  test "seconds_between()" do
+    a = Timex.parse!("1980-03-04 10:00:04", "{RFC3339}")
+    b = Timex.parse!("1980-03-04 10:01:49", "{RFC3339}")
+    assert has_function?(:seconds_between, 2)
+    assert seconds_between(nil, nil) == nil
+    assert seconds_between(a, nil) == nil
+    assert seconds_between(nil, 3) == nil
+    assert seconds_between(a, b) == 105
+  end
+
   test "candidates" do
     assert [
              %{
