@@ -41,4 +41,10 @@ defmodule VacEngineWeb.AuthControllerTest do
     assert [session] = Repo.all(Session)
     assert true == Session.expired?(session)
   end
+
+  test "GET /logout when not logged in", %{conn: conn} do
+    conn = get(conn, "/logout")
+    assert html_response(conn, 200) =~ "Logout"
+  end
+
 end
