@@ -167,3 +167,10 @@ checks:
 .PHONY: import-blueprints
 import-blueprints: deps
 	mix run blueprints/import.exs
+
+.PHONY: coverage
+
+coverage: export MIX_ENV=test
+coverage: export DATABASE_URL=${DATABASE_TEST_URL}
+coverage:
+	mix test --cover

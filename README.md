@@ -265,8 +265,14 @@ will terminate SSL itself, and `PORT` should be set to `443`.
 - `contains(a, b)` - check if a contains b
 
 
+## Testing
 
+### Coverage
 
+Coverage can be analysed by running `make coverage`.
+
+There is a `.coverignore` file that is used to ignore module from coverage
+check.
 
 
 

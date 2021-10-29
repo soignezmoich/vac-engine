@@ -1,5 +1,19 @@
+[
+  :"Elixir.Fixtures.Helpers\n",
+  :"Elixir.Fixtures.Helpers.Cases\n",
+  :"Elixir.Fixtures.Helpers.Blueprints\n",
+  :"Elixir.Fixtures.Cases\n",
+  :"Elixir.Fixtures.Blueprints\n"
+]
+
 defmodule VacEngine.MixProject do
   use Mix.Project
+
+  @external_resource "#{__DIR__}/.coverignore"
+  @ignore_modules File.stream!("#{__DIR__}/.coverignore")
+                  |> Enum.map(fn s ->
+                    String.to_atom("Elixir.#{String.trim(s)}")
+                  end)
 
   def project do
     [
@@ -10,7 +24,10 @@ defmodule VacEngine.MixProject do
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      test_coverage: [
+        ignore_modules: @ignore_modules
+      ]
     ]
   end
 

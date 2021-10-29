@@ -11,6 +11,7 @@
 - `checks`          run static analyser
 - `format`          format code
 - `docs-server`     run swagger code server
+- `coverage`        check test code coverage
 
 ## Building
 
