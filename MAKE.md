@@ -7,27 +7,15 @@
 
 ## Development
 
+- `server`          run development server
 - `checks`          run static analyser
+- `format`          format code
+- `docs-server`     run swagger code server
 
 ## Building
 
 - `clean`           clean the project
 - `release`         build a release
-
-The following are called by `release` and should not be called directly.
-
-- `assets`          build assets
-- `build`           compile the app
-- `deps`            fetch dependencies
-
-## Server
-
-- `server`          run development server
-
-The following is automatically launched from `server` so you usually will never
-call this directly.
-
-- `assets-watch`    run the webpack assets pipeline
 
 ## Testing
 
@@ -37,7 +25,10 @@ call this directly.
 ## Databse
 
 - `psql`            connect to the database with psql
+- `text-psql`       connect to the database with psql (test)
 - `db`              reset database (only in development)
 - `test-db`         reset test database (only in development)
+- `migrate`         migrate all migrations (only in development)
 - `rollback`        rollback one migration (only in development)
 - `rollback-all`    rollback all migrations (only in development)
+- `remigrate`       rollback and reapply migrations without droping DB
