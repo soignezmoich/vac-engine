@@ -161,7 +161,7 @@ docs-server:
 .PHONY: checks
 
 checks:
-	mix dialyzer || true
+	-mix dialyzer
 	mix credo suggest -a
 
 .PHONY: import-blueprints
