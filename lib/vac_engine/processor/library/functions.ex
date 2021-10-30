@@ -261,6 +261,57 @@ defmodule VacEngine.Processor.Library.Functions do
   end
 
   @doc """
+    Check if a contains b.
+
+    If a is a string, then check if b is a substring of a (case sensitive)
+  """
+  @label "Contains"
+  @short "∋"
+  @signature {[:"integer[]", :integer], :boolean}
+  @signature {[:"number[]", :number], :boolean}
+  @signature {[:"string[]", :string], :boolean}
+  @signature {[:"date[]", :date], :boolean}
+  @signature {[:"datetime[]", :datetime], :boolean}
+  @signature {[:string, :string], :boolean}
+  def contains(list, el) when K.is_nil(list) or K.is_nil(el), do: nil
+
+  def contains(list, el) when is_list(list) do
+    el in list
+  end
+
+  def contains(str, el) when is_binary(str) do
+    String.contains?(str, to_string(el))
+  end
+
+  @doc """
+    Boolean AND
+  """
+  @label "And"
+  @short "AND()"
+  @signature {[:boolean, :boolean], :boolean}
+  def andz(nil, nil), do: nil
+  def andz(a, nil), do: a
+  def andz(nil, b), do: b
+
+  def andz(a, b) do
+    a && b
+  end
+
+  @doc """
+    Boolean OR
+  """
+  @label "Or"
+  @short "OR()"
+  @signature {[:boolean, :boolean], :boolean}
+  def orz(nil, nil), do: nil
+  def orz(a, nil), do: a
+  def orz(nil, b), do: b
+
+  def orz(a, b) do
+    a || b
+  end
+
+  @doc """
     Get the current time
   """
   @label "Now"
