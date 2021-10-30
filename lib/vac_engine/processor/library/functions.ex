@@ -4,6 +4,13 @@ defmodule VacEngine.Processor.Library.Functions do
   import Kernel, except: [is_nil: 1, not: 1]
   alias Kernel, as: K
 
+  defmacro is_date(a) do
+    quote do
+      K.is_struct(unquote(a), NaiveDateTime) or K.is_struct(unquote(a), Date) or
+        K.is_struct(unquote(a), DateTime)
+    end
+  end
+
   # This is a placeholder for AST compilation
   # that will be replaced by the compiler
   @doc """
@@ -122,6 +129,10 @@ defmodule VacEngine.Processor.Library.Functions do
   @signature {[:date, :date], :boolean}
   def gt(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
 
+  def gt(a, b) when is_date(a) and is_date(b) do
+    Timex.after?(a, b)
+  end
+
   def gt(a, b) do
     a > b
   end
@@ -138,6 +149,10 @@ defmodule VacEngine.Processor.Library.Functions do
   @signature {[:datetime, :datetime], :boolean}
   @signature {[:date, :date], :boolean}
   def gte(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+
+  def gte(a, b) when is_date(a) and is_date(b) do
+    Timex.compare(a, b) >= 0
+  end
 
   def gte(a, b) do
     a >= b
@@ -156,6 +171,10 @@ defmodule VacEngine.Processor.Library.Functions do
   @signature {[:date, :date], :boolean}
   def lt(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
 
+  def lt(a, b) when is_date(a) and is_date(b) do
+    Timex.before?(a, b)
+  end
+
   def lt(a, b) do
     a < b
   end
@@ -172,6 +191,10 @@ defmodule VacEngine.Processor.Library.Functions do
   @signature {[:datetime, :datetime], :boolean}
   @signature {[:date, :date], :boolean}
   def lte(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+
+  def lte(a, b) when is_date(a) and is_date(b) do
+    Timex.compare(a, b) <= 0
+  end
 
   def lte(a, b) do
     a <= b
@@ -271,11 +294,15 @@ defmodule VacEngine.Processor.Library.Functions do
   @signature {[:datetime, :datetime], :datetime}
   def earliest(a, b) when K.is_nil(a) and K.is_nil(b), do: nil
 
-  def earliest(a, b) when K.is_nil(a), do: b
-  def earliest(a, b) when K.is_nil(b), do: a
+  def earliest(a, b) when K.is_nil(a) and is_date(b), do: b
+  def earliest(a, b) when K.is_nil(b) and is_date(a), do: a
 
-  def earliest(a, b) do
-    min(a, b)
+  def earliest(a, b) when is_date(a) and is_date(b) do
+    if Timex.before?(a, b) do
+      a
+    else
+      b
+    end
   end
 
   @doc """
@@ -287,11 +314,15 @@ defmodule VacEngine.Processor.Library.Functions do
   @signature {[:datetime, :datetime], :datetime}
   def latest(a, b) when K.is_nil(a) and K.is_nil(b), do: nil
 
-  def latest(a, b) when K.is_nil(a), do: b
-  def latest(a, b) when K.is_nil(b), do: a
+  def latest(a, b) when K.is_nil(a) and is_date(b), do: b
+  def latest(a, b) when K.is_nil(b) and is_date(a), do: a
 
-  def latest(a, b) do
-    max(a, b)
+  def latest(a, b) when is_date(a) and is_date(b) do
+    if Timex.after?(a, b) do
+      a
+    else
+      b
+    end
   end
 
   @doc """
