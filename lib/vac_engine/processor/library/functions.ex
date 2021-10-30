@@ -1,13 +1,10 @@
 defmodule VacEngine.Processor.Library.Functions do
   use VacEngine.Processor.Library.Define
 
-  import Kernel, except: [is_nil: 1, not: 1]
-  alias Kernel, as: K
-
   defmacro is_date(a) do
     quote do
-      K.is_struct(unquote(a), NaiveDateTime) or K.is_struct(unquote(a), Date) or
-        K.is_struct(unquote(a), DateTime)
+      is_struct(unquote(a), NaiveDateTime) or is_struct(unquote(a), Date) or
+        is_struct(unquote(a), DateTime)
     end
   end
 
@@ -47,10 +44,41 @@ defmodule VacEngine.Processor.Library.Functions do
   """
   @label "Inverse"
   @short "!"
+  @rename :not
   @signature {[:boolean], :boolean}
-  def not nil, do: true
-  def not false, do: true
-  def not _, do: false
+  def not_(nil), do: true
+  def not_(false), do: true
+  def not_(_), do: false
+
+  @doc """
+    Boolean AND
+  """
+  @label "And"
+  @short "AND()"
+  @rename :and
+  @signature {[:boolean, :boolean], :boolean}
+  def and_(nil, nil), do: nil
+  def and_(a, nil), do: a
+  def and_(nil, b), do: b
+
+  def and_(a, b) do
+    a && b
+  end
+
+  @doc """
+    Boolean OR
+  """
+  @label "Or"
+  @short "OR()"
+  @rename :or
+  @signature {[:boolean, :boolean], :boolean}
+  def or_(nil, nil), do: nil
+  def or_(a, nil), do: a
+  def or_(nil, b), do: b
+
+  def or_(a, b) do
+    a || b
+  end
 
   @doc """
     Check if variable is nil
@@ -59,9 +87,10 @@ defmodule VacEngine.Processor.Library.Functions do
   """
   @label "Is nil"
   @short "NIL"
+  @rename :is_nil
   @signature {[:any], :boolean}
-  def is_nil(nil), do: true
-  def is_nil(_), do: false
+  def is_nil_(nil), do: true
+  def is_nil_(_), do: false
 
   @doc """
     Check if variable is not nil
@@ -89,7 +118,7 @@ defmodule VacEngine.Processor.Library.Functions do
   @signature {[:boolean, :boolean], :boolean}
   @signature {[:datetime, :datetime], :boolean}
   @signature {[:date, :date], :boolean}
-  def eq(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+  def eq(a, b) when is_nil(a) or is_nil(b), do: nil
 
   def eq(a, b) do
     a == b
@@ -110,7 +139,7 @@ defmodule VacEngine.Processor.Library.Functions do
   @signature {[:boolean, :boolean], :boolean}
   @signature {[:datetime, :datetime], :boolean}
   @signature {[:date, :date], :boolean}
-  def neq(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+  def neq(a, b) when is_nil(a) or is_nil(b), do: nil
 
   def neq(a, b) do
     !eq(a, b)
@@ -127,7 +156,7 @@ defmodule VacEngine.Processor.Library.Functions do
   @signature {[:integer, :number], :boolean}
   @signature {[:datetime, :datetime], :boolean}
   @signature {[:date, :date], :boolean}
-  def gt(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+  def gt(a, b) when is_nil(a) or is_nil(b), do: nil
 
   def gt(a, b) when is_date(a) and is_date(b) do
     Timex.after?(a, b)
@@ -148,7 +177,7 @@ defmodule VacEngine.Processor.Library.Functions do
   @signature {[:integer, :number], :boolean}
   @signature {[:datetime, :datetime], :boolean}
   @signature {[:date, :date], :boolean}
-  def gte(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+  def gte(a, b) when is_nil(a) or is_nil(b), do: nil
 
   def gte(a, b) when is_date(a) and is_date(b) do
     Timex.compare(a, b) >= 0
@@ -169,7 +198,7 @@ defmodule VacEngine.Processor.Library.Functions do
   @signature {[:integer, :number], :boolean}
   @signature {[:datetime, :datetime], :boolean}
   @signature {[:date, :date], :boolean}
-  def lt(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+  def lt(a, b) when is_nil(a) or is_nil(b), do: nil
 
   def lt(a, b) when is_date(a) and is_date(b) do
     Timex.before?(a, b)
@@ -190,7 +219,7 @@ defmodule VacEngine.Processor.Library.Functions do
   @signature {[:integer, :number], :boolean}
   @signature {[:datetime, :datetime], :boolean}
   @signature {[:date, :date], :boolean}
-  def lte(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+  def lte(a, b) when is_nil(a) or is_nil(b), do: nil
 
   def lte(a, b) when is_date(a) and is_date(b) do
     Timex.compare(a, b) <= 0
@@ -209,7 +238,7 @@ defmodule VacEngine.Processor.Library.Functions do
   @signature {[:number, :number], :number}
   @signature {[:number, :integer], :number}
   @signature {[:integer, :number], :number}
-  def add(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+  def add(a, b) when is_nil(a) or is_nil(b), do: nil
 
   def add(a, b) do
     a + b
@@ -224,7 +253,7 @@ defmodule VacEngine.Processor.Library.Functions do
   @signature {[:number, :number], :number}
   @signature {[:number, :integer], :number}
   @signature {[:integer, :number], :number}
-  def sub(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+  def sub(a, b) when is_nil(a) or is_nil(b), do: nil
 
   def sub(a, b) do
     a - b
@@ -239,7 +268,7 @@ defmodule VacEngine.Processor.Library.Functions do
   @signature {[:number, :number], :number}
   @signature {[:number, :integer], :number}
   @signature {[:integer, :number], :number}
-  def mult(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+  def mult(a, b) when is_nil(a) or is_nil(b), do: nil
 
   def mult(a, b) do
     a * b
@@ -254,61 +283,10 @@ defmodule VacEngine.Processor.Library.Functions do
   @signature {[:number, :number], :number}
   @signature {[:number, :integer], :number}
   @signature {[:integer, :number], :number}
-  def div(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+  def div(a, b) when is_nil(a) or is_nil(b), do: nil
 
   def div(a, b) do
     a / b
-  end
-
-  @doc """
-    Check if a contains b.
-
-    If a is a string, then check if b is a substring of a (case sensitive)
-  """
-  @label "Contains"
-  @short "∋"
-  @signature {[:"integer[]", :integer], :boolean}
-  @signature {[:"number[]", :number], :boolean}
-  @signature {[:"string[]", :string], :boolean}
-  @signature {[:"date[]", :date], :boolean}
-  @signature {[:"datetime[]", :datetime], :boolean}
-  @signature {[:string, :string], :boolean}
-  def contains(list, el) when K.is_nil(list) or K.is_nil(el), do: nil
-
-  def contains(list, el) when is_list(list) do
-    el in list
-  end
-
-  def contains(str, el) when is_binary(str) do
-    String.contains?(str, to_string(el))
-  end
-
-  @doc """
-    Boolean AND
-  """
-  @label "And"
-  @short "AND()"
-  @signature {[:boolean, :boolean], :boolean}
-  def andz(nil, nil), do: nil
-  def andz(a, nil), do: a
-  def andz(nil, b), do: b
-
-  def andz(a, b) do
-    a && b
-  end
-
-  @doc """
-    Boolean OR
-  """
-  @label "Or"
-  @short "OR()"
-  @signature {[:boolean, :boolean], :boolean}
-  def orz(nil, nil), do: nil
-  def orz(a, nil), do: a
-  def orz(nil, b), do: b
-
-  def orz(a, b) do
-    a || b
   end
 
   @doc """
@@ -343,10 +321,10 @@ defmodule VacEngine.Processor.Library.Functions do
   @short "EARLIEST()"
   @signature {[:date, :date], :date}
   @signature {[:datetime, :datetime], :datetime}
-  def earliest(a, b) when K.is_nil(a) and K.is_nil(b), do: nil
+  def earliest(a, b) when is_nil(a) and is_nil(b), do: nil
 
-  def earliest(a, b) when K.is_nil(a) and is_date(b), do: b
-  def earliest(a, b) when K.is_nil(b) and is_date(a), do: a
+  def earliest(a, b) when is_nil(a) and is_date(b), do: b
+  def earliest(a, b) when is_nil(b) and is_date(a), do: a
 
   def earliest(a, b) when is_date(a) and is_date(b) do
     if Timex.before?(a, b) do
@@ -363,10 +341,10 @@ defmodule VacEngine.Processor.Library.Functions do
   @short "LATEST()"
   @signature {[:date, :date], :date}
   @signature {[:datetime, :datetime], :datetime}
-  def latest(a, b) when K.is_nil(a) and K.is_nil(b), do: nil
+  def latest(a, b) when is_nil(a) and is_nil(b), do: nil
 
-  def latest(a, b) when K.is_nil(a) and is_date(b), do: b
-  def latest(a, b) when K.is_nil(b) and is_date(a), do: a
+  def latest(a, b) when is_nil(a) and is_date(b), do: b
+  def latest(a, b) when is_nil(b) and is_date(a), do: a
 
   def latest(a, b) when is_date(a) and is_date(b) do
     if Timex.after?(a, b) do
@@ -383,7 +361,7 @@ defmodule VacEngine.Processor.Library.Functions do
   @short "ADD_YEARS()"
   @signature {[:date, :integer], :date}
   @signature {[:datetime, :integer], :datetime}
-  def add_years(date, years) when K.is_nil(date) or K.is_nil(years), do: nil
+  def add_years(date, years) when is_nil(date) or is_nil(years), do: nil
 
   def add_years(date, years) do
     Timex.shift(date, years: years)
@@ -396,7 +374,7 @@ defmodule VacEngine.Processor.Library.Functions do
   @short "ADD_MONTHS()"
   @signature {[:date, :integer], :date}
   @signature {[:datetime, :integer], :datetime}
-  def add_months(date, months) when K.is_nil(date) or K.is_nil(months), do: nil
+  def add_months(date, months) when is_nil(date) or is_nil(months), do: nil
 
   def add_months(date, months) do
     Timex.shift(date, months: months)
@@ -409,7 +387,7 @@ defmodule VacEngine.Processor.Library.Functions do
   @short "ADD_WEEKS()"
   @signature {[:date, :integer], :date}
   @signature {[:datetime, :integer], :datetime}
-  def add_weeks(date, weeks) when K.is_nil(date) or K.is_nil(weeks), do: nil
+  def add_weeks(date, weeks) when is_nil(date) or is_nil(weeks), do: nil
 
   def add_weeks(date, weeks) do
     Timex.shift(date, weeks: weeks)
@@ -422,7 +400,7 @@ defmodule VacEngine.Processor.Library.Functions do
   @short "ADD_DAYS()"
   @signature {[:date, :integer], :date}
   @signature {[:datetime, :integer], :datetime}
-  def add_days(date, days) when K.is_nil(date) or K.is_nil(days), do: nil
+  def add_days(date, days) when is_nil(date) or is_nil(days), do: nil
 
   def add_days(date, days) do
     Timex.shift(date, days: days)
@@ -434,7 +412,7 @@ defmodule VacEngine.Processor.Library.Functions do
   @label "Add hours"
   @short "ADD_HOURS()"
   @signature {[:datetime, :integer], :datetime}
-  def add_hours(date, hours) when K.is_nil(date) or K.is_nil(hours), do: nil
+  def add_hours(date, hours) when is_nil(date) or is_nil(hours), do: nil
 
   def add_hours(date, hours) do
     Timex.shift(date, hours: hours)
@@ -446,7 +424,7 @@ defmodule VacEngine.Processor.Library.Functions do
   @label "Add minutes"
   @short "ADD_MINUTES()"
   @signature {[:datetime, :integer], :datetime}
-  def add_minutes(date, minutes) when K.is_nil(date) or K.is_nil(minutes),
+  def add_minutes(date, minutes) when is_nil(date) or is_nil(minutes),
     do: nil
 
   def add_minutes(date, minutes) do
@@ -459,7 +437,7 @@ defmodule VacEngine.Processor.Library.Functions do
   @label "Add seconds"
   @short "ADD_SECONDS()"
   @signature {[:datetime, :integer], :datetime}
-  def add_seconds(date, seconds) when K.is_nil(date) or K.is_nil(seconds),
+  def add_seconds(date, seconds) when is_nil(date) or is_nil(seconds),
     do: nil
 
   def add_seconds(date, seconds) do
@@ -475,7 +453,7 @@ defmodule VacEngine.Processor.Library.Functions do
   @short "YEARS_BETWEEN()"
   @signature {[:date, :date], :integer}
   @signature {[:datetime, :datetime], :integer}
-  def years_between(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+  def years_between(a, b) when is_nil(a) or is_nil(b), do: nil
 
   def years_between(a, b) do
     Timex.diff(a, b, :years) |> abs()
@@ -490,7 +468,7 @@ defmodule VacEngine.Processor.Library.Functions do
   @short "MONTHS_BETWEEN()"
   @signature {[:date, :date], :integer}
   @signature {[:datetime, :datetime], :integer}
-  def months_between(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+  def months_between(a, b) when is_nil(a) or is_nil(b), do: nil
 
   def months_between(a, b) do
     Timex.diff(a, b, :months) |> abs()
@@ -505,7 +483,7 @@ defmodule VacEngine.Processor.Library.Functions do
   @short "WEEKS_BETWEEN()"
   @signature {[:date, :date], :integer}
   @signature {[:datetime, :datetime], :integer}
-  def weeks_between(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+  def weeks_between(a, b) when is_nil(a) or is_nil(b), do: nil
 
   def weeks_between(a, b) do
     Timex.diff(a, b, :weeks) |> abs()
@@ -520,7 +498,7 @@ defmodule VacEngine.Processor.Library.Functions do
   @short "DAYS_BETWEEN()"
   @signature {[:date, :date], :integer}
   @signature {[:datetime, :datetime], :integer}
-  def days_between(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+  def days_between(a, b) when is_nil(a) or is_nil(b), do: nil
 
   def days_between(a, b) do
     Timex.diff(a, b, :days) |> abs()
@@ -535,7 +513,7 @@ defmodule VacEngine.Processor.Library.Functions do
   @short "HOURS_BETWEEN()"
   @signature {[:date, :date], :integer}
   @signature {[:datetime, :datetime], :integer}
-  def hours_between(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+  def hours_between(a, b) when is_nil(a) or is_nil(b), do: nil
 
   def hours_between(a, b) do
     Timex.diff(a, b, :hours) |> abs()
@@ -550,7 +528,7 @@ defmodule VacEngine.Processor.Library.Functions do
   @short "MINUTES_BETWEEN()"
   @signature {[:date, :date], :integer}
   @signature {[:datetime, :datetime], :integer}
-  def minutes_between(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+  def minutes_between(a, b) when is_nil(a) or is_nil(b), do: nil
 
   def minutes_between(a, b) do
     Timex.diff(a, b, :minutes) |> abs()
@@ -565,7 +543,7 @@ defmodule VacEngine.Processor.Library.Functions do
   @short "SECONDS_BETWEEN()"
   @signature {[:date, :date], :integer}
   @signature {[:datetime, :datetime], :integer}
-  def seconds_between(a, b) when K.is_nil(a) or K.is_nil(b), do: nil
+  def seconds_between(a, b) when is_nil(a) or is_nil(b), do: nil
 
   def seconds_between(a, b) do
     Timex.diff(a, b, :seconds) |> abs()

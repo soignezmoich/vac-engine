@@ -61,6 +61,11 @@ defmodule VacEngine.Processor.Compiler do
     throw({:invalid_var, "invalid call of var/1"})
   end
 
+  def compile_ast!({:not, m, args}), do: compile_ast!({:not_, m, args})
+  def compile_ast!({:and, m, args}), do: compile_ast!({:and_, m, args})
+  def compile_ast!({:or, m, args}), do: compile_ast!({:or_, m, args})
+  def compile_ast!({:is_nil, m, args}), do: compile_ast!({:is_nil_, m, args})
+
   def compile_ast!({fname, _m, args}) do
     fref =
       {:., [],

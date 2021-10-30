@@ -17,10 +17,19 @@ defmodule VacEngine.Processor.Library.Define do
     signatures = Module.get_attribute(env.module, :signature)
     label = Module.get_attribute(env.module, :label)
     short = Module.get_attribute(env.module, :short)
+    rename = Module.get_attribute(env.module, :rename)
 
     Module.delete_attribute(env.module, :signature)
     Module.delete_attribute(env.module, :label)
     Module.delete_attribute(env.module, :short)
+    Module.delete_attribute(env.module, :rename)
+
+    name =
+      if rename do
+        rename
+      else
+        name
+      end
 
     func = %{
       signatures: signatures,

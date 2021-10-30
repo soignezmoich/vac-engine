@@ -115,4 +115,25 @@ defmodule Fixtures.Cases do
       output: %{}
     }
   end
+
+  cas(:rename_test) do
+    %{
+      input: %{a0: false, b0: false},
+      output: %{a0: false, b0: false}
+    }
+  end
+
+  cas(:rename_test) do
+    %{
+      input: %{a0: true, b0: false},
+      output: %{a0: false, b0: true}
+    }
+  end
+
+  cas(:rename_test) do
+    %{
+      input: %{a0: true, b0: true},
+      output: %{a0: true, b0: true}
+    }
+  end
 end

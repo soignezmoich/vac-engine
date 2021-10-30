@@ -355,4 +355,32 @@ defmodule Fixtures.Blueprints do
       deductions: []
     }
   end
+
+  blueprint(:rename_test) do
+    %{
+      variables: [
+        %{name: :a0, type: :boolean, mapping: :inout_required},
+        %{name: :b0, type: :boolean, mapping: :inout_required}
+      ],
+      deductions: [
+        %{
+          branches: [
+            %{
+              conditions: [],
+              assignments: [
+                %{
+                  target: :a0,
+                  expression: {:and, [], [{:var, [], [:a0]}, {:var, [], [:b0]}]}
+                },
+                %{
+                  target: :b0,
+                  expression: {:or, [], [{:var, [], [:a0]}, {:var, [], [:b0]}]}
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  end
 end

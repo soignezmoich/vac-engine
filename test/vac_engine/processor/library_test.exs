@@ -1,7 +1,6 @@
 defmodule VacEngine.Processor.LibraryTest do
   use ExUnit.Case
 
-  import Kernel, except: [is_nil: 1, not: 1]
   import VacEngine.Processor.Library
   alias VacEngine.Processor.Library.Functions
   import VacEngine.Processor.Library.Functions
@@ -29,9 +28,29 @@ defmodule VacEngine.Processor.LibraryTest do
 
   test "not(any)" do
     assert has_function?(:not, 1)
-    assert not 5 == false
-    assert not nil == true
-    assert not false == true
+    assert not_(5) == false
+    assert not_(nil) == true
+    assert not_(false) == true
+  end
+
+  test "and(any)" do
+    assert has_function?(:and, 2)
+    assert and_(false, false) == false
+    assert and_(true, false) == false
+    assert and_(true, true) == true
+    assert and_(nil, true) == true
+    assert and_(true, nil) == true
+    assert and_(nil, nil) == nil
+  end
+
+  test "or(any)" do
+    assert has_function?(:or, 2)
+    assert or_(false, false) == false
+    assert or_(true, false) == true
+    assert or_(true, true) == true
+    assert or_(nil, true) == true
+    assert or_(true, nil) == true
+    assert or_(nil, nil) == nil
   end
 
   test "eq(bool, bool)" do
@@ -402,5 +421,32 @@ defmodule VacEngine.Processor.LibraryTest do
            ] == func_candidates(:add, [:integer])
 
     assert [] == func_candidates(:non_existing, [:any])
+
+    assert [
+             %{
+               label: "And",
+               name: :and,
+               short: "AND()",
+               signatures: [{[:boolean, :boolean], :boolean}]
+             },
+             %{
+               label: "Equals to",
+               name: :eq,
+               short: "=",
+               signatures: [{[:boolean, :boolean], :boolean}]
+             },
+             %{
+               label: "Not equal to",
+               name: :neq,
+               short: "≠",
+               signatures: [{[:boolean, :boolean], :boolean}]
+             },
+             %{
+               label: "Or",
+               name: :or,
+               short: "OR()",
+               signatures: [{[:boolean, :boolean], :boolean}]
+             }
+           ] == candidates([:boolean, :boolean])
   end
 end
