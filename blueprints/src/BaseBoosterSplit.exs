@@ -116,18 +116,15 @@
     },
     end_of_infection_delay: %{
       type: :date,
-      mapping: :out
     },
     end_of_booster_delay: %{
       type: :date,
-      mapping: :out
     },
     end_of_delays_moderna: %{
       type: :date
     },
     end_of_delays_pfizer: %{
       type: :date,
-      mapping: :out
     },
     end_of_delays_janssen: %{
       type: :date
