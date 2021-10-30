@@ -260,6 +260,36 @@ defmodule VacEngine.Processor.Library.Functions do
     String.contains?(str, to_string(el))
   end
 
+
+  @doc """
+    Boolean AND
+  """
+  @label "And"
+  @short "AND()"
+  @signature {[:boolean, :boolean], :boolean}
+  def andz(nil, nil), do: nil
+  def andz(a, nil), do: a
+  def andz(nil, b), do: b
+  def andz(a, b) do
+    a && b
+  end
+
+
+  @doc """
+    Boolean OR
+  """
+  @label "Or"
+  @short "OR()"
+  @signature {[:boolean, :boolean], :boolean}
+  def orz(nil, nil), do: nil
+  def orz(a, nil), do: a
+  def orz(nil, b), do: b
+  def orz(a, b) do
+    a || b
+  end
+
+
+
   @doc """
     Get the current time
   """
@@ -298,7 +328,10 @@ defmodule VacEngine.Processor.Library.Functions do
   def earliest(a, b) when K.is_nil(b), do: a
 
   def earliest(a, b) do
-    min(a, b)
+    case Date.compare(a, b) do
+      :lt -> a
+      _ -> b
+    end
   end
 
   @doc """
@@ -314,7 +347,10 @@ defmodule VacEngine.Processor.Library.Functions do
   def latest(a, b) when K.is_nil(b), do: a
 
   def latest(a, b) do
-    max(a, b)
+    case Date.compare(a, b) do
+      :lt -> b
+      _ -> a
+    end
   end
 
   @doc """
