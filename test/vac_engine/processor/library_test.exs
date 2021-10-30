@@ -182,23 +182,6 @@ defmodule VacEngine.Processor.LibraryTest do
     assert Functions.div(nil, 3) == nil
   end
 
-  test "contains(list, number)" do
-    assert has_function?(:contains, 2)
-    assert contains([1, 2, 3], 4) == false
-    assert contains([1, 4, 3], 4) == true
-    assert contains(nil, 4) == nil
-  end
-
-  test "contains(string, number)" do
-    assert contains("44", 4) == true
-    assert contains("23", 4) == false
-  end
-
-  test "contains(string, string)" do
-    assert contains("44", "4") == true
-    assert contains("23", "4") == false
-  end
-
   test "age(date)" do
     assert has_function?(:age, 1)
     assert age(nil) == nil
@@ -374,12 +357,6 @@ defmodule VacEngine.Processor.LibraryTest do
 
   test "candidates" do
     assert [
-             %{
-               label: "Contains",
-               name: :contains,
-               short: "∋",
-               signatures: [{[:string, :string], :boolean}]
-             },
              %{
                label: "Equals to",
                name: :eq,
