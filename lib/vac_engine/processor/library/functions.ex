@@ -260,7 +260,6 @@ defmodule VacEngine.Processor.Library.Functions do
     String.contains?(str, to_string(el))
   end
 
-
   @doc """
     Boolean AND
   """
@@ -270,10 +269,10 @@ defmodule VacEngine.Processor.Library.Functions do
   def andz(nil, nil), do: nil
   def andz(a, nil), do: a
   def andz(nil, b), do: b
+
   def andz(a, b) do
     a && b
   end
-
 
   @doc """
     Boolean OR
@@ -284,11 +283,10 @@ defmodule VacEngine.Processor.Library.Functions do
   def orz(nil, nil), do: nil
   def orz(a, nil), do: a
   def orz(nil, b), do: b
+
   def orz(a, b) do
     a || b
   end
-
-
 
   @doc """
     Get the current time
