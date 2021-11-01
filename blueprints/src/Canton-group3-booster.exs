@@ -94,7 +94,6 @@
     ######## INTERMEDIATE #####################################################
     check_date: %{
       type: :date,
-      mapping: :out
     },
     end_of_registration_window: %{
       type: :date,
@@ -109,7 +108,7 @@
       type: :date
     },
     birthday_18: %{
-      type: :date
+      type: :date,
     },
     birthday_65: %{
       type: :date
@@ -121,22 +120,22 @@
       type: :date,
     },
     end_of_delays_moderna: %{
-      type: :date
+      type: :date,
     },
     end_of_delays_pfizer: %{
       type: :date,
     },
     end_of_delays_janssen: %{
-      type: :date
+      type: :date,
     },
     booster_compatibilities: %{
       type: :map,
       children: %{
         moderna: %{
-          type: :boolean
+          type: :boolean,
         },
         pfizer: %{
-          type: :boolean
+          type: :boolean,
         }
       }
     },
@@ -393,19 +392,12 @@
     },
     %{
       columns: [
-        %{type: "assignment", variable: :end_of_infection_delay}
+        %{variable: :infection_date},
+        %{variable: [:previous_vaccination, :vaccine]},
+        %{variable: [:previous_vaccination, :last_dose_date]},
+        %{type: "assignment", variable: :end_of_infection_delay},
       ],
-      branches: [
-        %{
-          assignments: [
-            %{
-              target: :end_of_infection_delay,
-              expression: quote(do: add_days(@infection_date, 28)),
-              column: 0
-            }
-          ]
-        }
-      ]
+      branches: [] # INFECTION HAS NO EFFECT FOR GROUP 3 AND 5 (BL, GE, LI, SZ, ZG  AND  AR)
     },
     %{
       columns: [
@@ -431,7 +423,7 @@
         %{
           assignments: [
             %{
-              target: :birthday_65,
+              target: :birthday_18,
               expression: quote(do: add_years(@birthdate, 18)),
               column: 0
             }
@@ -449,54 +441,6 @@
             %{
               target: :birthday_65,
               expression: quote(do: add_years(@birthdate, 65)),
-              column: 0
-            }
-          ]
-        }
-      ]
-    },
-    %{
-      columns: [
-        %{type: "assignment", variable: :end_of_delays_moderna}
-      ],
-      branches: [
-        %{
-          assignments: [
-            %{
-              target: :end_of_delays_moderna,
-              expression: quote(do: @end_of_infection_delay),
-              column: 0
-            }
-          ]
-        }
-      ]
-    },
-    %{
-      columns: [
-        %{type: "assignment", variable: :end_of_delays_pfizer}
-      ],
-      branches: [
-        %{
-          assignments: [
-            %{
-              target: :end_of_delays_pfizer,
-              expression: quote(do: @end_of_infection_delay),
-              column: 0
-            }
-          ]
-        }
-      ]
-    },
-    %{
-      columns: [
-        %{type: "assignment", variable: :end_of_delays_janssen}
-      ],
-      branches: [
-        %{
-          assignments: [
-            %{
-              target: :end_of_delays_janssen,
-              expression: quote(do: @end_of_infection_delay),
               column: 0
             }
           ]
@@ -587,7 +531,6 @@
       %{variable: [:previous_vaccination, :vaccine]},
       %{variable: :end_of_registration_window},
       %{type: "assignment", variable: [:booster_compatibilities, :moderna]},
-      %{type: "assignment", variable: :end_of_delays_moderna},
     ],
     branches: [
       %{
@@ -652,11 +595,6 @@
             column: 2,
             target: [:booster_compatibilities, :moderna],
             expression: true
-          },
-          %{
-            column: 3,
-            target: :end_of_delays_moderna,
-            expression: quote(do: latest(@end_of_booster_delay, @birthday_65))
           }
         ]
       }
@@ -671,7 +609,7 @@
       %{variable: [:flags, :immuno_not_recommended]},
       %{variable: :rejects_mrna},
       %{variable: :end_of_infection_delay},
-      %{variable: :previous_vaccination},
+      %{variable: [:previous_vaccination, :vaccine]},
       %{variable: [:booster_compatibilities, :moderna]},
       %{variable: :end_of_registration_window},
       %{type: "assignment", variable: [:vaccine_compatibilities, :moderna, :compatible]},
@@ -746,7 +684,7 @@
         conditions: [
           %{
             column: 4,
-            expression: quote(do: is_not_nil(@previous_vaccination)),
+            expression: quote(do: is_not_nil(var([:previous_vaccination, :vaccine]))),
           },
           %{
             column: 5,
@@ -775,6 +713,11 @@
             column: 7,
             target: [:vaccine_compatibilities, :moderna, :compatible],
             expression: true
+          },
+          %{
+            column: 8,
+            target: :end_of_delays_moderna,
+            expression: quote(do: latest(@end_of_infection_delay, @end_of_booster_delay, @birthday_12))
           }
         ],
       },
@@ -782,12 +725,12 @@
         conditions: [
           %{
             column: 6,
-            expression: quote(do: lt(@end_of_registration_window, @birthday_18)),
+            expression: quote(do: lt(@end_of_registration_window, @birthday_12)),
           }
         ],
         assignments: [
           %{
-            description: "younger_than_18",
+            description: "younger_than_12",
             column: 7,
             target: [:vaccine_compatibilities, :moderna, :compatible],
             expression: false
@@ -805,7 +748,7 @@
           %{
             column: 8,
             target: :end_of_delays_moderna,
-            expression: quote(do: latest(@end_of_delays_moderna, @birthday_18))
+            expression: quote(do: latest(@end_of_infection_delay, @birthday_12))
           }
         ],
       },
@@ -822,7 +765,6 @@
       %{variable: [:previous_vaccination, :vaccine]},
       %{variable: :end_of_registration_window},
       %{type: "assignment", variable: [:booster_compatibilities, :pfizer]},
-      %{type: "assignment", variable: :end_of_delays_pfizer}
     ],
     branches: [
       %{
@@ -887,11 +829,6 @@
             column: 2,
             target: [:booster_compatibilities, :pfizer],
             expression: true
-          },
-          %{
-            column: 3,
-            target: :end_of_delays_pfizer,
-            expression: quote(do: latest(@end_of_booster_delay, @birthday_65))
           }
         ]
       }
@@ -906,7 +843,7 @@
       %{variable: [:flags, :immuno_not_recommended]},
       %{variable: :rejects_mrna},
       %{variable: :end_of_infection_delay},
-      %{variable: :previous_vaccination},
+      %{variable: [:previous_vaccination, :vaccine]},
       %{variable: [:booster_compatibilities, :pfizer]},
       %{variable: :check_date},
       %{type: "assignment", variable: [:vaccine_compatibilities, :pfizer, :compatible]},
@@ -939,6 +876,22 @@
         assignments: [
           %{
             description: "immuno_not_recommended",
+            column: 7,
+            target: [:vaccine_compatibilities, :pfizer, :compatible],
+            expression: false
+          }
+        ],
+      },
+      %{
+        conditions: [
+          %{
+            column: 6,
+            expression: quote(do: lt(@check_date, @birthday_12)),
+          }
+        ],
+        assignments: [
+          %{
+            description: "younger_than_12",
             column: 7,
             target: [:vaccine_compatibilities, :pfizer, :compatible],
             expression: false
@@ -981,7 +934,7 @@
         conditions: [
           %{
             column: 4,
-            expression: quote(do: is_not_nil(@previous_vaccination)),
+            expression: quote(do: is_not_nil(var([:previous_vaccination, :vaccine]))),
           },
           %{
             column: 5,
@@ -1010,38 +963,11 @@
             column: 7,
             target: [:vaccine_compatibilities, :pfizer, :compatible],
             expression: true
-          }
-        ],
-      },
-      %{
-        conditions: [
+          },
           %{
-            column: 6,
-            expression: quote(do: gt(@check_date, @birthday_18)),
-          }
-        ],
-        assignments: [
-          %{
-            description: "older_than_18",
-            column: 7,
-            target: [:vaccine_compatibilities, :moderna, :compatible],
-            expression: false
-          }
-        ],
-      },
-      %{
-        conditions: [
-          %{
-            column: 6,
-            expression: quote(do: lt(@check_date, @birthday_12)),
-          }
-        ],
-        assignments: [
-          %{
-            description: "younger_than_12",
-            column: 7,
-            target: [:vaccine_compatibilities, :moderna, :compatible],
-            expression: false
+            column: 8,
+            target: :end_of_delays_pfizer,
+            expression: quote(do: latest(@end_of_infection_delay, @end_of_booster_delay, @birthday_18))
           }
         ],
       },
@@ -1056,7 +982,7 @@
           %{
             column: 8,
             target: :end_of_delays_pfizer,
-            expression: quote(do: latest(@end_of_delays_pfizer, @birthday_12))
+            expression: quote(do: latest(@end_of_infection_delay, @birthday_12))
           }
         ],
       },
@@ -1163,7 +1089,7 @@
             %{
               target: :end_of_delays_janssen,
               column: 6,
-              expression: quote(do: latest(@end_of_delays_janssen, @birthday_18)),
+              expression: quote(do: latest(@end_of_infection_delay, @birthday_18)),
             }
           ]
         }
@@ -1378,7 +1304,7 @@
       description: "MODERNA SEQUENCE START",
       columns: [
         %{variable: [:vaccine_compatibilities, :moderna, :compatible]},
-        %{variable: :previous_vaccination},
+        %{variable: [:previous_vaccination, :vaccine]},
         %{variable: :infection_date},
         %{
           type: "assignment",
@@ -1416,7 +1342,7 @@
             },
             %{
               column: 1,
-              expression: quote(do: is_not_nil(@previous_vaccination))
+              expression: quote(do: is_not_nil(var([:previous_vaccination, :vaccine])))
             }
           ],
           assignments: [
@@ -1524,7 +1450,7 @@
       description: "MODERNA ONEDOC PREVIOUS VACCINATION INFOS",
       columns: [
         %{variable: [:vaccine_compatibilities, :moderna, :compatible]},
-        %{variable: :previous_vaccination},
+        %{variable: [:previous_vaccination, :vaccine]},
         %{
           type: "assignment",
           variable: [
@@ -1568,7 +1494,7 @@
             },
             %{
               column: 1,
-              expression: quote(do: is_not_nil(@previous_vaccination))
+              expression: quote(do: is_not_nil(var([:previous_vaccination, :vaccine])))
             }
           ],
           assignments: [
@@ -1596,7 +1522,7 @@
       description: "MODERNA SEQUENCE END",
       columns: [
         %{variable: [:vaccine_compatibilities, :moderna, :compatible]},
-        %{variable: :previous_vaccination},
+        %{variable: [:previous_vaccination, :vaccine]},
         %{variable: :infection_date},
         %{
           type: "assignment",
@@ -1664,7 +1590,7 @@
             },
             %{
               column: 1,
-              expression: quote(do: is_nil(@previous_vaccination))
+              expression: quote(do: is_nil(var([:previous_vaccination, :vaccine])))
             },
             %{
               column: 2,
@@ -1724,7 +1650,7 @@
       description: "PFIZER SEQUENCE START",
       columns: [
         %{variable: [:vaccine_compatibilities, :pfizer, :compatible]},
-        %{variable: :previous_vaccination},
+        %{variable: [:previous_vaccination, :vaccine]},
         %{variable: :infection_date},
         %{
           type: "assignment",
@@ -1762,7 +1688,7 @@
             },
             %{
               column: 1,
-              expression: quote(do: is_not_nil(@previous_vaccination))
+              expression: quote(do: is_not_nil(var([:previous_vaccination, :vaccine])))
             }
           ],
           assignments: [
@@ -1870,7 +1796,7 @@
       description: "PFIZER ONEDOC PREVIOUS VACCINATION INFOS",
       columns: [
         %{variable: [:vaccine_compatibilities, :pfizer, :compatible]},
-        %{variable: :previous_vaccination},
+        %{variable: [:previous_vaccination, :vaccine]},
         %{
           type: "assignment",
           variable: [
@@ -1914,7 +1840,7 @@
             },
             %{
               column: 1,
-              expression: quote(do: is_not_nil(@previous_vaccination))
+              expression: quote(do: is_not_nil(var([:previous_vaccination, :vaccine])))
             }
           ],
           assignments: [
@@ -1941,7 +1867,7 @@
       description: "PFIZER SEQUENCE END",
       columns: [
         %{variable: [:vaccine_compatibilities, :pfizer, :compatible]},
-        %{variable: :previous_vaccination},
+        %{variable: [:previous_vaccination, :vaccine]},
         %{variable: :infection_date},
         %{
           type: "assignment",
@@ -2009,7 +1935,7 @@
             },
             %{
               column: 1,
-              expression: quote(do: is_nil(@previous_vaccination))
+              expression: quote(do: is_nil(var([:previous_vaccination, :vaccine])))
             },
             %{
               column: 2,
