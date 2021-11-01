@@ -337,6 +337,25 @@ defmodule VacEngine.Processor.Library.Functions do
   @doc """
     Return latest date
   """
+  @label "Earliest"
+  @short "EARLIEST()"
+  @signature {[:date, :date, :date], :date}
+  @signature {[:datetime, :datetime, :datetime], :datetime}
+  def earliest(nil, nil, nil), do: nil
+
+  def earliest(a, b, nil), do: earliest(a, b)
+  def earliest(a, nil, b), do: earliest(a, b)
+  def earliest(nil, a, b), do: earliest(a, b)
+
+  def earliest(a, b, c) when is_date(a) and is_date(b) and is_date(c) do
+    [a, b, c]
+    |> Enum.sort(&(Timex.compare(&1, &2) > 0))
+    |> List.last()
+  end
+
+  @doc """
+    Return latest date
+  """
   @label "Latest"
   @short "LATEST()"
   @signature {[:date, :date], :date}
@@ -352,6 +371,25 @@ defmodule VacEngine.Processor.Library.Functions do
     else
       b
     end
+  end
+
+  @doc """
+    Return latest date
+  """
+  @label "Latest"
+  @short "LATEST()"
+  @signature {[:date, :date, :date], :date}
+  @signature {[:datetime, :datetime, :datetime], :datetime}
+  def latest(nil, nil, nil), do: nil
+
+  def latest(a, b, nil), do: latest(a, b)
+  def latest(a, nil, b), do: latest(a, b)
+  def latest(nil, a, b), do: latest(a, b)
+
+  def latest(a, b, c) when is_date(a) and is_date(b) and is_date(c) do
+    [a, b, c]
+    |> Enum.sort(&(Timex.compare(&1, &2) > 0))
+    |> List.first()
   end
 
   @doc """

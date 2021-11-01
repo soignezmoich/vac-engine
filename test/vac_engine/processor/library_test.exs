@@ -217,12 +217,24 @@ defmodule VacEngine.Processor.LibraryTest do
   test "earliest()" do
     a = Timex.parse!("1980-06-30", "{ISOdate}")
     b = Timex.parse!("1980-07-01", "{ISOdate}")
+    c = Timex.parse!("1990-01-02", "{ISOdate}")
     assert has_function?(:earliest, 2)
     assert earliest(nil, nil) == nil
     assert earliest(a, nil) == a
     assert earliest(nil, a) == a
     assert earliest(a, b) == a
     assert earliest(b, a) == a
+
+    assert has_function?(:earliest, 3)
+    assert earliest(nil, nil, nil) == nil
+    assert earliest(a, nil, nil) == a
+    assert earliest(a, b, nil) == a
+    assert earliest(a, nil, b) == a
+    assert earliest(nil, b, a) == a
+    assert earliest(a, b, c) == a
+    assert earliest(a, a, c) == a
+    assert earliest(c, a, b) == a
+    assert earliest(a, c, b) == a
   end
 
   test "comparison date" do
@@ -244,12 +256,24 @@ defmodule VacEngine.Processor.LibraryTest do
   test "latest()" do
     a = Timex.parse!("1980-06-30", "{ISOdate}")
     b = Timex.parse!("1980-07-01", "{ISOdate}")
+    c = Timex.parse!("1984-07-01", "{ISOdate}")
     assert has_function?(:latest, 2)
     assert latest(nil, nil) == nil
     assert latest(a, nil) == a
     assert latest(nil, a) == a
     assert latest(a, b) == b
     assert latest(b, a) == b
+
+    assert has_function?(:latest, 3)
+    assert latest(nil, nil, nil) == nil
+    assert latest(a, nil, nil) == a
+    assert latest(a, b, nil) == b
+    assert latest(a, nil, b) == b
+    assert latest(nil, b, a) == b
+    assert latest(a, b, c) == c
+    assert latest(a, a, c) == c
+    assert latest(c, a, b) == c
+    assert latest(a, c, b) == c
   end
 
   test "add_years()" do
