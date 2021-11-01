@@ -51,6 +51,13 @@ defmodule Fixtures.Cases do
     }
   end
 
+  cas(:sig_test) do
+    %{
+      input: %{date: "1980-01-05", days: 12, age: 30},
+      output: %{date: "1980-01-17"}
+    }
+  end
+
   cas(:nested_test) do
     %{
       input: %{

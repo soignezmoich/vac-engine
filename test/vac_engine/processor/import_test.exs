@@ -3,6 +3,8 @@ defmodule VacEngine.Processor.ImportTest do
 
   alias VacEngine.Processor
   alias VacEngine.Account
+  alias VacEngine.Processor.Binding
+  import Ecto.Query
 
   setup_all do
     [blueprints: Fixtures.Blueprints.blueprints()]
@@ -30,6 +32,38 @@ defmodule VacEngine.Processor.ImportTest do
     assert serialized == serialized_two
 
     assert {:ok, blueprint} = Processor.create_blueprint(workspace, serialized)
+
+    serialized_two = Processor.serialize_blueprint(blueprint)
+
+    assert serialized == serialized_two
+
+    assert {:ok, blueprint} =
+             Processor.create_blueprint(workspace, blueprints.sig_test)
+
+    serialized = Processor.serialize_blueprint(blueprint)
+
+    now = DateTime.truncate(DateTime.utc_now(), :second)
+
+    [binding] =
+      get_in(
+        blueprint,
+        [
+          Access.key(:deductions),
+          Access.at(0),
+          Access.key(:branches),
+          Access.at(0),
+          Access.key(:assignments),
+          Access.at(0),
+          Access.key(:expression),
+          Access.key(:bindings),
+          Access.filter(fn b -> b.position == 0 end)
+        ]
+      )
+
+    from(b in Binding, where: b.id == ^binding.id)
+    |> VacEngine.Repo.update_all(set: [updated_at: now])
+
+    assert {:ok, blueprint} = Processor.fetch_blueprint(workspace, blueprint.id)
 
     serialized_two = Processor.serialize_blueprint(blueprint)
 

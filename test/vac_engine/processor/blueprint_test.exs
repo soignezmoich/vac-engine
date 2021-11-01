@@ -203,8 +203,8 @@ defmodule VacEngine.Processor.BlueprintTest do
     assert {:ok, blueprint} =
              Processor.update_blueprint(blueprint, blueprints.sig_test)
 
-    assert 2 == from(e in Expression, select: count(e.id)) |> Repo.one()
-    assert 0 == from(e in Assignment, select: count(e.id)) |> Repo.one()
+    assert 3 == from(e in Expression, select: count(e.id)) |> Repo.one()
+    assert 1 == from(e in Assignment, select: count(e.id)) |> Repo.one()
     assert 1 == from(e in Condition, select: count(e.id)) |> Repo.one()
 
     assert {:ok, blueprint} =

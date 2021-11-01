@@ -48,7 +48,9 @@ defmodule Fixtures.Blueprints do
   blueprint(:sig_test) do
     %{
       variables: %{
-        age: %{type: :integer, mapping: :in_optional, default: 0}
+        age: %{type: :integer, mapping: :in_optional, default: 0},
+        days: %{type: :integer, mapping: :in_optional},
+        date: %{type: :date, mapping: :inout_optional}
       },
       deductions: [
         %{
@@ -64,7 +66,12 @@ defmodule Fixtures.Blueprints do
                      ]}
                 }
               ],
-              assignments: []
+              assignments: [
+                %{
+                  target: :date,
+                  expression: quote(do: add_days(@date, @days))
+                }
+              ]
             }
           ]
         }
