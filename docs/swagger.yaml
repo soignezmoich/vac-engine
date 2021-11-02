@@ -65,7 +65,7 @@ info:
 
 
 
-  version: 1.0.0
+  version: 1.0.1
 
 servers:
   - url: https://ruleengine.dev.impf-check.ch/api
