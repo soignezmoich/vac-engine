@@ -296,6 +296,7 @@
       children: %{
         immuno_need_recommendation: %{type: :boolean, mapping: :out},
         immuno_not_recommended: %{type: :boolean, mapping: :out},
+        immuno_no_booster: %{type: :boolean, mapping: :out},
         under_12: %{type: :boolean, mapping: :out},
         janssen_pregnant: %{type: :boolean, mapping: :out},
         janssen_immuno: %{type: :boolean, mapping: :out},
@@ -586,6 +587,7 @@
     columns: [
       %{variable: [:previous_vaccination, :vaccine]},
       %{variable: :end_of_registration_window},
+      %{variable: :immuno},
       %{type: "assignment", variable: [:booster_compatibilities, :moderna]},
     ],
     branches: [
@@ -600,7 +602,7 @@
         ],
         assignments: [
           %{
-            column: 2,
+            column: 3,
             description: "not_same_vaccine",
             expression: false,
             target: [:booster_compatibilities, :moderna],
@@ -618,8 +620,8 @@
         ],
         assignments: [
           %{
-            column: 2,
-            description: "too early",
+            column: 3,
+            description: "too_early",
             expression: false,
             target: [:booster_compatibilities, :moderna],
           }
@@ -636,8 +638,24 @@
         ],
         assignments: [
           %{
-            description: "too young",
-            column: 2,
+            description: "too_young",
+            column: 3,
+            target: [:booster_compatibilities, :moderna],
+            expression: false
+          }
+        ]
+      },
+      %{
+        conditions: [
+          %{
+            expression: quote(do: is_true(@immuno)),
+            column: 2
+          }
+        ],
+        assignments: [
+          %{
+            description: "no_booster_immuno",
+            column: 3,
             target: [:booster_compatibilities, :moderna],
             expression: false
           }
@@ -648,7 +666,7 @@
         assignments: [
           %{
             description: "compatible",
-            column: 2,
+            column: 3,
             target: [:booster_compatibilities, :moderna],
             expression: true
           }
@@ -820,6 +838,7 @@
     columns: [
       %{variable: [:previous_vaccination, :vaccine]},
       %{variable: :end_of_registration_window},
+      %{variable: :immuno},
       %{type: "assignment", variable: [:booster_compatibilities, :pfizer]},
     ],
     branches: [
@@ -834,7 +853,7 @@
         ],
         assignments: [
           %{
-            column: 2,
+            column: 3,
             description: "not_same_vaccine",
             expression: false,
             target: [:booster_compatibilities, :pfizer],
@@ -852,8 +871,8 @@
         ],
         assignments: [
           %{
-            column: 2,
-            description: "too early",
+            column: 3,
+            description: "too_early",
             expression: false,
             target: [:booster_compatibilities, :pfizer],
           }
@@ -870,8 +889,24 @@
         ],
         assignments: [
           %{
-            description: "too young",
-            column: 2,
+            description: "too_young",
+            column: 3,
+            target: [:booster_compatibilities, :pfizer],
+            expression: false
+          }
+        ]
+      },
+      %{
+        conditions: [
+          %{
+            expression: quote(do: is_true(@immuno)),
+            column: 2
+          }
+        ],
+        assignments: [
+          %{
+            description: "no_booster_immuno",
+            column: 3,
             target: [:booster_compatibilities, :pfizer],
             expression: false
           }
@@ -882,7 +917,7 @@
         assignments: [
           %{
             description: "compatible",
-            column: 2,
+            column: 3,
             target: [:booster_compatibilities, :pfizer],
             expression: true
           }
@@ -2177,6 +2212,32 @@
             %{
               column: 2,
               target: [:flags, :immuno_not_recommended],
+              expression: true
+            }
+          ]
+        }
+      ]
+    },
+    %{
+      description: "FLAG IMMUNO NO BOOSTER",
+      columns: [
+        %{variable: :immuno},
+        %{variable: :previous_vaccination},
+        %{type: "assignment", variable: [:flags, :immuno_no_booster]}
+      ],
+      branches: [
+        %{
+          conditions: [
+            %{expression: quote(do: is_true(@immuno)), column: 0},
+            %{
+              expression: quote(do: is_not_nil(@previous_vaccination)),
+              column: 1
+            }
+          ],
+          assignments: [
+            %{
+              column: 2,
+              target: [:flags, :immuno_no_booster],
               expression: true
             }
           ]
