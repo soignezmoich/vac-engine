@@ -1115,6 +1115,19 @@
           ]
         },
         %{
+          conditions: [
+            %{expression: quote(do: lt(@end_of_registration_window, @end_of_infection_delay)), column: 4}
+          ],
+          assignments: [
+            %{
+              target: [:vaccine_compatibilities, :janssen, :compatible],
+              description: "recently_infected",
+              column: 5,
+              expression: false
+            }
+          ]
+        },
+        %{
           conditions: [],
           assignments: [
             %{
@@ -2032,7 +2045,6 @@
       description: "JANSSEN SEQUENCE",
       columns: [
         %{variable: [:vaccine_compatibilities, :janssen, :compatible]},
-        %{variable: :infection_date},
         %{
           type: "assignment",
           variable: [:injection_sequence, :janssen, :vaccine]
@@ -2066,71 +2078,31 @@
                       var([:vaccine_compatibilities, :janssen, :compatible])
                     )
                 )
-            },
-            %{
-              column: 1,
-              expression: quote(do: is_not_nil(@infection_date))
             }
           ],
           assignments: [
             %{
-              column: 2,
+              column: 1,
               target: [:injection_sequence, :janssen, :vaccine],
               expression: "janssen"
             },
             %{
-              column: 3,
+              column: 2,
               target: [:injection_sequence, :janssen, :delay_min],
-              expression: 28
+              expression: 0
+            },
+            %{
+              column: 4,
+              target: [:injection_sequence, :janssen, :reference_date],
+              expression: quote(do: latest(@check_date, @end_of_delays_janssen))
             },
             %{
               column: 5,
-              target: [:injection_sequence, :janssen, :reference_date],
-              expression: quote(do: @infection_date)
-            },
-            %{
-              column: 6,
               target: [:injection_sequence, :janssen, :dose_type],
               expression: "1"
             }
           ]
         },
-        %{
-          conditions: [
-            %{
-              column: 0,
-              expression:
-                quote(
-                  do:
-                    is_true(
-                      var([:vaccine_compatibilities, :janssen, :compatible])
-                    )
-                )
-            }
-          ],
-          assignments: [
-            %{
-              column: 2,
-              target: [:injection_sequence, :janssen, :vaccine],
-              expression: "janssen"
-            },
-            %{
-              column: 3,
-              target: [:injection_sequence, :janssen, :delay_min],
-              expression: 0
-            },
-            %{
-              column: 5,
-              target: [:injection_sequence, :janssen, :reference_date],
-              expression: quote(do: now())
-            },
-            %{
-              column: 6,
-              target: [:injection_sequence, :janssen, :dose_type],
-              expression: "1"
-            }
-          ]
-        }
       ]
     },
     %{
