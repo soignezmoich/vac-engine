@@ -1,11 +1,3 @@
-[
-  :"Elixir.Fixtures.Helpers\n",
-  :"Elixir.Fixtures.Helpers.Cases\n",
-  :"Elixir.Fixtures.Helpers.Blueprints\n",
-  :"Elixir.Fixtures.Cases\n",
-  :"Elixir.Fixtures.Blueprints\n"
-]
-
 defmodule VacEngine.MixProject do
   use Mix.Project
 
@@ -18,7 +10,7 @@ defmodule VacEngine.MixProject do
   def project do
     [
       app: :vac_engine,
-      version: "1.0.0",
+      version: "1.0.1",
       elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
