@@ -1,11 +1,3 @@
-[
-  :"Elixir.Fixtures.Helpers\n",
-  :"Elixir.Fixtures.Helpers.Cases\n",
-  :"Elixir.Fixtures.Helpers.Blueprints\n",
-  :"Elixir.Fixtures.Cases\n",
-  :"Elixir.Fixtures.Blueprints\n"
-]
-
 defmodule VacEngine.MixProject do
   use Mix.Project
 
