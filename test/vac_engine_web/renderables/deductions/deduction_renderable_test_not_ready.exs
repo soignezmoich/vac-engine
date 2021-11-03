@@ -26,8 +26,9 @@ defmodule VacEngine.Editor.Renderables.DeductionRenderableTest do
             description: nil,
             expression: %VacEngine.Processor.Expression{
               assignment_id: 24334,
-              ast: {:age, [signature: {[:date], :integer}],
-               [{:var, [signature: {[:name], :date}], [["birthdate"]]}]},
+              ast:
+                {:age, [signature: {[:date], :integer}],
+                 [{:var, [signature: {[:name], :date}], [["birthdate"]]}]},
               bindings: [
                 %VacEngine.Processor.Binding{
                   blueprint_id: 5,
@@ -35,7 +36,7 @@ defmodule VacEngine.Editor.Renderables.DeductionRenderableTest do
                     %VacEngine.Processor.BindingElement{
                       binding_id: 68917,
                       blueprint_id: 5,
-                      id: 163871,
+                      id: 163_871,
                       index: nil,
                       position: 0,
                       variable_id: 22751,
@@ -53,7 +54,7 @@ defmodule VacEngine.Editor.Renderables.DeductionRenderableTest do
                     %VacEngine.Processor.BindingElement{
                       binding_id: 68918,
                       blueprint_id: 5,
-                      id: 163872,
+                      id: 163_872,
                       index: nil,
                       position: 0,
                       variable_id: 22752,
@@ -102,7 +103,7 @@ defmodule VacEngine.Editor.Renderables.DeductionRenderableTest do
                 %VacEngine.Processor.BindingElement{
                   binding_id: 68916,
                   blueprint_id: 5,
-                  id: 163870,
+                  id: 163_870,
                   index: nil,
                   position: 0,
                   variable_id: 22751,
@@ -135,7 +136,6 @@ defmodule VacEngine.Editor.Renderables.DeductionRenderableTest do
     workspace_id: 1
   }
 
-
   @renderable %{
     dot_path: "input.age",
     enum: [],
@@ -146,7 +146,6 @@ defmodule VacEngine.Editor.Renderables.DeductionRenderableTest do
   }
 
   test "'build_deduction' should build valid renderable" do
-    throw "NOT IMPLEMENTED"
+    throw("NOT IMPLEMENTED")
   end
-
 end

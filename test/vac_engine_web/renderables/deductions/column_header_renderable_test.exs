@@ -4,12 +4,11 @@ defmodule VacEngine.Editor.Renderables.ColumnHeaderRenderableTest do
   alias VacEngine.Processor.Column
   alias VacEngineWeb.Editor.ColumnHeaderRenderable
 
-
   @column %Column{
     description: nil,
     position: 0,
     type: :assignment,
-    variable: ["main", "my", "age"],
+    variable: ["main", "my", "age"]
   }
 
   @min_distinct_path ["age"]
@@ -25,16 +24,18 @@ defmodule VacEngine.Editor.Renderables.ColumnHeaderRenderableTest do
 
   test "'build' should build valid renderable from a column with atomic path" do
     assert ColumnHeaderRenderable.build(
-      @column, @min_distinct_path, @var_may_be_nil?, @defaults_to_false?
-    ) == @renderable
+             @column,
+             @min_distinct_path,
+             @var_may_be_nil?,
+             @defaults_to_false?
+           ) == @renderable
   end
-
 
   @column %Column{
     description: nil,
     position: 0,
     type: :assignment,
-    variable: ["main", "my", "age"],
+    variable: ["main", "my", "age"]
   }
 
   @min_distinct_path ["my", "age"]
@@ -50,16 +51,18 @@ defmodule VacEngine.Editor.Renderables.ColumnHeaderRenderableTest do
 
   test "'build' should build valid renderable from a column with composite path" do
     assert ColumnHeaderRenderable.build(
-      @column, @min_distinct_path, @var_may_be_nil?, @defaults_to_false?
-    ) == @renderable
+             @column,
+             @min_distinct_path,
+             @var_may_be_nil?,
+             @defaults_to_false?
+           ) == @renderable
   end
-
 
   @column %Column{
     description: "age description",
     position: 0,
     type: :assignment,
-    variable: ["main", "my", "age"],
+    variable: ["main", "my", "age"]
   }
 
   @min_distinct_path ["age"]
@@ -75,9 +78,10 @@ defmodule VacEngine.Editor.Renderables.ColumnHeaderRenderableTest do
 
   test "'build' should build valid renderable from a column with description" do
     assert ColumnHeaderRenderable.build(
-      @column, @min_distinct_path, @var_may_be_nil?, @defaults_to_false?
-    ) == @renderable
+             @column,
+             @min_distinct_path,
+             @var_may_be_nil?,
+             @defaults_to_false?
+           ) == @renderable
   end
-
-
 end

@@ -14,7 +14,7 @@ defmodule VacEngine.Editor.Renderables.CellRenderableTest do
           {:var, [signature: {[:name], :integer}], [["age"]]},
           45
         ]
-      },
+      }
     }
   }
 
@@ -31,7 +31,13 @@ defmodule VacEngine.Editor.Renderables.CellRenderableTest do
   }
 
   test "'build' should build valid renderable from an existing condition" do
-    assert CellRenderable.build(@condition, :condition, @path, @selected_path, @even_row?) == @renderable
+    assert CellRenderable.build(
+             @condition,
+             :condition,
+             @path,
+             @selected_path,
+             @even_row?
+           ) == @renderable
   end
 
   @condition nil
@@ -48,18 +54,23 @@ defmodule VacEngine.Editor.Renderables.CellRenderableTest do
   }
 
   test "'build' should build valid renderable from a missing condition" do
-    assert CellRenderable.build(@condition, :condition, @path, @selected_path, @even_row?) == @renderable
+    assert CellRenderable.build(
+             @condition,
+             :condition,
+             @path,
+             @selected_path,
+             @even_row?
+           ) == @renderable
   end
-
-
 
   @assignment %Assignment{
     description: "always",
     expression: %VacEngine.Processor.Expression{
-      ast: {:age, [signature: {[:date], :integer}],
-       [{:var, [signature: {[:name], :date}], [["birthdate"]]}]},
+      ast:
+        {:age, [signature: {[:date], :integer}],
+         [{:var, [signature: {[:name], :date}], [["birthdate"]]}]}
     },
-    target: ["age"],
+    target: ["age"]
   }
 
   @path [2, "branches", 1, "assignments", 1]
@@ -75,16 +86,21 @@ defmodule VacEngine.Editor.Renderables.CellRenderableTest do
   }
 
   test "'build' should build valid renderable from an op assignment" do
-    assert CellRenderable.build(@assignment, :assignment, @path, @selected_path, @even_row?) == @renderable
+    assert CellRenderable.build(
+             @assignment,
+             :assignment,
+             @path,
+             @selected_path,
+             @even_row?
+           ) == @renderable
   end
-
 
   @assignment %Assignment{
     description: "always",
     expression: %VacEngine.Processor.Expression{
-      ast: {:var, [signature: {[:name], :date}], [["birthdate"]]},
+      ast: {:var, [signature: {[:name], :date}], [["birthdate"]]}
     },
-    target: ["age"],
+    target: ["age"]
   }
 
   @path [2, "branches", 1, "assignments", 1]
@@ -100,17 +116,21 @@ defmodule VacEngine.Editor.Renderables.CellRenderableTest do
   }
 
   test "'build' should build valid renderable from a variable assignment" do
-    assert CellRenderable.build(@assignment, :assignment, @path, @selected_path, @even_row?) == @renderable
+    assert CellRenderable.build(
+             @assignment,
+             :assignment,
+             @path,
+             @selected_path,
+             @even_row?
+           ) == @renderable
   end
-
-
 
   @assignment %Assignment{
     description: "always",
     expression: %VacEngine.Processor.Expression{
-      ast: false,
+      ast: false
     },
-    target: ["age"],
+    target: ["age"]
   }
 
   @path [2, "branches", 1, "assignments", 1]
@@ -126,16 +146,21 @@ defmodule VacEngine.Editor.Renderables.CellRenderableTest do
   }
 
   test "'build' should build valid renderable from a boolean const assignment" do
-    assert CellRenderable.build(@assignment, :assignment, @path, @selected_path, @even_row?) == @renderable
+    assert CellRenderable.build(
+             @assignment,
+             :assignment,
+             @path,
+             @selected_path,
+             @even_row?
+           ) == @renderable
   end
-
 
   @assignment %Assignment{
     description: "always",
     expression: %VacEngine.Processor.Expression{
-      ast: "foo",
+      ast: "foo"
     },
-    target: ["age"],
+    target: ["age"]
   }
 
   @path [2, "branches", 1, "assignments", 1]
@@ -151,7 +176,12 @@ defmodule VacEngine.Editor.Renderables.CellRenderableTest do
   }
 
   test "'build' should build valid renderable from a string const assignment" do
-    assert CellRenderable.build(@assignment, :assignement, @path, @selected_path, @even_row?) == @renderable
+    assert CellRenderable.build(
+             @assignment,
+             :assignement,
+             @path,
+             @selected_path,
+             @even_row?
+           ) == @renderable
   end
-
 end

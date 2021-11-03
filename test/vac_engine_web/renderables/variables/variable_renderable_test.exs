@@ -24,15 +24,6 @@ defmodule VacEngine.Editor.Renderables.VariableRenderableTest do
     workspace_id: 1
   }
 
-  @renderable %{
-    dot_path: "input.age",
-    enum: [],
-    name: "age",
-    path: ["input", "age"],
-    selected: false,
-    type: :integer
-  }
-
   test "'build_variables' should build valid renderable" do
     assert VariableRenderable.build_variable({["input", "age"], @variable}, nil) ==
              @renderable
