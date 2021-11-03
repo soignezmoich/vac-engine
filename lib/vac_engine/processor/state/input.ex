@@ -6,7 +6,7 @@ defmodule VacEngine.Processor.State.Input do
   alias VacEngine.Processor.Variable
   import VacEngine.Processor.State.List
   import VacEngine.Processor.State.Helpers
-  import VacEngine.TupleHelpers
+  import VacEngine.PipeHelpers
 
   def map_input(%State{input_variables: vars} = state, input)
       when is_map(input) do

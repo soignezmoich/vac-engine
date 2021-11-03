@@ -6,7 +6,8 @@ defmodule VacEngine.Account.Roles do
   alias VacEngine.Account.Role
   alias VacEngine.Account.GlobalPermission
   import VacEngine.EctoHelpers, only: [transaction: 2]
-  import VacEngine.Pub, only: [bust_api_keys_cache: 1]
+  import VacEngine.Pub, only: [bust_api_keys_cache: 0]
+  import VacEngine.PipeHelpers
 
   def create_role_multi(type, attrs \\ %{}) do
     Multi.new()
@@ -33,14 +34,14 @@ defmodule VacEngine.Account.Roles do
     Multi.new()
     |> Multi.update(:role, change_role(role, attrs))
     |> transaction(:role)
-    |> bust_api_keys_cache()
+    |> tap_ok(&bust_api_keys_cache/0)
   end
 
   def delete_role(%Role{} = role) do
     Multi.new()
     |> Multi.delete(:role, role)
     |> transaction(:role)
-    |> bust_api_keys_cache()
+    |> tap_ok(&bust_api_keys_cache/0)
   end
 
   def active_roles(type) do
@@ -74,6 +75,19 @@ defmodule VacEngine.Account.Roles do
       []
     )
     |> transaction(:role)
-    |> bust_api_keys_cache()
+    |> tap_ok(&bust_api_keys_cache/0)
+  end
+
+  def load_sessions(%Role{} = role) do
+    sessions_query =
+      from(s in Session,
+        order_by: [desc: s.inserted_at]
+      )
+
+    Repo.preload(role, [
+      :global_permission,
+      :workspace_permissions,
+      sessions: sessions_query
+    ])
   end
 end

@@ -6,7 +6,7 @@ defmodule VacEngine.Processor.State do
   alias VacEngine.Processor.State.Input
   require VacEngine.Processor.Meta
   import VacEngine.Processor.State.Helpers
-  import VacEngine.TupleHelpers
+  import VacEngine.PipeHelpers
   import VacEngine.Processor.State.List
 
   defstruct variables: nil,

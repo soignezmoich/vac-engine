@@ -16,8 +16,8 @@ defmodule VacEngine.Processor.Deduction do
     belongs_to(:workspace, Workspace)
     belongs_to(:blueprint, Blueprint)
 
-    has_many(:branches, Branch, on_replace: :delete)
-    has_many(:columns, Column, on_replace: :delete)
+    has_many(:branches, Branch, on_replace: :delete_if_exists)
+    has_many(:columns, Column, on_replace: :delete_if_exists)
 
     field(:position, :integer)
     field(:description, :string)

@@ -1,5 +1,5 @@
 defmodule VacEngine.Processor.Meta do
-  import VacEngine.TupleHelpers
+  import VacEngine.PipeHelpers
 
   @types ~w(
     boolean

@@ -3,7 +3,7 @@ alias VacEngine.Account
 alias VacEngine.Processor.Blueprint
 alias VacEngine.Processor
 alias VacEngine.Repo
-import VacEngine.TupleHelpers
+import VacEngine.PipeHelpers
 
 defmodule Importer do
   @wname "Import workspace"
@@ -115,8 +115,11 @@ defmodule Importer do
       [] ->
         Processor.create_blueprint(workspace, %{name: name})
 
-      [id|_] ->
-        Processor.fetch_blueprint(workspace, id)
+      [id | _] ->
+        Processor.get_blueprint!(id)
+        |> Processor.load_variables()
+        |> Processor.load_deductions()
+        |> ok()
     end
     |> case do
       {:ok, br} ->
@@ -133,9 +136,7 @@ defmodule Importer do
 
   def get_blueprint(res), do: res
 
-  def update_blueprint(
-        {:ok, %{blueprint: br, attrs: attrs} = state}
-      ) do
+  def update_blueprint({:ok, %{blueprint: br, attrs: attrs} = state}) do
     Processor.update_blueprint(br, attrs)
     |> case do
       {:ok, br} ->
@@ -158,7 +159,9 @@ defmodule Importer do
   def update_blueprint(res), do: res
 
   def serialize_blueprint({:ok, %{blueprint: blueprint, name: name} = state}) do
-    name = "#{name} at #{Timex.format!(NaiveDateTime.utc_now(), "{ISOdate} {h24}:{m}:{s}")}"
+    name =
+      "#{name} at #{Timex.format!(NaiveDateTime.utc_now(), "{ISOdate} {h24}:{m}:{s}")}"
+
     Processor.serialize_blueprint(blueprint)
     |> Map.put(:name, name)
     |> Jason.encode()

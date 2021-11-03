@@ -10,7 +10,7 @@ defmodule VacEngineWeb.WorkspaceLive.Edit do
   def mount(%{"workspace_id" => wid}, _session, socket) do
     can!(socket, :manage, :workspaces)
 
-    {:ok, workspace} = Account.fetch_workspace(wid)
+    workspace = Account.get_workspace!(wid)
 
     changeset =
       workspace

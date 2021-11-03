@@ -16,22 +16,23 @@ defmodule VacEngine.Account do
   alias VacEngine.Account.Workspaces
 
   defdelegate list_workspaces(), to: Workspaces
-  defdelegate fetch_workspace(id), to: Workspaces
-  defdelegate create_workspace(attrs), to: Workspaces
   defdelegate get_workspace!(id), to: Workspaces
+  defdelegate create_workspace(attrs), to: Workspaces
   defdelegate available_workspaces(role), to: Workspaces
   defdelegate change_workspace(data, attrs \\ %{}), to: Workspaces
   defdelegate update_workspace(data, attrs), to: Workspaces
   defdelegate delete_workspace(data), to: Workspaces
+  defdelegate load_blueprints(workspace), to: Workspaces
 
   alias VacEngine.Account.Users
 
   defdelegate list_users(), to: Users
-  defdelegate fetch_user(uid), to: Users
+  defdelegate get_user!(uid), to: Users
   defdelegate check_user(email, password), to: Users
   defdelegate create_user(attrs), to: Users
   defdelegate change_user(data, attrs \\ %{}), to: Users
   defdelegate update_user(data, attrs), to: Users
+  defdelegate load_role(user), to: Users
 
   alias VacEngine.Account.Sessions
 
@@ -50,6 +51,7 @@ defmodule VacEngine.Account do
   defdelegate delete_role(role), to: Roles
   defdelegate activate_role(role), to: Roles
   defdelegate deactivate_role(role), to: Roles
+  defdelegate load_sessions(role), to: Roles
 
   alias VacEngine.Account.AccessTokens
 

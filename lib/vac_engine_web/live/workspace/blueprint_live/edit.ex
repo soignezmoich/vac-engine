@@ -20,6 +20,8 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.Edit do
     blueprint =
       if connected?(socket) do
         Processor.get_blueprint!(blueprint_id)
+        |> Processor.load_variables()
+        |> Processor.load_deductions()
       else
         nil
       end

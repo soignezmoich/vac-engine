@@ -15,12 +15,12 @@ defmodule VacEngine.Processor.Blueprints do
   alias VacEngine.Processor.Deduction
   alias VacEngine.Pub
   alias VacEngine.Hash
-  import VacEngine.TupleHelpers
+  import VacEngine.PipeHelpers
 
   def create_blueprint(%Workspace{} = workspace, attrs) do
     Multi.new()
     |> multi_create_blueprint(workspace, attrs)
-    |> multi_update_and_fetch
+    |> multi_update
   end
 
   def change_blueprint(%Blueprint{} = blueprint, attrs) do
@@ -31,10 +31,10 @@ defmodule VacEngine.Processor.Blueprints do
   def update_blueprint(%Blueprint{} = blueprint, attrs) do
     Multi.new()
     |> multi_update_blueprint(blueprint, attrs)
-    |> multi_update_and_fetch
+    |> multi_update
   end
 
-  defp multi_update_and_fetch(multi) do
+  defp multi_update(multi) do
     multi
     |> multi_update_variables
     |> multi_put_variables
@@ -42,11 +42,11 @@ defmodule VacEngine.Processor.Blueprints do
     |> multi_put_deductions
     |> multi_compute_hash
     |> multi_put_hash
+    |> multi_load_plain
     |> Repo.transaction()
     |> case do
-      {:ok, %{{:blueprint, :hash} => br}} ->
-        Pub.bust_blueprint_cache(br)
-        fetch_blueprint(br.workspace_id, br.id)
+      {:ok, %{{:blueprint, :plain} => br}} ->
+        {:ok, br}
 
       {:error, msg} when is_binary(msg) ->
         {:error, msg}
@@ -60,6 +60,7 @@ defmodule VacEngine.Processor.Blueprints do
       _ ->
         {:error, "cannot save blueprint"}
     end
+    |> tap_ok(&Pub.bust_blueprint_cache/1)
   end
 
   defp multi_create_blueprint(multi, workspace, attrs) do
@@ -170,11 +171,24 @@ defmodule VacEngine.Processor.Blueprints do
     )
   end
 
-  def fetch_blueprint(%Workspace{} = workspace, blueprint_id) do
-    fetch_blueprint(workspace.id, blueprint_id)
+  defp multi_load_plain(multi) do
+    multi
+    |> Multi.run({:blueprint, :plain}, fn repo,
+                                          %{{:blueprint, :base} => blueprint} ->
+      {:ok, repo.get!(Blueprint, blueprint.id)}
+    end)
   end
 
-  def fetch_blueprint(workspace_id, blueprint_id) do
+  def get_blueprint!(blueprint_id) do
+    Repo.get!(Blueprint, blueprint_id)
+  end
+
+  def load_variables(%Blueprint{} = blueprint) do
+    Repo.preload(blueprint, [variables: :default], force: true)
+    |> arrange_variables()
+  end
+
+  def load_deductions(%Blueprint{} = blueprint) do
     elements_query =
       from(r in BindingElement,
         order_by: r.position
@@ -230,26 +244,10 @@ defmodule VacEngine.Processor.Blueprints do
         ]
       )
 
-    from(b in Blueprint,
-      where: b.workspace_id == ^workspace_id and b.id == ^blueprint_id,
-      preload: [
-        variables: :default,
-        deductions: ^deductions_query
-      ]
-    )
-    |> Repo.one()
-    |> case do
-      nil ->
-        :error
-
-      br ->
-        br
-        |> arrange_variables()
-        |> arrange_columns()
-        |> arrange_assignments()
-        |> arrange_conditions()
-        |> ok()
-    end
+    Repo.preload(blueprint, [deductions: deductions_query], force: true)
+    |> arrange_columns()
+    |> arrange_assignments()
+    |> arrange_conditions()
   end
 
   defp arrange_variables(blueprint) do
@@ -345,29 +343,6 @@ defmodule VacEngine.Processor.Blueprints do
     )
   end
 
-  def get_blueprint!(blueprint_id) do
-    from(b in Blueprint,
-      where: b.id == ^blueprint_id,
-      preload: :workspace
-    )
-    |> Repo.one()
-    |> case do
-      nil ->
-        raise "canot find blueprint"
-
-      br ->
-        {:ok, br} = fetch_blueprint(br.workspace, br.id)
-        br
-    end
-  end
-
-  def list_blueprints(%Workspace{} = workspace) do
-    from(b in Blueprint,
-      where: b.workspace_id == ^workspace.id
-    )
-    |> Repo.all()
-  end
-
   defp index_variables(variables) do
     by_parent_ids =
       variables
@@ -432,7 +407,10 @@ defmodule VacEngine.Processor.Blueprints do
   end
 
   def serialize_blueprint(%Blueprint{} = blueprint) do
-    Blueprint.to_map(blueprint)
+    blueprint
+    |> load_variables
+    |> load_deductions
+    |> Blueprint.to_map()
   end
 
   def update_blueprint_from_file(%Blueprint{} = blueprint, path) do

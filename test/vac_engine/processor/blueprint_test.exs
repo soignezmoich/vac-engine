@@ -69,7 +69,7 @@ defmodule VacEngine.Processor.BlueprintTest do
     assert {"only map and map[] can have children", []} =
              changeset.errors[:children]
 
-    assert {:ok, %{blueprint: blueprint, variable: variable}} =
+    assert {:ok, variable} =
              Processor.create_variable(blueprint, %{
                name: "gender",
                type: :map,
@@ -83,14 +83,15 @@ defmodule VacEngine.Processor.BlueprintTest do
                type: :integer
              })
 
+    blueprint = Processor.load_variables(blueprint)
     variable = Map.fetch!(blueprint.variable_path_index, ["gender", "sub"])
 
-    assert {:ok, %{blueprint: blueprint, variable: _variable}} =
-             Processor.delete_variable(variable)
+    assert {:ok, _variable} = Processor.delete_variable(variable)
 
+    blueprint = Processor.load_variables(blueprint)
     variable = Map.fetch!(blueprint.variable_path_index, ["gender"])
 
-    assert {:ok, %{blueprint: _blueprint, variable: variable}} =
+    assert {:ok, variable} =
              Processor.update_variable(variable, %{
                name: "newname",
                enum: [3, 4],
@@ -102,7 +103,7 @@ defmodule VacEngine.Processor.BlueprintTest do
     assert "newname" == variable.name
     assert :integer == variable.type
 
-    assert {:ok, %{blueprint: _blueprint, variable: variable}} =
+    assert {:ok, variable} =
              Processor.update_variable(variable, %{
                name: "newname",
                type: :string
@@ -156,11 +157,16 @@ defmodule VacEngine.Processor.BlueprintTest do
                ]
              })
 
+    blueprint = Processor.load_variables(blueprint)
     var = Map.fetch!(blueprint.variable_path_index, ["parent", "sub"])
     sib = Map.fetch!(blueprint.variable_path_index, ["sib"])
 
-    assert {:ok, %{blueprint: blueprint, variable: var}} =
-             Processor.move_variable(var, sib)
+    assert {:ok, var} = Processor.move_variable(var, sib)
+
+    blueprint =
+      blueprint
+      |> Processor.load_variables()
+      |> Processor.load_deductions()
 
     target =
       get_in(blueprint, [
@@ -175,8 +181,12 @@ defmodule VacEngine.Processor.BlueprintTest do
 
     assert ["sib", 0, "sub"] == target
 
-    assert {:ok, %{blueprint: blueprint, variable: _var}} =
-             Processor.move_variable(var, blueprint)
+    assert {:ok, _var} = Processor.move_variable(var, blueprint)
+
+    blueprint =
+      blueprint
+      |> Processor.load_variables()
+      |> Processor.load_deductions()
 
     target =
       get_in(blueprint, [

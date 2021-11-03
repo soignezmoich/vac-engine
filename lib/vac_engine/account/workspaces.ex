@@ -60,17 +60,6 @@ defmodule VacEngine.Account.Workspaces do
     |> transaction(:delete)
   end
 
-  def fetch_workspace(wid) do
-    from(w in Workspace,
-      where: w.id == ^wid
-    )
-    |> Repo.one()
-    |> case do
-      nil -> {:error, "not found"}
-      w -> {:ok, w}
-    end
-  end
-
   def available_workspaces(%Role{global_permission: %{super_admin: true}}) do
     list_workspaces()
   end
@@ -82,5 +71,10 @@ defmodule VacEngine.Account.Workspaces do
       where: p.role_id == ^role.id and p.read == true
     )
     |> Repo.all()
+  end
+
+  def load_blueprints(%Workspace{} = workspace) do
+    workspace
+    |> Repo.preload(:blueprints)
   end
 end

@@ -19,7 +19,11 @@ defmodule VacEngine.Processor.Variable do
     belongs_to(:workspace, Workspace)
     belongs_to(:blueprint, Blueprint)
 
-    has_many(:children, Variable, on_replace: :delete, foreign_key: :parent_id)
+    has_many(:children, Variable,
+      on_replace: :delete_if_exists,
+      foreign_key: :parent_id
+    )
+
     belongs_to(:parent, Variable)
 
     has_one(:default, Expression)

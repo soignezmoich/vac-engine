@@ -13,23 +13,15 @@ defmodule VacEngineWeb.UserLive.Edit do
   def mount(%{"user_id" => uid}, _session, socket) do
     can!(socket, :manage, :users)
 
-    {:ok, user} = Account.fetch_user(uid)
-
-    changeset =
-      user
-      |> Account.change_user()
-      |> Map.put(:action, :update)
-
     {:ok,
      assign(socket,
        edit: can?(socket, :users, :write),
-       myself: myself?(socket, user),
-       user: user,
-       changeset: changeset,
+       user_id: uid,
        current_tooltip: nil,
        clear_tooltip_ref: nil,
        generated_password: nil
-     )}
+     )
+     |> reload_user}
   end
 
   @impl true
@@ -105,14 +97,14 @@ defmodule VacEngineWeb.UserLive.Edit do
   def handle_event(
         "toggle_permission",
         %{"key" => permission},
-        %{assigns: %{current_tooltip: permission, user: user}} = socket
+        %{assigns: %{current_tooltip: permission, user_role: role}} = socket
       ) do
-    not_myself!(socket, user)
+    not_myself!(socket, role)
     can!(socket, :manage, :users)
 
-    {:ok, _role} = Account.toggle_permission(user.role, permission)
+    {:ok, _perm} = Account.toggle_permission(role, permission)
 
-    :ok = VacEngineWeb.Endpoint.disconnect_live_views(user)
+    :ok = VacEngineWeb.Endpoint.disconnect_live_views(role)
 
     {:noreply,
      socket
@@ -166,16 +158,16 @@ defmodule VacEngineWeb.UserLive.Edit do
   def handle_event(
         "toggle_active",
         %{"key" => key},
-        %{assigns: %{current_tooltip: key, user: user}} = socket
+        %{assigns: %{current_tooltip: key, user_role: role}} = socket
       ) do
-    not_myself!(socket, user)
+    not_myself!(socket, role)
     can!(socket, :manage, :users)
 
     {:ok, role} =
-      if user.role.active do
-        Account.deactivate_role(user.role)
+      if role.active do
+        Account.deactivate_role(role)
       else
-        Account.activate_role(user.role)
+        Account.activate_role(role)
       end
 
     :ok = VacEngineWeb.Endpoint.disconnect_live_views(role)
@@ -195,14 +187,23 @@ defmodule VacEngineWeb.UserLive.Edit do
     {:noreply, set_tooltip(socket, key)}
   end
 
-  def reload_user(%{assigns: %{user: user}} = socket) do
-    {:ok, user} = Account.fetch_user(user.id)
+  def reload_user(%{assigns: %{user_id: uid}} = socket) do
+    user = Account.get_user!(uid)
+
+    role =
+      Account.get_role!(user.role_id)
+      |> Account.load_sessions()
 
     changeset =
       user
       |> Account.change_user()
       |> Map.put(:action, :update)
 
-    assign(socket, user: user, changeset: changeset)
+    assign(socket,
+      user: user,
+      changeset: changeset,
+      user_role: role,
+      myself: myself?(socket, user)
+    )
   end
 end

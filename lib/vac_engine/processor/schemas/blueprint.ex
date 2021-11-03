@@ -19,8 +19,8 @@ defmodule VacEngine.Processor.Blueprint do
     field(:name, :string)
     field(:description, :string)
     field(:interface_hash, :string)
-    has_many(:variables, Variable, on_replace: :delete)
-    has_many(:deductions, Deduction, on_replace: :delete)
+    has_many(:variables, Variable, on_replace: :delete_if_exists)
+    has_many(:deductions, Deduction, on_replace: :delete_if_exists)
 
     has_many(:publications, Publication)
 

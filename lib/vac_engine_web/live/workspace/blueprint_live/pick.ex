@@ -3,7 +3,7 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.Pick do
 
   import VacEngineWeb.BlueprintsListComponent
 
-  alias VacEngine.Processor
+  alias VacEngine.Account
 
   on_mount(VacEngineWeb.LiveRole)
   on_mount(VacEngineWeb.LiveWorkspace)
@@ -16,7 +16,7 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.Pick do
 
     blueprints =
       if workspace do
-        Processor.list_blueprints(workspace)
+        Account.load_blueprints(workspace).blueprints
       else
         []
       end

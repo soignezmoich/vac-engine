@@ -15,22 +15,18 @@ defmodule VacEngineWeb.AuthController do
     )
     |> case do
       {:ok, {user_id, next_url}} ->
-        with {:ok, user} <- Account.fetch_user(user_id),
-             {:ok, session} <-
-               Account.create_session(
-                 user.role,
-                 session_attrs(conn)
-               ) do
-          conn
-          |> clear_session
-          |> configure_session(renew: true)
-          |> put_session(:role_session_token, session.token)
-          |> put_session(:live_socket_id, "roles_socket:#{session.role_id}")
-          |> redirect(to: next_url)
-        else
-          _err ->
-            {:error, :internal_server_error}
-        end
+        user =
+          Account.get_user!(user_id)
+          |> Account.load_role()
+
+        {:ok, session} = Account.create_session(user.role, session_attrs(conn))
+
+        conn
+        |> clear_session
+        |> configure_session(renew: true)
+        |> put_session(:role_session_token, session.token)
+        |> put_session(:live_socket_id, "roles_socket:#{session.role_id}")
+        |> redirect(to: next_url)
 
       _ ->
         {:error, :forbidden}

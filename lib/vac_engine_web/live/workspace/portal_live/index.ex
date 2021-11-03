@@ -37,7 +37,7 @@ defmodule VacEngineWeb.Workspace.PortalLive.Index do
       portal ->
         can!(socket, :delete, portal)
         {:ok, _} = Pub.delete_portal(portal)
-        portals = Pub.load_portals(workspace, true).portals
+        portals = Pub.load_portals(workspace).portals
         {:noreply, assign(socket, portals: portals)}
     end
   end

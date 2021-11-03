@@ -42,6 +42,11 @@ defmodule VacEngine.Processor.ImportTest do
 
     serialized = Processor.serialize_blueprint(blueprint)
 
+    blueprint =
+      blueprint
+      |> Processor.load_variables()
+      |> Processor.load_deductions()
+
     now = DateTime.truncate(DateTime.utc_now(), :second)
 
     [binding] =
@@ -63,7 +68,10 @@ defmodule VacEngine.Processor.ImportTest do
     from(b in Binding, where: b.id == ^binding.id)
     |> VacEngine.Repo.update_all(set: [updated_at: now])
 
-    assert {:ok, blueprint} = Processor.fetch_blueprint(workspace, blueprint.id)
+    blueprint =
+      Processor.get_blueprint!(blueprint.id)
+      |> Processor.load_variables()
+      |> Processor.load_deductions()
 
     serialized_two = Processor.serialize_blueprint(blueprint)
 
