@@ -398,7 +398,35 @@
         %{variable: [:previous_vaccination, :last_dose_date]},
         %{type: "assignment", variable: :end_of_infection_delay},
       ],
-      branches: [] # INFECTION HAS NO EFFECT FOR GROUP 3 AND 5 (BL, GE, LI, SZ, ZG  AND  AR)
+      branches: [
+        %{
+          conditions: [
+            %{
+              column: 0,
+              expression: quote(do: is_nil(@infection_date))
+            },
+          ]
+        },
+        %{
+          conditions: [
+            %{
+              column: 1,
+              expression: quote(do: is_not_nil(var(:previous_vaccination)))
+            },
+            %{
+              column: 2,
+              expression: quote(do: lt(var([:previous_vaccination, :last_dose_date]), @infection_date))
+            }
+          ],
+          assignments: [
+            %{
+              target: :end_of_infection_delay,
+              expression: quote(do: add_months(@infection_date, 6)),
+              column: 3
+            }
+          ]
+        },
+      ] # INFECTION HAS NO EFFECT FOR GROUP 3 AND 5 (BL, GE, LI, SZ, ZG  AND  AR)
     },
     %{
       columns: [
@@ -685,6 +713,22 @@
       %{
         conditions: [
           %{
+            column: 3,
+            expression: quote(do: gt(@end_of_infection_delay, @end_of_registration_window)),
+          }
+        ],
+        assignments: [
+          %{
+            description: "recently_infected",
+            column: 7,
+            target: [:vaccine_compatibilities, :moderna, :compatible],
+            expression: false
+          }
+        ],
+      },
+      %{
+        conditions: [
+          %{
             column: 4,
             expression: quote(do: is_not_nil(var([:previous_vaccination, :vaccine]))),
           },
@@ -719,7 +763,7 @@
           %{
             column: 8,
             target: :end_of_delays_moderna,
-            expression: quote(do: latest(@end_of_booster_delay, @birthday_12))
+            expression: quote(do: latest(@end_of_infection_delay, @end_of_booster_delay, @birthday_12))
           }
         ],
       },
@@ -904,13 +948,13 @@
       %{
         conditions: [
           %{
-            column: 6,
-            expression: quote(do: lt(@check_date, @birthday_12)),
-          }
+            column: 2,
+            expression: quote(do: is_true(@rejects_mrna)),
+          },
         ],
         assignments: [
           %{
-            description: "younger_than_12",
+            description: "rejects_mrna",
             column: 7,
             target: [:vaccine_compatibilities, :pfizer, :compatible],
             expression: false
@@ -920,13 +964,13 @@
       %{
         conditions: [
           %{
-            column: 2,
-            expression: quote(do: is_true(@rejects_mrna)),
-          },
+            column: 3,
+            expression: quote(do: gt(@end_of_infection_delay, @end_of_registration_window)),
+          }
         ],
         assignments: [
           %{
-            description: "rejects_mrna",
+            description: "recently_infected",
             column: 7,
             target: [:vaccine_compatibilities, :pfizer, :compatible],
             expression: false
@@ -970,7 +1014,23 @@
           %{
             column: 8,
             target: :end_of_delays_pfizer,
-            expression: quote(do: latest(@end_of_booster_delay, @birthday_18))
+            expression: quote(do: latest(@end_of_infection_delay, @end_of_booster_delay, @birthday_12))
+          }
+        ],
+      },
+      %{
+        conditions: [
+          %{
+            column: 6,
+            expression: quote(do: lt(@check_date, @birthday_12)),
+          }
+        ],
+        assignments: [
+          %{
+            description: "younger_than_12",
+            column: 7,
+            target: [:vaccine_compatibilities, :pfizer, :compatible],
+            expression: false
           }
         ],
       },
