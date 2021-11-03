@@ -60,6 +60,10 @@ case Config.config_env() do
     config :vac_engine, VacEngineWeb.Endpoint, server: true
 
   :dev ->
+    if System.get_env("NO_DEBUG_LOG") do
+      config :logger, level: :info
+    end
+
     config :vac_engine, VacEngine.Repo,
       url: System.get_env("DATABASE_URL", "postgres://localhost/vac_engine")
 
