@@ -41,14 +41,6 @@ defmodule VacEngine.Processor.Variables do
     end)
     |> Multi.delete(:delete, var)
     |> transaction(:delete)
-    |> case do
-      {:ok, var} ->
-        blueprint = var.blueprint_id |> Processor.get_blueprint!()
-        {:ok, %{blueprint: blueprint, variable: var}}
-
-      err ->
-        err
-    end
   end
 
   def move_variable(
@@ -67,7 +59,6 @@ defmodule VacEngine.Processor.Variables do
     end)
     |> Multi.update(:update, Variable.parent_changeset(var, new_parent.id))
     |> transaction(:update)
-    |> var_ok()
   end
 
   def move_variable(
@@ -77,22 +68,12 @@ defmodule VacEngine.Processor.Variables do
     Multi.new()
     |> Multi.update(:update, Variable.parent_changeset(var, nil))
     |> transaction(:update)
-    |> var_ok()
   end
 
   defp insert_variable(changeset) do
     changeset
     |> Repo.insert_or_update()
-    |> var_ok()
   end
-
-  defp var_ok({:ok, var}) do
-    blueprint = var.blueprint_id |> Processor.get_blueprint!()
-    var = Map.fetch!(blueprint.variable_id_index, var.id)
-    {:ok, %{blueprint: blueprint, variable: var}}
-  end
-
-  defp var_ok(res), do: res
 
   defp create_context(%Blueprint{} = parent) do
     %{blueprint_id: parent.id, workspace_id: parent.workspace_id}

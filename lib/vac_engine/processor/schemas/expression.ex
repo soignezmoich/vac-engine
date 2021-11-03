@@ -14,7 +14,7 @@ defmodule VacEngine.Processor.Expression do
   alias VacEngine.Processor.Variable
   alias VacEngine.Processor.Meta
   import VacEngine.EctoHelpers
-  import VacEngine.TupleHelpers
+  import VacEngine.PipeHelpers
 
   schema "expressions" do
     timestamps(type: :utc_datetime)
@@ -26,7 +26,7 @@ defmodule VacEngine.Processor.Expression do
     belongs_to(:condition, Condition)
     belongs_to(:assignment, Assignment)
 
-    has_many(:bindings, Binding, on_replace: :delete)
+    has_many(:bindings, Binding, on_replace: :delete_if_exists)
 
     field(:ast, AstType)
   end

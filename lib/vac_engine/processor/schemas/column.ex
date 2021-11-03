@@ -11,7 +11,7 @@ defmodule VacEngine.Processor.Column do
   alias VacEngine.Processor.Expression
   alias VacEngine.Processor.Binding
   import VacEngine.EctoHelpers
-  import VacEngine.TupleHelpers
+  import VacEngine.PipeHelpers
   import VacEngine.EnumHelpers
   alias VacEngine.Processor.Meta
 

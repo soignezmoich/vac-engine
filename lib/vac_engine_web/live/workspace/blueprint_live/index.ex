@@ -3,7 +3,7 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.Index do
 
   import VacEngineWeb.BlueprintsListComponent
 
-  alias VacEngine.Processor
+  alias VacEngine.Account
 
   on_mount(VacEngineWeb.LiveRole)
   on_mount(VacEngineWeb.LiveWorkspace)
@@ -13,7 +13,7 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.Index do
   def mount(_params, _session, socket) do
     workspace = socket.assigns.workspace
 
-    blueprints = Processor.list_blueprints(workspace)
+    blueprints = Account.load_blueprints(workspace).blueprints
     {:ok, assign(socket, blueprints: blueprints)}
   end
 end

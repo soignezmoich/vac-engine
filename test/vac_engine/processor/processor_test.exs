@@ -21,6 +21,11 @@ defmodule VacEngine.Processor.ProcessorTest do
         assert {:ok, blueprint} =
                  Processor.create_blueprint(workspace, blueprint)
 
+        blueprint =
+          blueprint
+          |> Processor.load_variables()
+          |> Processor.load_deductions()
+
         assert {:ok, processor} = Processor.compile_blueprint(blueprint)
         {name, processor}
       end)

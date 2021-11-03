@@ -9,6 +9,7 @@ defmodule VacEngine.Pub do
   alias VacEngine.Processor.Blueprint
   alias VacEngine.Processor
   alias VacEngine.Account.Workspace
+  import VacEngine.PipeHelpers
   import VacEngine.EctoHelpers, only: [transaction: 2]
 
   # TODO change to reuse portal when possible
@@ -33,7 +34,6 @@ defmodule VacEngine.Pub do
       })
     end)
     |> Repo.transaction()
-    |> bust_cache()
     |> case do
       {:ok, %{publication: pub, portal: portal}} ->
         {:ok, %{pub | portal: portal}}
@@ -41,6 +41,7 @@ defmodule VacEngine.Pub do
       err ->
         err
     end
+    |> tap_ok(&bust_cache/0)
   end
 
   def change_portal(data, attrs \\ %{}) do
@@ -58,7 +59,7 @@ defmodule VacEngine.Pub do
     end)
     |> Multi.delete(:delete_portal, portal)
     |> transaction(:delete_portal)
-    |> bust_cache()
+    |> tap_ok(&bust_cache/0)
   end
 
   def deactivate_publication(%Publication{} = pub) do
@@ -116,35 +117,16 @@ defmodule VacEngine.Pub do
     from(p in Publication,
       where:
         p.blueprint_id == ^blueprint.id and
-          is_nil(p.deactivated_at)
+          is_nil(p.deactivated_at),
+      select: count(p.id) > 1000
     )
-    |> Repo.all()
-    |> case do
-      [] ->
-        nil
-
-      _ ->
-        bust_cache()
-    end
+    |> Repo.one()
+    |> tap_on(true, &bust_cache/0)
   end
 
   def bust_cache(), do: Cache.bust()
 
-  def bust_cache({:ok, res}) do
-    bust_cache()
-    {:ok, res}
-  end
-
-  def bust_cache(res), do: res
-
   def bust_api_keys_cache(), do: Cache.bust_api_keys()
-
-  def bust_api_keys_cache({:ok, res}) do
-    bust_api_keys_cache()
-    {:ok, res}
-  end
-
-  def bust_api_keys_cache(res), do: res
 
   def active_publications(%Portal{} = portal) do
     portal.publications
@@ -153,7 +135,7 @@ defmodule VacEngine.Pub do
     end)
   end
 
-  def load_portals(%Workspace{} = workspace, force \\ false) do
+  def load_portals(%Workspace{} = workspace) do
     publications_query =
       from(r in Publication,
         order_by: [desc: r.activated_at],
@@ -166,28 +148,28 @@ defmodule VacEngine.Pub do
         preload: [publications: ^publications_query]
       )
 
-    Repo.preload(workspace, [portals: portals_query], force: force)
+    Repo.preload(workspace, [portals: portals_query], force: true)
   end
 
-  def load_publications(target, force \\ false)
+  def load_publications(target)
 
-  def load_publications(%Blueprint{} = blueprint, force) do
+  def load_publications(%Blueprint{} = blueprint) do
     publications_query =
       from(r in Publication,
         order_by: [desc: r.activated_at],
         preload: :portal
       )
 
-    Repo.preload(blueprint, [publications: publications_query], force: force)
+    Repo.preload(blueprint, [publications: publications_query], force: true)
   end
 
-  def load_publications(%Portal{} = portal, force) do
+  def load_publications(%Portal{} = portal) do
     publications_query =
       from(r in Publication,
         order_by: [desc: r.activated_at],
         preload: :portal
       )
 
-    Repo.preload(portal, [publications: publications_query], force: force)
+    Repo.preload(portal, [publications: publications_query], force: true)
   end
 end

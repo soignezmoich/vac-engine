@@ -5,7 +5,8 @@ defmodule VacEngine.Account.AccessTokens do
   alias VacEngine.Account.AccessToken
   alias VacEngine.Account.Role
   import VacEngine.EctoHelpers, only: [transaction: 2]
-  import VacEngine.Pub, only: [bust_api_keys_cache: 1]
+  import VacEngine.Pub, only: [bust_api_keys_cache: 0]
+  import VacEngine.PipeHelpers
 
   def generate_secret(length \\ 16) do
     :crypto.strong_rand_bytes(length) |> Base24.encode24()
@@ -56,7 +57,7 @@ defmodule VacEngine.Account.AccessTokens do
       |> AccessToken.changeset()
     end)
     |> transaction(:token)
-    |> bust_api_keys_cache()
+    |> tap_ok(&bust_api_keys_cache/0)
   end
 
   def load_api_tokens(%Role{} = role) do

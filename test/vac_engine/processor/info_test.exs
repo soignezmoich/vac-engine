@@ -21,6 +21,11 @@ defmodule VacEngine.Processor.InfoTest do
         assert {:ok, blueprint} =
                  Processor.create_blueprint(workspace, blueprint)
 
+        blueprint =
+          blueprint
+          |> Processor.load_variables()
+          |> Processor.load_deductions()
+
         {name, blueprint}
       end)
       |> Map.new()

@@ -58,27 +58,12 @@ defmodule VacEngine.Account.Users do
     |> Repo.all()
   end
 
-  def fetch_user(uid) do
-    sessions_query =
-      from(s in Session,
-        order_by: [desc: s.inserted_at]
-      )
+  def get_user!(uid) do
+    Repo.get(User, uid)
+  end
 
-    from(u in User,
-      where: u.id == ^uid,
-      preload: [
-        role: [
-          :global_permission,
-          :workspace_permissions,
-          sessions: ^sessions_query
-        ]
-      ]
-    )
-    |> Repo.one()
-    |> case do
-      nil -> {:error, "user not found"}
-      user -> {:ok, user}
-    end
+  def load_role(%User{} = user) do
+    Repo.preload(user, :role)
   end
 
   def create_user(attrs) do

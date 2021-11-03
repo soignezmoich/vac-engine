@@ -100,6 +100,11 @@ defmodule VacEngine.Processor.StateTest do
     {:ok, workspace} = Account.create_workspace(%{name: "Test workspace"})
     assert {:ok, blueprint} = Processor.create_blueprint(workspace, br)
 
+    blueprint =
+      blueprint
+      |> Processor.load_variables()
+      |> Processor.load_deductions()
+
     {:ok, state} = State.new(blueprint.variables)
 
     {:ok, state} = State.map_input(state, input)

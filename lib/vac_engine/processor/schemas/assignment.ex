@@ -13,7 +13,7 @@ defmodule VacEngine.Processor.Assignment do
   alias VacEngine.Processor.Branch
   alias VacEngine.Processor.Meta
   import VacEngine.EctoHelpers
-  import VacEngine.TupleHelpers
+  import VacEngine.PipeHelpers
   import VacEngine.EnumHelpers
 
   schema "assignments" do

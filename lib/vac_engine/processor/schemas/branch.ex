@@ -20,8 +20,8 @@ defmodule VacEngine.Processor.Branch do
     belongs_to(:blueprint, Blueprint)
     belongs_to(:deduction, Deduction)
 
-    has_many(:conditions, Condition, on_replace: :delete)
-    has_many(:assignments, Assignment, on_replace: :delete)
+    has_many(:conditions, Condition, on_replace: :delete_if_exists)
+    has_many(:assignments, Assignment, on_replace: :delete_if_exists)
 
     field(:position, :integer)
     field(:description, :string)

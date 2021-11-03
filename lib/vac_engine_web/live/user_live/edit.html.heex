@@ -43,7 +43,7 @@
             class: "btn-sm mr-4",
             key: "toggle_active",
             click: "toggle_active",
-            label: (if @user.role.active do "Deactivate" else "Activate" end),
+            label: (if @user_role.active do "Deactivate" else "Activate" end),
             tooltip_key: @current_tooltip
       ) %>
     </div>
@@ -91,13 +91,13 @@
         <td>
           <%= if @edit and not @myself do %>
           <.toggle
-              value={@user.role.global_permission.super_admin}
+              value={@user_role.global_permission.super_admin}
               click="toggle_permission"
               key="global.super_admin"
               tooltip_key={@current_tooltip} />
           <% else %>
             <span class="font-bold">
-              <%= format_bool(@user.role.global_permission.super_admin) %>
+              <%= format_bool(@user_role.global_permission.super_admin) %>
             </span>
           <% end %>
         </td>
@@ -114,14 +114,14 @@
 
   <h3 class="font-bold mb-3 mt-4">Workspaces</h3>
 
-  <%= case @user.role.workspace_permissions do %>
+  <%= case @user_role.workspace_permissions do %>
     <% [] -> %>
       <div>This user has not access to any workspace yet.</div>
   <% end %>
 
   <h2 class="font-bold text-lg mb-4 mt-6">Sessions</h2>
 
-  <%= case @user.role.sessions do %>
+  <%= case @user_role.sessions do %>
     <% [] -> %>
       <div>This user has not opened any session yet.</div>
     <% sessions -> %>
