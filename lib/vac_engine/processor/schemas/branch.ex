@@ -1,4 +1,7 @@
 defmodule VacEngine.Processor.Branch do
+  @moduledoc """
+  A deduction branch
+  """
   use Ecto.Schema
   import Ecto.Changeset
   import Ecto.Query
@@ -27,6 +30,7 @@ defmodule VacEngine.Processor.Branch do
     field(:description, :string)
   end
 
+  @doc false
   def changeset(data, attrs, ctx) do
     attrs =
       attrs
@@ -41,6 +45,7 @@ defmodule VacEngine.Processor.Branch do
     |> validate_required([])
   end
 
+  @doc false
   def map_branch_element(changeset, attrs, type) do
     changeset
     |> prepare_changes(fn changeset ->
@@ -74,6 +79,9 @@ defmodule VacEngine.Processor.Branch do
     end)
   end
 
+  @doc """
+  Convert to map for serialization
+  """
   def to_map(%Branch{} = b) do
     %{
       conditions: Enum.map(b.conditions, &Condition.to_map/1),

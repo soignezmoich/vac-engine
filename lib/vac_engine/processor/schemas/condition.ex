@@ -1,4 +1,7 @@
 defmodule VacEngine.Processor.Condition do
+  @moduledoc """
+  A branch condition
+  """
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -25,6 +28,7 @@ defmodule VacEngine.Processor.Condition do
     field(:description, :string)
   end
 
+  @doc false
   def changeset(data, attrs, ctx) do
     attrs = wrap_in_map(attrs, :expression, :ast)
 
@@ -36,6 +40,7 @@ defmodule VacEngine.Processor.Condition do
     |> Branch.map_branch_element(attrs, :condition)
   end
 
+  @doc false
   def insert_bindings(data, ctx) do
     data
     |> update_in([Access.key(:expression)], fn e ->
@@ -43,6 +48,9 @@ defmodule VacEngine.Processor.Condition do
     end)
   end
 
+  @doc """
+  Convert to map for serialization
+  """
   def to_map(%Condition{} = c) do
     %{
       expression: Expression.to_map(c.expression),

@@ -1,4 +1,6 @@
 defmodule VacEngine.Account.Permissions do
+  @moduledoc false
+
   alias Ecto.Multi
   import Ecto.Query
   alias VacEngine.Account.GlobalPermission
@@ -8,42 +10,42 @@ defmodule VacEngine.Account.Permissions do
   alias VacEngine.Processor.Blueprint
   import VacEngine.EctoHelpers, only: [transaction: 2]
 
-  def grant_permission(role, key) when is_binary(key) do
+  def grant_permission(role, key, _scope) when is_binary(key) do
     {action, scope} = break_key(key)
-    grant_permission(role, action, scope)
-  end
-
-  def grant_permission(role, action) do
-    grant_permission(role, action, :global)
+    do_grant_permission(role, action, scope)
   end
 
   def grant_permission(role, action, scope) do
+    do_grant_permission(role, action, scope)
+  end
+
+  defp do_grant_permission(role, action, scope) do
     change_permission(role, scope, %{action => true})
   end
 
-  def revoke_permission(role, key) when is_binary(key) do
+  def revoke_permission(role, key, _scope) when is_binary(key) do
     {action, scope} = break_key(key)
-    revoke_permission(role, action, scope)
-  end
-
-  def revoke_permission(role, action) do
-    revoke_permission(role, action, :global)
+    do_revoke_permission(role, action, scope)
   end
 
   def revoke_permission(role, action, scope) do
+    do_revoke_permission(role, action, scope)
+  end
+
+  defp do_revoke_permission(role, action, scope) do
     change_permission(role, scope, %{action => false})
   end
 
-  def toggle_permission(role, key) when is_binary(key) do
+  def toggle_permission(role, key, _scope) when is_binary(key) do
     {action, scope} = break_key(key)
-    toggle_permission(role, action, scope)
-  end
-
-  def toggle_permission(role, action) do
-    toggle_permission(role, action, :global)
+    do_toggle_permission(role, action, scope)
   end
 
   def toggle_permission(role, action, scope) do
+    do_toggle_permission(role, action, scope)
+  end
+
+  defp do_toggle_permission(role, action, scope) do
     change_permission(role, scope, %{action => :toggle})
   end
 
@@ -53,7 +55,7 @@ defmodule VacEngine.Account.Permissions do
     |> case do
       ["global", action] -> {action, :global}
       ["workspace", id, action] -> {action, {:workspace, id}}
-      ["blurptint", id, action] -> {action, {:blueprint, id}}
+      ["blueprint", id, action] -> {action, {:blueprint, id}}
       _ -> {nil, nil}
     end
   end

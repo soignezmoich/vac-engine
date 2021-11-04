@@ -1,11 +1,12 @@
 defmodule VacEngine.Processor.Variables do
+  @moduledoc false
+
   import Ecto.Query
   alias Ecto.Multi
   alias VacEngine.Repo
   alias VacEngine.Processor.Blueprint
   alias VacEngine.Processor.Variable
   alias VacEngine.Processor.Meta
-  alias VacEngine.Processor
   import VacEngine.EctoHelpers, only: [transaction: 2]
 
   def create_variable(%Variable{} = parent, attrs) do

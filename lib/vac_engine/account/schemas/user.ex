@@ -1,4 +1,7 @@
 defmodule VacEngine.Account.User do
+  @moduledoc """
+  A user is a login method for a role of "user" type
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

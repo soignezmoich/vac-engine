@@ -1,4 +1,7 @@
 defmodule VacEngine.Processor.ListType do
+  @moduledoc """
+  Ecto type to allow storing a list in a jsonb field
+  """
   use Ecto.Type
 
   def type, do: :map

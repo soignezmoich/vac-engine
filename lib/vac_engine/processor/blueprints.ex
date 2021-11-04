@@ -1,4 +1,6 @@
 defmodule VacEngine.Processor.Blueprints do
+  @moduledoc false
+
   import Ecto.Query
   alias Ecto.Multi
   alias Ecto.Changeset

@@ -1,4 +1,7 @@
 defmodule VacEngine.Pub do
+  @moduledoc """
+  Publication manager
+  """
   import Ecto.Query
   alias Ecto.Multi
 

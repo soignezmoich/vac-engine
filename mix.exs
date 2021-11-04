@@ -19,7 +19,9 @@ defmodule VacEngine.MixProject do
       deps: deps(),
       test_coverage: [
         ignore_modules: @ignore_modules
-      ]
+      ],
+      name: "Vac Engine",
+      docs: [main: "VacEngine", extras: ["README.md"]]
     ]
   end
 
@@ -85,7 +87,10 @@ defmodule VacEngine.MixProject do
 
       # Static analysis
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
-      {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
+
+      # EX Docs generation
+      {:ex_doc, "~> 0.24", only: :dev, runtime: false}
     ]
   end
 

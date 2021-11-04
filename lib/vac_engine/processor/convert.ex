@@ -1,4 +1,8 @@
 defmodule VacEngine.Processor.Convert do
+  @moduledoc """
+  Convert utilities
+  """
+
   def parse_bool(true), do: true
   def parse_bool(false), do: false
   def parse_bool("1"), do: true

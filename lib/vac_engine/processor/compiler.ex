@@ -1,4 +1,9 @@
 defmodule VacEngine.Processor.Compiler do
+  @moduledoc """
+  Compile AST
+
+  Not to be used directly, use the `VacEngine.Processor` interface.
+  """
   alias VacEngine.Processor.State
   alias VacEngine.Processor.Expression
   alias VacEngine.Processor.Blueprint
@@ -6,6 +11,9 @@ defmodule VacEngine.Processor.Compiler do
   alias VacEngine.Processor.Branch
   alias VacEngine.Processor.Ast
 
+  @doc """
+  Eval an expression (will use eval_ast/2)
+  """
   def eval_expression(expr, input \\ %{})
 
   def eval_expression(%Expression{} = expr, bindings) do
@@ -30,6 +38,9 @@ defmodule VacEngine.Processor.Compiler do
     end
   end
 
+  @doc """
+  Eval AST
+  """
   def eval_ast(compiled_ast, %State{} = state) do
     compiled_ast
     |> Code.eval_quoted(state: state)
@@ -45,12 +56,16 @@ defmodule VacEngine.Processor.Compiler do
       {:error, "#{code}: #{msg}"}
   end
 
+  @doc """
+  Compile an expression and return AST
+  """
   def compile_expression!(nil), do: nil
 
   def compile_expression!(%Expression{} = expr) do
     compile_ast!(expr.ast)
   end
 
+  @doc false
   def compile_ast!({:var, _m, [path]}) do
     quote do
       VacEngine.Processor.State.get_var(var!(state), unquote(path))
@@ -79,6 +94,9 @@ defmodule VacEngine.Processor.Compiler do
 
   def compile_ast!(const), do: const
 
+  @doc """
+  Compile a blueprint and return AST
+  """
   def compile_blueprint(%Blueprint{deductions: []}) do
     {:ok, quote(do: var!(state))}
   end
@@ -100,6 +118,7 @@ defmodule VacEngine.Processor.Compiler do
       {:error, "#{code}: #{msg}"}
   end
 
+  @doc false
   def compile_deduction(%Deduction{} = deduction) do
     branches_asts =
       deduction.branches
@@ -131,6 +150,7 @@ defmodule VacEngine.Processor.Compiler do
     end
   end
 
+  @doc false
   def compile_branch!(%Branch{} = branch) do
     conditions_ast =
       branch.conditions

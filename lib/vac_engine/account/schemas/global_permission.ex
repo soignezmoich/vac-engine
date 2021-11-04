@@ -1,4 +1,9 @@
 defmodule VacEngine.Account.GlobalPermission do
+  @moduledoc """
+  A global permission gives site wide permission to a role
+
+  `-> role`
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

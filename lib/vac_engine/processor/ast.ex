@@ -1,7 +1,15 @@
 defmodule VacEngine.Processor.Ast do
+  @moduledoc """
+  Represent the blueprint "simple" AST
+
+  Format is compatible with elixir AST
+  """
   alias VacEngine.Processor.Library
   alias VacEngine.Processor.Meta
 
+  @doc """
+  Convert data to AST, sanitize any unsupported functions
+  """
   def sanitize(data) do
     ast = sanitize!(data)
 
@@ -60,6 +68,12 @@ defmodule VacEngine.Processor.Ast do
     throw({:invalid_expression, "invalid expression"})
   end
 
+  @doc """
+  Extract bindings
+
+  This convert `{:var, [], [["foo", "bar"]]}` to
+  `{:var, [], [0]}` and return `[["foo", "bar"]]` in bindings.
+  """
   def extract_bindings(ast) do
     {ast, bindings} = extract_bindings!(ast, [])
     {:ok, {ast, Enum.reverse(bindings)}}
@@ -94,6 +108,9 @@ defmodule VacEngine.Processor.Ast do
     {ast, bindings}
   end
 
+  @doc """
+  Insert bindings, reverse of extract_bindings(
+  """
   def insert_bindings(data, bindings) do
     ast = insert_bindings!(data, bindings)
     {:ok, ast}
@@ -121,6 +138,9 @@ defmodule VacEngine.Processor.Ast do
     ast
   end
 
+  @doc """
+  Insert signatures, types are bindings types
+  """
   def insert_signatures(data, types) do
     ast = insert_signatures!(data, types)
     {:ok, ast}
@@ -183,10 +203,16 @@ defmodule VacEngine.Processor.Ast do
     throw({:unknown_type, "type cannot be infered"})
   end
 
+  @doc """
+  Serialize AST into JSON compatible format
+  """
   def serialize(ast) do
     {:ok, ast_to_json(ast) |> wrap_root()}
   end
 
+  @doc """
+  Deserialize AST from JSON compatible format
+  """
   def deserialize(json) do
     ast =
       json
@@ -261,6 +287,9 @@ defmodule VacEngine.Processor.Ast do
   defp wrap_root(val), do: %{"ast" => val}
   defp unwrap_root(%{"ast" => val}), do: val
 
+  @doc """
+  Describe an AST (to_string())
+  """
   def describe({:var, _, [path]}) do
     "@#{Enum.join(path, ".")}"
   end

@@ -1,4 +1,5 @@
 defmodule VacEngine.Processor.Library.Import do
+  @moduledoc false
   defmacro __using__(_opts) do
     quote do
       require VacEngine.Processor.Library.Functions

@@ -1,9 +1,17 @@
 defmodule VacEngine.Release do
+  @moduledoc """
+  This module is used in production to provide an interface to the app
+  from the command line
+  """
+
   @app :vac_engine
 
   require Logger
   alias VacEngine.Account
 
+  @doc """
+  Run all migrations
+  """
   def migrate do
     for repo <- repos() do
       {:ok, _, _} =
@@ -11,11 +19,17 @@ defmodule VacEngine.Release do
     end
   end
 
+  @doc """
+  Rollback all migrations
+  """
   def rollback(repo, version) do
     {:ok, _, _} =
       Ecto.Migrator.with_repo(repo, &Ecto.Migrator.run(&1, :down, to: version))
   end
 
+  @doc """
+  Create an admin user
+  """
   def create_admin() do
     {:ok, _, _} =
       Ecto.Migrator.with_repo(VacEngine.Repo, fn _ ->
@@ -23,7 +37,7 @@ defmodule VacEngine.Release do
       end)
   end
 
-  def do_create_admin() do
+  defp do_create_admin() do
     email = "admin@admin.local"
 
     pass =

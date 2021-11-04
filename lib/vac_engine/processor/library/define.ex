@@ -1,4 +1,6 @@
 defmodule VacEngine.Processor.Library.Define do
+  @moduledoc false
+
   defmacro __using__(_opts) do
     quote do
       Module.register_attribute(__MODULE__, :signature, accumulate: true)
@@ -12,6 +14,7 @@ defmodule VacEngine.Processor.Library.Define do
     end
   end
 
+  @doc false
   def define_func(env, :def, name, args, _guards, _body) do
     arity = length(args)
     signatures = Module.get_attribute(env.module, :signature)

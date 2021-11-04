@@ -1,4 +1,14 @@
 defmodule VacEngine.Account.AccessToken do
+  @moduledoc """
+  Access tokens can be:
+
+  - API key
+  - link token (not implemented yet)
+  - oauth refresh token (not implemented yet)
+  - oauth access token (not implemented yet)
+
+  Secret format vary depending of the type
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

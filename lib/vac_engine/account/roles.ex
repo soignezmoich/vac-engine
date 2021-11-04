@@ -1,4 +1,6 @@
 defmodule VacEngine.Account.Roles do
+  @moduledoc false
+
   import Ecto.Query
   alias Ecto.Multi
   alias VacEngine.Repo

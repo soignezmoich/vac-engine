@@ -1,4 +1,7 @@
 defmodule VacEngine.Processor.Binding do
+  @moduledoc """
+  An expression binding
+  """
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -19,6 +22,7 @@ defmodule VacEngine.Processor.Binding do
     field(:position, :integer)
   end
 
+  @doc false
   def changeset(data, attrs, ctx, _opts \\ []) do
     attrs
     |> get_in_attrs(:path)
@@ -66,6 +70,7 @@ defmodule VacEngine.Processor.Binding do
     end
   end
 
+  @doc false
   def to_path(nil, _ctx), do: nil
 
   def to_path(binding, %{variable_id_index: index}) do

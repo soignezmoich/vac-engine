@@ -1,4 +1,7 @@
 defmodule VacEngine.Processor.Blueprint do
+  @moduledoc """
+  A blueprint
+  """
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -30,6 +33,7 @@ defmodule VacEngine.Processor.Blueprint do
     field(:variable_id_index, :map, virtual: true)
   end
 
+  @doc false
   def changeset(data, attrs \\ %{}) do
     attrs = EctoHelpers.accept_array_or_map_for_embed(attrs, :variables)
 
@@ -38,12 +42,14 @@ defmodule VacEngine.Processor.Blueprint do
     |> validate_required([:name])
   end
 
+  @doc false
   def interface_changeset(data, attrs \\ %{}) do
     data
     |> cast(attrs, [:interface_hash])
     |> validate_required([:interface_hash])
   end
 
+  @doc false
   def variables_changeset(data, attrs, ctx) do
     attrs =
       attrs
@@ -54,6 +60,7 @@ defmodule VacEngine.Processor.Blueprint do
     |> cast_assoc(:variables, with: {Variable, :create_changeset, [ctx]})
   end
 
+  @doc false
   def deductions_changeset(data, attrs, ctx) do
     attrs =
       attrs
@@ -64,6 +71,9 @@ defmodule VacEngine.Processor.Blueprint do
     |> cast_assoc(:deductions, with: {Deduction, :changeset, [ctx]})
   end
 
+  @doc """
+  Convert to map for serialization
+  """
   def to_map(%Blueprint{} = b) do
     %{
       name: b.name,

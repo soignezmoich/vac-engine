@@ -1,8 +1,16 @@
 defmodule VacEngine.Processor.State.List do
+  @moduledoc """
+  State heplers to manipulate list varibales
+  """
   require VacEngine.Processor.Meta
   alias VacEngine.Processor.Meta
   import VacEngine.Processor.State.Helpers
 
+  @doc """
+  Convert all lists into data into maps with integer keys
+
+  Vars is used for type lookup
+  """
   def lists_to_maps(data, vars) do
     lists_to_maps(data, vars, [])
   end
@@ -38,6 +46,11 @@ defmodule VacEngine.Processor.State.List do
 
   def lists_to_maps(data, _vars, _path), do: data
 
+  @doc """
+  Convert all map as lists into data into real lists
+
+  Vars is used for type lookup
+  """
   def maps_to_lists(data, vars) do
     maps_to_lists(data, vars, [])
   end

@@ -1,4 +1,6 @@
 defmodule VacEngine.Processor.State.Helpers do
+  @moduledoc false
+
   require VacEngine.Processor.Meta
   alias VacEngine.Processor.Meta
 

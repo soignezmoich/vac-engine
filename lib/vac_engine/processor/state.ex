@@ -1,4 +1,7 @@
 defmodule VacEngine.Processor.State do
+  @moduledoc """
+  Processor state
+  """
   alias VacEngine.Processor.State
   alias VacEngine.Processor.Compiler
   alias VacEngine.Processor.Variable
@@ -16,6 +19,9 @@ defmodule VacEngine.Processor.State do
             input: %{},
             output: %{}
 
+  @doc """
+  Init with blueprint variables
+  """
   def new(vars) do
     vars = flatten_variables(vars)
 
@@ -52,9 +58,9 @@ defmodule VacEngine.Processor.State do
       {:error, msg}
   end
 
-  def flatten_variables(vars, acc \\ {%{}, []})
+  defp flatten_variables(vars, acc \\ {%{}, []})
 
-  def flatten_variables(vars, {map, parents}) do
+  defp flatten_variables(vars, {map, parents}) do
     vars
     |> Enum.reduce(
       map,
@@ -69,6 +75,9 @@ defmodule VacEngine.Processor.State do
 
   defdelegate map_input(state, input), to: Input
 
+  @doc """
+  Get value of variable (used by blueprint compiled code)
+  """
   def get_var(%State{variables: nil} = state, name_path) do
     path = cast_path(name_path)
     gpath = path |> Enum.map(&Access.key!/1)
@@ -101,6 +110,9 @@ defmodule VacEngine.Processor.State do
     end
   end
 
+  @doc """
+  Set values of variables (used by blueprint compiled code)
+  """
   def merge_vars(%State{} = state, assigns) do
     assigns
     |> Enum.reduce(state, fn {path, value}, state ->
@@ -108,6 +120,9 @@ defmodule VacEngine.Processor.State do
     end)
   end
 
+  @doc """
+  Set value of variable (used by blueprint compiled code)
+  """
   def set_var(
         %State{heap: heap, variables: vars} = state,
         path,
@@ -165,6 +180,9 @@ defmodule VacEngine.Processor.State do
     end
   end
 
+  @doc """
+  Convert heap into output format for returning result
+  """
   def finalize_output(%State{heap: heap, output_variables: vars} = state) do
     output =
       heap

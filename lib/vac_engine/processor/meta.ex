@@ -1,4 +1,7 @@
 defmodule VacEngine.Processor.Meta do
+  @moduledoc """
+  Compiler helpers
+  """
   import VacEngine.PipeHelpers
 
   @types ~w(
@@ -86,6 +89,9 @@ defmodule VacEngine.Processor.Meta do
     end
   end
 
+  @doc """
+  Convert a path to string and integers (remove atoms and parse ints)
+  """
   def cast_path(name) when is_binary(name) do
     cast_path([name])
   end

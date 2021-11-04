@@ -1,4 +1,6 @@
 defmodule VacEngine.Account.Sessions do
+  @moduledoc false
+
   import Ecto.Query
   alias VacEngine.Repo
   alias VacEngine.Account

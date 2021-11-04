@@ -1,4 +1,7 @@
 defmodule VacEngine.Processor.Variable do
+  @moduledoc """
+  A blueprint variable
+  """
   use Ecto.Schema
   import Ecto.Changeset
   import Ecto.Query
@@ -37,6 +40,7 @@ defmodule VacEngine.Processor.Variable do
     field(:path, {:array, :string}, virtual: true)
   end
 
+  @doc false
   def create_changeset(data, attrs, ctx) do
     attrs =
       attrs
@@ -64,6 +68,7 @@ defmodule VacEngine.Processor.Variable do
     |> check_constraint(:name, name: :variables_name_slug)
   end
 
+  @doc false
   def update_changeset(data, attrs, ctx) do
     data
     |> cast(attrs, [
@@ -84,6 +89,7 @@ defmodule VacEngine.Processor.Variable do
     |> prevent_type_change_when_used()
   end
 
+  @doc false
   def parent_changeset(data, parent_id) do
     data
     |> cast(%{}, [])
@@ -152,30 +158,45 @@ defmodule VacEngine.Processor.Variable do
     end)
   end
 
+  @doc """
+  Return true if variable is part of the blueprint input
+  """
   def input?(nil), do: false
 
   def input?(var) do
     Meta.input?(var.mapping)
   end
 
+  @doc """
+  Return true if variable is part of the blueprint output
+  """
   def output?(nil), do: false
 
   def output?(var) do
     Meta.output?(var.mapping)
   end
 
+  @doc """
+  Return true if variable is required
+  """
   def required?(nil), do: false
 
   def required?(var) do
     Meta.required?(var.mapping)
   end
 
+  @doc """
+  Return true if variable can have children
+  """
   def container?(nil), do: false
 
   def container?(var) do
     Meta.container_type?(var.type)
   end
 
+  @doc """
+  Return true if variable is a list
+  """
   def list?(nil), do: false
 
   def list?(var) do
@@ -246,6 +267,9 @@ defmodule VacEngine.Processor.Variable do
     end)
   end
 
+  @doc """
+  Return true if variable is used (access DB)
+  """
   def used?(id, repo) do
     from(r in BindingElement,
       where: r.variable_id == ^id,
@@ -317,6 +341,9 @@ defmodule VacEngine.Processor.Variable do
     end
   end
 
+  @doc """
+  Convert to map for serialization
+  """
   def to_map(%Variable{} = v) do
     %{
       type: v.type,

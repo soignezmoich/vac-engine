@@ -1,6 +1,13 @@
 defmodule VacEngine.Processor.Library.Functions do
+  @moduledoc """
+  Actual blueprint expression functions
+  """
+
   use VacEngine.Processor.Library.Define
 
+  @doc """
+  Check if struct is date
+  """
   defmacro is_date(a) do
     quote do
       is_struct(unquote(a), NaiveDateTime) or is_struct(unquote(a), Date) or

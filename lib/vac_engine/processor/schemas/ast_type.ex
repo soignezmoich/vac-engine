@@ -1,4 +1,9 @@
 defmodule VacEngine.Processor.AstType do
+  @moduledoc """
+  Ecto type for AST serialization to the database.
+
+  Allow to store tuples as JSON
+  """
   use Ecto.Type
 
   alias VacEngine.Processor.Ast

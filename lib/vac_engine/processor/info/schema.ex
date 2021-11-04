@@ -1,7 +1,13 @@
 defmodule VacEngine.Processor.Info.Schema do
+  @moduledoc """
+  Generate a JSON schema of the interface of a blueprint
+  """
   alias VacEngine.Processor.Variable
   alias VacEngine.Processor.Meta
 
+  @doc """
+  Input JSON schema
+  """
   def input_schema(blueprint) do
     filter = fn var ->
       Variable.input?(var)
@@ -12,6 +18,9 @@ defmodule VacEngine.Processor.Info.Schema do
     |> wrap_props()
   end
 
+  @doc """
+  Output JSON schema
+  """
   def output_schema(blueprint) do
     filter = fn var ->
       Variable.output?(var)
@@ -127,7 +136,7 @@ defmodule VacEngine.Processor.Info.Schema do
     |> append_if_not_empty(required: required)
   end
 
-  def append_if_not_empty(map, to_add) do
+  defp append_if_not_empty(map, to_add) do
     to_add
     |> Enum.reject(fn
       {_, []} -> true

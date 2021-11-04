@@ -1,4 +1,7 @@
 defmodule VacEngine.Processor.State.Input do
+  @moduledoc """
+  Processor state input functions
+  """
   require VacEngine.Processor.Meta
   alias VacEngine.Processor.Meta
   alias VacEngine.Processor.Convert
@@ -8,6 +11,9 @@ defmodule VacEngine.Processor.State.Input do
   import VacEngine.Processor.State.Helpers
   import VacEngine.PipeHelpers
 
+  @doc """
+  Parse `input` and map content into variables
+  """
   def map_input(%State{input_variables: vars} = state, input)
       when is_map(input) do
     {input, hits} = map_variables(vars, input, %{}, [], %{})

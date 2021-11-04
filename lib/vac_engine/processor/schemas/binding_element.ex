@@ -1,4 +1,7 @@
 defmodule VacEngine.Processor.BindingElement do
+  @moduledoc """
+  An expression binding element
+  """
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -19,6 +22,7 @@ defmodule VacEngine.Processor.BindingElement do
     field(:index, :integer)
   end
 
+  @doc false
   def changeset(data, attrs, ctx, _opts \\ []) do
     data
     |> cast(attrs, [:position, :index, :variable_id])

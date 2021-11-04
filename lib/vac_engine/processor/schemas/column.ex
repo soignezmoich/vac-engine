@@ -1,4 +1,7 @@
 defmodule VacEngine.Processor.Column do
+  @moduledoc """
+  A deduction column
+  """
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -32,6 +35,7 @@ defmodule VacEngine.Processor.Column do
     field(:variable, :map, virtual: true)
   end
 
+  @doc false
   def changeset(data, attrs, ctx) do
     attrs
     |> get_in_attrs(:variable)
@@ -69,6 +73,7 @@ defmodule VacEngine.Processor.Column do
     end
   end
 
+  @doc false
   def insert_bindings(data, ctx) do
     varpath =
       data
@@ -87,6 +92,9 @@ defmodule VacEngine.Processor.Column do
     end)
   end
 
+  @doc """
+  Convert to map for serialization
+  """
   def to_map(%Column{} = c) do
     %{
       variable: c.variable,

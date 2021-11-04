@@ -1,6 +1,12 @@
 defmodule VacEngine.Processor.Info.Logic do
+  @moduledoc """
+  Generate a logic summary of a blueprint
+  """
   alias VacEngine.Processor.Expression
 
+  @doc """
+  Generate a logic summary of a blueprint
+  """
   def logic(blueprint) do
     blueprint
     |> get_in([

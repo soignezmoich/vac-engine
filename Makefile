@@ -157,6 +157,10 @@ docs: deps assets-deps
 docs-server:
 	redoc-cli serve -w  docs/swagger.yaml
 
+.PHONY: ex-docs
+
+ex-docs:
+	mix docs
 
 .PHONY: checks
 

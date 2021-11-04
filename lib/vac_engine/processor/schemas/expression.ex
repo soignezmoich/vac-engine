@@ -1,4 +1,7 @@
 defmodule VacEngine.Processor.Expression do
+  @moduledoc """
+  An expression
+  """
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -31,13 +34,18 @@ defmodule VacEngine.Processor.Expression do
     field(:ast, AstType)
   end
 
+  @doc """
+  Describe an expression (to_string())
+  """
   def describe(expression) do
     expression.ast
     |> Ast.describe()
   end
 
+  @doc false
   def changeset(data, attrs, ctx, opts \\ [])
 
+  @doc false
   def changeset(data, attrs, ctx, opts) do
     nobindings = Keyword.get(opts, :nobindings, false)
 
@@ -67,6 +75,7 @@ defmodule VacEngine.Processor.Expression do
     end
   end
 
+  @doc false
   def insert_bindings(expression, %{variable_id_index: _index} = ctx) do
     bindings =
       get_in(expression, [
@@ -187,6 +196,9 @@ defmodule VacEngine.Processor.Expression do
 
   defp insert_binding_attrs(err, _), do: err
 
+  @doc """
+  Convert to map for serialization
+  """
   def to_map(nil), do: nil
 
   def to_map(%Expression{} = e) do

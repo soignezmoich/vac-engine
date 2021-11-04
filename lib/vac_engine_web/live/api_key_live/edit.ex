@@ -75,7 +75,7 @@ defmodule VacEngineWeb.ApiKeyLive.Edit do
         %{"key" => key},
         %{assigns: %{current_tooltip: key}} = socket
       ) do
-    Process.send_after(self(), :hide_secret, 10000)
+    Process.send_after(self(), :hide_secret, 10_000)
 
     {:noreply,
      socket

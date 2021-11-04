@@ -1,6 +1,12 @@
 defmodule VacEngine.Processor.Library do
+  @moduledoc """
+  Library queries
+  """
   use VacEngine.Processor.Library.Import
 
+  @doc """
+  Check if function exists
+  """
   def has_function?(fname, arity) do
     functions()
     |> Map.get(fname, %{})
@@ -8,6 +14,9 @@ defmodule VacEngine.Processor.Library do
     |> is_map()
   end
 
+  @doc """
+  Get signature of function
+  """
   def get_signature(fname, arg_types) do
     arity = length(arg_types)
 
@@ -28,6 +37,9 @@ defmodule VacEngine.Processor.Library do
     end
   end
 
+  @doc """
+  Look for candidataes
+  """
   def candidates(args) when is_list(args) do
     candidates({args, :any})
   end

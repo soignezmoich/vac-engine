@@ -1,4 +1,7 @@
 defmodule VacEngine.Processor.Deduction do
+  @moduledoc """
+  A blueprint deduction
+  """
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -23,6 +26,7 @@ defmodule VacEngine.Processor.Deduction do
     field(:description, :string)
   end
 
+  @doc false
   def changeset(data, attrs, ctx) do
     attrs =
       attrs
@@ -37,6 +41,9 @@ defmodule VacEngine.Processor.Deduction do
     |> validate_required([])
   end
 
+  @doc """
+  Convert to map for serialization
+  """
   def to_map(%Deduction{} = d) do
     %{
       description: d.description,

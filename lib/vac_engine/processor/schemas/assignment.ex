@@ -1,4 +1,7 @@
 defmodule VacEngine.Processor.Assignment do
+  @moduledoc """
+  A blueprint assignment
+  """
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -30,6 +33,7 @@ defmodule VacEngine.Processor.Assignment do
     field(:target, :map, virtual: true)
   end
 
+  @doc false
   def changeset(data, attrs, ctx) do
     attrs
     |> get_in_attrs(:target)
@@ -68,6 +72,7 @@ defmodule VacEngine.Processor.Assignment do
     end
   end
 
+  @doc false
   def insert_bindings(data, ctx) do
     target =
       data
@@ -86,6 +91,9 @@ defmodule VacEngine.Processor.Assignment do
     end)
   end
 
+  @doc """
+  Convert to map for serialization
+  """
   def to_map(%Assignment{} = a) do
     %{
       expression: Expression.to_map(a.expression),
