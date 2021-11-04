@@ -20,7 +20,7 @@ defmodule VacEngine.Account.AccessToken do
     belongs_to(:role, Role)
 
     field(:secret, :string)
-    field(:type, Ecto.Enum, values: ~w(api_key refresh access)a)
+    field(:type, Ecto.Enum, values: ~w(api_key refresh access link)a)
     field(:expires_at, :utc_datetime)
   end
 
