@@ -10,54 +10,16 @@ defmodule VacEngine.Account.Permissions do
   alias VacEngine.Processor.Blueprint
   import VacEngine.EctoHelpers, only: [transaction: 2]
 
-  def grant_permission(role, key, _scope) when is_binary(key) do
-    {action, scope} = break_key(key)
-    do_grant_permission(role, action, scope)
-  end
-
   def grant_permission(role, action, scope) do
-    do_grant_permission(role, action, scope)
-  end
-
-  defp do_grant_permission(role, action, scope) do
     change_permission(role, scope, %{action => true})
   end
 
-  def revoke_permission(role, key, _scope) when is_binary(key) do
-    {action, scope} = break_key(key)
-    do_revoke_permission(role, action, scope)
-  end
-
   def revoke_permission(role, action, scope) do
-    do_revoke_permission(role, action, scope)
-  end
-
-  defp do_revoke_permission(role, action, scope) do
     change_permission(role, scope, %{action => false})
   end
 
-  def toggle_permission(role, key, _scope) when is_binary(key) do
-    {action, scope} = break_key(key)
-    do_toggle_permission(role, action, scope)
-  end
-
   def toggle_permission(role, action, scope) do
-    do_toggle_permission(role, action, scope)
-  end
-
-  defp do_toggle_permission(role, action, scope) do
     change_permission(role, scope, %{action => :toggle})
-  end
-
-  defp break_key(key) do
-    key
-    |> String.split(".")
-    |> case do
-      ["global", action] -> {action, :global}
-      ["workspace", id, action] -> {action, {:workspace, id}}
-      ["blueprint", id, action] -> {action, {:blueprint, id}}
-      _ -> {nil, nil}
-    end
   end
 
   defp change_permission(_role, nil, _) do
@@ -134,8 +96,11 @@ defmodule VacEngine.Account.Permissions do
   defp bake_toggle(perm, attrs) do
     attrs
     |> Enum.map(fn
-      {action, :toggle} ->
+      {action, :toggle} when is_binary(action) ->
         {action, !Map.get(perm, String.to_existing_atom(action))}
+
+      {action, :toggle} when is_atom(action) ->
+        {action, !Map.get(perm, action)}
 
       e ->
         e

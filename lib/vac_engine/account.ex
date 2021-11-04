@@ -46,21 +46,21 @@ defmodule VacEngine.Account do
   alias VacEngine.Account.Permissions
 
   @doc """
-  Toggle permission with a key or action/scope
+  Toggle permission with an action and scope
   """
-  defdelegate toggle_permission(role, action_or_key, scope \\ :global),
+  defdelegate toggle_permission(role, action, scope \\ :global),
     to: Permissions
 
   @doc """
-  Grant permission with a key or action/scope
+  Grant permission with an action and scope
   """
-  defdelegate grant_permission(role, action_or_key, scope \\ :global),
+  defdelegate grant_permission(role, action, scope \\ :global),
     to: Permissions
 
   @doc """
-  Reboke permission with a key or action/scope
+  Revoke permission with an action and scope
   """
-  defdelegate revoke_permission(role, action_or_key, scope \\ :global),
+  defdelegate revoke_permission(role, action, scope \\ :global),
     to: Permissions
 
   alias VacEngine.Account.Can
