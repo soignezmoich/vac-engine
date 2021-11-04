@@ -36,6 +36,7 @@ defmodule VacEngine.Processor.Blueprints do
     |> multi_update
   end
 
+  # TODO what is multi?
   defp multi_update(multi) do
     multi
     |> multi_update_variables

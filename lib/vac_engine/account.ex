@@ -1,4 +1,48 @@
 defmodule VacEngine.Account do
+  @moduledoc """
+  ## Account Module
+  The Account module is responsible for the management
+  of a role-based permission system.
+
+  ### Structure
+  The entities involved in this system are:
+  #### roles
+  Roles are primary entities to which permissions can be attached.
+  #### users
+  Extension to a role that links it to a login/password/MFA identifier.
+  #### api-keys
+  Extension to a role that links it to an api-key identifier.
+  #### tokens
+  Tokens, embedded in a url/link that correspond to a role. (?)
+  #### permissions
+  Relation between role and action in a given scope that allows
+  the role to perform the given action in the given scope.
+   --> WHAT IS KEY???
+  #### actions
+  An action that can be allowed or not, it usually materialize
+  in a piece of code preceded by a call to can?/3 function.
+  #### scope
+  A context that can influence the permission to certain actions,
+  for example a workspace.
+  #### workspaces
+  A bundle of blueprints and portals to which roles can be granted access
+  or not as a bundle.
+  #### sessions
+  Scope of time in which a role is granted following an identification.
+  #### secrets
+  (???)
+
+  ### Specific security aspects (maybe move to README?)
+  The Account module implements the following principe in order
+  to ensure security of the system:
+  * Users are authenticated using MFA (login/password + authentication).
+  * Treatment of wrong login/password pairs are treated in constant time.
+  * Sessions linked to role of all types (api-keys, users, tokens)
+    can be revocated by admin at any time.
+  * Only admins have the right to publish a blueprint on a portal so that
+    no simple editor can influence the behaviour of the api.
+  """
+
   alias VacEngine.Account.Permissions
 
   @doc """
