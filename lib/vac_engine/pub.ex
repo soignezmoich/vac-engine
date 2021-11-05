@@ -188,20 +188,20 @@ defmodule VacEngine.Pub do
   end
 
   @doc """
-  Load publications of blueprint
+  Load publications of blueprint or portal
   """
-  def load_publications(%Blueprint{} = blueprint) do
+  def load_publications(target) do
     publications_query =
       from(r in Publication,
         order_by: [desc: r.activated_at],
         preload: :portal
       )
 
-    Repo.preload(blueprint, [publications: publications_query], force: true)
+    Repo.preload(target, [publications: publications_query], force: true)
   end
 
   @doc """
-  Load active publications of portal
+  Load active publication of portal
   """
   def load_active_publication(%Portal{} = portal) do
     publications_query =
@@ -213,5 +213,19 @@ defmodule VacEngine.Pub do
       )
 
     Repo.preload(portal, [active_publication: publications_query], force: true)
+  end
+
+  @doc """
+  Load active publications of portal
+  """
+  def load_active_publications(%Blueprint{} = blueprint) do
+    publications_query =
+      from(r in Publication,
+        order_by: [r.portal_id, desc: r.activated_at],
+        where: is_nil(r.deactivated_at),
+        preload: :portal
+      )
+
+    Repo.preload(blueprint, [active_publications: publications_query], force: true)
   end
 end
