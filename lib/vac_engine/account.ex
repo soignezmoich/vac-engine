@@ -283,7 +283,8 @@ defmodule VacEngine.Account do
       Pub.list_portals()
       |> Enum.map(fn portal ->
         portal
-        |> Pub.active_publications()
+        |> Pub.load_active_publication()
+        |> Map.get(:active_publication)
         |> case do
           nil ->
             nil

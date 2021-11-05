@@ -168,13 +168,6 @@ defmodule VacEngine.Pub do
   """
   def bust_api_keys_cache(), do: Cache.bust_api_keys()
 
-  def active_publications(%Portal{} = portal) do
-    portal.publications
-    |> Enum.find(fn pub ->
-      pub.deactivated_at == nil
-    end)
-  end
-
   @doc """
   Load portals of workspace
   """
@@ -194,8 +187,6 @@ defmodule VacEngine.Pub do
     Repo.preload(workspace, [portals: portals_query], force: true)
   end
 
-  def load_publications(target)
-
   @doc """
   Load publications of blueprint
   """
@@ -209,16 +200,18 @@ defmodule VacEngine.Pub do
     Repo.preload(blueprint, [publications: publications_query], force: true)
   end
 
-  def load_publications(%Portal{} = portal) do
   @doc """
   Load active publications of portal
   """
+  def load_active_publication(%Portal{} = portal) do
     publications_query =
       from(r in Publication,
         order_by: [desc: r.activated_at],
-        preload: :portal
+        where: is_nil(r.deactivated_at),
+        preload: :portal,
+        limit: 1
       )
 
-    Repo.preload(portal, [publications: publications_query], force: true)
+    Repo.preload(portal, [active_publication: publications_query], force: true)
   end
 end
