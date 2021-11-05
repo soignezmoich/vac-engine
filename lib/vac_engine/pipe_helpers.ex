@@ -1,8 +1,18 @@
 defmodule VacEngine.PipeHelpers do
+  @moduledoc """
+  Helper for piping data
+  """
+
+  @doc """
+  Wrap into ok tuple
+  """
   def ok(val) do
     {:ok, val}
   end
 
+  @doc """
+  Tap only if ok tuple
+  """
   def tap_ok({:ok, ok_val} = result, fun) do
     fun
     |> Function.info()
@@ -18,6 +28,9 @@ defmodule VacEngine.PipeHelpers do
 
   def tap_ok(result, _fun), do: result
 
+  @doc """
+  Tap only if value match
+  """
   def tap_on(value, value, fun) do
     fun
     |> Function.info()

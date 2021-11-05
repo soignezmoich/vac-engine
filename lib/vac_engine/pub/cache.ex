@@ -1,4 +1,6 @@
 defmodule VacEngine.Pub.Cache do
+  @moduledoc false
+
   use GenServer
 
   import Ecto.Query

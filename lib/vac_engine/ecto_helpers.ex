@@ -1,5 +1,12 @@
 defmodule VacEngine.EctoHelpers do
+  @moduledoc """
+  Set of utilities to help manipulate data in Ecto Schema.
+  """
   alias VacEngine.Repo
+
+  @doc """
+  Used to get data in attributesm will try atom and string keys.
+  """
   def get_in_attrs(attrs, path, default \\ nil)
 
   def get_in_attrs(_attrs, path, _default) when is_binary(path) do
@@ -27,6 +34,10 @@ defmodule VacEngine.EctoHelpers do
     end
   end
 
+  @doc """
+  Used to put data in attributesm will try atom and string keys to be compatible
+  with existing data.
+  """
   def put_in_attrs(_attrs, path, _value) when is_binary(path) do
     raise "use atom in path"
   end
@@ -47,6 +58,9 @@ defmodule VacEngine.EctoHelpers do
     end
   end
 
+  @doc """
+  Set position recursively
+  """
   def set_positions(attrs, key) do
     skey = to_string(key)
 
@@ -66,6 +80,9 @@ defmodule VacEngine.EctoHelpers do
     end
   end
 
+  @doc """
+  Convert `%{foo: %{obja}, bar: %{objb}}` into `[%{name: :foo}, %{name: :bar}]`
+  """
   def accept_array_or_map_for_embed(attrs, key) when is_map(attrs) do
     skey = to_string(key)
 
@@ -87,6 +104,9 @@ defmodule VacEngine.EctoHelpers do
 
   def accept_array_or_map_for_embed(attrs, _key), do: attrs
 
+  @doc """
+  Wrap an attribute key into a map with the given root key
+  """
   def wrap_in_map(attrs, key, target_name) do
     skey = to_string(key)
 
@@ -127,6 +147,9 @@ defmodule VacEngine.EctoHelpers do
 
   defp put_position_in_children(children, _name), do: children
 
+  @doc """
+  Wrapper around `Repo.transaction` that will return an ok or error tuple
+  """
   def transaction(multi, key) do
     multi
     |> Repo.transaction()

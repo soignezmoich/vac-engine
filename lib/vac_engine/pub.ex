@@ -16,6 +16,13 @@ defmodule VacEngine.Pub do
   import VacEngine.EctoHelpers, only: [transaction: 2]
 
   # TODO change to reuse portal when possible
+  @doc """
+  Publish a blueprint.
+
+  - create portal
+  - create publication
+  - set publication as active
+  """
   def publish_blueprint(%Blueprint{} = br, attrs \\ %{}) do
     Multi.new()
     |> Multi.insert(:portal, fn _ ->
@@ -47,14 +54,23 @@ defmodule VacEngine.Pub do
     |> tap_ok(&bust_cache/0)
   end
 
+  @doc """
+  Cast attributes into a changeset
+  """
   def change_portal(data, attrs \\ %{}) do
     Portal.changeset(data, attrs)
   end
 
+  @doc """
+  Get a portal with id, raise if not found.
+  """
   def get_portal!(id) do
     Repo.get!(Portal, id)
   end
 
+  @doc """
+  Delete portal
+  """
   def delete_portal(portal) do
     Multi.new()
     |> Multi.delete_all(:delete_publications, fn _ ->
@@ -65,6 +81,9 @@ defmodule VacEngine.Pub do
     |> tap_ok(&bust_cache/0)
   end
 
+  @doc """
+  Deactivate publication
+  """
   def deactivate_publication(%Publication{} = pub) do
     from(p in Publication,
       where: p.id == ^pub.id,
@@ -80,11 +99,17 @@ defmodule VacEngine.Pub do
     end
   end
 
+  @doc """
+  List all portals
+  """
   def list_portals() do
     from(p in Portal, preload: [:publications])
     |> Repo.all()
   end
 
+  @doc """
+  Run a processor and use cache
+  """
   def run_cached(
         %{api_key: _api_key, portal_id: _portal_id, input: input} = args
       ) do
@@ -99,6 +124,9 @@ defmodule VacEngine.Pub do
 
   def run_cached(_), do: :error
 
+  @doc """
+  Get processor info and use cache
+  """
   def info_cached(%{api_key: _api_key, portal_id: _portal_id} = args) do
     args
     |> Cache.find_processor()
@@ -116,6 +144,9 @@ defmodule VacEngine.Pub do
 
   def info_cached(_), do: :error
 
+  @doc """
+  Bust cache only if blueprint is currently active
+  """
   def bust_blueprint_cache(%Blueprint{} = blueprint) do
     from(p in Publication,
       where:
@@ -127,8 +158,14 @@ defmodule VacEngine.Pub do
     |> tap_on(true, &bust_cache/0)
   end
 
+  @doc """
+  Bust all cache
+  """
   def bust_cache(), do: Cache.bust()
 
+  @doc """
+  Bust all cached permissions
+  """
   def bust_api_keys_cache(), do: Cache.bust_api_keys()
 
   def active_publications(%Portal{} = portal) do
@@ -138,6 +175,9 @@ defmodule VacEngine.Pub do
     end)
   end
 
+  @doc """
+  Load portals of workspace
+  """
   def load_portals(%Workspace{} = workspace) do
     publications_query =
       from(r in Publication,
@@ -156,6 +196,9 @@ defmodule VacEngine.Pub do
 
   def load_publications(target)
 
+  @doc """
+  Load publications of blueprint
+  """
   def load_publications(%Blueprint{} = blueprint) do
     publications_query =
       from(r in Publication,
@@ -167,6 +210,9 @@ defmodule VacEngine.Pub do
   end
 
   def load_publications(%Portal{} = portal) do
+  @doc """
+  Load active publications of portal
+  """
     publications_query =
       from(r in Publication,
         order_by: [desc: r.activated_at],

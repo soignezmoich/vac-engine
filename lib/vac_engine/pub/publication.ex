@@ -1,4 +1,8 @@
 defmodule VacEngine.Pub.Publication do
+  @moduledoc """
+  A publication is a published blueprint
+  """
+
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -25,6 +29,9 @@ defmodule VacEngine.Pub.Publication do
     |> validate_required([])
   end
 
+  @doc """
+  Is the publication actually active?
+  """
   def active?(%Publication{deactivated_at: nil}), do: true
   def active?(_), do: false
 end
