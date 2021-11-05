@@ -167,7 +167,8 @@ defmodule Fixtures.Blueprints do
                     :grand_child_map,
                     :grand_grand_child_ints
                   ],
-                  expression: [1, 2, 3]
+                  expression: [1, 2, 3],
+                  description: "Keep this in logic"
                 },
                 %{
                   target: [
