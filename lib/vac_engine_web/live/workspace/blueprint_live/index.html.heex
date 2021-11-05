@@ -1,9 +1,28 @@
+<div class="p-4 w-full max-w-3xl">
+  <%= live_redirect("Create blueprint",
+        to: Routes.workspace_blueprint_path(@socket, :new, @workspace),
+        class: "mb-4 btn-default inline-block"
+      ) %>
 
-<div class="flex flex-col p-4 items-start">
-<%= live_redirect("Create blueprint",
-      to: Routes.workspace_blueprint_path(@socket, :new, @workspace),
-      class: "mb-4 btn-default"
-    ) %>
+  <%= case @blueprints do %>
+  <% [] -> %>
+    <p class="font-bold">No blueprint.</p>
+  <% blueprints -> %>
+    <%= for br <- blueprints do %>
+      <div class="border-b flex px-2 py-4 w-full">
+        <div class="flex flex-col flex-grow">
+          <span class="font-bold"><%= br.name %></span>
+          <span class="flex-grow"><%= br.description %></span>
+          <span class="text-sm">Created <%= format_date(br.inserted_at) %></span>
+        </div>
+        <div class="flex flex-col flex-shrink-0">
+          <%= live_redirect("Details",
+                to: Routes.workspace_blueprint_path(@socket, :summary, br.workspace_id, br.id),
+                class: "inline-block mb-4 btn"
+              ) %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
 
-<.blueprints_list blueprints={@blueprints}  />
 </div>
