@@ -120,7 +120,15 @@ defmodule VacEngine.Account do
   Return all users with `last_login_at` and `last_active_at` virtual fields
   populated
   """
-  defdelegate list_users(), to: Users
+  defdelegate list_users(queries \\ &(&1)), to: Users
+
+  @doc """
+  Preload user activity
+
+  Will load role, all sessions and populate `is_active`, `last_login_at` and
+  `last_active_at` virtual fields.
+  """
+  defdelegate load_user_activity(query), to: Users
 
   @doc """
   Get a user with id, raise if not found.

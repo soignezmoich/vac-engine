@@ -22,6 +22,7 @@ defmodule VacEngine.Account.User do
     field(:password, :string, virtual: true)
     field(:last_login_at, :utc_datetime, virtual: true)
     field(:last_active_at, :utc_datetime, virtual: true)
+    field(:active, :boolean, virtual: true)
   end
 
   @doc false

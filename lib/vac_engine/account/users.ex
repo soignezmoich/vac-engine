@@ -38,7 +38,13 @@ defmodule VacEngine.Account.Users do
     end
   end
 
-  def list_users() do
+  def list_users(queries \\ & &1) do
+    User
+    |> queries.()
+    |> Repo.all()
+  end
+
+  def load_user_activity(query) do
     session_query =
       from(s in Session,
         order_by: [desc: s.inserted_at],
@@ -46,18 +52,19 @@ defmodule VacEngine.Account.Users do
         limit: 1
       )
 
-    from(u in User,
+    from(u in query,
       as: :users,
       left_lateral_join: s in subquery(session_query),
+      join: r in assoc(u, :role),
       order_by: u.id,
-      preload: [role: :global_permission],
+      preload: [role: r],
       select: %{
         u
         | last_login_at: s.inserted_at,
-          last_active_at: s.last_active_at
+          last_active_at: s.last_active_at,
+          active: r.active
       }
     )
-    |> Repo.all()
   end
 
   def get_user!(uid) do

@@ -1,39 +1,42 @@
-<div class="p-4">
+<div class="p-4 w-full max-w-3xl">
   <%= live_redirect("Create user",
         to: Routes.user_path(@socket, :new),
         class: "inline-block mb-4 btn-default"
       ) %>
-  <table class="listing-table">
-    <thead>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Active</th>
-      <th>Last activity</th>
-      <th>Last login</th>
-      <th></th>
-    </thead>
-    <tbody>
-      <%= for u <- @users do %>
-        <% self = u.role_id == @role_session.role_id %>
-        <tr>
-          <td>
-            <%= u.name %>
-            <%= if self do %>
+  <%= case @users do %>
+  <% [] -> %>
+    <p class="font-bold">No User.</p>
+  <% users -> %>
+    <%= for user <- users do %>
+      <div class="border-b flex px-2 py-4 w-full">
+        <div class="flex flex-col flex-grow">
+          <span class="font-bold">
+            <%= user.name %>
+
+            <%= if user.role_id == @role_session.role_id do %>
               (You)
             <% end %>
-          </td>
-          <td><%= u.email %></td>
-          <td><%= format_bool(u.role.active) %></td>
-          <td><%= format_date(u.last_active_at) %></td>
-          <td><%= format_date(u.last_login_at) %></td>
-          <td>
-            <%= live_redirect("Details",
-                  to: Routes.user_path(@socket, :edit, u),
-                  class: "btn-sm inline-block"
-                ) %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+          </span>
+          <span class="text-sm mb-2"><%= user.email %></span>
+          <div class="flex">
+            <span class="text-sm mr-2">Created <%= format_date(user.inserted_at) %></span>
+            <span class="mr-2 self-center text-gray-700">
+              <.icon name="dot" width="6px" />
+            </span>
+            <%= if user.last_active_at do %>
+              <span class="text-sm">Last activity <%= format_date(user.last_active_at) %></span>
+            <% else %>
+              <span class="text-sm">Never logged in</span>
+            <% end %>
+          </div>
+        </div>
+        <div class="flex flex-col flex-shrink-0">
+          <%= live_redirect("Details",
+                to: Routes.user_path(@socket, :edit, user),
+                class: "btn inline-block"
+              ) %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
 </div>
