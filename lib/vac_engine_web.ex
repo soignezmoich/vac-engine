@@ -124,6 +124,7 @@ defmodule VacEngineWeb do
       import VacEngineWeb.TextCardComponent
       import VacEngineWeb.LoaderCardComponent
       import VacEngineWeb.FlexCenterComponent
+      import VacEngineWeb.IconComponent
     end
   end
 
