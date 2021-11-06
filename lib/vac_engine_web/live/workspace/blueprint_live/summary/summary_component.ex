@@ -88,13 +88,17 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.SummaryComponent do
       ch ->
         Pub.publish_blueprint(blueprint, ch.changes)
         |> case do
-          {:ok, _pub} ->
-            publications = Pub.load_publications(blueprint).publications
+          {:ok, pub} ->
+            blueprint = %{
+              blueprint
+              | active_publications: [pub | blueprint.active_publications]
+            }
+
             changeset = %Portal{} |> Pub.change_portal()
 
             {:noreply,
              assign(socket,
-               publications: publications,
+               blueprint: blueprint,
                portal_changeset: changeset
              )}
 

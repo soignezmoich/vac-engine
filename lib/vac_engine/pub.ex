@@ -170,6 +170,7 @@ defmodule VacEngine.Pub do
 
   @doc """
   Load portals of workspace
+  TODO remove
   """
   def load_portals(%Workspace{} = workspace) do
     publications_query =
@@ -189,6 +190,7 @@ defmodule VacEngine.Pub do
 
   @doc """
   Load publications of blueprint or portal
+  TODO remove
   """
   def load_publications(target) do
     publications_query =
@@ -202,6 +204,7 @@ defmodule VacEngine.Pub do
 
   @doc """
   Load active publication of portal
+  TODO remove
   """
   def load_active_publication(%Portal{} = portal) do
     publications_query =

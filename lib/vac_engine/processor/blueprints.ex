@@ -41,7 +41,7 @@ defmodule VacEngine.Processor.Blueprints do
   def load_blueprint_active_publications(query) do
     pub_query =
       from(r in Publication,
-        order_by: r.activated_at,
+        order_by: [desc: r.activated_at],
         where: is_nil(r.deactivated_at),
         preload: :portal
       )
