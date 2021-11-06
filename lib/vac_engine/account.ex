@@ -1,38 +1,108 @@
 defmodule VacEngine.Account do
   @moduledoc """
-  ## Account Module
   The Account module is responsible for the management
   of a role-based permission system.
 
-  ### Structure
-  The entities involved in this system are:
-  #### roles
-  Roles are primary entities to which permissions can be attached.
-  #### users
-  Extension to a role that links it to a login/password/MFA identifier.
-  #### api-keys
-  Extension to a role that links it to an api-key identifier.
-  #### tokens
-  Tokens, embedded in a url/link that correspond to a role. (?)
-  #### permissions
-  Relation between role and action in a given scope that allows
-  the role to perform the given action in the given scope.
-   --> WHAT IS KEY???
-  #### actions
-  An action that can be allowed or not, it usually materialize
-  in a piece of code preceded by a call to can?/3 function.
-  #### scope
-  A context that can influence the permission to certain actions,
-  for example a workspace.
-  #### workspaces
-  A bundle of blueprints and portals to which roles can be granted access
-  or not as a bundle.
-  #### sessions
-  Scope of time in which a role is granted following an identification.
-  #### secrets
-  (???)
 
-  ### Specific security aspects (maybe move to README?)
+  ## Roles
+
+  Primary entities to which permissions can be attached.
+  Identification to a specific role can be done by using either
+  a full authentication or through a token passed with the request.
+
+  Roles can be acquired by two access types: **users** and **api-keys**.
+
+  ### Users
+
+  User access allow people to access the web interface of the application.
+
+  A user can access the application by using a multi-factor authentication
+  with:
+  - an email login
+  - a password
+  - a one-time password provided by an authenticator
+
+  User is attached to a single role, to which a set of permissions is granted.
+
+  ### Api-keys
+
+  Api-keys accesses are used by api consumers to call the application api.
+
+  A api-key can access the application by using a token that contain a password
+  and a reference to the role. If an existing token is provided with an api
+  request in the authentication header, the request is automatically associated
+  with the related role and permissions are granted accordingly.
+
+  Curl example of api call with key:
+
+      curl https://example.com/api/p/8/run -X POST -H "Authorization: Bearer api_1234567_123456789012345678901234567890"
+
+  TODO difference between "list_api_token" et "list_api_keys" ?
+
+
+  ## Permissions
+
+  ### Granting permission
+
+  Permissions are rights to do certain actions in the system. A permission is
+  granted to a role to perform a given in a given scope, by using the
+  `grant_permission/3` (or `toggle_permission/3`) function:
+
+      VacEngine.Account.grant_permission(target_role, :list_blueprints_action, :global)
+
+  ### Checking permission
+
+  When a piece of code should only be accessed by roles with defined permission,
+  an conditional block containing the `can?/3` function should be added.
+
+      if can?(role, :access, :editor) do
+        ...
+      end
+
+  The function will return true if and only if the current role has the
+  corresponding permission therefore granting access or not to the included
+  code.
+
+
+  ## Actions
+
+  Actions are atoms describing a specific action. The exact content
+  of the action is defined by the places where `can?/3` functions use it
+  as an argument.
+
+
+  ## Scopes
+
+  A scope determines a context in which a permission is granted. There is
+  three types of scope in the application, the **global** scope,
+  the **worspace** scopes and the **custom**.
+
+  #### Global scope
+
+  The global scope correspond to the whole application. Therefore permissions
+  granted in the global scope are technically "unscoped".
+
+  Global scope is designated by the `:global` atom.
+
+  #### Workspace scope
+
+  A workspace scope is determined by the id of a workspace and grants the rights
+  in the context of this workspace. For example, an `:access` action permission
+  in the workspace with `:id = 1` will grant access only to this workspace.
+
+  Workspace scopes are designated a tuple containing the `:workspace` atom and
+  the id of the workspace, e.g.:
+
+      {:workspace, 2}
+
+
+  #### Custom scope
+
+  Other scopes can be created using a custom atom.
+
+
+  ## Security design
+
   The Account module implements the following principe in order
   to ensure security of the system:
   * Users are authenticated using MFA (login/password + authentication).
