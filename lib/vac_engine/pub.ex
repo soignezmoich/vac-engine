@@ -226,6 +226,8 @@ defmodule VacEngine.Pub do
         preload: :portal
       )
 
-    Repo.preload(blueprint, [active_publications: publications_query], force: true)
+    Repo.preload(blueprint, [active_publications: publications_query],
+      force: true
+    )
   end
 end

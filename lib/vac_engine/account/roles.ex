@@ -11,6 +11,41 @@ defmodule VacEngine.Account.Roles do
   import VacEngine.Pub, only: [bust_api_keys_cache: 0]
   import VacEngine.PipeHelpers
 
+  def list_roles(queries) do
+    Role
+    |> queries.()
+    |> Repo.all()
+  end
+
+  def get_role!(id, queries) do
+    Role
+    |> queries.()
+    |> Repo.get!(id)
+  end
+
+  def load_role_sessions(query) do
+    sessions_query =
+      from(s in Session,
+        order_by: [desc: s.inserted_at]
+      )
+
+    from(r in query,
+      preload: [
+        :global_permission,
+        :workspace_permissions,
+        sessions: ^sessions_query
+      ]
+    )
+  end
+
+  def filter_roles_by_type(query, type) do
+    from(r in query, where: r.type == ^type)
+  end
+
+  def filter_active_roles(query) do
+    from(r in query, where: r.active == true)
+  end
+
   def create_role_multi(type, attrs \\ %{}) do
     Multi.new()
     |> Multi.insert(:role, fn _ ->
@@ -46,15 +81,6 @@ defmodule VacEngine.Account.Roles do
     |> tap_ok(&bust_api_keys_cache/0)
   end
 
-  def active_roles(type) do
-    from(r in Role, where: r.type == ^type and r.active == true)
-    |> Repo.all()
-  end
-
-  def get_role!(id) do
-    Repo.get!(Role, id)
-  end
-
   def activate_role(%Role{} = role) do
     update_role(role, %{"active" => true})
   end
@@ -78,18 +104,5 @@ defmodule VacEngine.Account.Roles do
     )
     |> transaction(:role)
     |> tap_ok(&bust_api_keys_cache/0)
-  end
-
-  def load_sessions(%Role{} = role) do
-    sessions_query =
-      from(s in Session,
-        order_by: [desc: s.inserted_at]
-      )
-
-    Repo.preload(role, [
-      :global_permission,
-      :workspace_permissions,
-      sessions: sessions_query
-    ])
   end
 end

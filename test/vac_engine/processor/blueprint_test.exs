@@ -83,12 +83,22 @@ defmodule VacEngine.Processor.BlueprintTest do
                type: :integer
              })
 
-    blueprint = Processor.load_variables(blueprint)
+    blueprint =
+      Processor.get_blueprint!(blueprint.id, fn query ->
+        query
+        |> Processor.load_blueprint_variables()
+      end)
+
     variable = Map.fetch!(blueprint.variable_path_index, ["gender", "sub"])
 
     assert {:ok, _variable} = Processor.delete_variable(variable)
 
-    blueprint = Processor.load_variables(blueprint)
+    blueprint =
+      Processor.get_blueprint!(blueprint.id, fn query ->
+        query
+        |> Processor.load_blueprint_variables()
+      end)
+
     variable = Map.fetch!(blueprint.variable_path_index, ["gender"])
 
     assert {:ok, variable} =
@@ -157,16 +167,23 @@ defmodule VacEngine.Processor.BlueprintTest do
                ]
              })
 
-    blueprint = Processor.load_variables(blueprint)
+    blueprint =
+      Processor.get_blueprint!(blueprint.id, fn query ->
+        query
+        |> Processor.load_blueprint_variables()
+      end)
+
     var = Map.fetch!(blueprint.variable_path_index, ["parent", "sub"])
     sib = Map.fetch!(blueprint.variable_path_index, ["sib"])
 
     assert {:ok, var} = Processor.move_variable(var, sib)
 
     blueprint =
-      blueprint
-      |> Processor.load_variables()
-      |> Processor.load_deductions()
+      Processor.get_blueprint!(blueprint.id, fn query ->
+        query
+        |> Processor.load_blueprint_variables()
+        |> Processor.load_blueprint_full_deductions()
+      end)
 
     target =
       get_in(blueprint, [
@@ -184,9 +201,11 @@ defmodule VacEngine.Processor.BlueprintTest do
     assert {:ok, _var} = Processor.move_variable(var, blueprint)
 
     blueprint =
-      blueprint
-      |> Processor.load_variables()
-      |> Processor.load_deductions()
+      Processor.get_blueprint!(blueprint.id, fn query ->
+        query
+        |> Processor.load_blueprint_variables()
+        |> Processor.load_blueprint_full_deductions()
+      end)
 
     target =
       get_in(blueprint, [

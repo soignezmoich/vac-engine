@@ -1,9 +1,9 @@
-<%= case @blueprint do %>
-  <% nil -> %>
+<%= cond do %>
+  <% is_nil(@blueprint) or not connected?(@socket) -> %>
     <.flex_center>
     <.text_card title="Loading" text="Loading in progress."/>
     </.flex_center>
-  <% blueprint -> %>
+  <% not is_nil(@blueprint) -> %>
   <section class="flex flex-col w-full">
     <div class="p-4 flex-grow flex flex-col">
     <%= case @live_action do %>
@@ -15,13 +15,13 @@
          blueprint={@blueprint} />
     <% :variables -> %>
       <.variables_section
-        variables={blueprint.variables}
+        variables={@blueprint.variables}
         path={["variables"]}
         focus_path={[]} />
     <% :deductions -> %>
       <.deductions
-        deductions={blueprint.deductions}
-        variables={blueprint.variables}
+        deductions={@blueprint.deductions}
+        variables={@blueprint.variables}
         path={["deductions"]}
         selection_path={nil} />
     <% :import -> %>

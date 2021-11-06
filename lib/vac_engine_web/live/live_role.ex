@@ -24,7 +24,13 @@ defmodule VacEngineWeb.LiveRole do
     socket =
       socket
       |> assign_new(:workspaces, fn ->
-        Account.available_workspaces(socket.assigns.role_session.role)
+        role = socket.assigns.role_session.role
+
+        Account.list_workspaces(fn query ->
+          query
+          |> Account.filter_accessible_workspaces(role)
+          |> Account.order_workspaces(:name)
+        end)
       end)
 
     {:cont, socket}

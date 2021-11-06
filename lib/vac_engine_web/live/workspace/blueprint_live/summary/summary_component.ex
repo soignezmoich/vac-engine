@@ -2,7 +2,6 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.SummaryComponent do
   use VacEngineWeb, :live_component
 
   alias VacEngine.Processor
-  alias VacEngine.Pub.Publication
   alias VacEngine.Pub.Portal
   alias VacEngine.Pub
 
@@ -13,8 +12,6 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.SummaryComponent do
       |> Processor.change_blueprint()
       |> Map.put(:action, :insert)
 
-    publications = Pub.load_publications(assigns.blueprint).publications
-
     portal_changeset = %Portal{} |> Pub.change_portal()
 
     {:ok,
@@ -22,7 +19,6 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.SummaryComponent do
        changeset: changeset,
        blueprint: assigns.blueprint,
        role: assigns.role,
-       publications: publications,
        portal_changeset: portal_changeset
      )}
   end
@@ -106,5 +102,23 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.SummaryComponent do
             {:noreply, socket}
         end
     end
+  end
+
+  @impl true
+  def handle_event(
+        "delete",
+        _,
+        %{assigns: %{blueprint: blueprint}} = socket
+      ) do
+    can!(socket, :delete, blueprint)
+
+    {:ok, _} = Processor.delete_blueprint(blueprint)
+
+    {:noreply,
+     socket
+     |> push_redirect(
+       to:
+         Routes.workspace_blueprint_path(socket, :index, blueprint.workspace_id)
+     )}
   end
 end

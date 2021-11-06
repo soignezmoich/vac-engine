@@ -8,7 +8,7 @@
     <p class="font-bold">No API key.</p>
   <% tokens -> %>
     <%= for token <- tokens do %>
-      <div class="border-b flex px-2 py-4 w-full">
+      <div class="border-b flex py-4 w-full">
         <div class="flex flex-col flex-grow">
           <span class="font-bold">Created <%= format_date(token.inserted_at) %></span>
           <span><%= token.role.description %></span>

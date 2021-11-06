@@ -20,12 +20,6 @@
                   to: Routes.workspace_path(@socket, :edit, w.id),
                   class: "btn-sm inline-block"
                 ) %>
-            <.button
-              class="btn-sm ml-2"
-              key={"delete.#{w.id}"}
-              click="delete"
-              label="Delete"
-              tooltip_key={ @current_tooltip} />
           </td>
         </tr>
       <% end %>

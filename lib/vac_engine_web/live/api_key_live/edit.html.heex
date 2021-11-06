@@ -31,8 +31,8 @@
     <% else %>
       <.button class="btn"
             click="reveal_secret"
-            key="reveal_secret"
-            tooltip_key={@current_tooltip}
+            id="reveal_secret"
+            confirm
             label="Secret is hidden, click to reveal" />
     <% end %>
   </div>
@@ -40,8 +40,8 @@
   <.button
    class="btn mt-8"
    click="delete"
-   key="delete"
-   tooltip_key={@current_tooltip}
+   id="delete"
+   confirm
    label="Delete API key" />
 </div>
 

@@ -31,20 +31,20 @@
       <% else %>
         <.button
               class="btn-sm mr-4"
-              key="generate_password"
+              id="generate_password"
               click="generate_password"
               label="Regenerate password"
-              tooltip_key={ @current_tooltip} />
+              confirm />
       <% end %>
     </div>
 
     <div class="flex mb-4">
       <%= component(&button/1,
             class: "btn-sm mr-4",
-            key: "toggle_active",
+            id: "toggle_active",
             click: "toggle_active",
             label: (if @user_role.active do "Deactivate" else "Activate" end),
-            tooltip_key: @current_tooltip
+            confirm: true
       ) %>
     </div>
   <% end %>
@@ -93,8 +93,8 @@
           <.toggle
               value={@user_role.global_permission.super_admin}
               click="toggle_permission"
-              key="global.super_admin"
-              tooltip_key={@current_tooltip} />
+              id="global.super_admin"
+              confirm />
           <% else %>
             <span class="font-bold">
               <%= format_bool(@user_role.global_permission.super_admin) %>
@@ -149,10 +149,10 @@
                   <% !expired and @edit and not @myself -> %>
                     <%= component(&button/1,
                           class: "btn-sm",
-                          key: "revoke_session_#{s.id}",
+                          id: "revoke_session_#{s.id}",
                           click: "revoke_session",
                           label: "Revoke",
-                          tooltip_key: @current_tooltip
+                          values: %{id: s.id}
                     ) %>
                   <% true -> %>
                 <% end %>

@@ -1,6 +1,5 @@
 defmodule VacEngineWeb.UserLive.Edit do
   use VacEngineWeb, :live_view
-  use VacEngineWeb.TooltipHelpers
 
   import VacEngineWeb.PermissionHelpers
   alias VacEngine.Account
@@ -17,8 +16,6 @@ defmodule VacEngineWeb.UserLive.Edit do
      assign(socket,
        edit: can?(socket, :users, :write),
        user_id: uid,
-       current_tooltip: nil,
-       clear_tooltip_ref: nil,
        generated_password: nil
      )
      |> reload_user}
@@ -61,8 +58,8 @@ defmodule VacEngineWeb.UserLive.Edit do
   @impl true
   def handle_event(
         "generate_password",
-        %{"key" => key},
-        %{assigns: %{current_tooltip: key, user: user}} = socket
+        _,
+        %{assigns: %{user: user}} = socket
       ) do
     not_myself!(socket, user)
     can!(socket, :manage, :users)
@@ -74,14 +71,8 @@ defmodule VacEngineWeb.UserLive.Edit do
 
     {:noreply,
      socket
-     |> clear_tooltip
      |> reload_user
      |> assign(generated_password: pass)}
-  end
-
-  @impl true
-  def handle_event("generate_password", %{"key" => key}, socket) do
-    {:noreply, set_tooltip(socket, key)}
   end
 
   @impl true
@@ -96,8 +87,8 @@ defmodule VacEngineWeb.UserLive.Edit do
   @impl true
   def handle_event(
         "toggle_permission",
-        %{"key" => permission},
-        %{assigns: %{current_tooltip: permission, user_role: role}} = socket
+        _,
+        %{assigns: %{user_role: role}} = socket
       ) do
     not_myself!(socket, role)
     can!(socket, :manage, :users)
@@ -108,31 +99,20 @@ defmodule VacEngineWeb.UserLive.Edit do
 
     {:noreply,
      socket
-     |> clear_tooltip
      |> reload_user}
   end
 
   @impl true
   def handle_event(
-        "toggle_permission",
-        %{"key" => permission},
-        socket
-      ) do
-    {:noreply, set_tooltip(socket, permission)}
-  end
-
-  @impl true
-  def handle_event(
         "revoke_session",
-        %{"key" => key},
-        %{assigns: %{current_tooltip: key, user: user}} = socket
+        %{"id" => session_id},
+        %{assigns: %{user: user}} = socket
       ) do
     not_myself!(socket, user)
-    can!(socket, :manage, :users)
-
-    "revoke_session_" <> session_id = key
 
     session = Account.get_session!(session_id)
+
+    can!(socket, :revoke, session)
     check!(session.role_id == user.role_id)
 
     {:ok, session} = Account.revoke_session(session)
@@ -141,24 +121,14 @@ defmodule VacEngineWeb.UserLive.Edit do
 
     {:noreply,
      socket
-     |> clear_tooltip
      |> reload_user}
   end
 
   @impl true
   def handle_event(
-        "revoke_session",
-        %{"key" => key},
-        socket
-      ) do
-    {:noreply, set_tooltip(socket, key)}
-  end
-
-  @impl true
-  def handle_event(
         "toggle_active",
-        %{"key" => key},
-        %{assigns: %{current_tooltip: key, user_role: role}} = socket
+        _,
+        %{assigns: %{user_role: role}} = socket
       ) do
     not_myself!(socket, role)
     can!(socket, :manage, :users)
@@ -174,25 +144,13 @@ defmodule VacEngineWeb.UserLive.Edit do
 
     {:noreply,
      socket
-     |> clear_tooltip
      |> reload_user}
-  end
-
-  @impl true
-  def handle_event(
-        "toggle_active",
-        %{"key" => key},
-        socket
-      ) do
-    {:noreply, set_tooltip(socket, key)}
   end
 
   def reload_user(%{assigns: %{user_id: uid}} = socket) do
     user = Account.get_user!(uid)
 
-    role =
-      Account.get_role!(user.role_id)
-      |> Account.load_sessions()
+    role = Account.get_role!(user.role_id, &Account.load_role_sessions/1)
 
     changeset =
       user

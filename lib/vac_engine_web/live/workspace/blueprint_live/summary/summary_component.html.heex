@@ -1,4 +1,4 @@
-<div>
+<div class="w-full max-w-3xl mb-8">
   <%= live_redirect("← Back to list",
         to: Routes.workspace_blueprint_path(@socket, :index, @blueprint.workspace_id),
         class: "inline-block mb-4 btn"
@@ -11,7 +11,7 @@
     let={f}
     for={@changeset}
     id="summary_blueprint_form"
-    class="flex flex-col w-128"
+    class="flex flex-col w-96"
     phx-target={@myself}
     phx-throttle="100"
     phx-change="validate"
@@ -47,43 +47,48 @@
     </div>
 
   </.form>
-  <%= case @publications do %>
-  <% [] -> %>
-    <p class="italic">
-      Blueprint has no existing publication.
-    </p>
-  <% publications -> %>
-    <table class="listing-table">
-      <thead>
-        <th>Portal ID</th>
-        <th>Portal Name</th>
-        <th>Active?</th>
-        <th></th>
-      </thead>
-      <tbody>
-        <%= for p <- publications do %>
-          <%= if Publication.active?(p) do %>
-            <tr>
-              <td>
-                <%= p.portal.id %>
-              </td>
-              <td>
-                <%= p.portal.name %>
-              </td>
-              <td>
-                <%= Publication.active?(p) %>
-              </td>
-              <td>
-                <%= live_redirect("Portal details",
-                      to: Routes.workspace_portal_path(@socket, :edit,
-                            p.workspace_id, p.portal_id),
-                      class: "btn-sm inline-block"
-                    ) %>
-              </td>
-            </tr>
-          <% end %>
-        <% end %>
-      </tbody>
-    </table>
+
+  <%= case @blueprint.active_publications do %>
+  <% [_|_] = publications -> %>
+    <%= for p <- publications do %>
+      <div class="border-b flex py-4 w-128">
+         <div class="flex flex-col flex-grow">
+           <span class="font-bold">
+             Portal #<%= p.portal_id %>: <%= p.portal.name %>
+           </span>
+            <span class="text-sm">Published <%= format_date(p.activated_at) %></span>
+         </div>
+         <div class="flex flex-col">
+           <%= live_redirect("Portal details",
+                 to: Routes.workspace_portal_path(@socket, :edit,
+                       p.workspace_id, p.portal_id),
+                 class: "btn"
+               ) %>
+         </div>
+      </div>
+    <% end %>
+  <% _ -> %>
+    <div class="text-sm mt-2">
+      No active publication
+    </div>
+  <% end %>
+
+
+  <div class="font-bold text-lg mt-8 mb-4">
+    Manage blueprint
+  </div>
+  <%= case @blueprint.active_publications do %>
+  <% [_|_] -> %>
+    <div class="italic mt-8 mb-4">
+      Blueprint has active publications and cannot be deleted.
+    </div>
+  <% _ -> %>
+    <.button
+          class="btn mr-4"
+          click="delete"
+          label="Delete"
+          target={@myself}
+          id="delete-btn"
+          confirm />
   <% end %>
 </div>
