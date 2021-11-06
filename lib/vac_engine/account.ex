@@ -1,7 +1,6 @@
 defmodule VacEngine.Account do
   @moduledoc """
-  The Account module is responsible for the management
-  of a role-based permission system.
+  Rsponsible for the management of a role-based permission system.
 
 
   ## Roles
