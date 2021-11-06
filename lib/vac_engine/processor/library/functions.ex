@@ -1,6 +1,17 @@
 defmodule VacEngine.Processor.Library.Functions do
   @moduledoc """
   Actual blueprint expression functions
+
+  Functions defined in this module correspond to the functions
+  available to compose complex blueprint expressions.
+
+  Function have:
+  - a name (the actual function)
+  - a short name, defined by a `@short` attribute
+  - a label, defined by a `@label` attribute
+  - one or more signatures, defined by a `@signature` attribute. Each signature
+    defines a valid type combination of argument and output
+  - one or more implementations to handle all the possible types and inputs
   """
 
   use VacEngine.Processor.Library.Define
