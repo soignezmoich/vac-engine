@@ -8,13 +8,13 @@
     <%= for user <- users do %>
       <div class="border-b flex py-4 w-full">
         <div class="flex flex-col flex-grow">
-          <span class="font-bold">
+          <div class="font-bold">
             <%= user.name %>
 
             <%= if user.role_id == @role_session.role_id do %>
               (You)
             <% end %>
-          </span>
+          </div>
           <span class="text-sm mb-2"><%= user.email %></span>
           <div class="flex">
             <span class="text-sm mr-2">Created <%= format_date(user.inserted_at) %></span>
