@@ -15,9 +15,12 @@ defmodule VacEngine.Account.Workspace do
     has_many(:permissions, WorkspacePermission)
     has_many(:blueprints, Blueprint)
     has_many(:portals, Portal)
+    has_many(:publications, through: [:portals, :publications])
 
     field(:name, :string)
     field(:description, :string)
+    field(:blueprint_count, :integer, virtual: true)
+    field(:active_publication_count, :integer, virtual: true)
   end
 
   @doc false

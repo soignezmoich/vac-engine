@@ -4,9 +4,7 @@
         class: "inline-block mb-4 btn-default"
       ) %>
   <%= case @users do %>
-  <% [] -> %>
-    <p class="font-bold">No User.</p>
-  <% users -> %>
+  <% [_|_] = users -> %>
     <%= for user <- users do %>
       <div class="border-b flex py-4 w-full">
         <div class="flex flex-col flex-grow">
@@ -38,5 +36,7 @@
         </div>
       </div>
     <% end %>
+  <% _ -> %>
+    <p class="font-bold">No User.</p>
   <% end %>
 </div>

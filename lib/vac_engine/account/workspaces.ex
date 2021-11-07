@@ -30,6 +30,19 @@ defmodule VacEngine.Account.Workspaces do
     )
   end
 
+  def load_workspace_stats(query) do
+    from(r in query,
+      left_join: br in assoc(r, :blueprints),
+      left_join: pub in assoc(r, :publications),
+      on: is_nil(pub.deactivated_at),
+      group_by: r.id,
+      select_merge: %{
+        blueprint_count: count(br.id),
+        active_publication_count: count(pub.id)
+      }
+    )
+  end
+
   def filter_accessible_workspaces(query, %Role{
         global_permission: %{super_admin: true}
       }) do
@@ -43,7 +56,7 @@ defmodule VacEngine.Account.Workspaces do
     )
   end
 
-  def order_workspaces(query, key) do
+  def order_workspaces_by(query, key) do
     from(r in query, order_by: field(r, ^key))
   end
 

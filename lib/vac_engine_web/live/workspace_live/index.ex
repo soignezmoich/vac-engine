@@ -12,7 +12,12 @@ defmodule VacEngineWeb.WorkspaceLive.Index do
 
     {:ok,
      assign(socket,
-       workspaces: Account.list_workspaces()
+       workspaces:
+         Account.list_workspaces(fn query ->
+           query
+           |> Account.load_workspace_stats()
+           |> Account.order_workspaces_by(:name)
+         end)
      )}
   end
 end

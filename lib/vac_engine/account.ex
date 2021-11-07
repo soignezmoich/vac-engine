@@ -164,9 +164,14 @@ defmodule VacEngine.Account do
   defdelegate load_workspace_blueprints(query), to: Workspaces
 
   @doc """
+  Load blueprint_count and active_publication_count
+  """
+  defdelegate load_workspace_stats(query), to: Workspaces
+
+  @doc """
   Order workspace by key
   """
-  defdelegate order_workspaces(query, key), to: Workspaces
+  defdelegate order_workspaces_by(query, key), to: Workspaces
 
   @doc """
   Create a workspace with attributes

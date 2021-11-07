@@ -68,6 +68,7 @@ defmodule VacEngine.Account.AccessTokens do
       order_by: [desc: t.id],
       preload: :role
     )
+    |> queries.()
     |> Repo.all()
   end
 

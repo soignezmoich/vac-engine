@@ -43,10 +43,10 @@ defmodule VacEngineWeb.WorkspaceLive.New do
 
     Account.create_workspace(params)
     |> case do
-      {:ok, _result} ->
+      {:ok, result} ->
         {:noreply,
          socket
-         |> push_redirect(to: Routes.workspace_path(socket, :index))}
+         |> push_redirect(to: Routes.workspace_path(socket, :edit, result))}
 
       {:error, changeset} ->
         {:noreply, assign(socket, changeset: changeset)}
