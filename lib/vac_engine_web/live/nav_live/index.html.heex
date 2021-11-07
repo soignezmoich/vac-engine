@@ -1,26 +1,21 @@
-<section class="p-4">
-  <h1 class="font-bold text-xl mb-6">
-    Available workspaces
-  </h1>
-  <table class="listing-table">
-    <thead>
-      <th>Name</th>
-      <th></th>
-    </thead>
-    <tbody>
-      <%= for w <- @workspaces do %>
-        <tr>
-          <td>
-            <%= w.name %>
-          </td>
-          <td>
-            <%= live_redirect("Select",
-                  to: Routes.workspace_dashboard_path(@socket, :index, w.id),
-                  class: "btn-sm inline-block"
-                ) %>
-          </td>
-        </tr>
+<div class="p-4 w-full">
+  <%= case @workspaces do %>
+  <% [_|_] = workspaces -> %>
+    <div class="w-full flex flex-wrap">
+      <%= for w <- workspaces do %>
+        <%= live_redirect(
+          to: Routes.workspace_dashboard_path(@socket, :index, w.id),
+          class: "w-32 h-16 border rounded m-1
+            flex justify-center items-center
+            bg-cream-100"
+        ) do %>
+          <span class="text-sm text-center p-1">
+            <%= tr(w.name, 24) %>
+          </span>
+        <% end %>
       <% end %>
-    </tbody>
-  </table>
-</section>
+    </div>
+  <% _ -> %>
+    <p class="font-bold">No workspace.</p>
+  <% end %>
+</div>
