@@ -1,6 +1,72 @@
 defmodule VacEngine.Pub do
   @moduledoc """
-  Publication manager
+  Provides a publication manager to allow processors to be
+  accessible through the API.
+
+  ## Portals
+
+  Portals are the access points of the application. Each portal
+  is responsible to give access to a single processor through the API.
+  Therefore, a protal has a reference exactly one blueprint in
+  the api. The reference is called a "publication".
+
+  Interface to consume a portal is made of a pair of calls:
+  - the`run_cached/1` function and
+  - the `info_cached/1`function
+
+
+  #### Run function
+
+  Runs the linked processor on the given input, using the provided api_key
+  to authenticate:
+
+      {:ok, %{input: input, output: output}} =
+        Pub.run_cached(%{api_key: api_key, portal_id: portal_id, input: input})
+
+  Note that the in-memory compiled processor is used as indicated by the
+  *cached* suffix.
+
+  #### Info function
+
+  Gets the description of the processor linked to the portal
+
+      {:ok, %{input: input_schema, output: output_schema, logic: logic}} =
+        Pub.info_cached(%{api_key: api_key, portal_id: portal_id})
+
+  Again, the in-memory compiled processor is used.
+
+  > *Note: The decription of the corresponding API endpoints is available
+  > in the swagger documentation at `/priv/static/docs/api.html`.*
+
+  ## Publications
+
+  A publication links a processor to a portal. The same processor can be
+  published several times, but a portal can have only one active publication
+  at a time.
+
+  #### Create a publication
+
+  Since a portal must give access to exactly processor, publication
+  is always made with a blueprint as parameter in the `publish_blueprint/2`
+  function. This function returns the corresponding publication:
+
+      {:ok, publication} = Pub.publish_blueprint()
+
+  #### Publication deactivation
+
+  Publication can be deactivated using the `deactivate_publication/1`. This
+  is necessary if you want to publish a new form to a given portal.
+
+  #### Cache management
+
+  As stated above, blueprints are stored in cache. API keys are also stored in
+  cache. It is the responsibility of the consumer to refresh the cache when
+  corresponding data should be updated (e.g. when new blueprint is associated
+  to the portal, when the linked blueprint is modified or when the API keys
+  are modified). This can be done using the `bust_cache/0`, the
+  `bust_blueprint_cache/0` and `bust_api_keys_cache/0` funtions.
+
+  TODO not possible to reactivate??
   """
   import Ecto.Query
   alias Ecto.Multi
