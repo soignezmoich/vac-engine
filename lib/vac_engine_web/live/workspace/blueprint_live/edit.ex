@@ -7,7 +7,7 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.Edit do
   alias VacEngineWeb.Workspace.BlueprintLive.SummaryComponent
   alias VacEngineWeb.Workspace.BlueprintLive.ImportComponent
   alias VacEngineWeb.Editor.DeductionSetEditorComponent
-  alias VacEngineWeb.Editor.VariableEditorComponent
+  alias VacEngineWeb.Editor.VariableSetEditorComponent
 
   on_mount(VacEngineWeb.LiveRole)
   on_mount(VacEngineWeb.LiveWorkspace)
