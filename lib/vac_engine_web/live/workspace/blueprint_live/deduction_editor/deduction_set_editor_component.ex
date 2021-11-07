@@ -1,22 +1,9 @@
 defmodule VacEngineWeb.Editor.DeductionSetEditorComponent do
   use VacEngineWeb, :live_component
 
-  import VacEngineWeb.Editor.DeductionListComponent
+  alias VacEngineWeb.Editor.DeductionListComponent, as: DeductionList
 
   def update(assigns, socket) do
-    IO.inspect(List.first(assigns.deductions))
-
-    deductions_with_path =
-      assigns.deductions
-      |> Enum.with_index()
-      |> Enum.map(fn {deduction, index} ->
-        {[index | assigns.path], deduction}
-      end)
-
-    {:ok,
-     assign(socket,
-       deductions_with_path: deductions_with_path,
-       selection_path: nil
-     )}
+    {:ok, assign(socket, deductions: assigns.deductions, selection_path: nil)}
   end
 end

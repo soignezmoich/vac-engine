@@ -1,13 +1,16 @@
 defmodule VacEngineWeb.Editor.DeductionListComponent do
   use Phoenix.Component
 
-  import VacEngineWeb.Editor.DeductionComponent
+  alias VacEngineWeb.Editor.DeductionComponent, as: Deduction
 
-  def deduction_list(assigns) do
-
+  def render(assigns) do
     ~H"""
-    <%= for {path, deduction} <- @deductions_with_path do %>
-      <.deduction deduction={deduction} path={path} selection_path={@selection_path}/>
+    <%= for {deduction, index} <- @deductions |> Enum.with_index() do %>
+      <Deduction.render
+        deduction={deduction}
+        parent_path={["deductions"]}
+        index={index}
+        selection_path={@selection_path} />
     <% end %>
     """
   end
