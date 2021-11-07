@@ -1,7 +1,7 @@
 defmodule VacEngineWeb.Editor.VariableComponent do
   use Phoenix.Component
 
-  def variable(assigns) do
+  def render(assigns) do
     # prefix={@path |> Enum.drop(-1) |> Enum.drop(2)}
 
     assigns =
@@ -33,7 +33,6 @@ defmodule VacEngineWeb.Editor.VariableComponent do
     </tr>
     """
   end
-
 
   def build_renderable(variable, path) do
     indentation =
@@ -67,67 +66,5 @@ defmodule VacEngineWeb.Editor.VariableComponent do
       required: required,
       enum: enum
     }
-  end
-
-  def dot_name_input(assigns) do
-    ~H"""
-    <div class="mx-1 whitespace-nowrap">
-        <%= @text %><%= @required_indication %>
-    </div>
-    """
-  end
-
-  def type_input(%{variable: %{type: :map}} = assigns) do
-    ~H"""
-    """
-  end
-
-  def type_input(%{variable: %{type: _}} = assigns) do
-    ~H"""
-      <div>
-        <%= @variable.type %>
-      </div>
-    """
-  end
-
-  def type_input(assigns) do
-    ~H"""
-      unknown_type:<%= inspect(assigns.variable) %>
-    """
-  end
-
-  def in_out(assigns) do
-    dot_path =
-      assigns.path
-      |> Enum.reverse()
-      |> Enum.join(".")
-
-    assigns =
-      assign(assigns, %{
-        dot_path: dot_path,
-        # variable.<variable_name>.in_out
-        is_root: Enum.count(assigns.path) == 3
-      })
-
-    ~H"""
-    <%= if @is_root do %>
-      <form phx-change="save_in_out" class="mx-1">
-        <input type="hidden" name="path" value={@dot_path} />
-        <select name="in_out" class="bg-white form-fld mb-1" >
-          <option value="input" selected={@is_input}>input</option>
-          <option value="output" selected={!@is_input && @is_output}>output</option>
-          <option value="intermediate" selected={!@is_input && !@is_output}>intermediate</option>
-        </select>
-      </form>
-    <% end %>
-    """
-  end
-
-  def common_values(assigns) do
-    ~H"""
-      <div>
-        <%= @values |> Enum.join(", ") %>
-      </div>
-    """
   end
 end

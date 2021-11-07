@@ -29,18 +29,34 @@ defmodule VacEngine.Editor.VariableListComponentTest do
 
   @renderable %{
     input_variables: [
-      %{path: ["variables", "input", "in_required"],
-       variable: %Variable{mapping: :in_required, children: [], name: "in_required"}},
-      %{path: ["variables", "input", "in_optional"],
-       variable: %Variable{mapping: :in_optional, children: [], name: "in_optional"}}
+      %{
+        path: ["variables", "input", "in_required"],
+        variable: %Variable{
+          mapping: :in_required,
+          children: [],
+          name: "in_required"
+        }
+      },
+      %{
+        path: ["variables", "input", "in_optional"],
+        variable: %Variable{
+          mapping: :in_optional,
+          children: [],
+          name: "in_optional"
+        }
+      }
     ],
     intermediate_variables: [
-      %{path: ["variables", "intermediate", "intermediate"],
-       variable: %Variable{mapping: nil, children: [], name: "intermediate"}}
+      %{
+        path: ["variables", "intermediate", "intermediate"],
+        variable: %Variable{mapping: nil, children: [], name: "intermediate"}
+      }
     ],
     output_variables: [
-      %{path: ["variables", "output", "out"],
-       variable: %Variable{mapping: :out, children: [], name: "out"}}
+      %{
+        path: ["variables", "output", "out"],
+        variable: %Variable{mapping: :out, children: [], name: "out"}
+      }
     ]
   }
 
@@ -62,14 +78,16 @@ defmodule VacEngine.Editor.VariableListComponentTest do
     input_variables: [],
     intermediate_variables: [],
     output_variables: [
-      %{path: ["variables", "output", "out"],
+      %{
+        path: ["variables", "output", "out"],
         variable: %Variable{
           mapping: :out,
           children: [%Variable{mapping: :out, children: [], name: "out_nested"}],
           name: "out"
         }
       },
-      %{path: ["variables", "output", "out", "out_nested"],
+      %{
+        path: ["variables", "output", "out", "out_nested"],
         variable: %Variable{mapping: :out, children: [], name: "out_nested"}
       }
     ]

@@ -4,7 +4,6 @@ defmodule VacEngine.Editor.VariableComponentTest do
   alias VacEngine.Processor.Variable
   alias VacEngineWeb.Editor.VariableComponent
 
-
   # Name property
 
   @variable %Variable{name: "age"}
@@ -15,7 +14,6 @@ defmodule VacEngine.Editor.VariableComponentTest do
     renderable = VariableComponent.build_renderable(@variable, @path)
     assert renderable |> Map.get(:name) == @expected_name
   end
-
 
   # Type property
 
@@ -28,7 +26,6 @@ defmodule VacEngine.Editor.VariableComponentTest do
     assert renderable |> Map.get(:type) == @expected_type
   end
 
-
   # Required property
 
   @variable %Variable{mapping: nil}
@@ -40,7 +37,6 @@ defmodule VacEngine.Editor.VariableComponentTest do
     assert renderable |> Map.get(:required) == @expected_required
   end
 
-
   @variable %Variable{mapping: :none}
   @path ["variables", "input", "age"]
   @expected_required ""
@@ -49,7 +45,6 @@ defmodule VacEngine.Editor.VariableComponentTest do
     renderable = VariableComponent.build_renderable(@variable, @path)
     assert renderable |> Map.get(:required) == @expected_required
   end
-
 
   @variable %Variable{mapping: :out}
   @path ["variables", "input", "age"]
@@ -60,8 +55,7 @@ defmodule VacEngine.Editor.VariableComponentTest do
     assert renderable |> Map.get(:required) == @expected_required
   end
 
-
-  @variable %Variable{ mapping: :in_optional }
+  @variable %Variable{mapping: :in_optional}
   @path ["variables", "input", "age"]
   @expected_required ""
 
@@ -70,8 +64,7 @@ defmodule VacEngine.Editor.VariableComponentTest do
     assert renderable |> Map.get(:required) == @expected_required
   end
 
-
-  @variable %Variable{ mapping: :in_required }
+  @variable %Variable{mapping: :in_required}
   @path ["variables", "input", "age"]
   @expected_required "*"
 
@@ -80,20 +73,24 @@ defmodule VacEngine.Editor.VariableComponentTest do
     assert renderable |> Map.get(:required) == @expected_required
   end
 
-
   # Enum property
 
   @variable %Variable{
-    enum: ["Bill", "Bob"],
+    enum: ["Bill", "Bob"]
   }
 
   @expected_enum "Bill, Bob"
 
   test "'build_renderable' should build proper enum string" do
-    renderable = VariableComponent.build_renderable(@variable, ["variables", "input", "name"])
+    renderable =
+      VariableComponent.build_renderable(@variable, [
+        "variables",
+        "input",
+        "name"
+      ])
+
     assert renderable |> Map.get(:enum) == @expected_enum
   end
-
 
   # Indentation property
 
@@ -118,5 +115,4 @@ defmodule VacEngine.Editor.VariableComponentTest do
     renderable = VariableComponent.build_renderable(@variable, @path)
     assert renderable |> Map.get(:indentation) == @expected_indentation
   end
-
 end

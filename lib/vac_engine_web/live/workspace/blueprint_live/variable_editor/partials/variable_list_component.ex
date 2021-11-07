@@ -2,12 +2,12 @@ defmodule VacEngineWeb.Editor.VariableListComponent do
   use Phoenix.Component
 
   import Elixir.Integer
-  import VacEngineWeb.Editor.VariableComponent
 
-  alias VacEngine.Processor.Variable
+  alias VacEngine.Processor.Variable, as: PVariable
+  alias VacEngineWeb.Editor.VariableComponent, as: Variable
   alias VacEngineWeb.Icons
 
-  def variable_list(assigns) do
+  def render(assigns) do
     assigns =
       assign(assigns,
         renderable: build_renderable(assigns.variables)
@@ -31,7 +31,7 @@ defmodule VacEngineWeb.Editor.VariableListComponent do
         <tbody>
           <%= for {%{path: path, variable: variable}, index}
                   <- @renderable.input_variables |> Enum.with_index() do %>
-            <.variable
+            <Variable.render
               variable={variable}
               path={path}
             even={is_even(index)}
@@ -55,7 +55,7 @@ defmodule VacEngineWeb.Editor.VariableListComponent do
       <tbody>
         <%= for {%{path: path, variable: variable}, index}
                 <- @renderable.intermediate_variables |> Enum.with_index() do %>
-          <.variable
+          <Variable.render
             variable={variable}
             path={path}
             even={is_even(index)}
@@ -79,7 +79,7 @@ defmodule VacEngineWeb.Editor.VariableListComponent do
       <tbody>
         <%= for {%{path: path, variable: variable}, index}
                 <- @renderable.output_variables |> Enum.with_index() do %>
-          <.variable
+          <Variable.render
             variable={variable}
             path={path}
             even={is_even(index)}
@@ -93,7 +93,7 @@ defmodule VacEngineWeb.Editor.VariableListComponent do
   def build_renderable(variables) do
     input =
       variables
-      |> Enum.filter(fn variable -> Variable.input?(variable) end)
+      |> Enum.filter(fn variable -> PVariable.input?(variable) end)
       |> Enum.flat_map(fn variable ->
         flatten_tree(["input", "variables"], variable)
       end)
@@ -103,7 +103,7 @@ defmodule VacEngineWeb.Editor.VariableListComponent do
 
     output =
       variables
-      |> Enum.filter(fn variable -> Variable.output?(variable) end)
+      |> Enum.filter(fn variable -> PVariable.output?(variable) end)
       |> Enum.flat_map(fn variable ->
         flatten_tree(["output", "variables"], variable)
       end)
@@ -114,7 +114,7 @@ defmodule VacEngineWeb.Editor.VariableListComponent do
     intermediate =
       variables
       |> Enum.filter(fn variable ->
-        !Variable.input?(variable) && !Variable.output?(variable)
+        !PVariable.input?(variable) && !PVariable.output?(variable)
       end)
       |> Enum.flat_map(fn variable ->
         flatten_tree(["intermediate", "variables"], variable)
