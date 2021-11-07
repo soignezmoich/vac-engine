@@ -81,6 +81,37 @@ defmodule VacEngine.Pub do
   import VacEngine.PipeHelpers
   import VacEngine.EctoHelpers, only: [transaction: 2]
 
+  @doc """
+  List all portals
+  """
+  def list_portals(queries \\ & &1) do
+    Portal
+    |> queries.()
+    |> Repo.all()
+  end
+
+  def filter_active_portals(query) do
+    from(p in query,
+      join: pub in assoc(p, :publications),
+      on: is_nil(pub.deactivated_at)
+    )
+  end
+
+  def load_portal_active_publication(query) do
+    publications_query =
+      from(r in Publication,
+        order_by: [desc: r.activated_at],
+        where: is_nil(r.deactivated_at),
+        preload: :blueprint
+      )
+
+    from(p in query, preload: [active_publication: ^publications_query])
+  end
+
+  def filter_portals_by_workspace(query, workspace) do
+    from(p in query, where: p.workspace_id == ^workspace.id)
+  end
+
   # TODO change to reuse portal when possible
   @doc """
   Publish a blueprint.
@@ -163,14 +194,6 @@ defmodule VacEngine.Pub do
       _ ->
         {:error, "publication not found "}
     end
-  end
-
-  @doc """
-  List all portals
-  """
-  def list_portals() do
-    from(p in Portal, preload: [:publications])
-    |> Repo.all()
   end
 
   @doc """

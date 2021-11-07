@@ -379,20 +379,14 @@ defmodule VacEngine.Account do
   def list_api_keys() do
     # TODO actually check role portal id permissions
     portals =
-      Pub.list_portals()
-      |> Enum.map(fn portal ->
-        portal
-        |> Pub.load_active_publication()
-        |> Map.get(:active_publication)
-        |> case do
-          nil ->
-            nil
-
-          publi ->
-            {portal.id, %{blueprint_id: publi.blueprint_id}}
-        end
+      Pub.list_portals(fn query ->
+        query
+        |> Pub.filter_active_portals()
+        |> Pub.load_portal_active_publication()
       end)
-      |> Enum.reject(&is_nil/1)
+      |> Enum.map(fn portal ->
+        {portal.id, %{blueprint_id: portal.active_publication.blueprint_id}}
+      end)
       |> Map.new()
 
     list_roles(fn query ->
