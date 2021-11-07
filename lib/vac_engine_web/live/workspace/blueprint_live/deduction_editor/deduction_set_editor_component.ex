@@ -2,9 +2,9 @@ defmodule VacEngineWeb.Editor.DeductionSetEditorComponent do
   use VacEngineWeb, :live_component
 
   import VacEngineWeb.Editor.DeductionActionGroupComponent
-  import VacEngineWeb.Editor.DeductionComponent
   import VacEngineWeb.Editor.FormActionGroupComponent
   import VacEngineWeb.Editor.ExpressionEditorComponent
+  import VacEngineWeb.Editor.DeductionListComponent
 
   def update(assigns, socket) do
     IO.inspect(List.first(assigns.deductions))
