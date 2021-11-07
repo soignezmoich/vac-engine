@@ -11,8 +11,8 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.New do
   on_mount({VacEngineWeb.LiveLocation, ~w(workspace blueprint new)a})
 
   @impl true
-  def mount(_params, _session, socket) do
-    can!(socket, :create, :blueprint)
+  def mount(_params, _session, %{assigns: %{workspace: workspace}} = socket) do
+    can!(socket, :create_blueprint, workspace)
 
     changeset =
       %Blueprint{}
@@ -42,7 +42,7 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.New do
         %{"blueprint" => params},
         %{assigns: %{workspace: workspace}} = socket
       ) do
-    can!(socket, :create, :blueprint)
+    can!(socket, :create_blueprint, workspace)
 
     Processor.create_blueprint(workspace, params)
     |> case do
