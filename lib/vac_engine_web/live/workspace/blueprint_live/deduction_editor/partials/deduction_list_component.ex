@@ -9,8 +9,7 @@ defmodule VacEngineWeb.Editor.DeductionListComponent do
       <Deduction.render
         deduction={deduction}
         parent_path={["deductions"]}
-        index={index}
-        selection_path={@selection_path} />
+        index={index} />
     <% end %>
     """
   end
