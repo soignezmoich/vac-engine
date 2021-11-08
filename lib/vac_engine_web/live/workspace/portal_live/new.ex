@@ -6,7 +6,7 @@ defmodule VacEngineWeb.Workspace.PortalLive.New do
 
   on_mount(VacEngineWeb.LiveRole)
   on_mount(VacEngineWeb.LiveWorkspace)
-  on_mount({VacEngineWeb.LiveLocation, ~w(workspace pub)a})
+  on_mount({VacEngineWeb.LiveLocation, ~w(workspace portal)a})
 
   @impl true
   def mount(_params, _session, %{assigns: %{workspace: workspace}} = socket) do
@@ -18,6 +18,11 @@ defmodule VacEngineWeb.Workspace.PortalLive.New do
       |> Map.put(:action, :insert)
 
     {:ok, assign(socket, changeset: changeset)}
+  end
+
+  @impl true
+  def handle_params(_params, _session, socket) do
+    {:noreply, socket}
   end
 
   @impl true

@@ -21,4 +21,9 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.Index do
 
     {:ok, assign(socket, blueprints: blueprints)}
   end
+
+  @impl true
+  def handle_params(_params, _session, socket) do
+    {:noreply, socket}
+  end
 end

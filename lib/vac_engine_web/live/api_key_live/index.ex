@@ -15,4 +15,9 @@ defmodule VacEngineWeb.ApiKeyLive.Index do
        tokens: Account.list_api_tokens()
      )}
   end
+
+  @impl true
+  def handle_params(_params, _session, socket) do
+    {:noreply, socket}
+  end
 end

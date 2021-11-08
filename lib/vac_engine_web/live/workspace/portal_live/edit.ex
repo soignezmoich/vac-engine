@@ -7,7 +7,7 @@ defmodule VacEngineWeb.Workspace.PortalLive.Edit do
 
   on_mount(VacEngineWeb.LiveRole)
   on_mount(VacEngineWeb.LiveWorkspace)
-  on_mount({VacEngineWeb.LiveLocation, ~w(workspace pub)a})
+  on_mount({VacEngineWeb.LiveLocation, ~w(workspace portal)a})
 
   @impl true
   def mount(
@@ -35,6 +35,11 @@ defmodule VacEngineWeb.Workspace.PortalLive.Edit do
        blueprint_results: [],
        search_blueprint_visible: false
      )}
+  end
+
+  @impl true
+  def handle_params(_params, _session, socket) do
+    {:noreply, socket}
   end
 
   @impl true

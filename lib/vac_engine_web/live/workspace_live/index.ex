@@ -20,4 +20,9 @@ defmodule VacEngineWeb.WorkspaceLive.Index do
          end)
      )}
   end
+
+  @impl true
+  def handle_params(_params, _session, socket) do
+    {:noreply, socket}
+  end
 end
