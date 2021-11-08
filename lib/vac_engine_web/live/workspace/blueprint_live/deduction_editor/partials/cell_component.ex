@@ -12,8 +12,6 @@ defmodule VacEngineWeb.Editor.CellComponent do
       row_index: row_index
     } = assigns
 
-    IO.inspect(assigns)
-
     assigns =
       assign(assigns,
         renderable:
@@ -32,27 +30,25 @@ defmodule VacEngineWeb.Editor.CellComponent do
 
   def build_renderable(is_condition, cell, parent_path, index, row_index) do
     {type, value, args} =
-      case cell.expression do
-        {:var, _signature, [elems]} when is_list(elems) ->
+      case cell do
+        %{expression: %{ast: {:var, _signature, [elems]}}}
+        when is_list(elems) ->
           {"variable", "@#{elems |> Enum.join(".")}", []}
 
-        {op, _signature, args} ->
+        %{expression: %{ast: {op, _signature, args}}} when is_list(args) ->
           {"operator", op, args}
 
-        const when is_boolean(const) ->
+        %{expression: %{ast: const}} when is_boolean(const) ->
           {"const", inspect(const), []}
 
-        const when is_binary(const) ->
+        %{expression: %{ast: const}} when is_binary(const) ->
           {"const", inspect(const), []}
 
-        const when is_number(const) ->
+        %{expression: %{ast: const}} when is_number(const) ->
           {"const", inspect(const), []}
 
         nil ->
           {"nil", "-", []}
-
-        _ ->
-          {}
       end
 
     conditions_or_assignments =
@@ -64,7 +60,6 @@ defmodule VacEngineWeb.Editor.CellComponent do
 
     dot_path =
       (parent_path ++ [conditions_or_assignments, index])
-      |> Enum.reverse()
       |> Enum.join(".")
 
     # assigns.selection_path == dot_path
@@ -108,8 +103,8 @@ defmodule VacEngineWeb.Editor.CellComponent do
       "#{bg_color} #{bg_opacity} px-2 py-1 clickable whitespace-nowrap"
 
     description =
-      case cell do
-        %{description: non_empty}
+      case {is_condition, cell} do
+        {false, %{description: non_empty}}
         when is_binary(non_empty) and non_empty != "" ->
           "(#{non_empty})"
 

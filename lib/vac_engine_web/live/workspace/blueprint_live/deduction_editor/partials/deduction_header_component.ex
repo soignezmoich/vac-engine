@@ -7,7 +7,7 @@ defmodule VacEngineWeb.Editor.DeductionHeaderComponent do
     assigns =
       assign(assigns,
         renderable:
-          build_renderable(assigns.cond_columns, assigns.target_columns)
+          build_renderable(assigns.cond_columns, assigns.assign_columns)
       )
 
     ~H"""
@@ -18,8 +18,8 @@ defmodule VacEngineWeb.Editor.DeductionHeaderComponent do
           </th>
           <th class="bg-white w-5"></th>
         <% end %>
-        <th colspan={@renderable.target_count} class="whitespace-nowrap bg-blue-500 text-white py-1 px-4">
-          <%= @renderable.target_prefix %> ->
+        <th colspan={@renderable.assign_count} class="whitespace-nowrap bg-blue-500 text-white py-1 px-4">
+          <%= @renderable.assign_prefix %> ->
         </th>
       </tr>
       <tr>
@@ -33,10 +33,10 @@ defmodule VacEngineWeb.Editor.DeductionHeaderComponent do
           <% end %>
           <th class="bg-white"></th>
         <% end %>
-        <%= for target_label <- @renderable.target_labels do %>
+        <%= for assign_label <- @renderable.assign_labels do %>
           <th class="bg-blue-400 text-white py-1 px-4">
             <div class="mx-1">
-              <%= target_label %>
+              <%= assign_label %>
             </div>
           </th>
         <% end %>
@@ -45,36 +45,37 @@ defmodule VacEngineWeb.Editor.DeductionHeaderComponent do
     """
   end
 
-  def build_renderable(cond_columns, target_columns) do
+  def build_renderable(cond_columns, assign_columns) do
     cond_labels =
       cond_columns
-      |> Enum.map(&Enum.join(&1.variable))
+      |> Enum.map(& &1.variable)
+      |> Enum.map(&(&1 |> Enum.join(".")))
 
     cond_count = length(cond_labels)
 
     has_conds? = cond_count > 0
 
-    target_paths =
-      target_columns
+    assign_paths =
+      assign_columns
       |> Enum.map(& &1.variable)
 
-    {target_paths_prefix, truncated_target_paths} = extract_prefix(target_paths)
+    {assign_paths_prefix, truncated_assign_paths} = extract_prefix(assign_paths)
 
-    target_prefix = target_paths_prefix |> Enum.join(".")
+    assign_prefix = assign_paths_prefix |> Enum.join(".")
 
-    target_labels =
-      truncated_target_paths
+    assign_labels =
+      truncated_assign_paths
       |> Enum.map(&(&1 |> Enum.join(".")))
 
-    target_count = length(target_labels)
+    assign_count = length(assign_labels)
 
     %{
       has_conds?: has_conds?,
       cond_count: cond_count,
       cond_labels: cond_labels,
-      target_count: target_count,
-      target_prefix: target_prefix,
-      target_labels: target_labels
+      assign_count: assign_count,
+      assign_prefix: assign_prefix,
+      assign_labels: assign_labels
     }
   end
 end

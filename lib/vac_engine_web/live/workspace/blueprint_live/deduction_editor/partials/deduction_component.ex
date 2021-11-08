@@ -17,7 +17,7 @@ defmodule VacEngineWeb.Editor.DeductionComponent do
       <table class="min-w-full">
         <DeductionHeader.render
           cond_columns={@renderable.cond_columns}
-          target_columns={@renderable.target_columns} />
+          assign_columns={@renderable.assign_columns} />
         <tbody>
           <%= for {branch, index} <- @deduction.branches |> Enum.with_index() do %>
             <Branch.render
@@ -25,8 +25,7 @@ defmodule VacEngineWeb.Editor.DeductionComponent do
               index={index}
               parent_path={@renderable.path}
               cond_columns={@renderable.cond_columns}
-              target_columns={@renderable.target_columns}
-              selection_path={@selection_path} />
+              assign_columns={@renderable.assign_columns} />
           <% end %>
         </tbody>
       </table>
@@ -42,14 +41,14 @@ defmodule VacEngineWeb.Editor.DeductionComponent do
       columns
       |> Enum.filter(&(&1.type == :condition))
 
-    target_columns =
+    assign_columns =
       columns
       |> Enum.filter(&(&1.type == :assignment))
 
     %{
       branches: branches,
       cond_columns: cond_columns,
-      target_columns: target_columns,
+      assign_columns: assign_columns,
       path: parent_path ++ [index]
     }
   end
