@@ -49,7 +49,8 @@ defmodule VacEngineWeb.Workspace.PortalLive.Edit do
     {:noreply,
      socket
      |> push_redirect(
-       to: Routes.workspace_portal_path(socket, :index, workspace)
+       to: Routes.workspace_portal_path(socket, :index, workspace),
+       replace: true
      )}
   end
 

@@ -71,7 +71,10 @@ defmodule VacEngineWeb.WorkspaceLive.Edit do
       {:ok, _workspace} ->
         {:noreply,
          socket
-         |> push_redirect(to: Routes.workspace_path(socket, :index))}
+         |> push_redirect(
+           to: Routes.workspace_path(socket, :index),
+           replace: true
+         )}
 
       {:error, changeset} ->
         {:noreply, assign(socket, changeset: changeset)}

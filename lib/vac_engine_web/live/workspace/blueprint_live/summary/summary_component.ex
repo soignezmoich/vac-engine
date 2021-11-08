@@ -113,7 +113,8 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.SummaryComponent do
      socket
      |> push_redirect(
        to:
-         Routes.workspace_blueprint_path(socket, :index, blueprint.workspace_id)
+         Routes.workspace_blueprint_path(socket, :index, blueprint.workspace_id),
+       replace: true
      )}
   end
 end

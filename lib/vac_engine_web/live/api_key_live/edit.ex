@@ -84,7 +84,7 @@ defmodule VacEngineWeb.ApiKeyLive.Edit do
 
     {:noreply,
      socket
-     |> push_redirect(to: Routes.api_key_path(socket, :index))}
+     |> push_redirect(to: Routes.api_key_path(socket, :index), replace: true)}
   end
 
   @impl true
