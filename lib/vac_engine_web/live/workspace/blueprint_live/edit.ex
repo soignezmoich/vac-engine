@@ -4,10 +4,10 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.Edit do
   import VacEngineWeb.PermissionHelpers, only: [can!: 3]
 
   alias VacEngine.Processor
-  import VacEngineWeb.Editor.Deductions, only: [deductions: 1]
-  import VacEngineWeb.Editor.VariablesSection, only: [variables_section: 1]
   alias VacEngineWeb.Workspace.BlueprintLive.SummaryComponent
   alias VacEngineWeb.Workspace.BlueprintLive.ImportComponent
+  alias VacEngineWeb.Editor.DeductionSetEditorComponent
+  alias VacEngineWeb.Editor.VariableSetEditorComponent
 
   on_mount(VacEngineWeb.LiveRole)
   on_mount(VacEngineWeb.LiveWorkspace)

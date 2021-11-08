@@ -1,8 +1,10 @@
 defmodule VacEngineWeb.HeaderComponent do
   use VacEngineWeb, :component
-  alias VacEngineWeb.Endpoint
+
   import Routes
   import VacEngineWeb.IconComponent
+
+  alias VacEngineWeb.Endpoint
 
   def header(assigns) do
     ~H"""
