@@ -43,7 +43,7 @@ defmodule VacEngineWeb.AuthLive.LoginFormComponent do
   defp email_field(assigns) do
     ~H"""
     <%= text_input @f, :email,
-          class: "h-8 bg-gray-100 text-gray-900 px-2 py-1 focus:outline-blue
+          class: "h-8 form-fld
                  #{if has_error?(@f, :email) do "bg-red-150" end}",
           autofocus: true %>
     """
@@ -54,21 +54,21 @@ defmodule VacEngineWeb.AuthLive.LoginFormComponent do
     <div class="relative flex">
       <%= if @visible do %>
         <%= text_input @f, :password, value: input_value(@f, :password),
-            class: "h-8 bg-gray-100 text-gray-900 px-2 py-1 focus:outline-blue
-                    pr-16 h-8
+            style: "padding-right: 4rem",
+            class: "h-8 form-fld
                     #{if has_error?(@f, :password) do "bg-red-150" end}" %>
       <% else %>
         <%= password_input @f, :password, value: input_value(@f, :password),
-            class: "h-8 bg-gray-100 text-gray-900 px-2 py-1 focus:outline-blue
-                    pr-16 h-8
+            style: "padding-right: 4rem",
+            class: "h-8 form-fld
                     #{if has_error?(@f, :password) do "bg-red-150" end}" %>
       <% end %>
       <div phx-click="toggle_password"
         phx-hook="focus"
         id="toggle_password"
         data-focus="login_form_password"
-        class="absolute right-0 top-0 py-1 px-2 bg-gray-200 h-8 flex
-               items-center text-cream-600">
+        class="absolute right-px top-px py-1 px-2 bg-blue-100 bottom-px flex
+               items-center text-cream-800">
         <svg height="24px"
           width="24px"
           viewBox="0 0 100 100">
