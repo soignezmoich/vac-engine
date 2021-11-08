@@ -24,5 +24,4 @@ defmodule VacEngineWeb.Workspace.PortalLive.Index do
 
     {:ok, assign(socket, portals: portals)}
   end
-
 end

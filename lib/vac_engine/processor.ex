@@ -126,6 +126,10 @@ defmodule VacEngine.Processor do
 
   defdelegate filter_blueprints_by_workspace(query, workspace), to: Blueprints
 
+  defdelegate filter_blueprints_by_query(query, search), to: Blueprints
+
+  defdelegate limit_blueprints(query, limit), to: Blueprints
+
   @doc """
   Load variables and index them
   """
@@ -137,6 +141,8 @@ defmodule VacEngine.Processor do
   defdelegate load_blueprint_full_deductions(query), to: Blueprints
 
   defdelegate load_blueprint_active_publications(query), to: Blueprints
+
+  defdelegate load_blueprint_publications(query), to: Blueprints
 
   @doc """
   Create a blueprint with the given attributes

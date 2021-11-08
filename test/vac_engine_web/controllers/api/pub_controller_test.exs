@@ -36,7 +36,11 @@ defmodule VacEngineWeb.Api.PubControllerTest do
         blueprint
       )
 
-    {:ok, publication} = Pub.publish_blueprint(blueprint)
+    {:ok, publication} =
+      Pub.publish_blueprint(
+        blueprint,
+        %{"name" => "Test portal"}
+      )
 
     {:ok, role} = Account.create_role(:api)
     {:ok, _perm} = Account.grant_permission(role, :super_admin)

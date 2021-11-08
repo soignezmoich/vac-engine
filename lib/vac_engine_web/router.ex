@@ -73,6 +73,7 @@ defmodule VacEngineWeb.Router do
       )
 
       live("/portals", PortalLive.Index, :index, as: :portal)
+      live("/portals/new", PortalLive.New, :new, as: :portal)
       live("/portals/:portal_id", PortalLive.Edit, :edit, as: :portal)
     end
   end

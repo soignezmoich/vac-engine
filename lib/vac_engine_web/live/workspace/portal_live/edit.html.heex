@@ -1,56 +1,147 @@
-<%= case @portal do %>
-  <% nil -> %>
-    <.flex_center>
-    <.text_card title="Loading" text="Loading in progress."/>
-    </.flex_center>
-  <% portal -> %>
-    <div class="p-4">
-      <%= live_redirect("← Back to list",
-            to: Routes.workspace_portal_path(@socket, :index, @workspace),
-            class: "mb-4 btn inline-block"
-      ) %>
-      <h2 class="font-bold text-xl mb-4">
-        Portal #<%= portal.id %>: <%= portal.name %>
-      </h2>
+<div class="p-4">
+  <%= live_redirect("← Back to list",
+        to: Routes.workspace_portal_path(@socket, :index, @workspace),
+        class: "mb-4 btn inline-block"
+  ) %>
+  <h1 class="font-bold text-xl mb-4">
+    Portal #<%= @portal.id %>: <%= @portal.name %>
+  </h1>
 
-      <div>
-        <div class="font-bold">
-          URL <span class="text-sm font-normal">(click to copy)</span>
+  <h2 class="font-bold text-lg mb-6">Base info</h2>
+
+  <.form
+    let={f}
+    for={@changeset}
+    id="edit_portal_form"
+    class="flex flex-col w-96"
+    phx-throttle="100"
+    phx-change="validate"
+    phx-submit="update">
+
+    <%= label_line_tag f, :name, "Name" %>
+    <%= text_input f, :name, class: "form-fld mb-4", autofocus: true %>
+
+    <%= label_line_tag f, :description, "Description" %>
+    <%= textarea f, :description, class: "form-fld mb-4" %>
+
+    <%= submit "Update", class: "btn-default", phx_disable_with: "Update in progress..." %>
+  </.form>
+
+  <div class="mt-8">
+    <div class="font-bold">
+      URL <span class="text-sm font-normal">(click to copy)</span>
+    </div>
+    <div phx-hook="clipboardCopy"
+         class="text-sm text-blue-500 inline-block" id="url">
+      <%= Routes.api_pub_url(@socket, :run, @portal) %>
+    </div>
+  </div>
+
+  <h2 class="font-bold text-lg mb-4 mt-8">Publish</h2>
+
+  <div class="flex flex-col w-128">
+    <%= if @search_blueprint_visible do %>
+      <.form
+        let={f}
+        for={:query}
+        class="w-128 -mt-2"
+        phx-change="search_blueprints"
+        phx-submit="search_blueprints">
+
+        <div class="flex items-end">
+          <div class="flex-grow">
+            <%= label_line_tag f, :query, "Search blueprint" %>
+          </div>
+          <button phx-click="toggle_search_blueprint"
+            class="btn-sm self-start -mt-4">
+            Cancel
+          </button>
         </div>
-        <button phx-hook="clipboardCopy" class="text-xs btn-sm inline-block" id="url">
-          <%= Routes.api_pub_url(@socket, :run, @portal) %>
-        </button>
-      </div>
-
-      <div class="mt-8">
-        <%= if @active_publication do %>
-          <div class="font-bold">
-            Latest publication
-          </div>
-          <div>
-            <%= format_date(@active_publication.activated_at)  %>
-          </div>
-          <div class="font-bold mt-4">
-            Blueprint
-          </div>
-          <div>
-            <%= live_redirect("View blueprint",
-                  to: Routes.workspace_blueprint_path(@socket, :summary, @workspace, @active_publication.blueprint_id),
-                  class: "mb-4 btn inline-block"
-            ) %>
-          </div>
-        <% else %>
-          <div class="font-bold">
-            Portal is not published
-          </div>
+        <div class="flex w-full items-baseline">
+        <%= text_input f, :query, class: "form-fld mb-4 flex-grow",
+            autocomplete: "off",
+            placeholder: "blueprint name or id",
+            phx_debounce: 250, autofocus: true, phx_hook: "focusOnMount" %>
+        </div>
+      </.form>
+      <div class="mb-8">
+        <%= case @blueprint_results do %>
+        <% [_|_] = brs -> %>
+          <%= for br <- brs do %>
+            <div class="border-b flex items-baseline">
+              <div class="flex-grow py-2 mr-2">
+                #<%= br.id %>: <%= tr(br.name, 32) %>
+              </div>
+              <button phx-value-id={br.id} phx-click="publish" class="btn">
+                Publish
+              </button>
+            </div>
+          <% end %>
+        <% _ -> %>
+          <div class="italic">No result</div>
         <% end %>
       </div>
-
-      <div class="mt-8">
-        <button phx-click="delete" class="btn inline-block">
-          Delete portal
-        </button>
+    <% else %>
+      <button phx-click="toggle_search_blueprint" class="btn mb-2 self-start">
+        Change blueprint
+      </button>
+    <% end %>
+    <%= case @portal.publications do %>
+    <% [_|_] = pubs -> %>
+      <h3 class="font-bold mb-2 mt-4">Publication history</h3>
+      <%= for p <- pubs do %>
+        <div class="flex border-b py-1 ">
+          <div class="flex flex-col flex-grow">
+            <%= if is_nil(p.deactivated_at) do %>
+              <span class="font-bold">Active</span>
+            <% end %>
+            <span class="text-sm">
+              <%= live_redirect("##{p.blueprint.id}: #{tr(p.blueprint.name, 32)}",
+                  to: Routes.workspace_blueprint_path(@socket, :summary,
+                    @workspace, p.blueprint_id),
+                  class: "text-blue-500"
+              ) %>
+            </span>
+            <%= if not is_nil(p.deactivated_at) do %>
+              <span class="italic text-sm">
+              Deactivated
+              <%= format_date(p.deactivated_at) %>
+              </span>
+            <% end %>
+            <%= if is_nil(p.deactivated_at) do %>
+              <span class="text-sm">
+                Published
+                <%= format_date(p.activated_at) %>
+              </span>
+            <% end %>
+          </div>
+          <div class="flex flex-col">
+            <%= if not is_nil(p.deactivated_at) do %>
+              <button class="btn-sm mt-1"
+                      phx-value-id={p.blueprint_id}
+                      phx-click="publish">
+                Publish
+              </button>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% _ -> %>
+      <div class="italic">
+        Portal is not published
       </div>
+    <% end %>
 
-    </div>
-<% end %>
+  </div>
+
+  <h2 class="font-bold text-lg mb-4 mt-8">Manage portal</h2>
+  <div class="mt-4">
+    <.button
+          class="btn mr-4"
+          click="delete"
+          label="Delete portal"
+          id="delete-btn"
+          confirm />
+  </div>
+
+</div>

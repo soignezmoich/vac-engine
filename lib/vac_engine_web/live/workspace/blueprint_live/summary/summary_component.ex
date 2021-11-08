@@ -76,35 +76,26 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.SummaryComponent do
         %{"portal" => params},
         %{assigns: %{blueprint: blueprint}} = socket
       ) do
-    can!(socket, :publish, :blueprint)
+    can!(socket, :publish, blueprint)
 
-    %Portal{}
-    |> Pub.change_portal(params)
-    |> Map.put(:action, :update)
+    blueprint
+    |> Pub.publish_blueprint(params)
     |> case do
-      %{valid?: false} = ch ->
-        {:noreply, assign(socket, portal_changeset: ch)}
+      {:ok, _pub} ->
+        {:noreply,
+         socket
+         |> push_redirect(
+           to:
+             Routes.workspace_blueprint_path(
+               socket,
+               :summary,
+               blueprint.workspace_id,
+               blueprint.id
+             )
+         )}
 
-      ch ->
-        Pub.publish_blueprint(blueprint, ch.changes)
-        |> case do
-          {:ok, pub} ->
-            blueprint = %{
-              blueprint
-              | active_publications: [pub | blueprint.active_publications]
-            }
-
-            changeset = %Portal{} |> Pub.change_portal()
-
-            {:noreply,
-             assign(socket,
-               blueprint: blueprint,
-               portal_changeset: changeset
-             )}
-
-          _err ->
-            {:noreply, socket}
-        end
+      _err ->
+        {:noreply, socket}
     end
   end
 

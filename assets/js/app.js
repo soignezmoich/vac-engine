@@ -24,12 +24,17 @@ function sluggize (str) {
 
 Hooks.focus = {
   mounted () {
-
   },
   updated () {
     const el = document.getElementById(this.el.dataset.focus)
     el.focus()
   }
+}
+
+Hooks.focusOnMount = {
+  mounted () {
+    this.el.focus()
+  },
 }
 
 Hooks.sluggize = {

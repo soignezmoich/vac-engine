@@ -45,19 +45,25 @@
           class: "btn-default",
           phx_disable_with: "Publishing in progress..." %>
     </div>
-
   </.form>
 
-  <%= case @blueprint.active_publications do %>
+  <%= case @blueprint.publications do %>
   <% [_|_] = publications -> %>
     <%= for p <- publications do %>
       <div class="border-b flex py-4 w-128">
          <div class="flex flex-col flex-grow">
+         <%= if is_nil(p.deactivated_at) do %>
            <span class="font-bold">
              Portal #<%= p.portal_id %>: <%= p.portal.name %>
            </span>
             <span class="text-sm">Published <%= format_date(p.activated_at) %></span>
-         </div>
+         <% else %>
+           <span class="text-gray-300">
+             Inactive portal #<%= p.portal_id %>: <%= p.portal.name %>
+           </span>
+           <span class="text-sm italic">Deactivated <%= format_date(p.deactivated_at) %></span>
+         <% end %>
+          </div>
          <div class="flex flex-col">
            <%= live_redirect("Portal details",
                  to: Routes.workspace_portal_path(@socket, :edit,
@@ -77,10 +83,10 @@
   <div class="font-bold text-lg mt-8 mb-4">
     Manage blueprint
   </div>
-  <%= case @blueprint.active_publications do %>
+  <%= case @blueprint.publications do %>
   <% [_|_] -> %>
     <div class="italic mt-8 mb-4">
-      Blueprint has active publications and cannot be deleted.
+      Blueprint has publications and cannot be deleted. Delete portals first.
     </div>
   <% _ -> %>
     <.button

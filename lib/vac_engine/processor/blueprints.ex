@@ -38,6 +38,25 @@ defmodule VacEngine.Processor.Blueprints do
     from(b in query, where: b.workspace_id == ^workspace.id)
   end
 
+  def filter_blueprints_by_query(query, search) do
+    Integer.parse(search)
+    |> case do
+      {n, ""} ->
+        from(b in query, where: b.id == ^n)
+
+      _ ->
+        search = "%#{search}%"
+
+        from(b in query,
+          where: ilike(b.name, ^search) or ilike(b.description, ^search)
+        )
+    end
+  end
+
+  def limit_blueprints(query, limit) do
+    from(b in query, limit: ^limit)
+  end
+
   def load_blueprint_active_publications(query) do
     pub_query =
       from(r in Publication,
@@ -47,6 +66,16 @@ defmodule VacEngine.Processor.Blueprints do
       )
 
     from(b in query, preload: [active_publications: ^pub_query])
+  end
+
+  def load_blueprint_publications(query) do
+    pub_query =
+      from(r in Publication,
+        order_by: [desc: r.deactivated_at, desc: r.activated_at],
+        preload: :portal
+      )
+
+    from(b in query, preload: [publications: ^pub_query])
   end
 
   def load_blueprint_variables(query) do
