@@ -23,6 +23,11 @@ defmodule VacEngineWeb.ApiKeyLive.New do
   end
 
   @impl true
+  def handle_params(_params, _session, socket) do
+    {:noreply, socket}
+  end
+
+  @impl true
   def handle_event(
         "validate",
         %{"role" => params},

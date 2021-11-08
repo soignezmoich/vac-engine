@@ -15,7 +15,6 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.Edit do
 
   @impl true
   def mount(%{"blueprint_id" => blueprint_id}, _session, socket) do
-    can!(socket, :edit, {:blueprint, blueprint_id})
 
     blueprint =
       if connected?(socket) do
@@ -28,6 +27,8 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.Edit do
       else
         Processor.get_blueprint!(blueprint_id)
       end
+
+    can!(socket, :edit, blueprint)
 
     {:ok, assign(socket, blueprint: blueprint)}
   end
