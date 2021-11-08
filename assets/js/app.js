@@ -24,12 +24,17 @@ function sluggize (str) {
 
 Hooks.focus = {
   mounted () {
-
   },
   updated () {
     const el = document.getElementById(this.el.dataset.focus)
     el.focus()
   }
+}
+
+Hooks.focusOnMount = {
+  mounted () {
+    this.el.focus()
+  },
 }
 
 Hooks.sluggize = {
@@ -58,7 +63,60 @@ Hooks.clipboardCopy = {
   }
 }
 
-function get_classes (el) {
+Hooks.confirmClick = {
+  mounted () {
+    this.confirmVisible = false
+    this.el.addEventListener("click", (evt) => {
+      if (!this.el.dataset.confirmVisible) {
+        this.showConfirm()
+        evt.stopPropagation()
+        addTimeout("confirm", 3000, () => {
+          this.hideConfirms()
+        })
+      } else {
+        this.hideConfirms()
+      }
+    })
+  },
+  updated () {
+  },
+  showConfirm () {
+    this.hideConfirms()
+    for (let el of this.el.querySelectorAll("[data-confirm]")) {
+      removeClass(el, "hidden")
+    }
+    this.el.dataset.confirmVisible = true
+  },
+  hideConfirms () {
+    removeTimeout("confirm")
+    for (let el of document.querySelectorAll("[data-confirm]")) {
+      addClass(el, "hidden")
+      delete el.parentElement.dataset.confirmVisible
+    }
+  }
+}
+
+const TIMEOUTS = {}
+
+function addTimeout (name, delay, fun) {
+  if (TIMEOUTS[name]) {
+    clearTimeout(TIMEOUTS[name])
+  }
+  let timeout = setTimeout(() => {
+    delete TIMEOUTS[name]
+    fun()
+  }, delay)
+  TIMEOUTS[name] = timeout
+}
+
+function removeTimeout (name, delay, fun) {
+  if (TIMEOUTS[name]) {
+    clearTimeout(TIMEOUTS[name])
+  }
+  delete TIMEOUTS[name]
+}
+
+function getClasses (el) {
   const classes = el
     .getAttribute("class")
     .split(/\s/)
@@ -68,8 +126,12 @@ function get_classes (el) {
   return classes
 }
 
+function hasClass (el, name) {
+  return getClasses(el).indexOf(name) >= 0
+}
+
 function removeClass (el, name) {
-  const classes = get_classes(el)
+  const classes = getClasses(el)
     .filter((c) => c != name)
     .join(" ")
 
@@ -77,7 +139,11 @@ function removeClass (el, name) {
 }
 
 function addClass (el, name) {
-  const classes = get_classes(el)
+  if (hasClass(el, name)) {
+    return
+  }
+
+  const classes = getClasses(el)
     .filter((c) => c != name)
     .concat([name])
     .join(" ")
@@ -136,3 +202,5 @@ function installDropdowns () {
 
 window.addEventListener('load', installDropdowns)
 window.addEventListener("phx:page-loading-stop", installDropdowns)
+
+

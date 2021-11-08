@@ -26,6 +26,7 @@ defmodule VacEngine.Processor.Blueprint do
     has_many(:deductions, Deduction, on_replace: :delete_if_exists)
 
     has_many(:publications, Publication)
+    has_many(:active_publications, Publication)
 
     field(:draft, :boolean)
 

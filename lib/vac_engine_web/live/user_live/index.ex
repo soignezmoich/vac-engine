@@ -12,7 +12,7 @@ defmodule VacEngineWeb.UserLive.Index do
 
     {:ok,
      assign(socket,
-       users: Account.list_users()
+       users: Account.list_users(&Account.load_user_activity/1)
      )}
   end
 end

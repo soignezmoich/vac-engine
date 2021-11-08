@@ -1,22 +1,20 @@
-defmodule VacEngineWeb.Workspace.BlueprintLive.New do
+defmodule VacEngineWeb.Workspace.PortalLive.New do
   use VacEngineWeb, :live_view
 
-  import VacEngineWeb.PermissionHelpers, only: [can!: 3]
-
-  alias VacEngine.Processor
-  alias VacEngine.Processor.Blueprint
+  alias VacEngine.Pub
+  alias VacEngine.Pub.Portal
 
   on_mount(VacEngineWeb.LiveRole)
   on_mount(VacEngineWeb.LiveWorkspace)
-  on_mount({VacEngineWeb.LiveLocation, ~w(workspace blueprint new)a})
+  on_mount({VacEngineWeb.LiveLocation, ~w(workspace pub)a})
 
   @impl true
   def mount(_params, _session, %{assigns: %{workspace: workspace}} = socket) do
-    can!(socket, :create_blueprint, workspace)
+    can!(socket, :create_portal, workspace)
 
     changeset =
-      %Blueprint{}
-      |> Processor.change_blueprint()
+      %Portal{}
+      |> Pub.change_portal()
       |> Map.put(:action, :insert)
 
     {:ok, assign(socket, changeset: changeset)}
@@ -25,12 +23,12 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.New do
   @impl true
   def handle_event(
         "validate",
-        %{"blueprint" => params},
+        %{"portal" => params},
         socket
       ) do
     changeset =
-      %Blueprint{}
-      |> Processor.change_blueprint(params)
+      %Portal{}
+      |> Pub.change_portal(params)
       |> Map.put(:action, :insert)
 
     {:noreply, assign(socket, changeset: changeset)}
@@ -39,23 +37,23 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.New do
   @impl true
   def handle_event(
         "create",
-        %{"blueprint" => params},
+        %{"portal" => params},
         %{assigns: %{workspace: workspace}} = socket
       ) do
-    can!(socket, :create_blueprint, workspace)
+    can!(socket, :create_portal, workspace)
 
-    Processor.create_blueprint(workspace, params)
+    Pub.create_portal(workspace, params)
     |> case do
-      {:ok, br} ->
+      {:ok, portal} ->
         {:noreply,
          socket
          |> push_redirect(
            to:
-             Routes.workspace_blueprint_path(
+             Routes.workspace_portal_path(
                socket,
-               :summary,
-               workspace.id,
-               br.id
+               :edit,
+               portal.workspace_id,
+               portal.id
              )
          )}
 

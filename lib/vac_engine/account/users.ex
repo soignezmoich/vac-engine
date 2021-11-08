@@ -9,6 +9,47 @@ defmodule VacEngine.Account.Users do
   alias VacEngine.Account.Session
   alias VacEngine.Account.Roles
 
+  def list_users(queries) do
+    User
+    |> queries.()
+    |> Repo.all()
+  end
+
+  def get_user!(id, queries) do
+    User
+    |> queries.()
+    |> Repo.get!(id)
+  end
+
+  def load_user_activity(query) do
+    session_query =
+      from(s in Session,
+        order_by: [desc: s.inserted_at],
+        where: s.role_id == parent_as(:users).role_id,
+        limit: 1
+      )
+
+    from(u in query,
+      as: :users,
+      left_lateral_join: s in subquery(session_query),
+      join: r in assoc(u, :role),
+      order_by: u.id,
+      preload: [role: r],
+      select: %{
+        u
+        | last_login_at: s.inserted_at,
+          last_active_at: s.last_active_at,
+          active: r.active
+      }
+    )
+  end
+
+  def load_user_role(query) do
+    from(u in query,
+      preload: :role
+    )
+  end
+
   def check_password(nil, _password) do
     Argon2.no_user_verify()
   end
@@ -36,36 +77,6 @@ defmodule VacEngine.Account.Users do
       _ ->
         {:error, "invalid email or password"}
     end
-  end
-
-  def list_users() do
-    session_query =
-      from(s in Session,
-        order_by: [desc: s.inserted_at],
-        where: s.role_id == parent_as(:users).role_id,
-        limit: 1
-      )
-
-    from(u in User,
-      as: :users,
-      left_lateral_join: s in subquery(session_query),
-      order_by: u.id,
-      preload: [role: :global_permission],
-      select: %{
-        u
-        | last_login_at: s.inserted_at,
-          last_active_at: s.last_active_at
-      }
-    )
-    |> Repo.all()
-  end
-
-  def get_user!(uid) do
-    Repo.get(User, uid)
-  end
-
-  def load_role(%User{} = user) do
-    Repo.preload(user, :role)
   end
 
   def create_user(attrs) do

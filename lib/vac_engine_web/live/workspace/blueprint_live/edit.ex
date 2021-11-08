@@ -19,11 +19,14 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.Edit do
 
     blueprint =
       if connected?(socket) do
-        Processor.get_blueprint!(blueprint_id)
-        |> Processor.load_variables()
-        |> Processor.load_deductions()
+        Processor.get_blueprint!(blueprint_id, fn query ->
+          query
+          |> Processor.load_blueprint_publications()
+          |> Processor.load_blueprint_variables()
+          |> Processor.load_blueprint_full_deductions()
+        end)
       else
-        nil
+        Processor.get_blueprint!(blueprint_id)
       end
 
     {:ok, assign(socket, blueprint: blueprint)}
@@ -37,7 +40,6 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.Edit do
 
   @impl true
   def handle_event("save", _params, socket) do
-    IO.inspect("save blueprint triggered from header")
     {:noreply, socket}
   end
 

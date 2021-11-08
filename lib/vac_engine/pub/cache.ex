@@ -160,9 +160,11 @@ defmodule VacEngine.Pub.Cache do
     |> case do
       nil ->
         blueprint_id
-        |> Processor.get_blueprint!()
-        |> Processor.load_variables()
-        |> Processor.load_deductions()
+        |> Processor.get_blueprint!(fn query ->
+          query
+          |> Processor.load_blueprint_variables()
+          |> Processor.load_blueprint_full_deductions()
+        end)
         |> Processor.compile_blueprint()
         |> case do
           {:ok, proc} ->

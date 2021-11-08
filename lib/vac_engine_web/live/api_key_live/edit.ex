@@ -1,6 +1,5 @@
 defmodule VacEngineWeb.ApiKeyLive.Edit do
   use VacEngineWeb, :live_view
-  use VacEngineWeb.TooltipHelpers
 
   alias VacEngine.Account
 
@@ -15,9 +14,7 @@ defmodule VacEngineWeb.ApiKeyLive.Edit do
       ) do
     can!(socket, :manage, :api_keys)
 
-    role =
-      Account.get_role!(role_id)
-      |> Account.load_api_tokens()
+    role = Account.get_role!(role_id, &Account.load_api_tokens/1)
 
     changeset =
       role
@@ -26,8 +23,6 @@ defmodule VacEngineWeb.ApiKeyLive.Edit do
 
     {:ok,
      assign(socket,
-       current_tooltip: nil,
-       clear_tooltip_ref: nil,
        edited_role: role,
        changeset: changeset,
        secret_visible: false,
@@ -70,41 +65,26 @@ defmodule VacEngineWeb.ApiKeyLive.Edit do
   end
 
   @impl true
-  def handle_event(
-        "reveal_secret",
-        %{"key" => key},
-        %{assigns: %{current_tooltip: key}} = socket
-      ) do
+  def handle_event("reveal_secret", _, socket) do
     Process.send_after(self(), :hide_secret, 10_000)
 
     {:noreply,
      socket
-     |> clear_tooltip
      |> assign(secret_visible: true)}
-  end
-
-  @impl true
-  def handle_event("reveal_secret", %{"key" => key}, socket) do
-    {:noreply, set_tooltip(socket, key)}
   end
 
   @impl true
   def handle_event(
         "delete",
-        %{"key" => key},
-        %{assigns: %{current_tooltip: key, edited_role: role}} = socket
+        _,
+        %{assigns: %{edited_role: role}} = socket
       ) do
     can!(socket, :delete, role)
     {:ok, _} = Account.delete_role(role)
 
     {:noreply,
      socket
-     |> push_redirect(to: Routes.api_key_path(socket, :index))}
-  end
-
-  @impl true
-  def handle_event("delete", %{"key" => key}, socket) do
-    {:noreply, set_tooltip(socket, key)}
+     |> push_redirect(to: Routes.api_key_path(socket, :index), replace: true)}
   end
 
   @impl true

@@ -16,8 +16,130 @@ defmodule VacEngine.Processor.Blueprints do
   alias VacEngine.Processor.Column
   alias VacEngine.Processor.Deduction
   alias VacEngine.Pub
+  alias VacEngine.Pub.Publication
   alias VacEngine.Hash
   import VacEngine.PipeHelpers
+
+  def list_blueprints(queries) do
+    Blueprint
+    |> queries.()
+    |> Repo.all()
+    |> Enum.map(&arrange_all/1)
+  end
+
+  def get_blueprint!(blueprint_id, queries) do
+    Blueprint
+    |> queries.()
+    |> Repo.get!(blueprint_id)
+    |> arrange_all()
+  end
+
+  def filter_blueprints_by_workspace(query, workspace) do
+    from(b in query, where: b.workspace_id == ^workspace.id)
+  end
+
+  def filter_blueprints_by_query(query, search) do
+    Integer.parse(search)
+    |> case do
+      {n, ""} ->
+        from(b in query, where: b.id == ^n)
+
+      _ ->
+        search = "%#{search}%"
+
+        from(b in query,
+          where: ilike(b.name, ^search) or ilike(b.description, ^search)
+        )
+    end
+  end
+
+  def limit_blueprints(query, limit) do
+    from(b in query, limit: ^limit)
+  end
+
+  def load_blueprint_active_publications(query) do
+    pub_query =
+      from(r in Publication,
+        order_by: [desc: r.activated_at],
+        where: is_nil(r.deactivated_at),
+        preload: :portal
+      )
+
+    from(b in query, preload: [active_publications: ^pub_query])
+  end
+
+  def load_blueprint_publications(query) do
+    pub_query =
+      from(r in Publication,
+        order_by: [desc: r.deactivated_at, desc: r.activated_at],
+        preload: :portal
+      )
+
+    from(b in query, preload: [publications: ^pub_query])
+  end
+
+  def load_blueprint_variables(query) do
+    from(b in query, preload: [variables: :default])
+  end
+
+  def load_blueprint_full_deductions(query) do
+    elements_query =
+      from(r in BindingElement,
+        order_by: r.position
+      )
+
+    bindings_query =
+      from(r in Binding,
+        order_by: r.position,
+        preload: [
+          elements: ^elements_query
+        ]
+      )
+
+    conditions_query =
+      from(r in Condition,
+        preload: [
+          :column,
+          expression: [bindings: ^bindings_query]
+        ]
+      )
+
+    assignments_query =
+      from(r in Assignment,
+        preload: [
+          :column,
+          expression: [bindings: ^bindings_query]
+        ]
+      )
+
+    branches_query =
+      from(r in Branch,
+        order_by: r.position,
+        preload: [
+          conditions: ^conditions_query,
+          assignments: ^assignments_query
+        ]
+      )
+
+    columns_query =
+      from(r in Column,
+        order_by: r.position,
+        preload: [
+          expression: [bindings: ^bindings_query]
+        ]
+      )
+
+    deductions_query =
+      from(r in Deduction,
+        order_by: r.position,
+        preload: [
+          branches: ^branches_query,
+          columns: ^columns_query
+        ]
+      )
+
+    from(b in query, preload: [deductions: ^deductions_query])
+  end
 
   def create_blueprint(%Workspace{} = workspace, attrs) do
     Multi.new()
@@ -34,6 +156,10 @@ defmodule VacEngine.Processor.Blueprints do
     Multi.new()
     |> multi_update_blueprint(blueprint, attrs)
     |> multi_update
+  end
+
+  def delete_blueprint(blueprint) do
+    Repo.delete(blueprint)
   end
 
   # TODO what is multi?
@@ -182,75 +308,18 @@ defmodule VacEngine.Processor.Blueprints do
     end)
   end
 
-  def get_blueprint!(blueprint_id) do
-    Repo.get!(Blueprint, blueprint_id)
-  end
-
-  def load_variables(%Blueprint{} = blueprint) do
-    Repo.preload(blueprint, [variables: :default], force: true)
+  defp arrange_all(blueprint) do
+    blueprint
     |> arrange_variables()
-  end
-
-  def load_deductions(%Blueprint{} = blueprint) do
-    elements_query =
-      from(r in BindingElement,
-        order_by: r.position
-      )
-
-    bindings_query =
-      from(r in Binding,
-        order_by: r.position,
-        preload: [
-          elements: ^elements_query
-        ]
-      )
-
-    conditions_query =
-      from(r in Condition,
-        preload: [
-          :column,
-          expression: [bindings: ^bindings_query]
-        ]
-      )
-
-    assignments_query =
-      from(r in Assignment,
-        preload: [
-          :column,
-          expression: [bindings: ^bindings_query]
-        ]
-      )
-
-    branches_query =
-      from(r in Branch,
-        order_by: r.position,
-        preload: [
-          conditions: ^conditions_query,
-          assignments: ^assignments_query
-        ]
-      )
-
-    columns_query =
-      from(r in Column,
-        order_by: r.position,
-        preload: [
-          expression: [bindings: ^bindings_query]
-        ]
-      )
-
-    deductions_query =
-      from(r in Deduction,
-        order_by: r.position,
-        preload: [
-          branches: ^branches_query,
-          columns: ^columns_query
-        ]
-      )
-
-    Repo.preload(blueprint, [deductions: deductions_query], force: true)
     |> arrange_columns()
     |> arrange_assignments()
     |> arrange_conditions()
+  end
+
+  defp arrange_variables(
+         %Blueprint{variables: %Ecto.Association.NotLoaded{}} = br
+       ) do
+    br
   end
 
   defp arrange_variables(blueprint) do
@@ -269,6 +338,12 @@ defmodule VacEngine.Processor.Blueprints do
     |> put_in([Access.key(:variable_id_index)], id_index)
   end
 
+  defp arrange_columns(
+         %Blueprint{deductions: %Ecto.Association.NotLoaded{}} = br
+       ) do
+    br
+  end
+
   defp arrange_columns(blueprint) do
     blueprint
     |> update_in(
@@ -282,6 +357,12 @@ defmodule VacEngine.Processor.Blueprints do
         Column.insert_bindings(col, blueprint)
       end
     )
+  end
+
+  defp arrange_assignments(
+         %Blueprint{deductions: %Ecto.Association.NotLoaded{}} = br
+       ) do
+    br
   end
 
   defp arrange_assignments(blueprint) do
@@ -313,6 +394,12 @@ defmodule VacEngine.Processor.Blueprints do
         end)
       end
     )
+  end
+
+  defp arrange_conditions(
+         %Blueprint{deductions: %Ecto.Association.NotLoaded{}} = br
+       ) do
+    br
   end
 
   defp arrange_conditions(blueprint) do
@@ -411,8 +498,6 @@ defmodule VacEngine.Processor.Blueprints do
 
   def serialize_blueprint(%Blueprint{} = blueprint) do
     blueprint
-    |> load_variables
-    |> load_deductions
     |> Blueprint.to_map()
   end
 

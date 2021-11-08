@@ -23,29 +23,26 @@ defmodule VacEngine.Processor.ImportTest do
     assert {:ok, blueprint} =
              Processor.create_blueprint(workspace, blueprints.nested_test)
 
-    serialized = Processor.serialize_blueprint(blueprint)
+    serialized = Processor.serialize_blueprint(reload(blueprint))
 
     assert {:ok, blueprint} = Processor.update_blueprint(blueprint, serialized)
 
-    serialized_two = Processor.serialize_blueprint(blueprint)
+    serialized_two = Processor.serialize_blueprint(reload(blueprint))
 
     assert serialized == serialized_two
 
     assert {:ok, blueprint} = Processor.create_blueprint(workspace, serialized)
 
-    serialized_two = Processor.serialize_blueprint(blueprint)
+    serialized_two = Processor.serialize_blueprint(reload(blueprint))
 
     assert serialized == serialized_two
 
     assert {:ok, blueprint} =
              Processor.create_blueprint(workspace, blueprints.sig_test)
 
-    serialized = Processor.serialize_blueprint(blueprint)
+    serialized = Processor.serialize_blueprint(reload(blueprint))
 
-    blueprint =
-      blueprint
-      |> Processor.load_variables()
-      |> Processor.load_deductions()
+    blueprint = reload(blueprint)
 
     now = DateTime.truncate(DateTime.utc_now(), :second)
 
@@ -68,13 +65,18 @@ defmodule VacEngine.Processor.ImportTest do
     from(b in Binding, where: b.id == ^binding.id)
     |> VacEngine.Repo.update_all(set: [updated_at: now])
 
-    blueprint =
-      Processor.get_blueprint!(blueprint.id)
-      |> Processor.load_variables()
-      |> Processor.load_deductions()
+    blueprint = reload(blueprint)
 
     serialized_two = Processor.serialize_blueprint(blueprint)
 
     assert serialized == serialized_two
+  end
+
+  def reload(blueprint) do
+    Processor.get_blueprint!(blueprint.id, fn query ->
+      query
+      |> Processor.load_blueprint_variables()
+      |> Processor.load_blueprint_full_deductions()
+    end)
   end
 end

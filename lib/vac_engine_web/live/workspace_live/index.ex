@@ -1,6 +1,5 @@
 defmodule VacEngineWeb.WorkspaceLive.Index do
   use VacEngineWeb, :live_view
-  use VacEngineWeb.TooltipHelpers
 
   alias VacEngine.Account
 
@@ -13,45 +12,12 @@ defmodule VacEngineWeb.WorkspaceLive.Index do
 
     {:ok,
      assign(socket,
-       workspaces: Account.list_workspaces(),
-       current_tooltip: nil,
-       clear_tooltip_ref: nil
+       workspaces:
+         Account.list_workspaces(fn query ->
+           query
+           |> Account.load_workspace_stats()
+           |> Account.order_workspaces_by(:name)
+         end)
      )}
-  end
-
-  @impl true
-  def handle_event(
-        "delete",
-        %{"key" => "delete." <> wid = key},
-        %{assigns: %{current_tooltip: key}} = socket
-      ) do
-    can!(socket, :manage, :workspaces)
-
-    wid
-    |> Account.get_workspace!()
-    |> Account.delete_workspace()
-    |> case do
-      {:ok, _w} ->
-        {:noreply,
-         socket
-         |> assign(workspaces: Account.list_workspaces())
-         |> clear_flash
-         |> clear_tooltip}
-
-      {:error, err} ->
-        {:noreply,
-         socket
-         |> put_flash(:error, "Cannot delete workspace: #{err}.")
-         |> clear_tooltip}
-    end
-  end
-
-  @impl true
-  def handle_event(
-        "delete",
-        %{"key" => key},
-        socket
-      ) do
-    {:noreply, set_tooltip(socket, key)}
   end
 end

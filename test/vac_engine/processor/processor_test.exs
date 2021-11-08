@@ -22,9 +22,11 @@ defmodule VacEngine.Processor.ProcessorTest do
                  Processor.create_blueprint(workspace, blueprint)
 
         blueprint =
-          blueprint
-          |> Processor.load_variables()
-          |> Processor.load_deductions()
+          Processor.get_blueprint!(blueprint.id, fn query ->
+            query
+            |> Processor.load_blueprint_variables()
+            |> Processor.load_blueprint_full_deductions()
+          end)
 
         assert {:ok, processor} = Processor.compile_blueprint(blueprint)
         {name, processor}

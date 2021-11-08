@@ -115,10 +115,45 @@ defmodule VacEngine.Processor do
   alias VacEngine.Processor.Info
 
   @doc """
+  List blueprint
+  """
+  defdelegate list_blueprints(queries \\ & &1), to: Blueprints
+
+  @doc """
+  Get a blueprint with id, raise if not found.
+  """
+  defdelegate get_blueprint!(blueprint_id, queries \\ & &1), to: Blueprints
+
+  defdelegate filter_blueprints_by_workspace(query, workspace), to: Blueprints
+
+  defdelegate filter_blueprints_by_query(query, search), to: Blueprints
+
+  defdelegate limit_blueprints(query, limit), to: Blueprints
+
+  @doc """
+  Load variables and index them
+  """
+  defdelegate load_blueprint_variables(query), to: Blueprints
+
+  @doc """
+  Load deductions and arrange them, load_blueprint_variables MUST be called first
+  """
+  defdelegate load_blueprint_full_deductions(query), to: Blueprints
+
+  defdelegate load_blueprint_active_publications(query), to: Blueprints
+
+  defdelegate load_blueprint_publications(query), to: Blueprints
+
+  @doc """
   Create a blueprint with the given attributes
   TODO describe attributes
   """
   defdelegate create_blueprint(workspace, attrs), to: Blueprints
+
+  @doc """
+  Delete blueprint (will error if used)
+  """
+  defdelegate delete_blueprint(blueprint), to: Blueprints
 
   @doc """
   Cast attributes into a changeset
@@ -131,33 +166,6 @@ defmodule VacEngine.Processor do
   Update a blueprint with attributes
   """
   defdelegate update_blueprint(blueprint, attrs), to: Blueprints
-
-  @doc """
-  Get a blueprint with id, raise if not found.
-  """
-  defdelegate get_blueprint!(blueprint_id), to: Blueprints
-
-  @doc """
-  Convert to map for serialization
-  """
-  defdelegate serialize_blueprint(blueprint), to: Blueprints
-
-  @doc """
-  Load a blueprint from a file.
-
-  Used for file upload as phoenix write into temp file
-  """
-  defdelegate update_blueprint_from_file(blueprint, path), to: Blueprints
-
-  @doc """
-  Load variables and index them
-  """
-  defdelegate load_variables(blueprint), to: Blueprints
-
-  @doc """
-  Load deductions and arrange them, load_variables MUST be called first
-  """
-  defdelegate load_deductions(blueprint), to: Blueprints
 
   @doc """
   Create variable with attributes
@@ -178,6 +186,18 @@ defmodule VacEngine.Processor do
   Move variable to new parent
   """
   defdelegate move_variable(var, new_parent), to: Variables
+
+  @doc """
+  Convert to map for serialization
+  """
+  defdelegate serialize_blueprint(blueprint), to: Blueprints
+
+  @doc """
+  Load a blueprint from a file.
+
+  Used for file upload as phoenix write into temp file
+  """
+  defdelegate update_blueprint_from_file(blueprint, path), to: Blueprints
 
   defstruct blueprint: nil, compiled_ast: nil, state: nil, info: nil
 

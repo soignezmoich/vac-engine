@@ -2,8 +2,6 @@ defmodule VacEngineWeb.Workspace.PortalLive.Index do
   use VacEngineWeb, :live_view
 
   alias VacEngine.Pub
-  alias VacEngine.EnumHelpers
-  alias VacEngine.Pub.Portal
 
   on_mount(VacEngineWeb.LiveRole)
   on_mount(VacEngineWeb.LiveWorkspace)
@@ -16,29 +14,14 @@ defmodule VacEngineWeb.Workspace.PortalLive.Index do
         %{assigns: %{workspace: workspace}} = socket
       ) do
     can!(socket, :publish, workspace)
-    portals = Pub.load_portals(workspace).portals
+
+    portals =
+      Pub.list_portals(fn query ->
+        query
+        |> Pub.filter_portals_by_workspace(workspace)
+        |> Pub.load_portal_active_publication()
+      end)
+
     {:ok, assign(socket, portals: portals)}
-  end
-
-  @impl true
-  def handle_event(
-        "delete",
-        %{"id" => id},
-        %{assigns: %{workspace: workspace, portals: portals}} = socket
-      ) do
-    {id, _} = Integer.parse(id)
-
-    portals
-    |> EnumHelpers.find_by(:id, id)
-    |> case do
-      nil ->
-        {:noreply, socket}
-
-      portal ->
-        can!(socket, :delete, portal)
-        {:ok, _} = Pub.delete_portal(portal)
-        portals = Pub.load_portals(workspace).portals
-        {:noreply, assign(socket, portals: portals)}
-    end
   end
 end

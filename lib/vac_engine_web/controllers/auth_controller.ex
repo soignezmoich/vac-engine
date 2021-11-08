@@ -15,9 +15,7 @@ defmodule VacEngineWeb.AuthController do
     )
     |> case do
       {:ok, {user_id, next_url}} ->
-        user =
-          Account.get_user!(user_id)
-          |> Account.load_role()
+        user = Account.get_user!(user_id, &Account.load_user_role/1)
 
         {:ok, session} = Account.create_session(user.role, session_attrs(conn))
 

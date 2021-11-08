@@ -81,23 +81,122 @@ defmodule VacEngine.Pub do
   import VacEngine.PipeHelpers
   import VacEngine.EctoHelpers, only: [transaction: 2]
 
-  # TODO change to reuse portal when possible
+  @doc """
+  List all portals
+  """
+  def list_portals(queries \\ & &1) do
+    Portal
+    |> queries.()
+    |> Repo.all()
+  end
+
+  @doc """
+  Get a portal with id, raise if not found.
+  """
+  def get_portal!(id, queries \\ & &1) do
+    Portal
+    |> queries.()
+    |> Repo.get!(id)
+  end
+
+  def filter_active_portals(query) do
+    from(p in query,
+      join: pub in assoc(p, :publications),
+      on: is_nil(pub.deactivated_at)
+    )
+  end
+
+  def load_portal_active_publication(query) do
+    publications_query =
+      from(r in Publication,
+        order_by: [desc: r.activated_at],
+        where: is_nil(r.deactivated_at),
+        preload: :blueprint
+      )
+
+    from(p in query, preload: [active_publication: ^publications_query])
+  end
+
+  def load_portal_publications(query) do
+    publications_query =
+      from(r in Publication,
+        order_by: [desc: r.activated_at],
+        preload: :blueprint
+      )
+
+    from(p in query, preload: [publications: ^publications_query])
+  end
+
+  def filter_portals_by_workspace(query, workspace) do
+    from(p in query, where: p.workspace_id == ^workspace.id)
+  end
+
   @doc """
   Publish a blueprint.
 
   - create portal
   - create publication
   - set publication as active
+
+  First variant with existing portal
+
+  Second variant with new portal params
   """
-  def publish_blueprint(%Blueprint{} = br, attrs \\ %{}) do
+  def publish_blueprint(%Blueprint{} = br, %Portal{} = portal) do
     Multi.new()
-    |> Multi.insert(:portal, fn _ ->
-      %Portal{
-        name: br.name,
-        interface_hash: br.interface_hash,
-        workspace_id: br.workspace_id
-      }
-      |> Portal.changeset(attrs)
+    |> Multi.update_all(
+      :deactivate,
+      fn _ ->
+        now = DateTime.truncate(DateTime.utc_now(), :second)
+
+        from(p in Publication,
+          where: p.portal_id == ^portal.id and is_nil(p.deactivated_at),
+          update: [set: [deactivated_at: ^now]]
+        )
+      end,
+      []
+    )
+    |> Multi.run(:existing, fn repo, _ ->
+      from(p in Publication,
+        where: p.portal_id == ^portal.id and p.blueprint_id == ^br.id
+      )
+      |> repo.one()
+      |> case do
+        nil ->
+          %Publication{
+            workspace_id: br.workspace_id,
+            blueprint_id: br.id,
+            portal_id: portal.id
+          }
+
+        pub ->
+          pub
+      end
+      |> ok()
+    end)
+    |> Multi.insert_or_update(:publication, fn %{existing: existing} ->
+      existing
+      |> Publication.changeset(%{
+        activated_at: NaiveDateTime.utc_now(),
+        deactivated_at: nil
+      })
+    end)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{publication: pub, portal: portal}} ->
+        {:ok, %{pub | portal: portal}}
+
+      err ->
+        err
+    end
+    |> tap_ok(&bust_cache/0)
+  end
+
+  def publish_blueprint(%Blueprint{} = br, portal_params) do
+    Multi.new()
+    |> Multi.insert_or_update(:portal, fn _ ->
+      %Portal{workspace_id: br.workspace_id, interface_hash: br.interface_hash}
+      |> change_portal(portal_params)
     end)
     |> Multi.insert(:publication, fn %{portal: portal} ->
       %Publication{
@@ -128,10 +227,21 @@ defmodule VacEngine.Pub do
   end
 
   @doc """
-  Get a portal with id, raise if not found.
+  Update portal with attributes
   """
-  def get_portal!(id) do
-    Repo.get!(Portal, id)
+  def update_portal(data, attrs \\ %{}) do
+    data
+    |> change_portal(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Cast attributes into a changeset
+  """
+  def create_portal(workspace, attrs \\ %{}) do
+    %Portal{workspace_id: workspace.id}
+    |> Portal.changeset(attrs)
+    |> Repo.insert()
   end
 
   @doc """
@@ -163,14 +273,6 @@ defmodule VacEngine.Pub do
       _ ->
         {:error, "publication not found "}
     end
-  end
-
-  @doc """
-  List all portals
-  """
-  def list_portals() do
-    from(p in Portal, preload: [:publications])
-    |> Repo.all()
   end
 
   @doc """
@@ -236,6 +338,7 @@ defmodule VacEngine.Pub do
 
   @doc """
   Load portals of workspace
+  TODO remove
   """
   def load_portals(%Workspace{} = workspace) do
     publications_query =
@@ -251,33 +354,5 @@ defmodule VacEngine.Pub do
       )
 
     Repo.preload(workspace, [portals: portals_query], force: true)
-  end
-
-  @doc """
-  Load publications of blueprint
-  """
-  def load_publications(%Blueprint{} = blueprint) do
-    publications_query =
-      from(r in Publication,
-        order_by: [desc: r.activated_at],
-        preload: :portal
-      )
-
-    Repo.preload(blueprint, [publications: publications_query], force: true)
-  end
-
-  @doc """
-  Load active publications of portal
-  """
-  def load_active_publication(%Portal{} = portal) do
-    publications_query =
-      from(r in Publication,
-        order_by: [desc: r.activated_at],
-        where: is_nil(r.deactivated_at),
-        preload: :portal,
-        limit: 1
-      )
-
-    Repo.preload(portal, [active_publication: publications_query], force: true)
   end
 end

@@ -10,19 +10,60 @@ defmodule VacEngine.Account.Workspaces do
   alias VacEngine.Pub.Portal
   import VacEngine.EctoHelpers, only: [transaction: 2]
 
-  def list_workspaces() do
-    from(w in Workspace, order_by: :id)
+  def list_workspaces(queries) do
+    Workspace
+    |> queries.()
     |> Repo.all()
+  end
+
+  def get_workspace!(id, queries) do
+    Workspace
+    |> queries.()
+    |> Repo.get!(id)
+  end
+
+  def load_workspace_blueprints(query) do
+    from(r in query,
+      preload: [
+        :blueprints
+      ]
+    )
+  end
+
+  def load_workspace_stats(query) do
+    from(r in query,
+      left_join: br in assoc(r, :blueprints),
+      left_join: pub in assoc(r, :publications),
+      on: is_nil(pub.deactivated_at),
+      group_by: r.id,
+      select_merge: %{
+        blueprint_count: count(br.id),
+        active_publication_count: count(pub.id)
+      }
+    )
+  end
+
+  def filter_accessible_workspaces(query, %Role{
+        global_permission: %{super_admin: true}
+      }) do
+    query
+  end
+
+  def filter_accessible_workspaces(query, %Role{} = role) do
+    from(w in query,
+      join: p in assoc(w, :permissions),
+      where: p.role_id == ^role.id and p.read == true
+    )
+  end
+
+  def order_workspaces_by(query, key) do
+    from(r in query, order_by: field(r, ^key))
   end
 
   def create_workspace(attrs) do
     %Workspace{}
     |> Workspace.changeset(attrs)
     |> Repo.insert()
-  end
-
-  def get_workspace!(id) do
-    Repo.get!(Workspace, id)
   end
 
   def change_workspace(data, attrs \\ %{}) do
@@ -60,23 +101,5 @@ defmodule VacEngine.Account.Workspaces do
     end)
     |> Multi.delete(:delete, workspace)
     |> transaction(:delete)
-  end
-
-  def available_workspaces(%Role{global_permission: %{super_admin: true}}) do
-    list_workspaces()
-  end
-
-  def available_workspaces(%Role{} = role) do
-    from(w in Workspace,
-      order_by: :name,
-      join: p in assoc(w, :permissions),
-      where: p.role_id == ^role.id and p.read == true
-    )
-    |> Repo.all()
-  end
-
-  def load_blueprints(%Workspace{} = workspace) do
-    workspace
-    |> Repo.preload(:blueprints)
   end
 end

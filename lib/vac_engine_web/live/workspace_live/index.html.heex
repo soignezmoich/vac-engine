@@ -1,35 +1,37 @@
-<section class="p-4">
-  <h1 class="font-bold text-xl mb-6">Workspaces</h1>
+<div class="p-4 w-full max-w-3xl">
   <%= live_redirect("Create workspace",
         to: Routes.workspace_path(@socket, :new),
         class: "inline-block mb-4 btn-default"
       ) %>
-  <.error_flash flash={@flash} />
-  <table class="listing-table">
-    <thead>
-      <th>Name</th>
-      <th></th>
-    </thead>
-    <tbody>
-      <%= for w <- @workspaces do %>
-        <tr>
-          <td>
-            <%= tr(w.name, 32) %>
-          </td>
-          <td>
-            <%= live_redirect("Details",
-                  to: Routes.workspace_path(@socket, :edit, w.id),
-                  class: "btn-sm inline-block"
-                ) %>
-            <.button
-              class="btn-sm ml-2"
-              key={"delete.#{w.id}"}
-              click="delete"
-              label="Delete"
-              tooltip_key={ @current_tooltip} />
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-</section>
+  <%= case @workspaces do %>
+  <% [_|_] = workspaces -> %>
+    <%= for w <- workspaces do %>
+      <div class="border-b flex py-4 w-full">
+        <div class="flex flex-col flex-grow">
+          <span class="font-bold mb-2">
+            <%= w.name %>
+          </span>
+          <div class="flex">
+            <span class="text-sm mr-2">
+              Blueprints <%= w.blueprint_count %>
+            </span>
+            <span class="mr-2 self-center text-gray-700">
+              <.icon name="dot" width="6px" />
+            </span>
+            <span class="text-sm mr-2">
+              Active <%= w.active_publication_count %>
+            </span>
+          </div>
+        </div>
+        <div class="flex flex-col flex-shrink-0">
+           <%= live_redirect("Details",
+                 to: Routes.workspace_path(@socket, :edit, w.id),
+                 class: "btn inline-block"
+               ) %>
+        </div>
+      </div>
+    <% end %>
+  <% _ -> %>
+    <p class="font-bold">No workspace.</p>
+  <% end %>
+</div>

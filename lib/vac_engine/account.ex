@@ -112,6 +112,8 @@ defmodule VacEngine.Account do
     no simple editor can influence the behaviour of the api.
   """
 
+  alias VacEngine.Account
+
   alias VacEngine.Account.Permissions
 
   @doc """
@@ -144,22 +146,37 @@ defmodule VacEngine.Account do
   @doc """
   List all workspaces
   """
-  defdelegate list_workspaces(), to: Workspaces
+  defdelegate list_workspaces(queries \\ & &1), to: Workspaces
 
   @doc """
   Get a workspace with id, raise if not found.
   """
-  defdelegate get_workspace!(id), to: Workspaces
+  defdelegate get_workspace!(id, queries \\ & &1), to: Workspaces
+
+  @doc """
+  Filter available workspaces for a given role
+  """
+  defdelegate filter_accessible_workspaces(query, role), to: Workspaces
+
+  @doc """
+  Load blueprints assoc
+  """
+  defdelegate load_workspace_blueprints(query), to: Workspaces
+
+  @doc """
+  Load blueprint_count and active_publication_count
+  """
+  defdelegate load_workspace_stats(query), to: Workspaces
+
+  @doc """
+  Order workspace by key
+  """
+  defdelegate order_workspaces_by(query, key), to: Workspaces
 
   @doc """
   Create a workspace with attributes
   """
   defdelegate create_workspace(attrs), to: Workspaces
-
-  @doc """
-  Return all available workspaces for a given role
-  """
-  defdelegate available_workspaces(role), to: Workspaces
 
   @doc """
   Cast attributes into a changeset
@@ -178,23 +195,31 @@ defmodule VacEngine.Account do
   """
   defdelegate delete_workspace(data), to: Workspaces
 
-  @doc """
-  Load blueprints assoc
-  """
-  defdelegate load_blueprints(workspace), to: Workspaces
-
   alias VacEngine.Account.Users
 
   @doc """
   Return all users with `last_login_at` and `last_active_at` virtual fields
   populated
   """
-  defdelegate list_users(), to: Users
+  defdelegate list_users(queries \\ & &1), to: Users
 
   @doc """
   Get a user with id, raise if not found.
   """
-  defdelegate get_user!(uid), to: Users
+  defdelegate get_user!(uid, queries \\ & &1), to: Users
+
+  @doc """
+  Preload user activity
+
+  Will load role, all sessions and populate `is_active`, `last_login_at` and
+  `last_active_at` virtual fields.
+  """
+  defdelegate load_user_activity(query), to: Users
+
+  @doc """
+  Load role assoc
+  """
+  defdelegate load_user_role(query), to: Users
 
   @doc """
   Check a email/password and return the user if both are valid (used for login)
@@ -220,11 +245,6 @@ defmodule VacEngine.Account do
   Update user with attributes
   """
   defdelegate update_user(data, attrs), to: Users
-
-  @doc """
-  Load role assoc
-  """
-  defdelegate load_role(user), to: Users
 
   alias VacEngine.Account.Sessions
 
@@ -256,9 +276,29 @@ defmodule VacEngine.Account do
   alias VacEngine.Account.Roles
 
   @doc """
+  List roles
+  """
+  defdelegate list_roles(queries \\ & &1), to: Roles
+
+  @doc """
   Get a role with id, raise if not found.
   """
-  defdelegate get_role!(id), to: Roles
+  defdelegate get_role!(id, queries \\ & &1), to: Roles
+
+  @doc """
+  Filter role by type
+  """
+  defdelegate filter_roles_by_type(query, type), to: Roles
+
+  @doc """
+  Filter active role
+  """
+  defdelegate filter_active_roles(query), to: Roles
+
+  @doc """
+  Load session assoc with all permissions
+  """
+  defdelegate load_role_sessions(query), to: Roles
 
   @doc """
   Create a role with attributes
@@ -295,27 +335,17 @@ defmodule VacEngine.Account do
   """
   defdelegate deactivate_role(role), to: Roles
 
-  @doc """
-  Load session assoc with all permissions
-  """
-  defdelegate load_sessions(role), to: Roles
-
-  @doc """
-  Return all active roles for type
-  """
-  defdelegate active_roles(type), to: Roles
-
   alias VacEngine.Account.AccessTokens
 
   @doc """
   Return all API tokens
   """
-  defdelegate list_api_tokens(), to: AccessTokens
+  defdelegate list_api_tokens(queries \\ & &1), to: AccessTokens
 
   @doc """
   Load te `api_tokens` assoc of a given role
   """
-  defdelegate load_api_tokens(role), to: AccessTokens
+  defdelegate load_api_tokens(query), to: AccessTokens
 
   @doc """
   Generates a human friendly secret of `length` bytes long.
@@ -349,27 +379,24 @@ defmodule VacEngine.Account do
   def list_api_keys() do
     # TODO actually check role portal id permissions
     portals =
-      Pub.list_portals()
-      |> Enum.map(fn portal ->
-        portal
-        |> Pub.load_active_publication()
-        |> Map.get(:active_publication)
-        |> case do
-          nil ->
-            nil
-
-          publi ->
-            {portal.id, %{blueprint_id: publi.blueprint_id}}
-        end
+      Pub.list_portals(fn query ->
+        query
+        |> Pub.filter_active_portals()
+        |> Pub.load_portal_active_publication()
       end)
-      |> Enum.reject(&is_nil/1)
+      |> Enum.map(fn portal ->
+        {portal.id, %{blueprint_id: portal.active_publication.blueprint_id}}
+      end)
       |> Map.new()
 
-    Roles.active_roles(:api)
+    list_roles(fn query ->
+      query
+      |> Account.filter_active_roles()
+      |> Account.filter_roles_by_type(:api)
+      |> Account.load_api_tokens()
+    end)
     |> Enum.map(fn r ->
-      r
-      |> AccessTokens.load_api_tokens()
-      |> Map.get(:api_tokens)
+      r.api_tokens
       |> Enum.map(fn t ->
         %{secret: t.secret, portals: portals}
       end)
