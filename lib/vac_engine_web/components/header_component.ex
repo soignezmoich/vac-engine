@@ -6,14 +6,14 @@ defmodule VacEngineWeb.HeaderComponent do
 
   def header(assigns) do
     ~H"""
-    <header class="flex flex-col md:flex-row bg-blue-700 border-b border-gray-900">
-      <nav class="flex mx-2 order-2 md:order-1">
+    <header class="flex flex-col lg:flex-row bg-blue-700 border-b border-gray-900">
+      <nav class="flex mx-2 order-2 lg:order-1">
         <%= for attrs <- sub_elements(assigns) do %>
           <.sub_element {attrs} />
         <% end %>
       </nav>
-      <div class="md:flex-grow md:order-2"></div>
-      <nav class="flex mx-2 order-1 md:order-3 self-end md:self-stretch
+      <div class="lg:flex-grow lg:order-2"></div>
+      <nav class="flex mx-2 order-1 lg:order-3 self-end lg:self-stretch
                   items-stretch h-16">
         <.admin_element role={@role} s={at(@location, :admin)} />
         <.workspace_element
@@ -155,12 +155,13 @@ defmodule VacEngineWeb.HeaderComponent do
         l: "Summary",
         a: workspace_blueprint_path(Endpoint, :summary, w.id, b.id),
         s: loc == :summary,
-        i: "dot"
+        i: "hero/home"
       },
       %{
         l: "Variables",
         a: workspace_blueprint_path(Endpoint, :variables, w.id, b.id),
-        s: loc == :variables
+        s: loc == :variables,
+        i: "hero/puzzle"
       },
       %{
         l: "Deductions",
