@@ -1,8 +1,9 @@
-<div class="flex min-h-0">
-  <div class="flex-grow flex flex-col overflow-y-auto">
-    <div class="flex-shrink text-xs">
-      <DeductionList.render deductions={@deductions} />
+<div class="relative flex-grow">
+  <div class="absolute inset-0 flex min-h-0">
+    <div class="flex-grow flex flex-col overflow-y-auto">
+      <div class="flex-shrink text-xs">
+        <DeductionList.render deductions={@deductions} />
+      </div>
     </div>
   </div>
-  <br/>
 </div>
