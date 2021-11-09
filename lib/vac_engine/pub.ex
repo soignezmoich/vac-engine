@@ -335,24 +335,4 @@ defmodule VacEngine.Pub do
   Bust all cached permissions
   """
   def bust_api_keys_cache(), do: Cache.bust_api_keys()
-
-  @doc """
-  Load portals of workspace
-  TODO remove
-  """
-  def load_portals(%Workspace{} = workspace) do
-    publications_query =
-      from(r in Publication,
-        order_by: [desc: r.activated_at],
-        preload: :portal
-      )
-
-    portals_query =
-      from(r in Portal,
-        order_by: [desc: r.inserted_at],
-        preload: [publications: ^publications_query]
-      )
-
-    Repo.preload(workspace, [portals: portals_query], force: true)
-  end
 end
