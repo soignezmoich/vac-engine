@@ -83,7 +83,7 @@ defmodule VacEngineWeb.Editor.CellComponent do
 
     bg_color =
       case {is_condition, value, selected} do
-        #{_, _, true} -> "bg-pink-600 text-white"
+        # {_, _, true} -> "bg-pink-600 text-white"
         {true, :is_true, _} -> "bg-green-200 font-semibold"
         {true, :is_false, _} -> "bg-red-200"
         {true, "-", _} -> "bg-cream-200"
@@ -94,7 +94,7 @@ defmodule VacEngineWeb.Editor.CellComponent do
 
     bg_opacity =
       case {selected, is_even(row_index)} do
-        #{true, _} -> ""
+        # {true, _} -> ""
         {false, true} -> "bg-opacity-30"
         {false, false} -> "bg-opacity-50"
       end

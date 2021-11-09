@@ -304,6 +304,6 @@ defmodule VacEngineWeb.HeaderComponent do
 
   defp at([a | _], a), do: true
   defp at(_, _), do: false
-  #defp at([a, b | _], a, b), do: true
-  #defp at(_, _, _), do: false
+  # defp at([a, b | _], a, b), do: true
+  # defp at(_, _, _), do: false
 end
