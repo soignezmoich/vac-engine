@@ -317,7 +317,7 @@ defmodule VacEngine.Pub do
       where:
         p.blueprint_id == ^blueprint.id and
           is_nil(p.deactivated_at),
-      select: count(p.id) > 1000
+      select: count(p.id) > 0
     )
     |> Repo.one()
     |> tap_on(true, &bust_cache/0)
