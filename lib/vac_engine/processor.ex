@@ -157,7 +157,6 @@ defmodule VacEngine.Processor do
 
   @doc """
   Cast attributes into a changeset
-  TODO difference with update_blueprint
   Only root attributes are supported (no variables or deductions)
   """
   defdelegate change_blueprint(blueprint, attrs \\ %{}), to: Blueprints

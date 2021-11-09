@@ -162,7 +162,6 @@ defmodule VacEngine.Processor.Blueprints do
     Repo.delete(blueprint)
   end
 
-  # TODO what is multi?
   defp multi_update(multi) do
     multi
     |> multi_update_variables

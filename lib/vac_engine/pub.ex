@@ -65,8 +65,6 @@ defmodule VacEngine.Pub do
   to the portal, when the linked blueprint is modified or when the API keys
   are modified). This can be done using the `bust_cache/0`, the
   `bust_blueprint_cache/0` and `bust_api_keys_cache/0` funtions.
-
-  TODO not possible to reactivate??
   """
   import Ecto.Query
   alias Ecto.Multi

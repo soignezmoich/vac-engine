@@ -36,8 +36,6 @@ defmodule VacEngine.Account do
 
       curl https://example.com/api/p/8/run -X POST -H "Authorization: Bearer api_1234567_123456789012345678901234567890"
 
-  TODO difference between "list_api_token" et "list_api_keys" ?
-
 
   ## Permissions
 
