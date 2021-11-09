@@ -11,6 +11,7 @@ defmodule VacEngine.Processor.State do
   import VacEngine.Processor.State.Helpers
   import VacEngine.PipeHelpers
   import VacEngine.Processor.State.List
+  require Logger
 
   defstruct variables: nil,
             input_variables: nil,
@@ -188,6 +189,8 @@ defmodule VacEngine.Processor.State do
       heap
       |> filter_vars(vars)
       |> maps_to_lists(vars)
+
+    Logger.info("Output: #{inspect(output)}")
 
     %{state | output: output}
     |> ok()

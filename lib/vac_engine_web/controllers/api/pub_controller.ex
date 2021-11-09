@@ -1,6 +1,7 @@
 defmodule VacEngineWeb.Api.PubController do
   use VacEngineWeb, :controller
   alias VacEngine.Pub
+  require Logger
 
   action_fallback(VacEngineWeb.Api.FallbackController)
 
@@ -18,9 +19,12 @@ defmodule VacEngineWeb.Api.PubController do
         render(conn, "run.json", result: result)
 
       {:error, msg} ->
+        Logger.warning("Bad request: #{msg}")
+        Logger.warning("Input: #{inspect(input)}")
         {:error, :bad_request, msg}
 
       _err ->
+        Logger.error("Run error")
         {:error, :bad_request}
     end
   end

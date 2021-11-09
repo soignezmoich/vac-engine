@@ -10,6 +10,7 @@ defmodule VacEngine.Processor.State.Input do
   import VacEngine.Processor.State.List
   import VacEngine.Processor.State.Helpers
   import VacEngine.PipeHelpers
+  require Logger
 
   @doc """
   Parse `input` and map content into variables
@@ -31,6 +32,8 @@ defmodule VacEngine.Processor.State.Input do
         end
       end
     end)
+
+    Logger.info("Input: #{inspect(input)}")
 
     %{state | input: input, heap: heap}
     |> ok()

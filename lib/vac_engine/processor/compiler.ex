@@ -99,6 +99,8 @@ defmodule VacEngine.Processor.Compiler do
 
     quote do
       defmodule unquote(:"Elixir.VacEngine.Processor.BlueprintCode.I#{id}") do
+        require Logger
+
         def run(state) do
           var!(state) = state
           unquote(ast)
@@ -127,6 +129,15 @@ defmodule VacEngine.Processor.Compiler do
         end
       end)
 
+    br_info = "Blueprint ##{blueprint.id}: #{blueprint.name}"
+
+    fn_asts = [
+      quote do
+        Logger.info(unquote(br_info))
+      end
+      | fn_asts
+    ]
+
     ast = {:__block__, [], fn_asts}
     {:ok, ast |> compile_blueprint_ast(blueprint)}
   catch
@@ -135,15 +146,31 @@ defmodule VacEngine.Processor.Compiler do
   end
 
   @doc false
-  def compile_deduction(%Deduction{} = deduction) do
+  def compile_deduction(%Deduction{} = ded) do
     branches_asts =
-      deduction.branches
+      ded.branches
       |> Enum.map(fn br ->
         {conditions_ast, assignments_ast} = compile_branch!(br)
+
+        ded_info = ded.description || ded.position
+        br_info = br.description || br.position
+
+        ass_info =
+          br.assignments
+          |> Enum.filter(fn a -> a.description end)
+          |> Enum.map(fn a ->
+            "#{a.target |> Enum.join(".")}: #{a.description}"
+          end)
+          |> then(fn els -> ["" | els] end)
+          |> Enum.join("\n\t")
+
+        info = "#{ded_info} -> #{br_info} #{ass_info}"
 
         [q] =
           quote do
             unquote(conditions_ast) ->
+              Logger.info(unquote(info))
+
               VacEngine.Processor.State.merge_vars(
                 var!(state),
                 unquote(assignments_ast).()
@@ -153,17 +180,24 @@ defmodule VacEngine.Processor.Compiler do
         q
       end)
 
+    info = "#{ded.description || ded.position}: default"
+
     branches_asts =
       branches_asts ++
         quote do
-          true -> var!(state)
+          true ->
+            Logger.info(unquote(info))
+            var!(state)
         end
 
-    quote do
-      cond do
-        unquote(branches_asts)
+    ast =
+      quote do
+        cond do
+          unquote(branches_asts)
+        end
       end
-    end
+
+    ast
   end
 
   @doc false

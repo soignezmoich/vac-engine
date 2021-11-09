@@ -9,19 +9,19 @@ defmodule VacEngineWeb.HeaderComponent do
 
   def header(assigns) do
     ~H"""
-    <header class="flex flex-col lg:flex-row relative
+    <header class="flex flex-col xl:flex-row relative
                    bg-blue-700 border-b border-gray-900">
       <div class="absolute top-0 left-0 py-1 px-3 text-xs text-gray-200">
         Version: <%= version() %>.
         Build date: <%= build_date() %>.
       </div>
-      <nav class="flex mx-2 order-2 lg:order-1">
+      <nav class="flex mx-2 order-2 xl:order-1">
         <%= for attrs <- sub_elements(assigns) do %>
           <.sub_element {attrs} />
         <% end %>
       </nav>
-      <div class="lg:flex-grow lg:order-2"></div>
-      <nav class="flex mx-2 order-1 lg:order-3 self-end lg:self-stretch
+      <div class="xl:flex-grow xl:order-2"></div>
+      <nav class="flex mx-2 order-1 xl:order-3 self-end xl:self-stretch
                   items-stretch h-16">
         <.admin_element role={@role} s={at(@location, :admin)} />
         <.workspace_element
