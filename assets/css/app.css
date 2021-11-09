@@ -58,8 +58,17 @@ svg * {
 
 .btn-cancel {
   @apply px-2 py-1 bg-cream-200 text-gray-800 font-bold;
+
   &:hover {
     @apply bg-gray-600 text-gray-50;
+  }
+}
+
+.link {
+  @apply text-blue-600 no-underline;
+
+  &:hover {
+    @apply text-blue-900 underline;
   }
 }
 
@@ -70,7 +79,7 @@ svg * {
     bg-blue-50 border-blue-600 text-black;
 
   &:focus:not([readonly]) {
-    @apply outline-blue;
+    @apply outline-blue border-blue-400;
   }
   &[readonly]:focus {
     @apply outline-cream;
