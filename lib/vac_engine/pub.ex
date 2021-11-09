@@ -75,7 +75,6 @@ defmodule VacEngine.Pub do
   alias VacEngine.Pub.Publication
   alias VacEngine.Processor.Blueprint
   alias VacEngine.Processor
-  alias VacEngine.Account.Workspace
   import VacEngine.PipeHelpers
   import VacEngine.EctoHelpers, only: [transaction: 2]
 
