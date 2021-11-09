@@ -2,10 +2,11 @@ defmodule VacEngineWeb.Editor.VariableListComponent do
   use Phoenix.Component
 
   import Elixir.Integer
+  import VacEngineWeb.IconComponent
+  alias VacEngineWeb.Icons
 
   alias VacEngine.Processor.Variable, as: PVariable
   alias VacEngineWeb.Editor.VariableComponent, as: Variable
-  alias VacEngineWeb.Icons
 
   def render(assigns) do
     assigns =
@@ -18,7 +19,9 @@ defmodule VacEngineWeb.Editor.VariableListComponent do
         <thead>
           <tr>
             <th colspan="3" class="bg-cream-500 text-white py-1 px-4">
-              <Icons.input />
+              <div class="-mt-1 inline-block align-middle">
+                <.icon name="input" width="1.25rem" />
+              </div>
               Input Variables
             </th>
           </tr>
@@ -42,7 +45,9 @@ defmodule VacEngineWeb.Editor.VariableListComponent do
       <thead>
         <tr>
           <th colspan="3" class="bg-blue-500 text-white py-1 px-4">
-            <Icons.variable />
+            <div class="-mt-1 inline-block align-middle">
+              <.icon name="hero/variable" width="1.25rem" />
+            </div>
             Intermediate Variables
           </th>
         </tr>
@@ -66,7 +71,9 @@ defmodule VacEngineWeb.Editor.VariableListComponent do
       <thead>
         <tr>
           <th colspan="3" class="whitespace-nowrap bg-blue-500 text-white py-1 px-4">
-            <Icons.output />
+            <div class="-mt-1 inline-block align-middle">
+              <.icon name="hero/logout" width="1.25rem" />
+            </div>
             Output Variables
           </th>
         </tr>
