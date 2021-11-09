@@ -3,7 +3,6 @@ defmodule VacEngineWeb.Editor.VariableListComponent do
 
   import Elixir.Integer
   import VacEngineWeb.IconComponent
-  alias VacEngineWeb.Icons
 
   alias VacEngine.Processor.Variable, as: PVariable
   alias VacEngineWeb.Editor.VariableComponent, as: Variable
