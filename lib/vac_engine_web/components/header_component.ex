@@ -23,11 +23,54 @@ defmodule VacEngineWeb.HeaderComponent do
           workspace={@workspace}
           workspaces={@workspaces}
           s={at(@location, :workspace)} />
+        <.blueprint_element
+          role={@role}
+          workspace={@workspace}
+          blueprint={@blueprint}
+          s={at(@location, :blueprint)} />
         <%= for attrs <- top_elements(assigns) do %>
           <.top_element {attrs} />
         <% end %>
       </nav>
     </header>
+    """
+  end
+
+  defp blueprint_element(%{role: nil} = assigns) do
+    ~H""
+  end
+
+  defp blueprint_element(%{workspace: nil} = assigns) do
+    ~H"""
+      <div class="border border-gray-400 my-1 ml-4 flex flex-col justify-center
+                  items-center px-2 font-bold text-gray-300">
+        Editor
+        <div class="italic text-sm font-normal">
+          Pick workspace first
+        </div>
+      </div>
+    """
+  end
+
+  defp blueprint_element(%{role: _role} = assigns) do
+    ~H"""
+      <div class={klass("border border-gray-50 my-1 shadow-md flex
+               text-gray-50 ml-4",
+              {"bg-gray-100 bg-opacity-20", Map.get(assigns, :s)})}>
+        <div class="flex flex-col items-center justify-center px-2">
+          <%= cond do %>
+          <% is_nil(@workspace) -> %>
+            <div>Editor</div>
+          <% not is_nil(@blueprint) -> %>
+            <div class="font-bold px-6">Editor</div>
+            <div class="text-sm italic"><%= @blueprint.name %></div>
+          <% true -> %>
+            <%= live_patch "Editor",
+              to: workspace_blueprint_path(Endpoint, :pick, @workspace),
+              class: "font-bold px-6" %>
+          <% end %>
+        </div>
+      </div>
     """
   end
 
@@ -38,14 +81,16 @@ defmodule VacEngineWeb.HeaderComponent do
   defp workspace_element(%{role: _role} = assigns) do
     ~H"""
       <div class={klass("border border-gray-50 my-1 shadow-md flex
-               text-gray-50 px-2",
+               text-gray-50",
               {"bg-gray-100 bg-opacity-20", Map.get(assigns, :s)})}>
-        <div class="flex flex-col items-center justify-center">
+        <div class="flex flex-col items-center justify-center px-2">
           <%= if @workspace do %>
             <%= live_patch "Workspace",
               to: workspace_dashboard_path(Endpoint, :index, @workspace),
               class: "font-bold px-6" %>
-            <div class="text-sm italic"><%= @workspace.name %></div>
+            <%= live_patch @workspace.name,
+              to: workspace_dashboard_path(Endpoint, :index, @workspace),
+              class: "text-sm italic" %>
           <% else %>
             <%= live_patch "Workspace",
               to: nav_path(Endpoint, :index),
@@ -53,9 +98,32 @@ defmodule VacEngineWeb.HeaderComponent do
           <% end %>
         </div>
         <%= case @workspaces do %>
-        <%= [_a, _b | _] -> %>
-          <div class="border-l border-gray-50">
+        <% [_a, _b | _] -> %>
+          <div class="border-l border-gray-50 flex justify-center items-center px-1 relative"
+                data-dropdown="workspace-dropdown">
+            <.icon name="hero/chevron-double-down" width="1rem" />
+            <div id="workspace-dropdown"
+                 class="absolute top-full right-0 bg-blue-700 z-50 border
+                 mt-px -mr-px m-w-0 min-w-min hidden
+                 border-blue-800 py-2">
+              <%= for w <- Enum.take(@workspaces, 10) do %>
+                <%= live_redirect(tr(w.name, 32),
+                  to: workspace_dashboard_path(Endpoint, :index, w),
+                  class: "font-bold px-6 py-1 whitespace-nowrap flex-grow flex
+                  items-center hover:bg-gray-50 hover:bg-opacity-30") %>
+              <% end %>
+              <%= if Enum.count(@workspaces) > 1 do %>
+                <div class="px-6 text-sm py-4 italic">
+                You have access to more workspaces, the list has been truncated.
+                </div>
+                <%= live_patch "Full list",
+                  to: nav_path(Endpoint, :index),
+                  class: "font-bold px-6 py-1 whitespace-nowrap flex-grow flex
+                  items-center hover:bg-gray-50 hover:bg-opacity-30" %>
+              <% end %>
+            </div>
           </div>
+        <% _ -> %>
         <% end %>
       </div>
     """
