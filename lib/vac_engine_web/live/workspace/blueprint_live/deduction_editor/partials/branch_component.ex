@@ -1,8 +1,9 @@
 defmodule VacEngineWeb.Editor.BranchComponent do
   use Phoenix.Component
 
+  import VacEngineWeb.IconComponent
+
   alias VacEngineWeb.Editor.CellComponent, as: Cell
-  alias VacEngineWeb.Icons
 
   def render(assigns) do
     %{
@@ -37,7 +38,7 @@ defmodule VacEngineWeb.Editor.BranchComponent do
             row_index={@index} />
         <% end %>
         <td class="bg-white text-gray-200">
-          <Icons.right />
+          <.icon name="hero/arrow-sm-right" width="1.25rem" />
         </td>
       <% end %>
       <%= for {assign_cell, index} <- @renderable.assign_cells |> Enum.with_index() do %>

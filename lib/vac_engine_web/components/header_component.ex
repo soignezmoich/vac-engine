@@ -225,23 +225,25 @@ defmodule VacEngineWeb.HeaderComponent do
         l: "Summary",
         a: workspace_blueprint_path(Endpoint, :summary, w.id, b.id),
         s: loc == :summary,
-        i: "hero/home"
+        i: "hero/clipboard-list"
       },
       %{
         l: "Variables",
         a: workspace_blueprint_path(Endpoint, :variables, w.id, b.id),
         s: loc == :variables,
-        i: "hero/puzzle"
+        i: "hero/variable"
       },
       %{
         l: "Deductions",
         a: workspace_blueprint_path(Endpoint, :deductions, w.id, b.id),
-        s: loc == :deductions
+        s: loc == :deductions,
+        i: "hero/chevron-double-right"
       },
       %{
         l: "Import",
         a: workspace_blueprint_path(Endpoint, :import, w.id, b.id),
-        s: loc == :import
+        s: loc == :import,
+        i: "hero/sort-ascending"
       }
     ]
   end
