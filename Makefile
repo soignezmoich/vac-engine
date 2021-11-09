@@ -168,10 +168,6 @@ checks:
 	-mix dialyzer
 	mix credo suggest -a
 
-.PHONY: import-blueprints
-import-blueprints: deps
-	mix run blueprints/import.exs
-
 .PHONY: coverage
 
 coverage: export MIX_ENV=test
