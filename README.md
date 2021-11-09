@@ -237,6 +237,8 @@ will terminate SSL itself, and `PORT` should be set to `443`.
 
 ### Types
 
+Available types to use for variables and expressions are the following:
+
 - `boolean` - `true` or `false` (`0` and `nil` are not `false` and truthy values
   are not `true`)
 - `integer` - an integer
@@ -249,23 +251,15 @@ will terminate SSL itself, and `PORT` should be set to `443`.
 
 ### Functions
 
-- `is_true(a)` - a is true
-- `is_false(a)` - a is false
-- `not(a)` - invert a
-- `eq(a, b)` - a is equal to b. Not to be used for non integer numbers.
-- `neq(a, b)` - a is not equal to b
-- `gt(a, b)` - a is greater than b
-- `gte(a, b)` - a is greater than or equal to b
-- `lt(a, b)` - a is less than b
-- `lte(a, b)` - a is less than or equal to b
-- `add(a, b)` - add a and b
-- `sub(a, b)` - subtract b from a
-- `mult(a, b)` - multiply a with b
-- `div(a, b)` - divide a with b
-- `contains(a, b)` - check if a contains b
-
+Available functions to use in expressions can be found in the function library
+file here: `/lib/vac_engine/processor/library/functions.ex`
 
 ## Testing
+
+Tests can be run using `make test` command.
+
+Fine grained testing can be made using the mix command directly:
+```mix test <directory or file path>```
 
 ### Coverage
 
@@ -273,6 +267,27 @@ Coverage can be analysed by running `make coverage`.
 
 There is a `.coverignore` file that is used to ignore module from coverage
 check.
+
+## Software Licence (AGPL)
+
+Vac-check-engine is an api-based deduction system initially developed
+to determine vaccination opportunities based on a person's
+anonymised information.
+ 
+Copyright (C) 2021 Soignez-moi.ch SA Switzerland
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
 
