@@ -198,18 +198,18 @@ defmodule VacEngine.Processor do
   """
   defdelegate update_blueprint_from_file(blueprint, path), to: Blueprints
 
-  defstruct blueprint: nil, compiled_ast: nil, state: nil, info: nil
+  defstruct blueprint: nil, compiled_module: nil, state: nil, info: nil
 
   @doc """
   Compile blueprint into processor
   """
   def compile_blueprint(%Blueprint{} = blueprint) do
-    with {:ok, compiled_ast} <- Compiler.compile_blueprint(blueprint),
+    with {:ok, mod} <- Compiler.compile_blueprint(blueprint),
          {:ok, info} <- Info.describe(blueprint),
          {:ok, state} <- State.new(blueprint.variables) do
       {:ok,
        %Processor{
-         compiled_ast: compiled_ast,
+         compiled_module: mod,
          state: state,
          blueprint: blueprint,
          info: info
@@ -225,12 +225,34 @@ defmodule VacEngine.Processor do
   """
   def run(%Processor{} = processor, input) do
     with {:ok, state} <- State.map_input(processor.state, input),
-         {:ok, state} <- Compiler.eval_ast(processor.compiled_ast, state),
+         state <- apply(processor.compiled_module, :run, [state]),
          {:ok, state} <- State.finalize_output(state) do
       {:ok, state}
     else
       {:error, msg} ->
         {:error, msg}
     end
+  end
+
+  @doc """
+  Flush compiled processor
+  """
+  def flush_processor(%Processor{} = processor) do
+    :code.delete(processor.compiled_module)
+    :code.purge(processor.compiled_module)
+  end
+
+  def list_compiled_blueprint_modules() do
+    :code.all_loaded()
+    |> Enum.filter(fn {mod, _} -> "#{mod}" =~ ~r{^[A-Z]} end)
+    |> Enum.map(fn {mod, _} -> Module.split(mod) end)
+    |> Enum.filter(fn
+      ["VacEngine", "Processor", "BlueprintCode", _] ->
+        true
+
+      _ ->
+        false
+    end)
+    |> Enum.map(&Module.concat/1)
   end
 end

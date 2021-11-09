@@ -94,11 +94,27 @@ defmodule VacEngine.Processor.Compiler do
 
   def compile_ast!(const), do: const
 
+  defp compile_blueprint_ast(ast, blueprint) do
+    id = blueprint.id
+
+    quote do
+      defmodule unquote(:"Elixir.VacEngine.Processor.BlueprintCode.I#{id}") do
+        def run(state) do
+          var!(state) = state
+          unquote(ast)
+          var!(state)
+        end
+      end
+    end
+    |> Code.compile_quoted()
+    |> then(fn [{mod, _}] -> mod end)
+  end
+
   @doc """
   Compile a blueprint and return AST
   """
-  def compile_blueprint(%Blueprint{deductions: []}) do
-    {:ok, quote(do: var!(state))}
+  def compile_blueprint(%Blueprint{deductions: []} = br) do
+    {:ok, nil |> compile_blueprint_ast(br)}
   end
 
   def compile_blueprint(%Blueprint{} = blueprint) do
@@ -112,7 +128,7 @@ defmodule VacEngine.Processor.Compiler do
       end)
 
     ast = {:__block__, [], fn_asts}
-    {:ok, ast}
+    {:ok, ast |> compile_blueprint_ast(blueprint)}
   catch
     {code, msg} ->
       {:error, "#{code}: #{msg}"}

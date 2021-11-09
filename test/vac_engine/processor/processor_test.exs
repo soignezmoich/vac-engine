@@ -46,5 +46,12 @@ defmodule VacEngine.Processor.ProcessorTest do
         assert actual_result.output == cs.output
       end
     end)
+
+    processors
+    |> Enum.each(fn {_name, processor} ->
+      Processor.flush_processor(processor)
+    end)
+
+    assert Processor.list_compiled_blueprint_modules() == []
   end
 end

@@ -67,5 +67,7 @@ defmodule VacEngineWeb.Api.PubControllerTest do
       _ ->
         nil
     end)
+
+    :ok = Pub.bust_cache()
   end
 end

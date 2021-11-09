@@ -137,6 +137,7 @@ defmodule VacEngine.Pub.Cache do
   end
 
   defp refresh(cache) do
+    flush_processors(cache)
     %{cache | processors: %{}}
   end
 
@@ -188,5 +189,12 @@ defmodule VacEngine.Pub.Cache do
       {i, _} -> {:ok, i}
       _ -> {:error, "invalid integer"}
     end
+  end
+
+  defp flush_processors(cache) do
+    cache.processors
+    |> Enum.each(fn {_k, p} ->
+      Processor.flush_processor(p)
+    end)
   end
 end
