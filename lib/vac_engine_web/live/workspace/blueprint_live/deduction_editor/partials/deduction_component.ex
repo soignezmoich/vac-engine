@@ -40,7 +40,9 @@ defmodule VacEngineWeb.Editor.DeductionComponent do
               index={index}
               parent_path={@renderable.path}
               cond_columns={@renderable.cond_columns}
-              assign_columns={@renderable.assign_columns} />
+              assign_columns={@renderable.assign_columns}
+              selection_path={@selection_path}
+            />
           <% end %>
         </tbody>
       </table>

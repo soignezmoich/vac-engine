@@ -15,11 +15,21 @@ defmodule VacEngineWeb.Editor.CellComponent do
     assigns =
       assign(assigns,
         renderable:
-          build_renderable(is_condition, cell, parent_path, index, row_index)
+          build_renderable(
+            is_condition,
+            cell,
+            parent_path,
+            index,
+            row_index,
+            assigns.selection_path
+          )
       )
 
     ~H"""
-    <td class={@renderable.cell_style} phx-value-path={@renderable.dot_path} phx-click={"select_cell"}>
+    <td class={@renderable.cell_style}
+      phx-value-path={@renderable.dot_path}
+      phx-click={"select_cell"}
+      phx-target="#deduction_editor">
       <%= @renderable.value %><%= if (@renderable.type == "operator") do %>(<%= @renderable.args |> Enum.join(", ") %>)<% end %>
       &nbsp;
       <%= @renderable.description %>
@@ -27,7 +37,14 @@ defmodule VacEngineWeb.Editor.CellComponent do
     """
   end
 
-  def build_renderable(is_condition, cell, parent_path, index, row_index) do
+  def build_renderable(
+        is_condition,
+        cell,
+        parent_path,
+        index,
+        row_index,
+        selection_path
+      ) do
     {type, value, args} =
       case cell do
         %{expression: %{ast: {:var, _signature, [elems]}}}
@@ -57,12 +74,11 @@ defmodule VacEngineWeb.Editor.CellComponent do
         "assignments"
       end
 
-    dot_path =
-      (parent_path ++ [conditions_or_assignments, index])
-      |> Enum.join(".")
+    path = parent_path ++ [conditions_or_assignments, index]
 
-    # assigns.selection_path == dot_path
-    selected = false
+    dot_path = path |> Enum.join(".")
+
+    selected = dot_path == selection_path
 
     args =
       args
@@ -82,7 +98,7 @@ defmodule VacEngineWeb.Editor.CellComponent do
 
     bg_color =
       case {is_condition, value, selected} do
-        # {_, _, true} -> "bg-pink-600 text-white"
+         {_, _, true} -> "bg-pink-600 text-white"
         {true, :is_true, _} -> "bg-green-200 font-semibold"
         {true, :is_false, _} -> "bg-red-200"
         {true, "-", _} -> "bg-cream-200"
@@ -93,7 +109,7 @@ defmodule VacEngineWeb.Editor.CellComponent do
 
     bg_opacity =
       case {selected, is_even(row_index)} do
-        # {true, _} -> ""
+         {true, _} -> ""
         {false, true} -> "bg-opacity-30"
         {false, false} -> "bg-opacity-50"
       end

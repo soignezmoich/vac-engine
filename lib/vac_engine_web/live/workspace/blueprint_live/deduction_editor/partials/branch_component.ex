@@ -35,7 +35,9 @@ defmodule VacEngineWeb.Editor.BranchComponent do
             cell={cond_cell}
             parent_path={@renderable.path}
             index={index}
-            row_index={@index} />
+            row_index={@index}
+            selection_path={@selection_path}
+          />
         <% end %>
         <td class="bg-white text-gray-200">
           <.icon name="hero/arrow-sm-right" width="1.25rem" />
@@ -47,7 +49,9 @@ defmodule VacEngineWeb.Editor.BranchComponent do
           cell={assign_cell}
           parent_path={@renderable.path}
           index={index}
-          row_index={@index} />
+          row_index={@index}
+          selection_path={@selection_path}
+        />
       <% end %>
     </tr>
     """
