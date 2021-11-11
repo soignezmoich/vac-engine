@@ -36,8 +36,10 @@ defmodule VacEngineWeb.Editor.VariableListComponent do
             <Variable.render
               variable={variable}
               path={path}
-            even={is_even(index)}
-            mapping="input" />
+              even={is_even(index)}
+              mapping="input"
+              selection_path={@selection_path}
+            />
         <% end %>
         <tr><td><br/><br/></td></tr>
       </tbody>
@@ -63,7 +65,9 @@ defmodule VacEngineWeb.Editor.VariableListComponent do
             variable={variable}
             path={path}
             even={is_even(index)}
-            mapping="intermediate" />
+            mapping="intermediate"
+            selection_path={@selection_path}
+          />
         <% end %>
         <tr><td><br/><br/></td></tr>
       </tbody>
@@ -89,7 +93,9 @@ defmodule VacEngineWeb.Editor.VariableListComponent do
             variable={variable}
             path={path}
             even={is_even(index)}
-            mapping="output" />
+            mapping="output"
+            selection_path={@selection_path}
+          />
         <% end %>
       </tbody>
     </table>

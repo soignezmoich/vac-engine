@@ -9,9 +9,18 @@ defmodule VacEngine.Editor.VariableComponentTest do
   @variable %Variable{name: "age"}
   @path ["variables", "input", "age"]
   @expected_name "age"
+  @even true
+  @selection_path nil
 
   test "'build_renderable' should build proper name" do
-    renderable = VariableComponent.build_renderable(@variable, @path)
+    renderable =
+      VariableComponent.build_renderable(
+        @variable,
+        @path,
+        @even,
+        @selection_path
+      )
+
     assert renderable |> Map.get(:name) == @expected_name
   end
 
@@ -22,7 +31,14 @@ defmodule VacEngine.Editor.VariableComponentTest do
   @expected_type :integer
 
   test "'build_renderable' should build proper type" do
-    renderable = VariableComponent.build_renderable(@variable, @path)
+    renderable =
+      VariableComponent.build_renderable(
+        @variable,
+        @path,
+        @even,
+        @selection_path
+      )
+
     assert renderable |> Map.get(:type) == @expected_type
   end
 
@@ -33,7 +49,14 @@ defmodule VacEngine.Editor.VariableComponentTest do
   @expected_required ""
 
   test "'build_renderable' should not mark required if mapping==nil" do
-    renderable = VariableComponent.build_renderable(@variable, @path)
+    renderable =
+      VariableComponent.build_renderable(
+        @variable,
+        @path,
+        @even,
+        @selection_path
+      )
+
     assert renderable |> Map.get(:required) == @expected_required
   end
 
@@ -42,7 +65,14 @@ defmodule VacEngine.Editor.VariableComponentTest do
   @expected_required ""
 
   test "'build_renderable' should not mark required if mapping==none" do
-    renderable = VariableComponent.build_renderable(@variable, @path)
+    renderable =
+      VariableComponent.build_renderable(
+        @variable,
+        @path,
+        @even,
+        @selection_path
+      )
+
     assert renderable |> Map.get(:required) == @expected_required
   end
 
@@ -51,7 +81,14 @@ defmodule VacEngine.Editor.VariableComponentTest do
   @expected_required ""
 
   test "'build_renderable' should not mark required if mapping==out" do
-    renderable = VariableComponent.build_renderable(@variable, @path)
+    renderable =
+      VariableComponent.build_renderable(
+        @variable,
+        @path,
+        @even,
+        @selection_path
+      )
+
     assert renderable |> Map.get(:required) == @expected_required
   end
 
@@ -60,7 +97,14 @@ defmodule VacEngine.Editor.VariableComponentTest do
   @expected_required ""
 
   test "'build_renderable' should not mark required if mapping==in_optional" do
-    renderable = VariableComponent.build_renderable(@variable, @path)
+    renderable =
+      VariableComponent.build_renderable(
+        @variable,
+        @path,
+        @even,
+        @selection_path
+      )
+
     assert renderable |> Map.get(:required) == @expected_required
   end
 
@@ -69,7 +113,14 @@ defmodule VacEngine.Editor.VariableComponentTest do
   @expected_required "*"
 
   test "'build_renderable' should not mark required if mapping==in_required" do
-    renderable = VariableComponent.build_renderable(@variable, @path)
+    renderable =
+      VariableComponent.build_renderable(
+        @variable,
+        @path,
+        @even,
+        @selection_path
+      )
+
     assert renderable |> Map.get(:required) == @expected_required
   end
 
@@ -80,14 +131,16 @@ defmodule VacEngine.Editor.VariableComponentTest do
   }
 
   @expected_enum "Bill, Bob"
+  @path ["variables", "input", "name"]
 
   test "'build_renderable' should build proper enum string" do
     renderable =
-      VariableComponent.build_renderable(@variable, [
-        "variables",
-        "input",
-        "name"
-      ])
+      VariableComponent.build_renderable(
+        @variable,
+        @path,
+        @even,
+        @selection_path
+      )
 
     assert renderable |> Map.get(:enum) == @expected_enum
   end
@@ -101,7 +154,14 @@ defmodule VacEngine.Editor.VariableComponentTest do
   @expected_indentation "- - - - "
 
   test "'build_renderable' should build proper indentation string" do
-    renderable = VariableComponent.build_renderable(@variable, @path)
+    renderable =
+      VariableComponent.build_renderable(
+        @variable,
+        @path,
+        @even,
+        @selection_path
+      )
+
     assert renderable |> Map.get(:indentation) == @expected_indentation
   end
 
@@ -112,7 +172,18 @@ defmodule VacEngine.Editor.VariableComponentTest do
   @expected_indentation ""
 
   test "'build_renderable' should build proper no-indentation string" do
-    renderable = VariableComponent.build_renderable(@variable, @path)
+    renderable =
+      VariableComponent.build_renderable(
+        @variable,
+        @path,
+        @even,
+        @selection_path
+      )
+
     assert renderable |> Map.get(:indentation) == @expected_indentation
   end
+
+  # Row class property
+
+  # Not tested since it could change very often
 end
