@@ -119,7 +119,7 @@ defmodule VacEngineWeb.HeaderComponent do
                   items-center hover:bg-gray-50 hover:bg-opacity-30") %>
               <% end %>
               <%= if Enum.count(@workspaces) > 10 do %>
-                <div class="px-6 text-sm py-4 italic">
+                <div class="px-6 text-sm py-4 italic w-64">
                 You have access to more workspaces, the list has been truncated.
                 </div>
                 <%= live_patch "Full list",
