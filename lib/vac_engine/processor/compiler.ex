@@ -159,17 +159,18 @@ defmodule VacEngine.Processor.Compiler do
           br.assignments
           |> Enum.filter(fn a -> a.description end)
           |> Enum.map(fn a ->
-            "#{a.target |> Enum.join(".")}: #{a.description}"
+            "-- #{a.target |> Enum.join(".")} = #{a.description}"
           end)
-          |> then(fn els -> ["" | els] end)
-          |> Enum.join("\n\t")
 
-        info = "#{ded_info} -> #{br_info} #{ass_info}"
+        info = "#{ded_info} -> #{br_info}"
 
         [q] =
           quote do
             unquote(conditions_ast) ->
               Logger.info(unquote(info))
+
+              unquote(ass_info)
+              |> Enum.each(&Logger.info/1)
 
               VacEngine.Processor.State.merge_vars(
                 var!(state),
