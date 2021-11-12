@@ -14,6 +14,7 @@ defmodule VacEngineWeb.Router do
   end
 
   pipeline :api do
+    plug(RemoteIp)
     plug(:accepts, ["json"])
     plug(:require_api_key)
   end
