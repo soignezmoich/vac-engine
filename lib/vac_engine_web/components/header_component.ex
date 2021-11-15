@@ -154,17 +154,6 @@ defmodule VacEngineWeb.HeaderComponent do
     ~H""
   end
 
-  defp klass(base, conditionals) when is_list(conditionals) do
-    conditionals
-    |> Enum.reduce([base], fn
-      {n, true}, all -> [n | all]
-      {_n, _}, all -> all
-    end)
-    |> Enum.join(" ")
-  end
-
-  defp klass(base, conditionals), do: klass(base, [conditionals])
-
   defp top_element(assigns) do
     ~H"""
     <div class={klass(

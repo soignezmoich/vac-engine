@@ -112,6 +112,8 @@ defmodule VacEngineWeb do
       import VacEngineWeb.FormHelpers
       import VacEngineWeb.FormatHelpers
       alias VacEngineWeb.BlueprintLive
+
+      import VacEngineWeb.KlassHelpers
     end
   end
 
