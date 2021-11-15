@@ -23,7 +23,7 @@ defmodule VacEngine.Processor.Ast do
     fname = convert_atom(f)
     sanitize!({fname, m, args})
   catch
-    _ ->
+    _err ->
       throw({:undefined, "undefined function #{f}/#{length(args)}"})
   end
 
