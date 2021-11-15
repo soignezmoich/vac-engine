@@ -99,7 +99,7 @@ defmodule VacEngine.Pub.Cache do
       {:reply, {:ok, proc}, state}
     else
       _ ->
-        {:reply, {:error, :not_found}, state}
+        {:reply, {:error, "api key or portal not found"}, state}
     end
   end
 
