@@ -7,6 +7,7 @@ defmodule VacEngine.Processor.State do
   alias VacEngine.Processor.Variable
   alias VacEngine.Processor.Meta
   alias VacEngine.Processor.State.Input
+  alias VacEngine.Processor.State.Env
   require VacEngine.Processor.Meta
   import VacEngine.Processor.State.Helpers
   import VacEngine.PipeHelpers
@@ -16,6 +17,7 @@ defmodule VacEngine.Processor.State do
   defstruct variables: nil,
             input_variables: nil,
             output_variables: nil,
+            env: %{},
             heap: %{},
             input: %{},
             output: %{}
@@ -75,6 +77,7 @@ defmodule VacEngine.Processor.State do
   end
 
   defdelegate map_input(state, input), to: Input
+  defdelegate map_env(state, env), to: Env
 
   @doc """
   Get value of variable (used by blueprint compiled code)

@@ -78,14 +78,6 @@ defmodule Fixtures.Helpers do
     end
   end
 
-  def age(str) do
-    Timex.diff(NaiveDateTime.utc_now(), Timex.parse!(str, "{ISOdate}"), :years)
-  end
-
-  def now() do
-    Timex.format!(NaiveDateTime.utc_now(), "{ISOdate}")
-  end
-
   def smap(map) do
     map
     |> stringify_keys()

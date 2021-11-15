@@ -34,7 +34,9 @@ defmodule VacEngine.Processor.Library.Functions do
   @label "Return a variable value"
   @short "VAR"
   @signature {[:varname], :vartype}
-  def var(name), do: name
+  def var(_name) do
+    raise "this function is just a placeholder and should not be called"
+  end
 
   @doc """
     Check if boolean is false
@@ -314,8 +316,12 @@ defmodule VacEngine.Processor.Library.Functions do
   @short "NOW()"
   @signature {[], :datetime}
   def now() do
-    # TODO bake now() to avoid having side effects within the blueprint
-    NaiveDateTime.utc_now()
+    raise "this function is just a placeholder and should not be called"
+  end
+
+  @doc false
+  def now_(state) do
+    state.env.now
   end
 
   @doc """
@@ -326,10 +332,16 @@ defmodule VacEngine.Processor.Library.Functions do
   @label "Age"
   @short "AGE()"
   @signature {[:date], :integer}
-  def age(nil), do: nil
+  def age(_) do
+    raise "this function is just a placeholder and should not be called"
+  end
 
-  def age(birthdate) do
-    Timex.diff(NaiveDateTime.utc_now(), birthdate, :years)
+  @doc false
+  def age_(_state, nil), do: nil
+
+  @doc false
+  def age_(state, birthdate) do
+    Timex.diff(now_(state), birthdate, :years)
   end
 
   @doc """

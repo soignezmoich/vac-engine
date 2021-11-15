@@ -36,7 +36,9 @@ defmodule VacEngine.Processor.ProcessorTest do
     cases
     |> Enum.map(fn cs ->
       assert {:ok, processor} = Map.fetch(processors, cs.blueprint)
-      {res, actual_result} = Processor.run(processor, cs.input)
+
+      {res, actual_result} =
+        Processor.run(processor, cs.input, Map.get(cs, :env))
 
       if Map.has_key?(cs, :error) do
         assert res == :error

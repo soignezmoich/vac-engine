@@ -72,8 +72,18 @@ defmodule VacEngine.Processor.Compiler do
     end
   end
 
-  def compile_ast!({:var, _m, _arg}) do
+  def compile_ast!({:var, _m, _args}) do
     throw({:invalid_var, "invalid call of var/1"})
+  end
+
+  def compile_ast!({:now, m, args}) do
+    compile_ast!({:now_, m, args})
+    |> prepend_state_arg()
+  end
+
+  def compile_ast!({:age, m, args}) do
+    compile_ast!({:age_, m, args})
+    |> prepend_state_arg()
   end
 
   def compile_ast!({:not, m, args}), do: compile_ast!({:not_, m, args})
@@ -93,6 +103,11 @@ defmodule VacEngine.Processor.Compiler do
   end
 
   def compile_ast!(const), do: const
+
+  defp prepend_state_arg({fref, m, args}) do
+    state = quote(do: var!(state))
+    {fref, m, [state | args]}
+  end
 
   defp compile_blueprint_ast(ast, blueprint) do
     id = blueprint.id

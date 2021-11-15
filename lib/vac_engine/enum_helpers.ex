@@ -10,6 +10,20 @@ defmodule VacEngine.EnumHelpers do
   def get?(map, key), do: Map.get(map, key)
 
   @doc """
+  Get mixed first atom then string, nil safe
+  """
+  def get_mixed?(map, key, default \\ nil)
+  def get_mixed?(nil, _, _), do: nil
+
+  def get_mixed?(map, key, default) do
+    if Map.has_key?(map, key) do
+      Map.get(map, key, default)
+    else
+      Map.get(map, to_string(key), default)
+    end
+  end
+
+  @doc """
   Remove nil AND empty lists from map
   """
   def compact(map) when is_map(map) do

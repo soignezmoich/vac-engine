@@ -7,7 +7,7 @@ defmodule VacEngine.Processor.LibraryTest do
 
   test "var(name)" do
     assert has_function?(:var, 1)
-    assert var(true) == true
+    assert_raise RuntimeError, fn -> var(true) end
   end
 
   test "is_true(bool)" do
@@ -203,15 +203,17 @@ defmodule VacEngine.Processor.LibraryTest do
 
   test "age(date)" do
     assert has_function?(:age, 1)
-    assert age(nil) == nil
 
-    assert age(Timex.parse!("1980-03-04", "{ISOdate}")) ==
-             Fixtures.Helpers.age("1980-03-04")
+    assert_raise RuntimeError, fn -> age(nil) end
+
+    now = Timex.parse!("2021-03-04", "{ISOdate}")
+    birth = Timex.parse!("1980-03-04", "{ISOdate}")
+    assert age_(%{env: %{now: now}}, birth) == 41
   end
 
   test "now()" do
     assert has_function?(:now, 0)
-    assert now() != nil
+    assert_raise RuntimeError, fn -> now() end
   end
 
   test "earliest()" do

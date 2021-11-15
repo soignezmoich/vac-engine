@@ -276,10 +276,11 @@ defmodule VacEngine.Pub do
   Run a processor and use cache
   """
   def run_cached(
-        %{api_key: _api_key, portal_id: _portal_id, input: input} = args
+        %{api_key: _api_key, portal_id: _portal_id, input: input, env: _env} =
+          args
       ) do
-    with {:ok, processor} <- Cache.find_processor(args),
-         {:ok, state} <- Processor.run(processor, input) do
+    with {:ok, processor, env} <- Cache.find_processor(args),
+         {:ok, state} <- Processor.run(processor, input, env) do
       {:ok, %{output: state.output, input: state.input}}
     else
       {:error, msg} -> {:error, msg}

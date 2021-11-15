@@ -143,4 +143,13 @@ defmodule Fixtures.Cases do
       output: %{a0: true, b0: true}
     }
   end
+
+  cas(:date_test) do
+    %{
+      input: %{birthdate: "1980-05-04"},
+      env: %{now: "2020-04-03"},
+      output: %{now: "2020-04-03", age: 39}
+    }
+  end
+
 end

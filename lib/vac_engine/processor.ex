@@ -223,8 +223,9 @@ defmodule VacEngine.Processor do
   @doc """
   Run processor with given input
   """
-  def run(%Processor{} = processor, input) do
+  def run(%Processor{} = processor, input, env \\ %{}) do
     with {:ok, state} <- State.map_input(processor.state, input),
+         {:ok, state} <- State.map_env(state, env),
          state <- apply(processor.compiled_module, :run, [state]),
          {:ok, state} <- State.finalize_output(state) do
       {:ok, state}
