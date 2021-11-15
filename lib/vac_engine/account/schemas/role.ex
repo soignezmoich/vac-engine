@@ -28,12 +28,14 @@ defmodule VacEngine.Account.Role do
     field(:description, :string)
 
     has_many(:api_tokens, AccessToken)
+
+    field(:test, :boolean, virtual: true)
   end
 
   @doc false
   def changeset(role, attrs \\ %{}) do
     role
-    |> cast(attrs, [:description, :active])
+    |> cast(attrs, [:description, :active, :test])
     |> validate_required([:type])
   end
 end

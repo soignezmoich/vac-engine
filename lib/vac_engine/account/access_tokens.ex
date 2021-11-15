@@ -73,14 +73,20 @@ defmodule VacEngine.Account.AccessTokens do
     from(t in AccessToken,
       where: t.type == :api_key,
       order_by: [desc: t.id],
-      preload: :role
+      preload: :role,
+      select_merge: %{test: fragment("left(?, 4) = 'test'", t.secret)}
     )
     |> queries.()
     |> Repo.all()
   end
 
   def load_api_tokens(query) do
-    token_query = from(t in AccessToken, where: t.type == :api_key)
+    token_query =
+      from(t in AccessToken,
+        where: t.type == :api_key,
+        select_merge: %{test: fragment("left(?, 4) = 'test'", t.secret)}
+      )
+
     from(r in query, preload: [api_tokens: ^token_query])
   end
 end

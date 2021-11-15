@@ -6,6 +6,7 @@ defmodule VacEngine.Processor.State.Env do
   import VacEngine.EnumHelpers
   alias VacEngine.Processor.Convert
   alias VacEngine.Processor.State
+  require Logger
 
   @doc """
   Parse `env` and map content into internal env
@@ -19,6 +20,8 @@ defmodule VacEngine.Processor.State.Env do
       end
 
     state = %{state | env: %{now: now}}
+
+    Logger.info("Run env: #{inspect(state.env)}")
 
     {:ok, state}
   catch

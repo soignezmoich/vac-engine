@@ -22,6 +22,8 @@ defmodule VacEngine.Account.AccessToken do
     field(:secret, :string)
     field(:type, Ecto.Enum, values: ~w(api_key refresh access link)a)
     field(:expires_at, :utc_datetime)
+
+    field(:test, :boolean, virtual: true)
   end
 
   @doc false

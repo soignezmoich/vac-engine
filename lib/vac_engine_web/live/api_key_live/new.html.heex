@@ -13,8 +13,12 @@
     phx-change="validate"
     phx-submit="create">
 
+
     <%= label_line_tag f, :description, "Description" %>
     <%= textarea f, :description, class: "form-fld mb-4" %>
+
+    <%= label_line_tag f, :test, "Flags" %>
+    <.toggle_field form={f} field={:test} label="Test Key" class="mb-4" />
 
     <%= submit "Create", class: "btn-default", phx_disable_with: "Creation in progress..." %>
   </.form>

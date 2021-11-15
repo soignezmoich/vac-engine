@@ -8,8 +8,12 @@
     <p class="font-bold">No API key.</p>
   <% tokens -> %>
     <%= for token <- tokens do %>
-      <div class="border-b flex py-4 w-full">
+      <div class={klass("border-b flex py-4 w-full",
+                       {"text-cream-500", token.test})}>
         <div class="flex flex-col flex-grow">
+          <%= if token.test do %>
+            <div class="font-bold">TEST KEY</div>
+          <% end %>
           <span class="font-bold">Created <%= format_date(token.inserted_at) %></span>
           <span><%= token.role.description %></span>
         </div>

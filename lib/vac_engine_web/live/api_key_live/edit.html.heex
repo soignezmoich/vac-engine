@@ -5,6 +5,13 @@
       ) %>
   <h1 class="font-bold text-xl mb-6">Edit API key</h1>
 
+  <%= if @token.test do %>
+    <div class="text-xl font-bold mb-6 bg-cream-100 px-4 py-1 inline-block
+                border-2 border-cream-500">
+      TEST KEY
+    </div>
+  <% end %>
+
   <.form
     let={f}
     for={@changeset}
@@ -25,7 +32,7 @@
       <div class="bg-cream-400 text-gray-100 p-1 text-xs"
            phx-hook="clipboardCopy"
            id="api-secret" >
-        <%= @secret %>
+        <%= @token.secret %>
       </div>
       <span class="text-sm">(click to copy)</span>
     <% else %>

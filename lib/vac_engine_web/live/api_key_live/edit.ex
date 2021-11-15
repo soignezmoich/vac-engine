@@ -26,7 +26,7 @@ defmodule VacEngineWeb.ApiKeyLive.Edit do
        edited_role: role,
        changeset: changeset,
        secret_visible: false,
-       secret: List.first(role.api_tokens).secret
+       token: List.first(role.api_tokens)
      )}
   end
 

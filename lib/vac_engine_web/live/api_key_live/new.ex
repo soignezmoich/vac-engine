@@ -50,7 +50,7 @@ defmodule VacEngineWeb.ApiKeyLive.New do
     can!(socket, :manage, :api_keys)
 
     with {:ok, role} <- Account.create_role(:api, params),
-         {:ok, _token} <- Account.create_api_token(role) do
+         {:ok, _token} <- Account.create_api_token(role, role.test) do
       {:noreply,
        socket
        |> push_redirect(to: Routes.api_key_path(socket, :edit, role))}
