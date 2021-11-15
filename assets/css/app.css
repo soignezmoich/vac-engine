@@ -139,3 +139,23 @@ progress::-webkit-progress-value {
 .disabled {
   border-width: 0 !important;
 }
+
+[type=checkbox] + .checkbox-after {
+  @apply bg-red-600 absolute inset-0 pointer-events-none;
+}
+
+[type=checkbox] + .checkbox-after .sel {
+  @apply hidden;
+}
+
+[type=checkbox] + .checkbox-after .unsel {
+  @apply flex;
+}
+
+[type=checkbox]:checked + .checkbox-after .sel {
+  @apply flex;
+}
+
+[type=checkbox]:checked + .checkbox-after .unsel {
+  @apply hidden;
+}
