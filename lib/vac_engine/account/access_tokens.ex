@@ -50,8 +50,15 @@ defmodule VacEngine.Account.AccessTokens do
     end
   end
 
-  def create_api_token(%Role{} = role) do
-    secret = generate_composite_secret(:api, role.id)
+  def create_api_token(%Role{} = role, is_test_key) do
+    prefix =
+      if is_test_key do
+        :test
+      else
+        :api
+      end
+
+    secret = generate_composite_secret(prefix, role.id)
 
     Multi.new()
     |> Multi.insert(:token, fn _ ->

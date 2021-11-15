@@ -357,7 +357,7 @@ defmodule VacEngine.Account do
   @doc """
   Create an access token as API for a given role
   """
-  defdelegate create_api_token(role), to: AccessTokens
+  defdelegate create_api_token(role, test \\ false), to: AccessTokens
 
   @doc """
   Generate a secret with a prefix and id.

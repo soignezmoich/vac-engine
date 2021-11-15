@@ -5,13 +5,14 @@ defmodule VacEngineWeb.Api.PubController do
 
   action_fallback(VacEngineWeb.Api.FallbackController)
 
-  def run(conn, %{"portal_id" => portal_id, "input" => input}) do
+  def run(conn, %{"portal_id" => portal_id, "input" => input} = params) do
     api_key = conn.assigns.api_key
 
     %{
       input: input,
       api_key: api_key,
-      portal_id: portal_id
+      portal_id: portal_id,
+      env: Map.get(params, "env", %{})
     }
     |> Pub.run_cached()
     |> case do

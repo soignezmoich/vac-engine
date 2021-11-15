@@ -81,12 +81,12 @@ defmodule VacEngine.Pub.Cache do
 
   @impl true
   def handle_call(
-        {:find_processor, %{api_key: api_key, portal_id: portal_id}},
+        {:find_processor, %{api_key: api_key, portal_id: portal_id, env: env}},
         _from,
         state
       ) do
     with {:ok, portal_id} <- flex_integer(portal_id),
-         %{id: id, prefix: _prefix, secret: req_secret} <-
+         %{id: id, prefix: prefix, secret: req_secret} <-
            Account.explode_composite_secret(api_key),
          %{portals: portals, secret: secret} <- Map.get(state.api_keys, id),
          true <- Plug.Crypto.secure_compare(req_secret, secret),
@@ -96,7 +96,14 @@ defmodule VacEngine.Pub.Cache do
         state
         |> get_in([Access.key(:processors), blueprint_id])
 
-      {:reply, {:ok, proc}, state}
+      env =
+        if prefix == "test" do
+          env
+        else
+          nil
+        end
+
+      {:reply, {:ok, proc, env}, state}
     else
       _ ->
         {:reply, {:error, "api key or portal not found"}, state}
