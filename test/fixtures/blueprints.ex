@@ -397,14 +397,13 @@ defmodule Fixtures.Blueprints do
       variables: [
         %{name: :birthdate, type: :date, mapping: :in_required},
         %{name: :now, type: :date, mapping: :out},
-        %{name: :age, type: :integer, mapping: :out},
+        %{name: :age, type: :integer, mapping: :out}
       ],
       deductions: [
         %{
           branches: [
             %{
-              conditions: [
-              ],
+              conditions: [],
               assignments: [
                 %{target: :now, expression: quote(do: now())},
                 %{target: :age, expression: quote(do: age(@birthdate))}

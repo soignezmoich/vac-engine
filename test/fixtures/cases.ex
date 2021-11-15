@@ -151,5 +151,4 @@ defmodule Fixtures.Cases do
       output: %{now: "2020-04-03", age: 39}
     }
   end
-
 end
