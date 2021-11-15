@@ -5,7 +5,6 @@ defmodule VacEngine.Editor.BranchComponentTest do
   alias VacEngine.Processor.Branch
   alias VacEngine.Processor.Column
   alias VacEngine.Processor.Condition
-  alias VacEngine.Processor.Expression
   alias VacEngineWeb.Editor.BranchComponent
 
   # Has cond cells? property

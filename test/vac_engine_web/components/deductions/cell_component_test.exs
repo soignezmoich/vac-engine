@@ -225,7 +225,7 @@ defmodule VacEngine.Editor.CellComponentTest do
 
   @cell %Condition{expression: %{ast: {:gt, [], [{:var, [], [["bla"]]}, 10]}}}
 
-  @expected_value 10
+  # @expected_value 10
 
   test "'build_renderable' should make args when cell is condition" do
     renderable =
@@ -243,7 +243,7 @@ defmodule VacEngine.Editor.CellComponentTest do
   @is_condition false
   @cell %Assignment{expression: %{ast: {:gt, [], [{:var, [], [["bla"]]}, 10]}}}
 
-  @expected_value 10
+  # @expected_value 10
 
   test "'build_renderable' should make args when cell is assignment" do
     renderable =
