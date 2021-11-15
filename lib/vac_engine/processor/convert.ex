@@ -16,7 +16,7 @@ defmodule VacEngine.Processor.Convert do
   def parse_bool("YES"), do: true
   def parse_bool("NO"), do: false
 
-  @date_formats ~w({YYYY}-{0M}-{D} {YYYY})
+  @date_formats ~w({YYYY}-{0M}-{0D} {YYYY})
 
   def parse_date(str) do
     parse_datetime(str, @date_formats)
@@ -27,7 +27,7 @@ defmodule VacEngine.Processor.Convert do
     end
   end
 
-  @datetime_formats ~w({ISO:Extended} {YYYY}-{0M}-{D} {YYYY})
+  @datetime_formats ~w({ISO:Extended} {YYYY}-{0M}-{0D} {YYYY})
 
   def parse_datetime(str) do
     parse_datetime(str, @datetime_formats)
