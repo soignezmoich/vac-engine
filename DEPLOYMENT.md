@@ -26,7 +26,7 @@ folder is self contained.
 
 2. Start the app from the application folder on your destination machine:
 ```console
-./bin/vac_engine
+./bin/vac_engine start
 ```
 
 ## Release tasks
