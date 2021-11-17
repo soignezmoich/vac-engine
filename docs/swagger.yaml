@@ -67,10 +67,6 @@ info:
 
   version: 1.0.1
 
-servers:
-  - url: https://ruleengine.dev.impf-check.ch/api
-    description: Temporary test server.
-
 paths:
   /p/{portal_id}/run:
     post:
@@ -113,7 +109,18 @@ paths:
                     - string values (possibly restricted to a set of enum values)
                     - date values as "yyyy-mm-dd" strings
                     - objects whose values is of the above type or nested objects
+                env:
+                  type: object
+                  description: The environment to use for the request.
+                  properties:
+                    now:
+                      type: string
+                      description: |
+                        The date at which the api call should be simulated.
 
+                        This field is only for test purpose and will be taken into
+                        account if a test api-key is used.
+                    
 
       responses:
         '200':
@@ -162,6 +169,14 @@ paths:
       description: |
         Get the description of the blueprint/processor published on the given
         portal.
+      parameters:
+      - in: path
+        name: portal_id
+        schema:
+          type: integer
+        required: true
+        description: "Portal ID"
+        example: 3
 
       responses:
         '200':
