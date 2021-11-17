@@ -124,10 +124,19 @@ defmodule VacEngine.Processor do
   """
   defdelegate get_blueprint!(blueprint_id, queries \\ & &1), to: Blueprints
 
+  @doc """
+  Apply a workspace scope to a blueprint query
+  """
   defdelegate filter_blueprints_by_workspace(query, workspace), to: Blueprints
 
+  @doc """
+  Apply search query to a blueprint query
+  """
   defdelegate filter_blueprints_by_query(query, search), to: Blueprints
 
+  @doc """
+  Limit results
+  """
   defdelegate limit_blueprints(query, limit), to: Blueprints
 
   @doc """
@@ -140,8 +149,14 @@ defmodule VacEngine.Processor do
   """
   defdelegate load_blueprint_full_deductions(query), to: Blueprints
 
+  @doc """
+  Load active publications
+  """
   defdelegate load_blueprint_active_publications(query), to: Blueprints
 
+  @doc """
+  Load all publications
+  """
   defdelegate load_blueprint_publications(query), to: Blueprints
 
   @doc """
