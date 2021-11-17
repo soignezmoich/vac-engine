@@ -1,0 +1,83 @@
+{
+    "deductions": [
+        {
+            "branches": [
+                {
+                    "assignments": [
+                        {
+                            "expression": {
+                                "ast": {
+                                    "l": "now",
+                                    "m": {
+                                        "signature": [
+                                            [],
+                                            "datetime"
+                                        ]
+                                    },
+                                    "r": []
+                                }
+                            },
+                            "target": [
+                                "now"
+                            ]
+                        },
+                        {
+                            "expression": {
+                                "ast": {
+                                    "l": "age",
+                                    "m": {
+                                        "signature": [
+                                            [
+                                                "date"
+                                            ],
+                                            "integer"
+                                        ]
+                                    },
+                                    "r": [
+                                        {
+                                            "l": "var",
+                                            "m": {
+                                                "signature": [
+                                                    [
+                                                        "name"
+                                                    ],
+                                                    "date"
+                                                ]
+                                            },
+                                            "r": [
+                                                [
+                                                    "birthdate"
+                                                ]
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "target": [
+                                "age"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "name": "Test blueprint",
+    "variables": [
+        {
+            "mapping": "in_required",
+            "name": "birthdate",
+            "type": "date"
+        },
+        {
+            "mapping": "out",
+            "name": "age",
+            "type": "integer"
+        },
+        {
+            "mapping": "out",
+            "name": "now",
+            "type": "date"
+        }
+    ]
+}
