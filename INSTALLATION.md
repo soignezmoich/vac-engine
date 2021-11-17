@@ -8,7 +8,7 @@ available on the websites the different softwares.
 
 #### erlang and rebar3
 
-```sh
+```console
 sudo apt install erlang
 ```
 
@@ -19,7 +19,7 @@ https://www.erlang.org/downloads
 
 #### elixir
 
-```sh
+```console
 Wget https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb
 sudo dpkg -i erlang-solutions_2.0_all.deb
 sudo apt update
@@ -29,18 +29,18 @@ sudo apt install elixir
 
 #### nodejs and npm
 
-```sh
+```console
 sudo apt install nodejs npm
 ```
 
 Upgrade npm and node if needed:
-```sh
+```console
 sudo npm install -g n
 sudo n latest
 ```
 
 #### yarn
-```sh
+```console
 sudo npm install --global yarn
 ```
 
@@ -211,27 +211,38 @@ If set to true, no debug log will be output.
 
 ## Initialize Database
 
-#### Development
+### Development
 
 To initialize the database on the development machine, run:
 
-```sh
+```console
 make db
 ```
 
+Note: The command will output the credentials of the admin user of the
+application. Write it down so you can connect to the application interface.
+
 And if you intend to run test, create the test database by running:
 
-```sh
+```console
 make test-db
 ```
 
 Note: the two commands above will only succeed if the `DATABASE_URL` and `DATABASE_TEST_URL` are set, respectively.
 
-#### Production
+### Production
 
 On production, you need to create a database with the dbname, user and password corresponding to the `DATABASE_URL` environment variable.
 
+In order to populate the database, you need to play the migrations by executing the following command:
+```console
+./bin/vac_engine eval 'VacEngine.Release.migrate'
+```
 
+Then finally, create an admin user using the following command (don't forget to write down the credentials):
+```console
+./bin/vac_engine eval 'VacEngine.Release.create_admin'
+```
 
 ## Next Steps
 
