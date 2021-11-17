@@ -10,7 +10,7 @@
 - `server`          run development server
 - `checks`          run static analyser
 - `format`          format code
-- `docs-server`     run swagger code server
+- `docs`            generate elixir and swagger documentation
 - `coverage`        check test code coverage
 
 ## Building
@@ -26,7 +26,7 @@
 ## Databse
 
 - `psql`            connect to the database with psql
-- `text-psql`       connect to the database with psql (test)
+- `test-psql`       connect to the database with psql (test)
 - `db`              reset database (only in development)
 - `test-db`         reset test database (only in development)
 - `migrate`         migrate all migrations (only in development)
