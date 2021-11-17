@@ -22,9 +22,10 @@ folder is self contained.
 
 ## Deployment
 
-1. Move the whole application folder (located at `_build/prod/rel/vac_engine` after the build) to your target machine.
-
+1. Move the whole application folder (located at `_build/prod/rel/vac_engine`
+   after the build) to your target machine.
 2. Start the app from the application folder on your destination machine:
+
 ```console
 ./bin/vac_engine start
 ```

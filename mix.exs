@@ -21,7 +21,16 @@ defmodule VacEngine.MixProject do
         ignore_modules: @ignore_modules
       ],
       name: "Vac Engine",
-      docs: [main: "VacEngine", extras: ["README.md"], output: "docs/"]
+      docs: [
+        main: "VacEngine",
+        extras: [
+          "README.md",
+          "INSTALLATION.md",
+          "DEPLOYMENT.md",
+          "DEVELOPMENT.md"
+        ],
+        output: "docs/"
+      ]
     ]
   end
 

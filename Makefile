@@ -62,7 +62,10 @@ clean:
 	- mix phx.digest.clean --all
 	rm -fr _build
 	rm -fr deps
-	rm -fr doc
+	rm -fr docs/*.html
+	rm -fr docs/.build
+	rm -fr docs/*.epub
+	rm -fr docs/dist
 	rm -fr erl_crash.dump
 	rm -fr blueprints/json
 
@@ -151,17 +154,13 @@ format:
 .PHONY: docs
 
 docs: deps assets-deps
-	redoc-cli bundle docs/swagger.yaml -o priv/static/docs/api.html
+	mix docs
+	redoc-cli bundle docs/swagger.yaml -o ./docs/api.html
 
 .PHONY: docs-server
 
 docs-server:
 	redoc-cli serve -w  docs/swagger.yaml
-
-.PHONY: ex-docs
-
-ex-docs:
-	mix docs
 
 .PHONY: checks
 

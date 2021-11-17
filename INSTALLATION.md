@@ -45,10 +45,16 @@ sudo npm install --global yarn
 ```
 
 #### inotify-tools
+
+```console
 sudo apt install inotify-tools
+```
 
 #### postgresql
+
+```console
 sudo apt install postgresql postgresql-contrib
+```
 
 
 ## Environment Variables
@@ -68,13 +74,15 @@ Must be available on the machine that compiles the application.
 - `SESSION_KEY`
 - `LIVE_VIEW_SALT`
 
-All the environment variables above are mandatory. They must be available on the system both:
+All the environment variables above are mandatory. They must be available on the
+system both:
 - when compiling (i.e. when executing "make release") or
 - when starting the dev server (i.e. when executing "make server")
 
 ### Run time environment variables
 
-Must be available on the machine that runs the application. The variables are partly different for production and development.
+Must be available on the machine that runs the application. The variables are
+partly different for production and development.
 
 
 #### Production
@@ -88,18 +96,19 @@ Must be available on the machine that runs the application. The variables are pa
 - `SSL_KEY_PATH` ³
 - `SSL_CERT_PATH` ³
 
- ¹ Optional, defaults to 10.  
- ² Optional, defaults to "::0".  
- ³ Optional, only necessary if the application is supposed to terminate SSL connections.
+ ¹ Optional, defaults to 10.
+ ² Optional, defaults to "::0".
+ ³ Optional, only necessary if the application is supposed to terminate SSL
+ connections.
 
 #### Development
 
 - `DATABASE_URL`
 - `DATABASE_TEST_URL` ¹
 - `NO_DEBUG_LOG` ²
-  
+
 ¹ Only necessary to run tests.
-² Optional, prevents debug log output.  
+² Optional, prevents debug log output.
 
 
 
@@ -228,18 +237,24 @@ And if you intend to run test, create the test database by running:
 make test-db
 ```
 
-Note: the two commands above will only succeed if the `DATABASE_URL` and `DATABASE_TEST_URL` are set, respectively.
+Note: the two commands above will only succeed if the `DATABASE_URL` and
+`DATABASE_TEST_URL` are set, respectively.
 
 ### Production
 
-On production, you need to create a database with the dbname, user and password corresponding to the `DATABASE_URL` environment variable.
+On production, you need to create a database with the dbname, user and password
+corresponding to the `DATABASE_URL` environment variable.
 
-In order to populate the database, you need to play the migrations by executing the following command:
+In order to populate the database, you need to play the migrations by executing
+the following command:
+
 ```console
 ./bin/vac_engine eval 'VacEngine.Release.migrate'
 ```
 
-Then finally, create an admin user using the following command (don't forget to write down the credentials):
+Then finally, create an admin user using the following command (don't forget to
+write down the credentials):
+
 ```console
 ./bin/vac_engine eval 'VacEngine.Release.create_admin'
 ```
@@ -247,6 +262,6 @@ Then finally, create an admin user using the following command (don't forget to 
 ## Next Steps
 
 From now, you can start developing or deploying the app. Please refer to
-the DEVELOPPEMENT.md and DEPLOYMENT.md files respectively.
+the DEVELOPMENT.md and DEPLOYMENT.md files respectively.
 
 
