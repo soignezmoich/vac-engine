@@ -17,7 +17,7 @@ readme:
 
 test: export MIX_ENV=test
 test: export DATABASE_URL=${DATABASE_TEST_URL}
-test:
+test: deps
 	mix test $(test_name)
 
 .PHONY: test-db
