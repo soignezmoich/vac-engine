@@ -247,6 +247,6 @@ Then finally, create an admin user using the following command (don't forget to 
 ## Next Steps
 
 From now, you can start developing or deploying the app. Please refer to
-the DEVELOPPEMENT.md and DEPLOYMENT.md files respectively.
+the DEVELOPEMENT.md and DEPLOYMENT.md files respectively.
 
 
