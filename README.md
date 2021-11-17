@@ -1,276 +1,51 @@
-# VacEngine
+# VacEngine README
 
-## Development quick start
+The VacEngine application is an api-based deduction system initially developed by Soignez-Moi.ch under BAG mandate to determine vaccination opportunities based on a person's anonymised information.
 
-1) Set environment variables ([direnv](https://direnv.net/) is good)
+## Public review
 
-    DATABASE_URL=postgres://<user>:<password>@<host>/<db_name>
+The VacEngine application has been released to the public (under AGPL Licence, see Software Licence section below) with the hope that it can contribute to the common good. This publication was also made to allow an external contributor to review and make improvement suggestions. Indications about how to share such feedback can be found here:
 
-2) Create database. This will:
-    - drop database (if it exists)
-    - create database with <db_name>
-    - apply migrations
-    - seed the database with an admin user (see below 4) and basic content
+https://www.ncsc.admin.ch/ncsc/de/home/dokumentation/covid19-vac-check.html  
+https://www.ncsc.admin.ch/ncsc/fr/home/dokumentation/covid19-vac-check.html  
+https://www.ncsc.admin.ch/ncsc/it/home/dokumentation/covid19-vac-check.html  
+https://www.ncsc.admin.ch/ncsc/en/home/dokumentation/covid19-vac-check.html
 
-```
-make db
-```
+## Documentation sources
 
-3) Start server
+This project contains several documents to help users and developers. Here is a list of these documents and where to find them.
 
-    make server
+### General documentation
+1. **API endpoints** documentation can be found [here](https://vac-engine.github.com/api.html)
+2. **Application manual** *available soon*
+   
+### Technical documentation
+1. **Installation** documentation can be found in the [INSTALLATION.md](INSTALLATION.md) file
+2. **Development** documentation can be found in the [DEVELOPMENT.md](DEVELOPMENT.md) file
+3. **Code** documentation can be found [here](https://vac-engine.github.com/code.html)
+4. **Deployment** documentation can be found in the [DEPLOYMENT.md](DEPLOYMENT.md) file
+   
+## VacEngine functionalities
 
-4) Connect to localhost on port 4000
+### Overview
 
-<https://localhost:4000>
+The core functionnality of VacEngine is an API that allows checking the vaccination opportunities based on an anonymised medical profile. The expected input, the structure of the output along with the rules to compute it can be fully customized to answer the different needs of the different regions in switzerland. 
 
-Log in with the credentials `make db` printed.
+The system allowing to provide such evaluation is called a **processor** and its description is called a **blueprint**.
 
+### API
 
-## Compiling a release
+The application can serve several different processors, each on it's own **portal**. A portal provides a pair of endpoint:
+1. The "info" endpoint returns the description of the input to provide to and the output to expect from the processor.
+2. The "run" portal that accepts the anonymised profile as input and returns the vaccination opportunities.
 
-NOTE: If you build in your development machine, be sure to stop `make server`
-prior to build.
+### Web application
 
-Compile time env var must be set prior to build.
-
-The application is the compiled with:
-
-`make clean`
-`make release`
-
-This will generate the application in:
-
-`_build/prod/rel/vac_engine`
-
-This whole folder must be then deployed.
-
-The binary to control the app is:
-
-`_build/prod/rel/vac_engine/bin/vac_engine`
-
-## Release tasks
-
-When the release is built, the
-`_build/prod/rel/vac_engine`
-folder is self contained.
-
-Release tasks can be run with:
-
-`./bin/vac_engine eval 'VacEngine.Release.<task_name>'`
-
-The following release tasks are available:
-
-- `migrate()` - Migrate the database to the last version
-- `rollback(version)` - Rollback the database to the provided version
-- `create_admin()` - Create a default admin user, the credentials will be logged
-                     to STDOUT
-
-## SSL
-
-The application MUST be served on HTTPS.
-
-Two configurations are possible:
-
-- Put a reverse proxy terminating SSL in front of the application, the
-  application listener will be on HTTP on the given `PORT`.
-- Configure `SSL_KEY_PATH` and `SSL_CERT_PATH` and the application
-  will terminate SSL itself, `PORT` must be 443.
-
-### Reverse proxy
-
-If you use a reverse proxy, you must pass the following headers:
-
-- `X-Real-IP`
-- `X-Forwarded-For`
-- `X-Forwarded-Proto`
-
-Example Nginx configuration:
-
-
-```
-server {
-        listen 443 ssl http2;
-        listen [::]:443 ssl http2;
-        include ssl.conf;
-        include errors.conf;
-        server_name vac-engine.goyman.com;
-
-        location / {
-                proxy_set_header Host $host;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_set_header X-Forwarded-Proto $scheme;
-                proxy_http_version 1.1;
-                proxy_set_header Upgrade $http_upgrade;
-                proxy_set_header Connection $http_connection;
-                proxy_read_timeout 86400;
-                proxy_pass http://127.0.0.1:3003;
-        }
-}
-```
-
-## Environment variables
-
-The application is configured throught environment variables.
-
-There is two types of environment variables.
-
-Compile time env var (must be available on the system when compiling i.e. when
-executing "make release"):
-
-- `SESSION_SIGNING_SALT`
-- `SESSION_ENCRYPTION_SALT`
-- `SESSION_KEY`
-- `LIVE_VIEW_SALT`
-
-Run time env var (must be available on the machine that runs the application):
-
-- `DATABASE_URL`
-- `HOST`
-- `PORT`
-- `SECRET_KEY_BASE`
-- `POOL_SIZE`
-
-Optional:
-
-- `SSL_KEY_PATH`
-- `SSL_CERT_PATH`
-
-If both `SSL_KEY_PATH` and `SSL_CERT_PATH` are set, the application
-will terminate SSL itself, and `PORT` should be set to `443`.
-
-### `SESSION_SIGNING_SALT`
-
-This is the session signing salt. This is a salt and not a secret.
-
-Must be a random string between 8 and 32 characters long.
-
-This is a compile time variable.
-
-### `SESSION_ENCRYPTION_SALT`
-
-This is the session encryption salt. This is a salt and not a secret.
-
-Must be a random string between 8 and 32 characters long.
-
-This is a compile time variable.
-
-### `SESSION_KEY`
-
-This is the name of the cookie used to store the session.
-
-Must be a string between 4 and 16 characters long.
-
-This is a compile time variable.
-
-### `LIVE_VIEW_SALT`
-
-This is the live view salt signing salt. This is a salt and not a secret.
-
-Must be a random string between 8 and 32 characters long.
-
-This is a compile time variable.
-
-### `DATABASE_URL`
-
-The database URL to use.
-
-[Format](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING)
-
-When using make to run test, the Makefile will override `DATABASE_URL` with
-`DATABASE_TEST_URL`.
-
-### `HOST`
-
-The public host of the server.
-
-This is used to generate redirect URLs.
-
-For example, if set to `myapp.example.com` then all full URLs would be
-`https://myapp.example.com/path`.
-
-This is only a hostname, protocol will be forced to `https` and no path can be
-added.
-
-### `PORT`
-
-The HTTP port on which Erlang will listen (can be proxied, but not necessary).
-
-### `ADDRESS`
-
-The IP address to bind the HTTP listener to. By default it will use `::0` which
-will bind to all ipv6 and ipv4 addresses. You can set it to either an ipv6 or
-ipv4 address. Set it to `127.0.0.1` for ipv4 only localhost listening.
-
-### `SECRET_KEY_BASE`
-
-This is the secret used to derive all the keys used in the application.
-
-Must be a random string between 64 and 120 characters long.
-
-This is a secret and must be protected.
-
-Modifying this key will invalidate all cookies, sessions, activation tokens.
-
-### `POOL_SIZE`
-
-The postgresql pool size. This is the number of database connection to open.
-
-Default to 10.
-
-### `SSL_KEY_PATH`
-
-Path to a `.pem` file containing the private key.
-
-If both `SSL_KEY_PATH` and `SSL_CERT_PATH` are set, the application
-will terminate SSL itself, and `PORT` should be set to `443`.
-
-### `SSL_CERT_PATH`
-
-Path to a `.pem` file containing the FULL CHAIN certificate.
-
-If both `SSL_KEY_PATH` and `SSL_CERT_PATH` are set, the application
-will terminate SSL itself, and `PORT` should be set to `443`.
-
-## Processor expressions
-
-### Types
-
-Available types to use for variables and expressions are the following:
-
-- `boolean` - `true` or `false` (`0` and `nil` are not `false` and truthy values
-  are not `true`)
-- `integer` - an integer
-- `number` - any number, integer or decimal (this type must NOT be used for
-  equality)
-- `string` - a string, length limited to 100 characters
-- `enum` - a string with a specific set of pre-defined values
-- `date` - a date with a precision of one day
-- `datetime` - a date with time, time has a 1 second precision
-
-### Functions
-
-Available functions to use in expressions can be found in the function library
-file here: `/lib/vac_engine/processor/library/functions.ex`
-
-## Testing
-
-Tests can be run using `make test` command.
-
-Fine grained testing can be made using the mix command directly:
-```mix test <directory or file path>```
-
-### Coverage
-
-Coverage can be analysed by running `make coverage`.
-
-There is a `.coverignore` file that is used to ignore module from coverage
-check.
+The user interface of the web application allows to manage the processor descriptions along with the associated portals. Portals and processors are grouped in workspaces that allow to manage several users or groups of users independently, each having access to his/her workspace portals and processors.
 
 ## Software Licence (AGPL)
 
-Vac-check-engine is an api-based deduction system initially developed
+VacEngine is an api-based deduction system initially developed
 to determine vaccination opportunities based on a person's
 anonymised information.
  
