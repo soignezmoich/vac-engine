@@ -83,23 +83,23 @@ Must be available on the machine that runs the application. The variables are pa
 - `HOST`
 - `PORT`
 - `SECRET_KEY_BASE`
-- `POOL_SIZE` *
-- `ADDRESS` **
-- `SSL_KEY_PATH` ***
-- `SSL_CERT_PATH` ***
+- `POOL_SIZE` ¹
+- `ADDRESS` ²
+- `SSL_KEY_PATH` ³
+- `SSL_CERT_PATH` ³
 
- \* Optional, defaults to 10.  
- ** Optional, defaults to "::0".  
- *** Optional, only necessary if the application is supposed to terminate SSL connections.
+ ¹ Optional, defaults to 10.  
+ ² Optional, defaults to "::0".  
+ ³ Optional, only necessary if the application is supposed to terminate SSL connections.
 
 #### Development
 
 - `DATABASE_URL`
-- `DATABASE_TEST_URL` *
-- `NO_DEBUG_LOG` **
-
-\* Only necessary to run tests.
-** Optional, prevents debug log output.  
+- `DATABASE_TEST_URL` ¹
+- `NO_DEBUG_LOG` ²
+  
+¹ Only necessary to run tests.
+² Optional, prevents debug log output.  
 
 
 
