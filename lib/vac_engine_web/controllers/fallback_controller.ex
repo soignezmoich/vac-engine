@@ -9,6 +9,13 @@ defmodule VacEngineWeb.FallbackController do
   def call(conn, :error), do: call(conn, {:error, :bad_request})
   def call(conn, {:error}), do: call(conn, {:error, :bad_request})
 
+  def call(conn, {:error, :not_found, message}) do
+    conn
+    |> put_status(:not_found)
+    |> set_view()
+    |> render(:"404", message: message)
+  end
+
   def call(conn, {:error, :not_found}) do
     conn
     |> put_status(:not_found)

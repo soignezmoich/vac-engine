@@ -19,6 +19,9 @@ defmodule VacEngineWeb.Api.PubController do
       {:ok, result} ->
         render(conn, "run.json", result: result)
 
+      {:error, :not_found} ->
+        {:error, :not_found, "api key or portal not found"}
+
       {:error, msg} ->
         Logger.warning("Bad request: #{msg}")
         Logger.warning("Input: #{inspect(input)}")

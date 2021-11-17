@@ -6,11 +6,15 @@ defmodule VacEngineWeb.Api.FallbackController do
   """
   use VacEngineWeb, :controller
 
-  def call(conn, {:error, :not_found}) do
+  def call(conn, {:error, :not_found, message}) do
     conn
     |> put_status(:not_found)
     |> set_view()
-    |> render("error.json", error: "resource not found")
+    |> render("error.json", error: message)
+  end
+
+  def call(conn, {:error, :not_found}) do
+    call(conn, {:error, :not_found, "resource not found"})
   end
 
   def call(conn, {:error, :unauthorized}) do
