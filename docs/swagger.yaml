@@ -111,15 +111,16 @@ paths:
                     - objects whose values is of the above type or nested objects
                 env:
                   type: object
-                  description: The environment to use for the request.
+                  description: |
+                    The environment to use for the request.
+
+                    This field is for test purpose and will only be taken into
+                    account if a test api-key is used.
                   properties:
                     now:
                       type: string
                       description: |
                         The date at which the api call should be simulated.
-
-                        This field is only for test purpose and will be taken into
-                        account if a test api-key is used.
                     
 
       responses:
