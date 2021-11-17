@@ -62,6 +62,7 @@ clean:
 	- mix phx.digest.clean --all
 	rm -fr _build
 	rm -fr deps
+	rm -fr doc
 	rm -fr erl_crash.dump
 	rm -fr blueprints/json
 
