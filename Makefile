@@ -62,10 +62,7 @@ clean:
 	- mix phx.digest.clean --all
 	rm -fr _build
 	rm -fr deps
-	rm -fr docs/*.html
-	rm -fr docs/.build
-	rm -fr docs/*.epub
-	rm -fr docs/dist
+	rm -fr docs
 	rm -fr erl_crash.dump
 	rm -fr blueprints/json
 
@@ -111,7 +108,8 @@ db:
 .PHONY: db-seed
 
 db-seed:
-	mix run  -r test/fixtures/helpers.ex -r test/fixtures/blueprints.ex priv/repo/seeds.exs
+	mix run  -r test/fixtures/helpers.ex \
+		-r test/fixtures/blueprints.ex priv/repo/seeds.exs
 
 .PHONY: rollback
 
@@ -155,7 +153,7 @@ format:
 
 docs: deps assets-deps
 	mix docs
-	redoc-cli bundle docs/swagger.yaml -o ./docs/api.html
+	redoc-cli bundle api.yaml -o ./docs/api.html
 
 .PHONY: docs-server
 
