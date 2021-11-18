@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.25.5">
+    <meta name="project" content="Vac Engine v1.0.1">
+
+    <title>VacEngine.Processor — Vac Engine v1.0.1</title>
+    <link rel="stylesheet" href="dist/elixir-d1506dba1db7cdc5483e.css" />
+
+    <script src="dist/sidebar_items-985ad71309.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/app-7b632b26f13d5e0d20e1.js"></script>
+
+
+  </head>
+  <body data-type="modules">
+    <script>
+
+      try {
+        if (localStorage.getItem('night-mode') === 'true') {
+          document.body.classList.add('night-mode');
+        }
+      } catch (error) { }
+    </script>
+
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="VacEngine.html" class="sidebar-projectName">
+Vac Engine
+      </a>
+      <strong class="sidebar-projectVersion">
+        v1.0.1
+      </strong>
+    </div>
+
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+
+      <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+      <h1>
+VacEngine.Processor <small class="app-vsn">(Vac Engine v1.0.1)</small>
+
+      </h1>
+
+
+        <section id="moduledoc">
+<p>The Processor module is responsible for generating and executing functions
+to compute API output from API input.</p><h2 id="module-processors" class="section-heading">
+  <a href="#module-processors" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Processors
+</h2>
+<h3 id="module-process-input" class="section-heading">
+  <a href="#module-process-input" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Process input
+</h3>
+<p>The role of the processor is to compute the output variables of an api call
+based on the input variables. Such a computation is made using the <a href="#run/2"><code class="inline">run/2</code></a>
+function:</p><pre><code class="makeup elixir"><span class="p" data-group-id="3878750928-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="3878750928-2">%{</span><span class="ss">output</span><span class="p">:</span><span class="w"> </span><span class="n">state</span><span class="o">.</span><span class="n">output</span><span class="p">,</span><span class="w"> </span><span class="ss">input</span><span class="p">:</span><span class="w"> </span><span class="n">state</span><span class="o">.</span><span class="n">input</span><span class="p" data-group-id="3878750928-2">}</span><span class="p" data-group-id="3878750928-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Processor</span><span class="o">.</span><span class="n">run</span><span class="p" data-group-id="3878750928-3">(</span><span class="n">processor</span><span class="p">,</span><span class="w"> </span><span class="n">input</span><span class="p" data-group-id="3878750928-3">)</span></code></pre><h3 id="module-build-a-processor" class="section-heading">
+  <a href="#module-build-a-processor" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Build a processor
+</h3>
+<p>A processor is an in memory function, compiled from a description
+called &quot;Blueprint&quot;. The procedure to obtain a blueprint is described
+in the &quot;Blueprint edition&quot; and &quot;Blueprint export/import&quot; sections below.</p><p>The compilation from a blueprint to a processor is made using the
+<code class="inline">Processor.compile_blueprint/1</code> function:</p><pre><code class="makeup elixir"><span class="p" data-group-id="0692078865-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">processor</span><span class="p" data-group-id="0692078865-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Processor</span><span class="o">.</span><span class="n">compile_blueprint</span><span class="p" data-group-id="0692078865-2">(</span><span class="n">blueprint</span><span class="p" data-group-id="0692078865-2">)</span></code></pre><h2 id="module-blueprint" class="section-heading">
+  <a href="#module-blueprint" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Blueprint
+</h2>
+<p>A blueprint is an ecto model living in the database and attached to
+a workspace.
+It has the following composition:</p><pre><code class="makeup elixir"><span class="w">       </span><span class="bp">_</span><span class="w"> </span><span class="nc">Blueprint</span><span class="w"> </span><span class="bp">_</span><span class="w">
+      </span><span class="o">|</span><span class="w">             </span><span class="o">|</span><span class="w">
+    </span><span class="mi">0</span><span class="o">..</span><span class="n">n</span><span class="w">           </span><span class="mi">0</span><span class="o">..</span><span class="n">n</span><span class="w">
+      </span><span class="o">|</span><span class="w">             </span><span class="o">|</span><span class="w">
+</span><span class="nc">Variables</span><span class="w">         </span><span class="nc">Deductions</span><span class="w">
+</span><span class="p" data-group-id="8872452663-1">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">output</span><span class="w">      </span><span class="o">|</span><span class="w">
+</span><span class="n">intermediate</span><span class="p" data-group-id="8872452663-1">)</span><span class="w">      </span><span class="mi">0</span><span class="o">..</span><span class="n">n</span><span class="w">
+                    </span><span class="o">|</span><span class="w">
+                </span><span class="bp">_</span><span class="w"> </span><span class="nc">Branches</span><span class="w"> </span><span class="bp">_</span><span class="w">
+               </span><span class="o">|</span><span class="w">            </span><span class="o">|</span><span class="w">
+              </span><span class="mi">0</span><span class="o">..</span><span class="n">n</span><span class="w">         </span><span class="mi">1</span><span class="o">..</span><span class="n">n</span><span class="w">
+               </span><span class="o">|</span><span class="w">            </span><span class="o">|</span><span class="w">
+          </span><span class="nc">Condition</span><span class="w">    </span><span class="nc">Assignment</span><span class="w">
+               </span><span class="o">|</span><span class="w">            </span><span class="o">|</span><span class="w">
+               </span><span class="mi">1</span><span class="w">            </span><span class="mi">1</span><span class="w">
+               </span><span class="o">|</span><span class="w">            </span><span class="o">|</span><span class="w">
+          </span><span class="nc">Expession</span><span class="w">    </span><span class="nc">Expression</span></code></pre><h4>variables</h4><p>Variables describe the values the processor can receive (input),
+return (output) or compute as intermediary values.
+They are attached to a type, a position in the input or output
+and some other properties like optional/required.</p><h4>deductions</h4><p>Deductions are descriptions of how intermediary and output variables
+should be computed. They are built as tables whose columns correspond
+to the involved variables (assigned one or ones playing role in conditions)
+and the rows to subsidiary conditions/assignement branches (if the conditions
+of the first branch are not met, the second branch is tested, and so on).</p><h4>branches</h4><p>A (possibly empty) set of conditions on certain variables linked with
+an assignation to other (or same) variables.</p><h4>condition</h4><p>An expression describing when the condition is met based on
+it's column's variable.</p><h4>assignment</h4><p>An expression describing the value the column's variable should take
+in case the branch conditions are met.</p><h4>expression</h4><p>Either a constant, a variable or a function involving other expressions
+that can be computed based on the current variables state. Condition
+expressions return nullable booleans, assignment expression return a nullable
+value of the type of the column's variable.</p><h2 id="module-blueprint-manipulation" class="section-heading">
+  <a href="#module-blueprint-manipulation" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Blueprint manipulation
+</h2>
+<h3 id="module-creation-and-import" class="section-heading">
+  <a href="#module-creation-and-import" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Creation and import
+</h3>
+<p>Blueprints can be created using the <a href="#create_blueprint/2"><code class="inline">create_blueprint/2</code></a> function.
+This function requires you to provide attributes for the blueprint.</p><p>Update to the blueprint such as modifying name or description can be made
+using the <a href="#update_blueprint/2"><code class="inline">update_blueprint/2</code></a> function.</p><p>Populating a whole blueprint can done by importing a blueprint from a
+.json file definition. This is done using the <a href="#update_blueprint_from_file/2"><code class="inline">update_blueprint_from_file/2</code></a>
+function.</p><h3 id="module-manipulation" class="section-heading">
+  <a href="#module-manipulation" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Manipulation
+</h3>
+<p>A set of functions allow you to directly load and update variables
+and deductions.</p>
+        </section>
+
+
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#change_blueprint/2">change_blueprint(blueprint, attrs \\ %{})</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Cast attributes into a changeset
+Only root attributes are supported (no variables or deductions)</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#compile_blueprint/1">compile_blueprint(blueprint)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Compile blueprint into processor</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#create_blueprint/2">create_blueprint(workspace, attrs)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Create a blueprint with the given attributes
+TODO describe attributes</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#create_variable/2">create_variable(parent, attrs)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Create variable with attributes</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#delete_blueprint/1">delete_blueprint(blueprint)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Delete blueprint (will error if used)</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#delete_variable/1">delete_variable(var)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Delete variable (will error if variable is in use)</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#filter_blueprints_by_query/2">filter_blueprints_by_query(query, search)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Apply search query to a blueprint query</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#filter_blueprints_by_workspace/2">filter_blueprints_by_workspace(query, workspace)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Apply a workspace scope to a blueprint query</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#flush_processor/1">flush_processor(processor)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Flush compiled processor</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_blueprint!/2">get_blueprint!(blueprint_id, queries \\ &amp;(&amp;1))</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Get a blueprint with id, raise if not found.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#limit_blueprints/2">limit_blueprints(query, limit)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Limit results</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#list_blueprints/1">list_blueprints(queries \\ &amp;(&amp;1))</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>List blueprint</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#list_compiled_blueprint_modules/0">list_compiled_blueprint_modules()</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#load_blueprint_active_publications/1">load_blueprint_active_publications(query)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Load active publications</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#load_blueprint_full_deductions/1">load_blueprint_full_deductions(query)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Load deductions and arrange them, load_blueprint_variables MUST be called first</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#load_blueprint_publications/1">load_blueprint_publications(query)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Load all publications</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#load_blueprint_variables/1">load_blueprint_variables(query)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Load variables and index them</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#move_variable/2">move_variable(var, new_parent)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Move variable to new parent</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#run/3">run(processor, input, env \\ %{})</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Run processor with given input</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#serialize_blueprint/1">serialize_blueprint(blueprint)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Convert to map for serialization</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#update_blueprint/2">update_blueprint(blueprint, attrs)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Update a blueprint with attributes</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#update_blueprint_from_file/2">update_blueprint_from_file(blueprint, path)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Load a blueprint from a file.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#update_variable/2">update_variable(var, attrs)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Update variable with attributes</p></div>
+
+</div>
+
+  </div>
+
+        </section>
+
+
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Functions
+          </h1>
+          <div class="functions-list">
+<section class="detail" id="change_blueprint/2">
+
+    <span id="change_blueprint/1"></span>
+
+  <div class="detail-header">
+    <a href="#change_blueprint/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">change_blueprint(blueprint, attrs \\ %{})</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Cast attributes into a changeset
+Only root attributes are supported (no variables or deductions)</p>
+  </section>
+</section>
+<section class="detail" id="compile_blueprint/1">
+
+  <div class="detail-header">
+    <a href="#compile_blueprint/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">compile_blueprint(blueprint)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Compile blueprint into processor</p>
+  </section>
+</section>
+<section class="detail" id="create_blueprint/2">
+
+  <div class="detail-header">
+    <a href="#create_blueprint/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">create_blueprint(workspace, attrs)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Create a blueprint with the given attributes
+TODO describe attributes</p>
+  </section>
+</section>
+<section class="detail" id="create_variable/2">
+
+  <div class="detail-header">
+    <a href="#create_variable/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">create_variable(parent, attrs)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Create variable with attributes</p>
+  </section>
+</section>
+<section class="detail" id="delete_blueprint/1">
+
+  <div class="detail-header">
+    <a href="#delete_blueprint/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">delete_blueprint(blueprint)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Delete blueprint (will error if used)</p>
+  </section>
+</section>
+<section class="detail" id="delete_variable/1">
+
+  <div class="detail-header">
+    <a href="#delete_variable/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">delete_variable(var)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Delete variable (will error if variable is in use)</p>
+  </section>
+</section>
+<section class="detail" id="filter_blueprints_by_query/2">
+
+  <div class="detail-header">
+    <a href="#filter_blueprints_by_query/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">filter_blueprints_by_query(query, search)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Apply search query to a blueprint query</p>
+  </section>
+</section>
+<section class="detail" id="filter_blueprints_by_workspace/2">
+
+  <div class="detail-header">
+    <a href="#filter_blueprints_by_workspace/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">filter_blueprints_by_workspace(query, workspace)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Apply a workspace scope to a blueprint query</p>
+  </section>
+</section>
+<section class="detail" id="flush_processor/1">
+
+  <div class="detail-header">
+    <a href="#flush_processor/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">flush_processor(processor)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Flush compiled processor</p>
+  </section>
+</section>
+<section class="detail" id="get_blueprint!/2">
+
+    <span id="get_blueprint!/1"></span>
+
+  <div class="detail-header">
+    <a href="#get_blueprint!/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">get_blueprint!(blueprint_id, queries \\ &amp;(&amp;1))</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Get a blueprint with id, raise if not found.</p>
+  </section>
+</section>
+<section class="detail" id="limit_blueprints/2">
+
+  <div class="detail-header">
+    <a href="#limit_blueprints/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">limit_blueprints(query, limit)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Limit results</p>
+  </section>
+</section>
+<section class="detail" id="list_blueprints/1">
+
+    <span id="list_blueprints/0"></span>
+
+  <div class="detail-header">
+    <a href="#list_blueprints/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">list_blueprints(queries \\ &amp;(&amp;1))</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>List blueprint</p>
+  </section>
+</section>
+<section class="detail" id="list_compiled_blueprint_modules/0">
+
+  <div class="detail-header">
+    <a href="#list_compiled_blueprint_modules/0" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">list_compiled_blueprint_modules()</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+
+  </section>
+</section>
+<section class="detail" id="load_blueprint_active_publications/1">
+
+  <div class="detail-header">
+    <a href="#load_blueprint_active_publications/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">load_blueprint_active_publications(query)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Load active publications</p>
+  </section>
+</section>
+<section class="detail" id="load_blueprint_full_deductions/1">
+
+  <div class="detail-header">
+    <a href="#load_blueprint_full_deductions/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">load_blueprint_full_deductions(query)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Load deductions and arrange them, load_blueprint_variables MUST be called first</p>
+  </section>
+</section>
+<section class="detail" id="load_blueprint_publications/1">
+
+  <div class="detail-header">
+    <a href="#load_blueprint_publications/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">load_blueprint_publications(query)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Load all publications</p>
+  </section>
+</section>
+<section class="detail" id="load_blueprint_variables/1">
+
+  <div class="detail-header">
+    <a href="#load_blueprint_variables/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">load_blueprint_variables(query)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Load variables and index them</p>
+  </section>
+</section>
+<section class="detail" id="move_variable/2">
+
+  <div class="detail-header">
+    <a href="#move_variable/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">move_variable(var, new_parent)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Move variable to new parent</p>
+  </section>
+</section>
+<section class="detail" id="run/3">
+
+    <span id="run/2"></span>
+
+  <div class="detail-header">
+    <a href="#run/3" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">run(processor, input, env \\ %{})</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Run processor with given input</p>
+  </section>
+</section>
+<section class="detail" id="serialize_blueprint/1">
+
+  <div class="detail-header">
+    <a href="#serialize_blueprint/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">serialize_blueprint(blueprint)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Convert to map for serialization</p>
+  </section>
+</section>
+<section class="detail" id="update_blueprint/2">
+
+  <div class="detail-header">
+    <a href="#update_blueprint/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">update_blueprint(blueprint, attrs)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Update a blueprint with attributes</p>
+  </section>
+</section>
+<section class="detail" id="update_blueprint_from_file/2">
+
+  <div class="detail-header">
+    <a href="#update_blueprint_from_file/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">update_blueprint_from_file(blueprint, path)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Load a blueprint from a file.</p><p>Used for file upload as phoenix write into temp file</p>
+  </section>
+</section>
+<section class="detail" id="update_variable/2">
+
+  <div class="detail-header">
+    <a href="#update_variable/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">update_variable(var, attrs)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Update variable with attributes</p>
+  </section>
+</section>
+
+          </div>
+        </section>
+
+      <footer class="footer">
+
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.25.5) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>

@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.25.5">
+    <meta name="project" content="Vac Engine v1.0.1">
+
+    <title>VacEngine.Account — Vac Engine v1.0.1</title>
+    <link rel="stylesheet" href="dist/elixir-d1506dba1db7cdc5483e.css" />
+
+    <script src="dist/sidebar_items-985ad71309.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/app-7b632b26f13d5e0d20e1.js"></script>
+
+
+  </head>
+  <body data-type="modules">
+    <script>
+
+      try {
+        if (localStorage.getItem('night-mode') === 'true') {
+          document.body.classList.add('night-mode');
+        }
+      } catch (error) { }
+    </script>
+
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="VacEngine.html" class="sidebar-projectName">
+Vac Engine
+      </a>
+      <strong class="sidebar-projectVersion">
+        v1.0.1
+      </strong>
+    </div>
+
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+
+      <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+      <h1>
+VacEngine.Account <small class="app-vsn">(Vac Engine v1.0.1)</small>
+
+      </h1>
+
+
+        <section id="moduledoc">
+<p>Rsponsible for the management of a role-based permission system.</p><h2 id="module-roles" class="section-heading">
+  <a href="#module-roles" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Roles
+</h2>
+<p>Primary entities to which permissions can be attached.
+Identification to a specific role can be done by using either
+a full authentication or through a token passed with the request.</p><p>Roles can be acquired by two access types: <strong>users</strong> and <strong>api-keys</strong>.</p><h3 id="module-users" class="section-heading">
+  <a href="#module-users" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Users
+</h3>
+<p>User access allow people to access the web interface of the application.</p><p>A user can access the application by using a multi-factor authentication
+with:</p><ul><li>an email login</li><li>a password</li><li>a one-time password provided by an authenticator</li></ul><p>User is attached to a single role, to which a set of permissions is granted.</p><h3 id="module-api-keys" class="section-heading">
+  <a href="#module-api-keys" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Api-keys
+</h3>
+<p>Api-keys accesses are used by api consumers to call the application api.</p><p>A api-key can access the application by using a token that contain a password
+and a reference to the role. If an existing token is provided with an api
+request in the authentication header, the request is automatically associated
+with the related role and permissions are granted accordingly.</p><p>Curl example of api call with key:</p><pre><code class="makeup elixir"><span class="n">curl</span><span class="w"> </span><span class="n">https</span><span class="ss">://</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">p</span><span class="o">/</span><span class="mi">8</span><span class="o">/</span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="nc">X</span><span class="w"> </span><span class="nc">POST</span><span class="w"> </span><span class="o">-</span><span class="nc">H</span><span class="w"> </span><span class="s">&quot;Authorization: Bearer api_1234567_123456789012345678901234567890&quot;</span></code></pre><h2 id="module-permissions" class="section-heading">
+  <a href="#module-permissions" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Permissions
+</h2>
+<h3 id="module-granting-permission" class="section-heading">
+  <a href="#module-granting-permission" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Granting permission
+</h3>
+<p>Permissions are rights to do certain actions in the system. A permission is
+granted to a role to perform a given in a given scope, by using the
+<a href="#grant_permission/3"><code class="inline">grant_permission/3</code></a> (or <a href="#toggle_permission/3"><code class="inline">toggle_permission/3</code></a>) function:</p><pre><code class="makeup elixir"><span class="nc">VacEngine.Account</span><span class="o">.</span><span class="n">grant_permission</span><span class="p" data-group-id="4418254328-1">(</span><span class="n">target_role</span><span class="p">,</span><span class="w"> </span><span class="ss">:list_blueprints_action</span><span class="p">,</span><span class="w"> </span><span class="ss">:global</span><span class="p" data-group-id="4418254328-1">)</span></code></pre><h3 id="module-checking-permission" class="section-heading">
+  <a href="#module-checking-permission" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Checking permission
+</h3>
+<p>When a piece of code should only be accessed by roles with defined permission,
+an conditional block containing the <a href="#can?/3"><code class="inline">can?/3</code></a> function should be added.</p><pre><code class="makeup elixir"><span class="k">if</span><span class="w"> </span><span class="n">can?</span><span class="p" data-group-id="2381456086-1">(</span><span class="n">role</span><span class="p">,</span><span class="w"> </span><span class="ss">:access</span><span class="p">,</span><span class="w"> </span><span class="ss">:editor</span><span class="p" data-group-id="2381456086-1">)</span><span class="w"> </span><span class="k" data-group-id="2381456086-2">do</span><span class="w">
+  </span><span class="n">...</span><span class="w">
+</span><span class="k" data-group-id="2381456086-2">end</span></code></pre><p>The function will return true if and only if the current role has the
+corresponding permission therefore granting access or not to the included
+code.</p><h2 id="module-actions" class="section-heading">
+  <a href="#module-actions" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Actions
+</h2>
+<p>Actions are atoms describing a specific action. The exact content
+of the action is defined by the places where <a href="#can?/3"><code class="inline">can?/3</code></a> functions use it
+as an argument.</p><h2 id="module-scopes" class="section-heading">
+  <a href="#module-scopes" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Scopes
+</h2>
+<p>A scope determines a context in which a permission is granted. There is
+three types of scope in the application, the <strong>global</strong> scope,
+the <strong>worspace</strong> scopes and the <strong>custom</strong>.</p><h4>Global scope</h4><p>The global scope correspond to the whole application. Therefore permissions
+granted in the global scope are technically &quot;unscoped&quot;.</p><p>Global scope is designated by the <code class="inline">:global</code> atom.</p><h4>Workspace scope</h4><p>A workspace scope is determined by the id of a workspace and grants the rights
+in the context of this workspace. For example, an <code class="inline">:access</code> action permission
+in the workspace with <code class="inline">:id = 1</code> will grant access only to this workspace.</p><p>Workspace scopes are designated a tuple containing the <code class="inline">:workspace</code> atom and
+the id of the workspace, e.g.:</p><pre><code class="makeup elixir"><span class="p" data-group-id="4662080461-1">{</span><span class="ss">:workspace</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p" data-group-id="4662080461-1">}</span></code></pre><h4>Custom scope</h4><p>Other scopes can be created using a custom atom.</p><h2 id="module-security-design" class="section-heading">
+  <a href="#module-security-design" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Security design
+</h2>
+<p>The Account module implements the following principe in order
+to ensure security of the system:</p><ul><li>Users are authenticated using MFA (login/password + authentication).</li><li>Treatment of wrong login/password pairs are treated in constant time.</li><li>Sessions linked to role of all types (api-keys, users, tokens)
+can be revocated by admin at any time.</li><li>Only admins have the right to publish a blueprint on a portal so that
+no simple editor can influence the behaviour of the api.</li></ul>
+        </section>
+
+
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#activate_role/1">activate_role(role)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Activate a role</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#can?/3">can?(role, action, scope \\ :global)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Check action against role with scope.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#change_role/2">change_role(role, attrs \\ %{})</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Cast attributes into a changeset</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#change_user/2">change_user(data, attrs \\ %{})</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Cast attributes into a changeset</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#change_workspace/2">change_workspace(data, attrs \\ %{})</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Cast attributes into a changeset</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#check_user/2">check_user(email, password)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Check a email/password and return the user if both are valid (used for login)</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#create_api_token/2">create_api_token(role, test \\ false)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Create an access token as API for a given role</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#create_role/2">create_role(type, attrs \\ %{})</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Create a role with attributes</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#create_session/2">create_session(role, attrs)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Create a session with attributes</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#create_user/1">create_user(attrs)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Create a user with attributes</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#create_workspace/1">create_workspace(attrs)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Create a workspace with attributes</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#deactivate_role/1">deactivate_role(role)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Desactivate a role.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#delete_role/1">delete_role(role)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Delete role</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#delete_workspace/1">delete_workspace(data)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Delete workspace.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#explode_composite_secret/1">explode_composite_secret(secret)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Explode a secret.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#fetch_session/1">fetch_session(token)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Try to find a session with given token</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#filter_accessible_workspaces/2">filter_accessible_workspaces(query, role)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Filter available workspaces for a given role</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#filter_active_roles/1">filter_active_roles(query)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Filter active role</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#filter_roles_by_type/2">filter_roles_by_type(query, type)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Filter role by type</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#generate_composite_secret/2">generate_composite_secret(prefix, id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Generate a secret with a prefix and id.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#generate_secret/1">generate_secret(length \\ 16)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Generates a human friendly secret of <code class="inline">length</code> bytes long.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_role!/2">get_role!(id, queries \\ &amp;(&amp;1))</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Get a role with id, raise if not found.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_session!/1">get_session!(id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Get a session with id, raise if not found.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_user!/2">get_user!(uid, queries \\ &amp;(&amp;1))</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Get a user with id, raise if not found.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_workspace!/2">get_workspace!(id, queries \\ &amp;(&amp;1))</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Get a workspace with id, raise if not found.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#grant_permission/3">grant_permission(role, action, scope \\ :global)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Grant permission with an action and scope</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#list_api_keys/0">list_api_keys()</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#list_api_tokens/1">list_api_tokens(queries \\ &amp;(&amp;1))</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Return all API tokens</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#list_roles/1">list_roles(queries \\ &amp;(&amp;1))</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>List roles</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#list_users/1">list_users(queries \\ &amp;(&amp;1))</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Return all users with <code class="inline">last_login_at</code> and <code class="inline">last_active_at</code> virtual fields
+populated</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#list_workspaces/1">list_workspaces(queries \\ &amp;(&amp;1))</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>List all workspaces</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#load_api_tokens/1">load_api_tokens(query)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Load te <code class="inline">api_tokens</code> assoc of a given role</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#load_role_sessions/1">load_role_sessions(query)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Load session assoc with all permissions</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#load_user_activity/1">load_user_activity(query)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Preload user activity</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#load_user_role/1">load_user_role(query)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Load role assoc</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#load_workspace_blueprints/1">load_workspace_blueprints(query)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Load blueprints assoc</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#load_workspace_stats/1">load_workspace_stats(query)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Load blueprint_count and active_publication_count</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#order_workspaces_by/2">order_workspaces_by(query, key)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Order workspace by key</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#revoke_permission/3">revoke_permission(role, action, scope \\ :global)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Revoke permission with an action and scope</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#revoke_session/1">revoke_session(session)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Revoke session</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#toggle_permission/3">toggle_permission(role, action, scope \\ :global)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Toggle permission with an action and scope</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#update_role/2">update_role(role, attrs \\ %{})</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Update role with attributes</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#update_session/2">update_session(session, attrs)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Update session with attributes</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#update_user/2">update_user(data, attrs)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Update user with attributes</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#update_workspace/2">update_workspace(data, attrs)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Update workspace with attributes</p></div>
+
+</div>
+
+  </div>
+
+        </section>
+
+
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Functions
+          </h1>
+          <div class="functions-list">
+<section class="detail" id="activate_role/1">
+
+  <div class="detail-header">
+    <a href="#activate_role/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">activate_role(role)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Activate a role</p>
+  </section>
+</section>
+<section class="detail" id="can?/3">
+
+    <span id="can?/2"></span>
+
+  <div class="detail-header">
+    <a href="#can?/3" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">can?(role, action, scope \\ :global)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Check action against role with scope.</p>
+  </section>
+</section>
+<section class="detail" id="change_role/2">
+
+    <span id="change_role/1"></span>
+
+  <div class="detail-header">
+    <a href="#change_role/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">change_role(role, attrs \\ %{})</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Cast attributes into a changeset</p>
+  </section>
+</section>
+<section class="detail" id="change_user/2">
+
+    <span id="change_user/1"></span>
+
+  <div class="detail-header">
+    <a href="#change_user/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">change_user(data, attrs \\ %{})</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Cast attributes into a changeset</p>
+  </section>
+</section>
+<section class="detail" id="change_workspace/2">
+
+    <span id="change_workspace/1"></span>
+
+  <div class="detail-header">
+    <a href="#change_workspace/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">change_workspace(data, attrs \\ %{})</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Cast attributes into a changeset</p>
+  </section>
+</section>
+<section class="detail" id="check_user/2">
+
+  <div class="detail-header">
+    <a href="#check_user/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">check_user(email, password)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Check a email/password and return the user if both are valid (used for login)</p><p>If the password is nil or wrong or the user not found, the time for the check
+will be constant.</p>
+  </section>
+</section>
+<section class="detail" id="create_api_token/2">
+
+    <span id="create_api_token/1"></span>
+
+  <div class="detail-header">
+    <a href="#create_api_token/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">create_api_token(role, test \\ false)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Create an access token as API for a given role</p>
+  </section>
+</section>
+<section class="detail" id="create_role/2">
+
+    <span id="create_role/1"></span>
+
+  <div class="detail-header">
+    <a href="#create_role/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">create_role(type, attrs \\ %{})</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Create a role with attributes</p>
+  </section>
+</section>
+<section class="detail" id="create_session/2">
+
+  <div class="detail-header">
+    <a href="#create_session/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">create_session(role, attrs)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Create a session with attributes</p>
+  </section>
+</section>
+<section class="detail" id="create_user/1">
+
+  <div class="detail-header">
+    <a href="#create_user/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">create_user(attrs)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Create a user with attributes</p><p>This will also create the &quot;role&quot; for the user and set it as active</p>
+  </section>
+</section>
+<section class="detail" id="create_workspace/1">
+
+  <div class="detail-header">
+    <a href="#create_workspace/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">create_workspace(attrs)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Create a workspace with attributes</p>
+  </section>
+</section>
+<section class="detail" id="deactivate_role/1">
+
+  <div class="detail-header">
+    <a href="#deactivate_role/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">deactivate_role(role)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Desactivate a role.</p><p>Will revoke all sessions.</p><p>This will NOT disconnect live views, this is the responsibility of the
+web layer.</p>
+  </section>
+</section>
+<section class="detail" id="delete_role/1">
+
+  <div class="detail-header">
+    <a href="#delete_role/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">delete_role(role)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Delete role</p>
+  </section>
+</section>
+<section class="detail" id="delete_workspace/1">
+
+  <div class="detail-header">
+    <a href="#delete_workspace/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">delete_workspace(data)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Delete workspace.</p><p>This will fail is the workspace has any blueprint or portal</p>
+  </section>
+</section>
+<section class="detail" id="explode_composite_secret/1">
+
+  <div class="detail-header">
+    <a href="#explode_composite_secret/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">explode_composite_secret(secret)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Explode a secret.</p><pre><code class="makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="n">sec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">generate_composite_secret</span><span class="p" data-group-id="4681362477-1">(</span><span class="ss">:role</span><span class="p">,</span><span class="w"> </span><span class="mi">23</span><span class="p" data-group-id="4681362477-1">)</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="p" data-group-id="4681362477-2">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">23</span><span class="p">,</span><span class="w"> </span><span class="ss">prefix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;role&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">secret</span><span class="p">:</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="4681362477-2">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">explode_composite_secret</span><span class="p" data-group-id="4681362477-3">(</span><span class="n">sec</span><span class="p" data-group-id="4681362477-3">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="fetch_session/1">
+
+  <div class="detail-header">
+    <a href="#fetch_session/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">fetch_session(token)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Try to find a session with given token</p>
+  </section>
+</section>
+<section class="detail" id="filter_accessible_workspaces/2">
+
+  <div class="detail-header">
+    <a href="#filter_accessible_workspaces/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">filter_accessible_workspaces(query, role)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Filter available workspaces for a given role</p>
+  </section>
+</section>
+<section class="detail" id="filter_active_roles/1">
+
+  <div class="detail-header">
+    <a href="#filter_active_roles/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">filter_active_roles(query)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Filter active role</p>
+  </section>
+</section>
+<section class="detail" id="filter_roles_by_type/2">
+
+  <div class="detail-header">
+    <a href="#filter_roles_by_type/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">filter_roles_by_type(query, type)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Filter role by type</p>
+  </section>
+</section>
+<section class="detail" id="generate_composite_secret/2">
+
+  <div class="detail-header">
+    <a href="#generate_composite_secret/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">generate_composite_secret(prefix, id)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Generate a secret with a prefix and id.</p>
+  </section>
+</section>
+<section class="detail" id="generate_secret/1">
+
+    <span id="generate_secret/0"></span>
+
+  <div class="detail-header">
+    <a href="#generate_secret/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">generate_secret(length \\ 16)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Generates a human friendly secret of <code class="inline">length</code> bytes long.</p><p>Length must be multiple of 4.</p><p>Crypto secure.</p>
+  </section>
+</section>
+<section class="detail" id="get_role!/2">
+
+    <span id="get_role!/1"></span>
+
+  <div class="detail-header">
+    <a href="#get_role!/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">get_role!(id, queries \\ &amp;(&amp;1))</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Get a role with id, raise if not found.</p>
+  </section>
+</section>
+<section class="detail" id="get_session!/1">
+
+  <div class="detail-header">
+    <a href="#get_session!/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">get_session!(id)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Get a session with id, raise if not found.</p>
+  </section>
+</section>
+<section class="detail" id="get_user!/2">
+
+    <span id="get_user!/1"></span>
+
+  <div class="detail-header">
+    <a href="#get_user!/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">get_user!(uid, queries \\ &amp;(&amp;1))</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Get a user with id, raise if not found.</p>
+  </section>
+</section>
+<section class="detail" id="get_workspace!/2">
+
+    <span id="get_workspace!/1"></span>
+
+  <div class="detail-header">
+    <a href="#get_workspace!/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">get_workspace!(id, queries \\ &amp;(&amp;1))</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Get a workspace with id, raise if not found.</p>
+  </section>
+</section>
+<section class="detail" id="grant_permission/3">
+
+    <span id="grant_permission/2"></span>
+
+  <div class="detail-header">
+    <a href="#grant_permission/3" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">grant_permission(role, action, scope \\ :global)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Grant permission with an action and scope</p>
+  </section>
+</section>
+<section class="detail" id="list_api_keys/0">
+
+  <div class="detail-header">
+    <a href="#list_api_keys/0" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">list_api_keys()</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+
+  </section>
+</section>
+<section class="detail" id="list_api_tokens/1">
+
+    <span id="list_api_tokens/0"></span>
+
+  <div class="detail-header">
+    <a href="#list_api_tokens/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">list_api_tokens(queries \\ &amp;(&amp;1))</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Return all API tokens</p>
+  </section>
+</section>
+<section class="detail" id="list_roles/1">
+
+    <span id="list_roles/0"></span>
+
+  <div class="detail-header">
+    <a href="#list_roles/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">list_roles(queries \\ &amp;(&amp;1))</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>List roles</p>
+  </section>
+</section>
+<section class="detail" id="list_users/1">
+
+    <span id="list_users/0"></span>
+
+  <div class="detail-header">
+    <a href="#list_users/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">list_users(queries \\ &amp;(&amp;1))</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Return all users with <code class="inline">last_login_at</code> and <code class="inline">last_active_at</code> virtual fields
+populated</p>
+  </section>
+</section>
+<section class="detail" id="list_workspaces/1">
+
+    <span id="list_workspaces/0"></span>
+
+  <div class="detail-header">
+    <a href="#list_workspaces/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">list_workspaces(queries \\ &amp;(&amp;1))</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>List all workspaces</p>
+  </section>
+</section>
+<section class="detail" id="load_api_tokens/1">
+
+  <div class="detail-header">
+    <a href="#load_api_tokens/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">load_api_tokens(query)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Load te <code class="inline">api_tokens</code> assoc of a given role</p>
+  </section>
+</section>
+<section class="detail" id="load_role_sessions/1">
+
+  <div class="detail-header">
+    <a href="#load_role_sessions/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">load_role_sessions(query)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Load session assoc with all permissions</p>
+  </section>
+</section>
+<section class="detail" id="load_user_activity/1">
+
+  <div class="detail-header">
+    <a href="#load_user_activity/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">load_user_activity(query)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Preload user activity</p><p>Will load role, all sessions and populate <code class="inline">is_active</code>, <code class="inline">last_login_at</code> and
+<code class="inline">last_active_at</code> virtual fields.</p>
+  </section>
+</section>
+<section class="detail" id="load_user_role/1">
+
+  <div class="detail-header">
+    <a href="#load_user_role/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">load_user_role(query)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Load role assoc</p>
+  </section>
+</section>
+<section class="detail" id="load_workspace_blueprints/1">
+
+  <div class="detail-header">
+    <a href="#load_workspace_blueprints/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">load_workspace_blueprints(query)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Load blueprints assoc</p>
+  </section>
+</section>
+<section class="detail" id="load_workspace_stats/1">
+
+  <div class="detail-header">
+    <a href="#load_workspace_stats/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">load_workspace_stats(query)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Load blueprint_count and active_publication_count</p>
+  </section>
+</section>
+<section class="detail" id="order_workspaces_by/2">
+
+  <div class="detail-header">
+    <a href="#order_workspaces_by/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">order_workspaces_by(query, key)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Order workspace by key</p>
+  </section>
+</section>
+<section class="detail" id="revoke_permission/3">
+
+    <span id="revoke_permission/2"></span>
+
+  <div class="detail-header">
+    <a href="#revoke_permission/3" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">revoke_permission(role, action, scope \\ :global)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Revoke permission with an action and scope</p>
+  </section>
+</section>
+<section class="detail" id="revoke_session/1">
+
+  <div class="detail-header">
+    <a href="#revoke_session/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">revoke_session(session)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Revoke session</p>
+  </section>
+</section>
+<section class="detail" id="toggle_permission/3">
+
+    <span id="toggle_permission/2"></span>
+
+  <div class="detail-header">
+    <a href="#toggle_permission/3" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">toggle_permission(role, action, scope \\ :global)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Toggle permission with an action and scope</p>
+  </section>
+</section>
+<section class="detail" id="update_role/2">
+
+    <span id="update_role/1"></span>
+
+  <div class="detail-header">
+    <a href="#update_role/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">update_role(role, attrs \\ %{})</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Update role with attributes</p>
+  </section>
+</section>
+<section class="detail" id="update_session/2">
+
+  <div class="detail-header">
+    <a href="#update_session/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">update_session(session, attrs)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Update session with attributes</p>
+  </section>
+</section>
+<section class="detail" id="update_user/2">
+
+  <div class="detail-header">
+    <a href="#update_user/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">update_user(data, attrs)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Update user with attributes</p>
+  </section>
+</section>
+<section class="detail" id="update_workspace/2">
+
+  <div class="detail-header">
+    <a href="#update_workspace/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">update_workspace(data, attrs)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Update workspace with attributes</p>
+  </section>
+</section>
+
+          </div>
+        </section>
+
+      <footer class="footer">
+
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.25.5) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>

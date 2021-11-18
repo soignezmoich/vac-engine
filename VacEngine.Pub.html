@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.25.5">
+    <meta name="project" content="Vac Engine v1.0.1">
+
+    <title>VacEngine.Pub — Vac Engine v1.0.1</title>
+    <link rel="stylesheet" href="dist/elixir-d1506dba1db7cdc5483e.css" />
+
+    <script src="dist/sidebar_items-985ad71309.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/app-7b632b26f13d5e0d20e1.js"></script>
+
+
+  </head>
+  <body data-type="modules">
+    <script>
+
+      try {
+        if (localStorage.getItem('night-mode') === 'true') {
+          document.body.classList.add('night-mode');
+        }
+      } catch (error) { }
+    </script>
+
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="VacEngine.html" class="sidebar-projectName">
+Vac Engine
+      </a>
+      <strong class="sidebar-projectVersion">
+        v1.0.1
+      </strong>
+    </div>
+
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+
+      <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+      <h1>
+VacEngine.Pub <small class="app-vsn">(Vac Engine v1.0.1)</small>
+
+      </h1>
+
+
+        <section id="moduledoc">
+<p>Provides a publication manager to allow processors to be
+accessible through the API.</p><h2 id="module-portals" class="section-heading">
+  <a href="#module-portals" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Portals
+</h2>
+<p>Portals are the access points of the application. Each portal
+is responsible to give access to a single processor through the API.
+Therefore, a protal has a reference exactly one blueprint in
+the api. The reference is called a &quot;publication&quot;.</p><p>Interface to consume a portal is made of a pair of calls:</p><ul><li>the<a href="#run_cached/1"><code class="inline">run_cached/1</code></a> function and</li><li>the <a href="#info_cached/1"><code class="inline">info_cached/1</code></a>function</li></ul><h4>Run function</h4><p>Runs the linked processor on the given input, using the provided api_key
+to authenticate:</p><pre><code class="makeup elixir"><span class="p" data-group-id="5571208525-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5571208525-2">%{</span><span class="ss">input</span><span class="p">:</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="ss">output</span><span class="p">:</span><span class="w"> </span><span class="n">output</span><span class="p" data-group-id="5571208525-2">}</span><span class="p" data-group-id="5571208525-1">}</span><span class="w"> </span><span class="o">=</span><span class="w">
+  </span><span class="nc">Pub</span><span class="o">.</span><span class="n">run_cached</span><span class="p" data-group-id="5571208525-3">(</span><span class="p" data-group-id="5571208525-4">%{</span><span class="ss">api_key</span><span class="p">:</span><span class="w"> </span><span class="n">api_key</span><span class="p">,</span><span class="w"> </span><span class="ss">portal_id</span><span class="p">:</span><span class="w"> </span><span class="n">portal_id</span><span class="p">,</span><span class="w"> </span><span class="ss">input</span><span class="p">:</span><span class="w"> </span><span class="n">input</span><span class="p" data-group-id="5571208525-4">}</span><span class="p" data-group-id="5571208525-3">)</span></code></pre><p>Note that the in-memory compiled processor is used as indicated by the
+<em>cached</em> suffix.</p><h4>Info function</h4><p>Gets the description of the processor linked to the portal</p><pre><code class="makeup elixir"><span class="p" data-group-id="3656442319-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="3656442319-2">%{</span><span class="ss">input</span><span class="p">:</span><span class="w"> </span><span class="n">input_schema</span><span class="p">,</span><span class="w"> </span><span class="ss">output</span><span class="p">:</span><span class="w"> </span><span class="n">output_schema</span><span class="p">,</span><span class="w"> </span><span class="ss">logic</span><span class="p">:</span><span class="w"> </span><span class="n">logic</span><span class="p" data-group-id="3656442319-2">}</span><span class="p" data-group-id="3656442319-1">}</span><span class="w"> </span><span class="o">=</span><span class="w">
+  </span><span class="nc">Pub</span><span class="o">.</span><span class="n">info_cached</span><span class="p" data-group-id="3656442319-3">(</span><span class="p" data-group-id="3656442319-4">%{</span><span class="ss">api_key</span><span class="p">:</span><span class="w"> </span><span class="n">api_key</span><span class="p">,</span><span class="w"> </span><span class="ss">portal_id</span><span class="p">:</span><span class="w"> </span><span class="n">portal_id</span><span class="p" data-group-id="3656442319-4">}</span><span class="p" data-group-id="3656442319-3">)</span></code></pre><p>Again, the in-memory compiled processor is used.</p><blockquote><p><em>Note: The decription of the corresponding API endpoints is available
+in the swagger documentation at <code class="inline">/priv/static/docs/api.html</code>.</em></p></blockquote><h2 id="module-publications" class="section-heading">
+  <a href="#module-publications" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Publications
+</h2>
+<p>A publication links a processor to a portal. The same processor can be
+published several times, but a portal can have only one active publication
+at a time.</p><h4>Create a publication</h4><p>Since a portal must give access to exactly processor, publication
+is always made with a blueprint as parameter in the <a href="#publish_blueprint/2"><code class="inline">publish_blueprint/2</code></a>
+function. This function returns the corresponding publication:</p><pre><code class="makeup elixir"><span class="p" data-group-id="3765403682-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">publication</span><span class="p" data-group-id="3765403682-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Pub</span><span class="o">.</span><span class="n">publish_blueprint</span><span class="p" data-group-id="3765403682-2">(</span><span class="p" data-group-id="3765403682-2">)</span></code></pre><h4>Publication deactivation</h4><p>Publication can be deactivated using the <a href="#deactivate_publication/1"><code class="inline">deactivate_publication/1</code></a>. This
+is necessary if you want to publish a new form to a given portal.</p><h4>Cache management</h4><p>As stated above, blueprints are stored in cache. API keys are also stored in
+cache. It is the responsibility of the consumer to refresh the cache when
+corresponding data should be updated (e.g. when new blueprint is associated
+to the portal, when the linked blueprint is modified or when the API keys
+are modified). This can be done using the <a href="#bust_cache/0"><code class="inline">bust_cache/0</code></a>, the
+<code class="inline">bust_blueprint_cache/0</code> and <a href="#bust_api_keys_cache/0"><code class="inline">bust_api_keys_cache/0</code></a> funtions.</p>
+        </section>
+
+
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#bust_api_keys_cache/0">bust_api_keys_cache()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Bust all cached permissions</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#bust_blueprint_cache/1">bust_blueprint_cache(blueprint)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Bust cache only if blueprint is currently active</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#bust_cache/0">bust_cache()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Bust all cache</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#change_portal/2">change_portal(data, attrs \\ %{})</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Cast attributes into a changeset</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#create_portal/2">create_portal(workspace, attrs \\ %{})</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Cast attributes into a changeset</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#deactivate_publication/1">deactivate_publication(pub)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Deactivate publication</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#delete_portal/1">delete_portal(portal)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Delete portal</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#filter_active_portals/1">filter_active_portals(query)</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#filter_portals_by_workspace/2">filter_portals_by_workspace(query, workspace)</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_portal!/2">get_portal!(id, queries \\ &amp;(&amp;1))</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Get a portal with id, raise if not found.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#info_cached/1">info_cached(args)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Get processor info and use cache</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#list_portals/1">list_portals(queries \\ &amp;(&amp;1))</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>List all portals</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#load_portal_active_publication/1">load_portal_active_publication(query)</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#load_portal_publications/1">load_portal_publications(query)</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#publish_blueprint/2">publish_blueprint(br, portal)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Publish a blueprint.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#run_cached/1">run_cached(args)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Run a processor and use cache</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#update_portal/2">update_portal(data, attrs \\ %{})</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Update portal with attributes</p></div>
+
+</div>
+
+  </div>
+
+        </section>
+
+
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Functions
+          </h1>
+          <div class="functions-list">
+<section class="detail" id="bust_api_keys_cache/0">
+
+  <div class="detail-header">
+    <a href="#bust_api_keys_cache/0" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">bust_api_keys_cache()</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Bust all cached permissions</p>
+  </section>
+</section>
+<section class="detail" id="bust_blueprint_cache/1">
+
+  <div class="detail-header">
+    <a href="#bust_blueprint_cache/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">bust_blueprint_cache(blueprint)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Bust cache only if blueprint is currently active</p>
+  </section>
+</section>
+<section class="detail" id="bust_cache/0">
+
+  <div class="detail-header">
+    <a href="#bust_cache/0" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">bust_cache()</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Bust all cache</p>
+  </section>
+</section>
+<section class="detail" id="change_portal/2">
+
+    <span id="change_portal/1"></span>
+
+  <div class="detail-header">
+    <a href="#change_portal/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">change_portal(data, attrs \\ %{})</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Cast attributes into a changeset</p>
+  </section>
+</section>
+<section class="detail" id="create_portal/2">
+
+    <span id="create_portal/1"></span>
+
+  <div class="detail-header">
+    <a href="#create_portal/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">create_portal(workspace, attrs \\ %{})</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Cast attributes into a changeset</p>
+  </section>
+</section>
+<section class="detail" id="deactivate_publication/1">
+
+  <div class="detail-header">
+    <a href="#deactivate_publication/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">deactivate_publication(pub)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Deactivate publication</p>
+  </section>
+</section>
+<section class="detail" id="delete_portal/1">
+
+  <div class="detail-header">
+    <a href="#delete_portal/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">delete_portal(portal)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Delete portal</p>
+  </section>
+</section>
+<section class="detail" id="filter_active_portals/1">
+
+  <div class="detail-header">
+    <a href="#filter_active_portals/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">filter_active_portals(query)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+
+  </section>
+</section>
+<section class="detail" id="filter_portals_by_workspace/2">
+
+  <div class="detail-header">
+    <a href="#filter_portals_by_workspace/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">filter_portals_by_workspace(query, workspace)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+
+  </section>
+</section>
+<section class="detail" id="get_portal!/2">
+
+    <span id="get_portal!/1"></span>
+
+  <div class="detail-header">
+    <a href="#get_portal!/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">get_portal!(id, queries \\ &amp;(&amp;1))</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Get a portal with id, raise if not found.</p>
+  </section>
+</section>
+<section class="detail" id="info_cached/1">
+
+  <div class="detail-header">
+    <a href="#info_cached/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">info_cached(args)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Get processor info and use cache</p>
+  </section>
+</section>
+<section class="detail" id="list_portals/1">
+
+    <span id="list_portals/0"></span>
+
+  <div class="detail-header">
+    <a href="#list_portals/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">list_portals(queries \\ &amp;(&amp;1))</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>List all portals</p>
+  </section>
+</section>
+<section class="detail" id="load_portal_active_publication/1">
+
+  <div class="detail-header">
+    <a href="#load_portal_active_publication/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">load_portal_active_publication(query)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+
+  </section>
+</section>
+<section class="detail" id="load_portal_publications/1">
+
+  <div class="detail-header">
+    <a href="#load_portal_publications/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">load_portal_publications(query)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+
+  </section>
+</section>
+<section class="detail" id="publish_blueprint/2">
+
+  <div class="detail-header">
+    <a href="#publish_blueprint/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">publish_blueprint(br, portal)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Publish a blueprint.</p><ul><li>create portal</li><li>create publication</li><li>set publication as active</li></ul><p>First variant with existing portal</p><p>Second variant with new portal params</p>
+  </section>
+</section>
+<section class="detail" id="run_cached/1">
+
+  <div class="detail-header">
+    <a href="#run_cached/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">run_cached(args)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Run a processor and use cache</p>
+  </section>
+</section>
+<section class="detail" id="update_portal/2">
+
+    <span id="update_portal/1"></span>
+
+  <div class="detail-header">
+    <a href="#update_portal/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">update_portal(data, attrs \\ %{})</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Update portal with attributes</p>
+  </section>
+</section>
+
+          </div>
+        </section>
+
+      <footer class="footer">
+
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.25.5) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>
