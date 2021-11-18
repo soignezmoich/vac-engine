@@ -1,3 +1,7 @@
+[![Build CI](https://img.shields.io/github/workflow/status/soignezmoich/vac-engine/CI)](https://github.com/soignezmoich/vac-engine/actions/workflows/ci.yml)
+[![License](https://img.shields.io/badge/license-AGPL%20v3-blue)](https://www.gnu.org/licenses/agpl-3.0.en.html)
+[![API Doc](https://img.shields.io/badge/elixir-API%20Doc-orange)](https://soignezmoich.github.io/vac-engine/)
+
 # VacEngine
 
 The VacEngine application is an api-based deduction system initially developed
