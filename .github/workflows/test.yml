@@ -8,6 +8,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      DATABASE_TEST_URL: postgres://vac_engine_test:vac_engine_test@localhost/vac_engine_test
+
     steps:
     - uses: actions/checkout@v2
     - name: Setup elixir
@@ -15,5 +18,11 @@ jobs:
       with:
         elixir-version: 1.12.2
         otp-version: 24
+    - name: Setup PostgreSQL
+      uses: Harmon758/postgresql-action@v1.0.0
+      with:
+        postgresql db: vac_engine_test
+        postgresql user: vac_engine_test
+        postgresql password: vac_engine_test
     - name: Run Tests
       run: make test
