@@ -1,7 +1,6 @@
 defmodule VacEngine.Processor.Branch do
-  @moduledoc """
-  A deduction branch
-  """
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
   import Ecto.Query

@@ -1,9 +1,6 @@
 defmodule VacEngine.Account.WorkspacePermission do
-  @moduledoc """
-  Workspace specific permissions
+  @moduledoc false
 
-  `role <-> workspace`
-  """
   use Ecto.Schema
   import Ecto.Changeset
   alias Ecto.Changeset

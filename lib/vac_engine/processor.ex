@@ -105,6 +105,62 @@ defmodule VacEngine.Processor do
 
   A set of functions allow you to directly load and update variables
   and deductions.
+
+  ## Schemas
+
+  Below, the ecto schemas available in the Processor module.
+
+  #### Assignment
+
+  A variable assignment in the branch of a bluprint deduction.
+
+  #### AstType
+
+  Ecto type for AST serialization to the database.
+
+  Allows to store tuples as JSON.
+
+  #### BindingElement
+
+  An expression binding element.
+
+  #### Binding
+
+  An expression binding.
+
+  #### Blueprint
+
+  A blueprint describing a full processor.
+
+  #### Branch
+
+  A deduction branch.
+
+  #### Column
+
+  A deduction column (a structuration feature that has no effect when the
+  processor runs on an input.)
+
+  #### Condition
+
+  A condition in a branch.
+
+  #### Deduction
+
+  A blueprint deduction.
+
+  #### Expression
+
+  Expressions can be found in conditions, assignments or variable default values.
+
+  #### ListType
+
+  Ecto type to allow storing a list in a json field.
+
+  #### Variable
+
+  A blueprint variable.
+
   """
   alias VacEngine.Processor
   alias VacEngine.Processor.Blueprint

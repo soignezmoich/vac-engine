@@ -1,7 +1,6 @@
 defmodule VacEngine.Processor.Blueprint do
-  @moduledoc """
-  A blueprint
-  """
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
 

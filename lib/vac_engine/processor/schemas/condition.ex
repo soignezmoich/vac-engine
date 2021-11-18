@@ -1,7 +1,6 @@
 defmodule VacEngine.Processor.Condition do
-  @moduledoc """
-  A branch condition
-  """
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
 

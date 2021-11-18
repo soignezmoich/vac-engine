@@ -1,13 +1,9 @@
 defmodule VacEngine.Processor.Info.Schema do
-  @moduledoc """
-  Generate a JSON schema of the interface of a blueprint
-  """
+  @moduledoc false
   alias VacEngine.Processor.Variable
   alias VacEngine.Processor.Meta
 
-  @doc """
-  Input JSON schema
-  """
+  @doc false
   def input_schema(blueprint) do
     filter = fn var ->
       Variable.input?(var)
@@ -18,9 +14,7 @@ defmodule VacEngine.Processor.Info.Schema do
     |> wrap_props()
   end
 
-  @doc """
-  Output JSON schema
-  """
+  @doc false
   def output_schema(blueprint) do
     filter = fn var ->
       Variable.output?(var)

@@ -1,7 +1,6 @@
 defmodule VacEngine.Processor.Column do
-  @moduledoc """
-  A deduction column
-  """
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
 

@@ -1,6 +1,6 @@
 defmodule VacEngine.Processor.Library do
   @moduledoc """
-  Library queries
+  Blueprint functions library queries
   """
   use VacEngine.Processor.Library.Import
 
@@ -38,7 +38,8 @@ defmodule VacEngine.Processor.Library do
   end
 
   @doc """
-  Look for candidataes
+  Look for candidates, i.e. functions whose signature match the given argument
+  types.
   """
   def candidates(args) when is_list(args) do
     candidates({args, :any})
@@ -53,6 +54,10 @@ defmodule VacEngine.Processor.Library do
     |> Enum.sort_by(& &1.name)
   end
 
+  @doc """
+  Look for candidates with given name, i.e. functions whose signature match
+  the given argument types and function name.
+  """
   def func_candidates(fname, req_args) when is_list(req_args) do
     func_candidates(fname, {req_args, :any})
   end

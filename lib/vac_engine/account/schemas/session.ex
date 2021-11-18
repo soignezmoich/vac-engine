@@ -1,7 +1,6 @@
 defmodule VacEngine.Account.Session do
-  @moduledoc """
-  A session is created every time a user log in.
-  """
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
 

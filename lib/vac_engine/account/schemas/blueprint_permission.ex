@@ -1,9 +1,6 @@
 defmodule VacEngine.Account.BlueprintPermission do
-  @moduledoc """
-  A blueprint permission links a blueprint with a role
-
-  `blueprint <-> role`
-  """
+  @moduledoc false
+  
   use Ecto.Schema
   import Ecto.Changeset
   alias Ecto.Changeset

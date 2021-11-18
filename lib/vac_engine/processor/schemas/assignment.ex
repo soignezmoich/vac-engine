@@ -1,7 +1,5 @@
 defmodule VacEngine.Processor.Assignment do
-  @moduledoc """
-  A blueprint assignment
-  """
+  @moduledoc false
   use Ecto.Schema
   import Ecto.Changeset
 

@@ -1,7 +1,6 @@
 defmodule VacEngine.Processor.Deduction do
-  @moduledoc """
-  A blueprint deduction
-  """
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
 

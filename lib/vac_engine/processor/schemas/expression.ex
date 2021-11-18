@@ -1,7 +1,6 @@
 defmodule VacEngine.Processor.Expression do
-  @moduledoc """
-  An expression
-  """
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
 

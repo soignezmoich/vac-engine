@@ -1,7 +1,6 @@
 defmodule VacEngine.Account.Workspace do
-  @moduledoc """
-  A workspace is the general container for blueprints and portals
-  """
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
 

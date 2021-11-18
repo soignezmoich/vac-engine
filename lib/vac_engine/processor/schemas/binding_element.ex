@@ -1,7 +1,6 @@
 defmodule VacEngine.Processor.BindingElement do
-  @moduledoc """
-  An expression binding element
-  """
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
 

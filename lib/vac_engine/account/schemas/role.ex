@@ -1,7 +1,6 @@
 defmodule VacEngine.Account.Role do
-  @moduledoc """
-  A role is the representation of a actor (user, api request...)
-  """
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
 

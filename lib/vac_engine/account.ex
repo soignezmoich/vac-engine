@@ -97,6 +97,44 @@ defmodule VacEngine.Account do
 
   Other scopes can be created using a custom atom.
 
+  ## Schemas
+
+  Below, the list of the schemas described in the Account module.
+
+  #### AccessToken
+  Access tokens can be:
+   - API key
+   - link token (not implemented yet)
+   - oauth refresh token (not implemented yet)
+   - oauth access token (not implemented yet)
+
+  Secret format vary depending of the type
+
+  #### BlueprintPermission
+  A blueprint permission gives a permission on a blueprint to a role.
+
+  #### GlobalPermission
+  A global permission gives a site wide permission to a role.
+
+  #### WorkspacePermission
+  A workspace permissions give a workspace wide permission to a role.
+
+  #### Role
+  A role is the representation of an actor (user, api request...) to which
+  permissions can be attached.
+
+  #### Session
+  A session is created every time a user log in and bears the user's
+  permissions.
+
+  If the permissions change, the session must be recreated for the change
+  to take effect.
+
+  #### User
+  A user is a login method for a role of type "user".
+
+  #### Workspace
+  The general container for blueprints and portals.
 
   ## Security design
 

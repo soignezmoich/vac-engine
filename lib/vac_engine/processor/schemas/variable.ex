@@ -1,7 +1,5 @@
 defmodule VacEngine.Processor.Variable do
-  @moduledoc """
-  A blueprint variable
-  """
+  @moduledoc false
   use Ecto.Schema
   import Ecto.Changeset
   import Ecto.Query
