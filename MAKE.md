@@ -8,7 +8,7 @@
 ## Development
 
 - `server`          run development server
-- `checks`          run static analyser
+- `check`           run static analyser
 - `format`          format code
 - `docs`            generate elixir and swagger documentation
 - `coverage`        check test code coverage

@@ -158,11 +158,11 @@ docs: deps assets-deps
 .PHONY: docs-server
 
 docs-server:
-	redoc-cli serve -w  docs/swagger.yaml
+	redoc-cli serve -w  api.yaml
 
-.PHONY: checks
+.PHONY: check
 
-checks:
+check:
 	-mix dialyzer
 	mix credo suggest -a
 

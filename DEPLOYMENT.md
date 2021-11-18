@@ -1,4 +1,4 @@
-# VacEngine Deployment
+# Deployment
 
 ## Compiling a release
 
@@ -9,8 +9,10 @@ Compile time env var must be set prior to build.
 
 The application is the compiled with:
 
-`make clean`
-`make release`
+```shell
+make clean
+make release
+```
 
 This will generate the application in:
 
@@ -39,10 +41,10 @@ Once the server has started, you can use the release tasks the following way:
 
 The following release tasks are available:
 
-- `migrate()` - Migrate the database to the last version
-- `rollback(version)` - Rollback the database to the provided version
+- `migrate()` - Migrate the database to the last version.
+- `rollback(version)` - Rollback the database to the provided version.
 - `create_admin()` - Create a default admin user, the credentials will be logged
-                     to STDOUT
+  to `STDOUT`.
 
 ## SSL
 

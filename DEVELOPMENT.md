@@ -1,4 +1,4 @@
-# VacEngine Development
+# Development
 
 To install the development server, please refer to the
 [INSTALLATION.md](./INSTALLATION.md) file.
@@ -82,3 +82,13 @@ make format
 Doing so, you ensure that your code follows the elixir standard and that the
 project remains consistent.
 
+
+## Code checking
+
+You can run:
+
+```
+make check
+```
+
+to ensure a good code quality.

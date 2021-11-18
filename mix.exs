@@ -1,6 +1,9 @@
 defmodule VacEngine.MixProject do
   use Mix.Project
 
+  @source_url "https://github.com/soignezmoich/vac-engine"
+  @version "1.0.2"
+
   @external_resource "#{__DIR__}/.coverignore"
   @ignore_modules File.stream!("#{__DIR__}/.coverignore")
                   |> Enum.map(fn s ->
@@ -10,7 +13,7 @@ defmodule VacEngine.MixProject do
   def project do
     [
       app: :vac_engine,
-      version: "1.0.1",
+      version: @version,
       elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
@@ -21,16 +24,9 @@ defmodule VacEngine.MixProject do
         ignore_modules: @ignore_modules
       ],
       name: "Vac Engine",
-      docs: [
-        main: "VacEngine",
-        extras: [
-          "README.md",
-          "INSTALLATION.md",
-          "DEPLOYMENT.md",
-          "DEVELOPMENT.md"
-        ],
-        output: "docs/"
-      ]
+      description: "A decision engine based on logic blueprints",
+      package: package(),
+      docs: docs()
     ]
   end
 
@@ -47,6 +43,141 @@ defmodule VacEngine.MixProject do
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "test/support", "test/fixtures"]
   defp elixirc_paths(_), do: ["lib"]
+
+  defp docs do
+    [
+      main: "readme",
+      source_url: @source_url,
+      output: "docs/",
+      extras: [
+        "README.md",
+        "INSTALLATION.md",
+        "DEPLOYMENT.md",
+        "DEVELOPMENT.md",
+      ],
+      extra_section: "GUIDES",
+      groups_for_extras: [
+        "Getting started": ~r/.*README.md/,
+        "How-To's": ~r/.*/
+      ],
+      groups_for_modules: [
+        "API entry points": [
+          VacEngine,
+          VacEngine.Account,
+          VacEngine.Processor,
+          VacEngine.Pub
+        ],
+        Processor: [
+          VacEngine.Processor.Ast,
+          VacEngine.Processor.Compiler,
+          VacEngine.Processor.Convert,
+          VacEngine.Processor.Info,
+          VacEngine.Processor.Library,
+          VacEngine.Processor.Library.Functions,
+          VacEngine.Processor.Meta,
+          VacEngine.Processor.State,
+          VacEngine.Processor.State.Env,
+          VacEngine.Processor.State.Input,
+          VacEngine.Processor.State.List
+        ],
+        Publication: [
+          VacEngine.Pub.Portal,
+          VacEngine.Pub.Publication
+        ],
+        Utilities: [
+          VacEngine.EctoHelpers,
+          VacEngine.EnumHelpers,
+          VacEngine.Hash,
+          VacEngine.Release,
+          VacEngine.PipeHelpers
+        ],
+        Web: [
+          VacEngineWeb,
+          VacEngineWeb.Api.ErrorView,
+          VacEngineWeb.Api.FallbackController,
+          VacEngineWeb.Api.PubController,
+          VacEngineWeb.Api.PubView,
+          VacEngineWeb.ApiKeyLive.Edit,
+          VacEngineWeb.ApiKeyLive.Index,
+          VacEngineWeb.ApiKeyLive.New,
+          VacEngineWeb.AuthController,
+          VacEngineWeb.AuthLive.Login,
+          VacEngineWeb.AuthLive.Login.LoginForm,
+          VacEngineWeb.AuthLive.LoginFormComponent,
+          VacEngineWeb.AuthView,
+          VacEngineWeb.ButtonComponent,
+          VacEngineWeb.ConnHelpers,
+          VacEngineWeb.Editor.BranchComponent,
+          VacEngineWeb.Editor.CellComponent,
+          VacEngineWeb.Editor.DeductionComponent,
+          VacEngineWeb.Editor.DeductionHeaderComponent,
+          VacEngineWeb.Editor.DeductionListComponent,
+          VacEngineWeb.Editor.DeductionSetEditorComponent,
+          VacEngineWeb.Editor.VariableComponent,
+          VacEngineWeb.Editor.VariableListComponent,
+          VacEngineWeb.Editor.VariableSetEditorComponent,
+          VacEngineWeb.Endpoint,
+          VacEngineWeb.ErrorHelpers,
+          VacEngineWeb.ErrorView,
+          VacEngineWeb.FallbackController,
+          VacEngineWeb.FlashComponent,
+          VacEngineWeb.FlexCenterComponent,
+          VacEngineWeb.FormHelpers,
+          VacEngineWeb.FormatHelpers,
+          VacEngineWeb.Gettext,
+          VacEngineWeb.HeaderComponent,
+          VacEngineWeb.IconComponent,
+          VacEngineWeb.KlassHelpers,
+          VacEngineWeb.LayoutView,
+          VacEngineWeb.LiveLocation,
+          VacEngineWeb.LiveRole,
+          VacEngineWeb.LiveWorkspace,
+          VacEngineWeb.LoaderCardComponent,
+          VacEngineWeb.NavLive.Index,
+          VacEngineWeb.PathHelpers,
+          VacEngineWeb.PermissionHelpers,
+          VacEngineWeb.Router,
+          VacEngineWeb.Router.Helpers,
+          VacEngineWeb.Telemetry,
+          VacEngineWeb.TextCardComponent,
+          VacEngineWeb.ToggleComponent,
+          VacEngineWeb.UserLive.Edit,
+          VacEngineWeb.UserLive.Index,
+          VacEngineWeb.UserLive.New,
+          VacEngineWeb.UserSocket,
+          VacEngineWeb.VersionHelpers,
+          VacEngineWeb.WelcomeController,
+          VacEngineWeb.WelcomeView,
+          VacEngineWeb.Workspace.BlueprintLive.Edit,
+          VacEngineWeb.Workspace.BlueprintLive.ImportComponent,
+          VacEngineWeb.Workspace.BlueprintLive.Index,
+          VacEngineWeb.Workspace.BlueprintLive.New,
+          VacEngineWeb.Workspace.BlueprintLive.Pick,
+          VacEngineWeb.Workspace.BlueprintLive.SummaryComponent,
+          VacEngineWeb.Workspace.DashboardLive.Index,
+          VacEngineWeb.Workspace.PortalLive.Edit,
+          VacEngineWeb.Workspace.PortalLive.Index,
+          VacEngineWeb.Workspace.PortalLive.New,
+          VacEngineWeb.WorkspaceLive.Edit,
+          VacEngineWeb.WorkspaceLive.Index,
+          VacEngineWeb.WorkspaceLive.New
+        ],
+        "Web Plugs": [
+          VacEngineWeb.ApiPlug,
+          VacEngineWeb.CachePlug,
+          VacEngineWeb.RolePlug,
+          VacEngineWeb.WorkspacePlug
+        ]
+      ]
+    ]
+  end
+
+  defp package do
+    [
+      licenses: ["AGPL v3"],
+      links: %{"GitHub" => @source_url}
+    ]
+  end
 
   # Specifies your project dependencies.
   #

@@ -1,4 +1,4 @@
-# VacEngine Installation
+# Installation
 
 ## Prerequisites
 
@@ -96,9 +96,9 @@ partly different for production and development.
 - `SSL_KEY_PATH` ³
 - `SSL_CERT_PATH` ³
 
- ¹ Optional, defaults to 10.
- ² Optional, defaults to "::0".
- ³ Optional, only necessary if the application is supposed to terminate SSL
+ 1. Optional, defaults to 10. 
+ 2. Optional, defaults to `::0` (all IPv6 and IPv4 interfaces). 
+ 3. Optional, only necessary if the application is supposed to terminate SSL
  connections.
 
 #### Development
@@ -107,8 +107,8 @@ partly different for production and development.
 - `DATABASE_TEST_URL` ¹
 - `NO_DEBUG_LOG` ²
 
-¹ Only necessary to run tests.
-² Optional, prevents debug log output.
+ 1. Only necessary to run tests. 
+ 2. Optional, prevents debug log output.
 
 
 

@@ -55,12 +55,12 @@ info:
 
     For example, if the API key is:
 
-    `api_ga9cyre_gafksz5c6h2zbf77t9w4wgfsz674b5t32ghparft83368zaga88f6xyk8sr8wazwe3p4ekk2taxksshbcgg5`
+    `api_1234567_123456789012345678901234567890`
 
 
     You need to pass the header as follow:
 
-    `Authorization: Bearer api_ga9cyre_gafksz5c6h2zbf77t9w4wgfsz674b5t32ghparft83368zaga88f6xyk8sr8wazwe3p4ekk2taxksshbcgg5`
+    `Authorization: Bearer api_1234567_123456789012345678901234567890`
 
 
 
@@ -100,7 +100,7 @@ paths:
                     The input format is defined in the blueprint definition.
 
                     It's root is an object containing an arbitrary number of
-                    fields of the following types: 
+                    fields of the following types:
 
                     - null values
                     - boolean values
@@ -121,7 +121,7 @@ paths:
                       type: string
                       description: |
                         The date at which the api call should be simulated.
-                    
+
 
       responses:
         '200':

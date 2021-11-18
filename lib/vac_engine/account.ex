@@ -34,7 +34,8 @@ defmodule VacEngine.Account do
 
   Curl example of api call with key:
 
-      curl https://example.com/api/p/8/run -X POST -H "Authorization: Bearer api_1234567_123456789012345678901234567890"
+      curl https://example.com/api/p/8/run -X POST \
+        -H "Authorization: Bearer api_1234567_123456789012345678901234567890"
 
 
   ## Permissions

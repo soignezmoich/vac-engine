@@ -1,4 +1,4 @@
-# VacEngine README
+# VacEngine
 
 The VacEngine application is an api-based deduction system initially developed
 by Soignez-Moi.ch under BAG mandate to determine vaccination opportunities based
@@ -12,10 +12,10 @@ common good. This publication was also made to allow an external contributor to
 review and make improvement suggestions. Indications about how to share such
 feedback can be found here:
 
-https://www.ncsc.admin.ch/ncsc/de/home/dokumentation/covid19-vac-check.html
-https://www.ncsc.admin.ch/ncsc/fr/home/dokumentation/covid19-vac-check.html
-https://www.ncsc.admin.ch/ncsc/it/home/dokumentation/covid19-vac-check.html
-https://www.ncsc.admin.ch/ncsc/en/home/dokumentation/covid19-vac-check.html
+- [NCSC Feedback Form in English](https://www.ncsc.admin.ch/ncsc/en/home/dokumentation/covid19-vac-check.html)
+- [NCSC Feedback Form in German](https://www.ncsc.admin.ch/ncsc/de/home/dokumentation/covid19-vac-check.html)
+- [NCSC Feedback Form in French](https://www.ncsc.admin.ch/ncsc/fr/home/dokumentation/covid19-vac-check.html)
+- [NCSC Feedback Form in Italian](https://www.ncsc.admin.ch/ncsc/it/home/dokumentation/covid19-vac-check.html)
 
 ## Documentation sources
 
@@ -25,19 +25,19 @@ list of these documents and where to find them.
 ### General documentation
 
 1. **API endpoints** documentation can be found
-   [here](https://vac-engine.github.com/api.html)
+   [here](./api.html)
 2. **Application manual** *available soon*
 
 ### Technical documentation
 
 1. **Installation** documentation can be found in the
-   [INSTALLATION.md](./INSTALLATION.md) file
+   [INSTALLATION](./INSTALLATION.md) file
 2. **Development** documentation can be found in the
-   [DEVELOPMENT.md](./DEVELOPMENT.md) file
+   [DEVELOPMENT](./DEVELOPMENT.md) file
 3. **Code** documentation can be found
-   [here](https://vac-engine.github.com/code.html)
+   [here](https://soignezmoich.github.io/vac-engine/)
 4. **Deployment** documentation can be found in the
-   [DEPLOYMENT.md](./DEPLOYMENT.md) file
+   [DEPLOYMENT](./DEPLOYMENT.md) file
 
 ## VacEngine functionalities
 
@@ -57,9 +57,9 @@ description is called a **blueprint**.
 The application can serve several different processors, each on it's own
 **portal**. A portal provides a pair of endpoint:
 
-1. The "info" endpoint returns the description of the input to provide to and
+1. The `info` endpoint returns the description of the input to provide to and
    the output to expect from the processor.
-2. The "run" portal that accepts the anonymised profile as input and returns the
+2. The `run` portal that accepts the anonymised profile as input and returns the
    vaccination opportunities.
 
 ### Web application
