@@ -316,7 +316,7 @@ defmodule VacEngine.Processor do
 
   def list_compiled_blueprint_modules() do
     :code.all_loaded()
-    |> Enum.filter(fn {mod, _} -> "#{mod}" =~ ~r{^[A-Z]} end)
+    |> Enum.filter(fn {mod, _} -> "#{mod}" =~ ~r{^Elixir} end)
     |> Enum.map(fn {mod, _} -> Module.split(mod) end)
     |> Enum.filter(fn
       ["VacEngine", "Processor", "BlueprintCode", _] ->
