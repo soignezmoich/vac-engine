@@ -46,7 +46,7 @@ deps:
 .PHONY: build
 
 build: export MIX_ENV=prod
-build: deps docs
+build: deps
 	mix compile  --warnings-as-errors
 
 .PHONY: migrate
