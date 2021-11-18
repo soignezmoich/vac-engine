@@ -5,12 +5,12 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.25.5">
-    <meta name="project" content="Vac Engine v1.0.1">
+    <meta name="project" content="Vac Engine v1.0.2">
 
-    <title>VacEngine README — Vac Engine v1.0.1</title>
+    <title>VacEngine — Vac Engine v1.0.2</title>
     <link rel="stylesheet" href="dist/elixir-d1506dba1db7cdc5483e.css" />
 
-    <script src="dist/sidebar_items-985ad71309.js"></script>
+    <script src="dist/sidebar_items-947443f9d8.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -54,18 +54,18 @@
 
   <div class="sidebar-header">
     <div class="sidebar-projectDetails">
-      <a href="VacEngine.html" class="sidebar-projectName">
+      <a href="readme.html" class="sidebar-projectName">
 Vac Engine
       </a>
       <strong class="sidebar-projectVersion">
-        v1.0.1
+        v1.0.2
       </strong>
     </div>
 
   </div>
 
   <ul class="sidebar-listNav">
-    <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+    <li><a id="extras-list-link" href="#full-list">GUIDES</a></li>
 
       <li><a id="modules-list-link" href="#full-list">Modules</a></li>
 
@@ -80,7 +80,12 @@ Vac Engine
     <div id="content" class="content-inner">
 
 <h1 id="content">
-VacEngine README
+VacEngine
+
+    <a href="https://github.com/soignezmoich/vac-engine/blob/master/README.md#L1" title="View Source" class="view-source" rel="help">
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
 
 </h1>
 
@@ -94,10 +99,7 @@ on a person's anonymised information.</p><h2 id="public-review" class="section-h
 see Software Licence section below) with the hope that it can contribute to the
 common good. This publication was also made to allow an external contributor to
 review and make improvement suggestions. Indications about how to share such
-feedback can be found here:</p><p><a href="https://www.ncsc.admin.ch/ncsc/de/home/dokumentation/covid19-vac-check.html">https://www.ncsc.admin.ch/ncsc/de/home/dokumentation/covid19-vac-check.html</a>
-<a href="https://www.ncsc.admin.ch/ncsc/fr/home/dokumentation/covid19-vac-check.html">https://www.ncsc.admin.ch/ncsc/fr/home/dokumentation/covid19-vac-check.html</a>
-<a href="https://www.ncsc.admin.ch/ncsc/it/home/dokumentation/covid19-vac-check.html">https://www.ncsc.admin.ch/ncsc/it/home/dokumentation/covid19-vac-check.html</a>
-<a href="https://www.ncsc.admin.ch/ncsc/en/home/dokumentation/covid19-vac-check.html">https://www.ncsc.admin.ch/ncsc/en/home/dokumentation/covid19-vac-check.html</a></p><h2 id="documentation-sources" class="section-heading">
+feedback can be found here:</p><ul><li><a href="https://www.ncsc.admin.ch/ncsc/en/home/dokumentation/covid19-vac-check.html">NCSC Feedback Form in English</a></li><li><a href="https://www.ncsc.admin.ch/ncsc/de/home/dokumentation/covid19-vac-check.html">NCSC Feedback Form in German</a></li><li><a href="https://www.ncsc.admin.ch/ncsc/fr/home/dokumentation/covid19-vac-check.html">NCSC Feedback Form in French</a></li><li><a href="https://www.ncsc.admin.ch/ncsc/it/home/dokumentation/covid19-vac-check.html">NCSC Feedback Form in Italian</a></li></ul><h2 id="documentation-sources" class="section-heading">
   <a href="#documentation-sources" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Documentation sources
 </h2>
@@ -107,15 +109,15 @@ list of these documents and where to find them.</p><h3 id="general-documentation
   General documentation
 </h3>
 <ol><li><strong>API endpoints</strong> documentation can be found
-<a href="https://vac-engine.github.com/api.html">here</a></li><li><strong>Application manual</strong> <em>available soon</em></li></ol><h3 id="technical-documentation" class="section-heading">
+<a href="./api.html">here</a></li><li><strong>Application manual</strong> <em>available soon</em></li></ol><h3 id="technical-documentation" class="section-heading">
   <a href="#technical-documentation" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Technical documentation
 </h3>
 <ol><li><strong>Installation</strong> documentation can be found in the
-<a href="installation.html">INSTALLATION.md</a> file</li><li><strong>Development</strong> documentation can be found in the
-<a href="development.html">DEVELOPMENT.md</a> file</li><li><strong>Code</strong> documentation can be found
-<a href="https://vac-engine.github.com/code.html">here</a></li><li><strong>Deployment</strong> documentation can be found in the
-<a href="deployment.html">DEPLOYMENT.md</a> file</li></ol><h2 id="vacengine-functionalities" class="section-heading">
+<a href="installation.html">INSTALLATION</a> file</li><li><strong>Development</strong> documentation can be found in the
+<a href="development.html">DEVELOPMENT</a> file</li><li><strong>Code</strong> documentation can be found
+<a href="https://soignezmoich.github.io/vac-engine/">here</a></li><li><strong>Deployment</strong> documentation can be found in the
+<a href="deployment.html">DEPLOYMENT</a> file</li></ol><h2 id="vacengine-functionalities" class="section-heading">
   <a href="#vacengine-functionalities" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   VacEngine functionalities
 </h2>
@@ -133,8 +135,8 @@ description is called a <strong>blueprint</strong>.</p><h3 id="api" class="secti
   API
 </h3>
 <p>The application can serve several different processors, each on it's own
-<strong>portal</strong>. A portal provides a pair of endpoint:</p><ol><li>The &quot;info&quot; endpoint returns the description of the input to provide to and
-the output to expect from the processor.</li><li>The &quot;run&quot; portal that accepts the anonymised profile as input and returns the
+<strong>portal</strong>. A portal provides a pair of endpoint:</p><ol><li>The <code class="inline">info</code> endpoint returns the description of the input to provide to and
+the output to expect from the processor.</li><li>The <code class="inline">run</code> portal that accepts the anonymised profile as input and returns the
 vaccination opportunities.</li></ol><h3 id="web-application" class="section-heading">
   <a href="#web-application" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Web application
@@ -176,7 +178,7 @@ API Reference
           Next Page →
         </span>
         <span class="title">
-VacEngine Installation
+Installation
         </span>
       </a>
 
@@ -184,6 +186,15 @@ VacEngine Installation
 </div>
 
       <footer class="footer">
+
+        <p>
+          Find it on Hex:
+          <a href="https://hex.pm/packages/vac_engine/1.0.2" class="line footer-hex-package">Package</a>
+          <a href="https://preview.hex.pm/preview/vac_engine/1.0.2" class="line">Preview</a>
+
+            <a href="https://preview.hex.pm/preview/vac_engine/1.0.2/show/README.md">(current file)</a>
+
+        </p>
 
         <p>
           <span class="line">

@@ -5,12 +5,12 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.25.5">
-    <meta name="project" content="Vac Engine v1.0.1">
+    <meta name="project" content="Vac Engine v1.0.2">
 
-    <title>VacEngine Deployment — Vac Engine v1.0.1</title>
+    <title>Deployment — Vac Engine v1.0.2</title>
     <link rel="stylesheet" href="dist/elixir-d1506dba1db7cdc5483e.css" />
 
-    <script src="dist/sidebar_items-985ad71309.js"></script>
+    <script src="dist/sidebar_items-947443f9d8.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -54,18 +54,18 @@
 
   <div class="sidebar-header">
     <div class="sidebar-projectDetails">
-      <a href="VacEngine.html" class="sidebar-projectName">
+      <a href="readme.html" class="sidebar-projectName">
 Vac Engine
       </a>
       <strong class="sidebar-projectVersion">
-        v1.0.1
+        v1.0.2
       </strong>
     </div>
 
   </div>
 
   <ul class="sidebar-listNav">
-    <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+    <li><a id="extras-list-link" href="#full-list">GUIDES</a></li>
 
       <li><a id="modules-list-link" href="#full-list">Modules</a></li>
 
@@ -80,7 +80,12 @@ Vac Engine
     <div id="content" class="content-inner">
 
 <h1 id="content">
-VacEngine Deployment
+Deployment
+
+    <a href="https://github.com/soignezmoich/vac-engine/blob/master/DEPLOYMENT.md#L1" title="View Source" class="view-source" rel="help">
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
 
 </h1>
 
@@ -89,8 +94,9 @@ VacEngine Deployment
   Compiling a release
 </h2>
 <p>NOTE: If you build in your development machine, be sure to stop <code class="inline">make server</code>
-prior to build.</p><p>Compile time env var must be set prior to build.</p><p>The application is the compiled with:</p><p><code class="inline">make clean</code>
-<code class="inline">make release</code></p><p>This will generate the application in:</p><p><code class="inline">_build/prod/rel/vac_engine</code></p><p>When the release is built, the
+prior to build.</p><p>Compile time env var must be set prior to build.</p><p>The application is the compiled with:</p><pre><code class="makeup shell"><span class="">make clean
+</span><span class="">make release
+</span></code></pre><p>This will generate the application in:</p><p><code class="inline">_build/prod/rel/vac_engine</code></p><p>When the release is built, the
 <code class="inline">_build/prod/rel/vac_engine</code>
 folder is self contained.</p><h2 id="deployment" class="section-heading">
   <a href="#deployment" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
@@ -103,7 +109,8 @@ after the build) to your target machine.</li><li>Start the app from the applicat
   Release tasks
 </h2>
 <p>Once the server has started, you can use the release tasks the following way:</p><pre><code class="makeup console"><span class="">./bin/vac_engine eval &#39;VacEngine.Release.&lt;task_name&gt;&#39;
-</span></code></pre><p>The following release tasks are available:</p><ul><li><code class="inline">migrate()</code> - Migrate the database to the last version</li><li><code class="inline">rollback(version)</code> - Rollback the database to the provided version</li><li><code class="inline">create_admin()</code> - Create a default admin user, the credentials will be logged<pre><code class="makeup elixir"><span class="w">               </span><span class="n">to</span><span class="w"> </span><span class="nc">STDOUT</span></code></pre></li></ul><h2 id="ssl" class="section-heading">
+</span></code></pre><p>The following release tasks are available:</p><ul><li><code class="inline">migrate()</code> - Migrate the database to the last version.</li><li><code class="inline">rollback(version)</code> - Rollback the database to the provided version.</li><li><code class="inline">create_admin()</code> - Create a default admin user, the credentials will be logged
+to <code class="inline">STDOUT</code>.</li></ul><h2 id="ssl" class="section-heading">
   <a href="#ssl" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   SSL
 </h2>
@@ -113,14 +120,14 @@ will terminate SSL itself, <code class="inline">PORT</code> must be 443.</li></u
   <a href="#reverse-proxy" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Reverse proxy
 </h3>
-<p>If you use a reverse proxy, you must pass the following headers:</p><ul><li><code class="inline">X-Real-IP</code></li><li><code class="inline">X-Forwarded-For</code></li><li><code class="inline">X-Forwarded-Proto</code></li></ul><p>Example Nginx configuration:</p><pre><code class="makeup elixir"><span class="n">server</span><span class="w"> </span><span class="p" data-group-id="5643864366-1">{</span><span class="w">
+<p>If you use a reverse proxy, you must pass the following headers:</p><ul><li><code class="inline">X-Real-IP</code></li><li><code class="inline">X-Forwarded-For</code></li><li><code class="inline">X-Forwarded-Proto</code></li></ul><p>Example Nginx configuration:</p><pre><code class="makeup elixir"><span class="n">server</span><span class="w"> </span><span class="p" data-group-id="4824641931-1">{</span><span class="w">
         </span><span class="n">listen</span><span class="w"> </span><span class="mi">443</span><span class="w"> </span><span class="n">ssl</span><span class="w"> </span><span class="n">http2</span><span class="p">;</span><span class="w">
-        </span><span class="n">listen</span><span class="w"> </span><span class="p" data-group-id="5643864366-2">[</span><span class="o">::</span><span class="p" data-group-id="5643864366-2">]</span><span class="p">:</span><span class="mi">443</span><span class="w"> </span><span class="n">ssl</span><span class="w"> </span><span class="n">http2</span><span class="p">;</span><span class="w">
+        </span><span class="n">listen</span><span class="w"> </span><span class="p" data-group-id="4824641931-2">[</span><span class="o">::</span><span class="p" data-group-id="4824641931-2">]</span><span class="p">:</span><span class="mi">443</span><span class="w"> </span><span class="n">ssl</span><span class="w"> </span><span class="n">http2</span><span class="p">;</span><span class="w">
         </span><span class="n">include</span><span class="w"> </span><span class="n">ssl</span><span class="o">.</span><span class="n">conf</span><span class="p">;</span><span class="w">
         </span><span class="n">include</span><span class="w"> </span><span class="n">errors</span><span class="o">.</span><span class="n">conf</span><span class="p">;</span><span class="w">
         </span><span class="n">server_name</span><span class="w"> </span><span class="n">vac</span><span class="o">-</span><span class="n">engine</span><span class="o">.</span><span class="n">goyman</span><span class="o">.</span><span class="n">com</span><span class="p">;</span><span class="w">
 
-        </span><span class="n">location</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p" data-group-id="5643864366-3">{</span><span class="w">
+        </span><span class="n">location</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p" data-group-id="4824641931-3">{</span><span class="w">
                 </span><span class="n">proxy_set_header</span><span class="w"> </span><span class="nc">Host</span><span class="w"> </span><span class="err">$</span><span class="n">host</span><span class="p">;</span><span class="w">
                 </span><span class="n">proxy_set_header</span><span class="w"> </span><span class="nc">X</span><span class="o">-</span><span class="nc">Real</span><span class="o">-</span><span class="nc">IP</span><span class="w"> </span><span class="err">$</span><span class="n">remote_addr</span><span class="p">;</span><span class="w">
                 </span><span class="n">proxy_set_header</span><span class="w"> </span><span class="nc">X</span><span class="o">-</span><span class="nc">Forwarded</span><span class="o">-</span><span class="nc">For</span><span class="w"> </span><span class="err">$</span><span class="n">proxy_add_x_forwarded_for</span><span class="p">;</span><span class="w">
@@ -130,8 +137,8 @@ will terminate SSL itself, <code class="inline">PORT</code> must be 443.</li></u
                 </span><span class="n">proxy_set_header</span><span class="w"> </span><span class="nc">Connection</span><span class="w"> </span><span class="err">$</span><span class="n">http_connection</span><span class="p">;</span><span class="w">
                 </span><span class="n">proxy_read_timeout</span><span class="w"> </span><span class="mi">86400</span><span class="p">;</span><span class="w">
                 </span><span class="n">proxy_pass</span><span class="w"> </span><span class="n">http</span><span class="ss">://</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">:</span><span class="mi">3003</span><span class="p">;</span><span class="w">
-        </span><span class="p" data-group-id="5643864366-3">}</span><span class="w">
-</span><span class="p" data-group-id="5643864366-1">}</span></code></pre>
+        </span><span class="p" data-group-id="4824641931-3">}</span><span class="w">
+</span><span class="p" data-group-id="4824641931-1">}</span></code></pre>
 <div class="bottom-actions">
   <div class="bottom-actions-item">
 
@@ -140,7 +147,7 @@ will terminate SSL itself, <code class="inline">PORT</code> must be 443.</li></u
           ← Previous Page
         </span>
         <span class="title">
-VacEngine Installation
+Installation
         </span>
       </a>
 
@@ -152,7 +159,7 @@ VacEngine Installation
           Next Page →
         </span>
         <span class="title">
-VacEngine Development
+Development
         </span>
       </a>
 
@@ -160,6 +167,15 @@ VacEngine Development
 </div>
 
       <footer class="footer">
+
+        <p>
+          Find it on Hex:
+          <a href="https://hex.pm/packages/vac_engine/1.0.2" class="line footer-hex-package">Package</a>
+          <a href="https://preview.hex.pm/preview/vac_engine/1.0.2" class="line">Preview</a>
+
+            <a href="https://preview.hex.pm/preview/vac_engine/1.0.2/show/DEPLOYMENT.md">(current file)</a>
+
+        </p>
 
         <p>
           <span class="line">

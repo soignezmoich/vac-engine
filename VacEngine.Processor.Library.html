@@ -5,12 +5,12 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.25.5">
-    <meta name="project" content="Vac Engine v1.0.1">
+    <meta name="project" content="Vac Engine v1.0.2">
 
-    <title>VacEngine.Processor.Library — Vac Engine v1.0.1</title>
+    <title>VacEngine.Processor.Library — Vac Engine v1.0.2</title>
     <link rel="stylesheet" href="dist/elixir-d1506dba1db7cdc5483e.css" />
 
-    <script src="dist/sidebar_items-985ad71309.js"></script>
+    <script src="dist/sidebar_items-947443f9d8.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -54,18 +54,18 @@
 
   <div class="sidebar-header">
     <div class="sidebar-projectDetails">
-      <a href="VacEngine.html" class="sidebar-projectName">
+      <a href="readme.html" class="sidebar-projectName">
 Vac Engine
       </a>
       <strong class="sidebar-projectVersion">
-        v1.0.1
+        v1.0.2
       </strong>
     </div>
 
   </div>
 
   <ul class="sidebar-listNav">
-    <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+    <li><a id="extras-list-link" href="#full-list">GUIDES</a></li>
 
       <li><a id="modules-list-link" href="#full-list">Modules</a></li>
 
@@ -80,13 +80,18 @@ Vac Engine
     <div id="content" class="content-inner">
 
       <h1>
-VacEngine.Processor.Library <small class="app-vsn">(Vac Engine v1.0.1)</small>
+VacEngine.Processor.Library <small class="app-vsn">(Vac Engine v1.0.2)</small>
+
+          <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library.ex#L1" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
+          </a>
 
       </h1>
 
 
         <section id="moduledoc">
-<p>Library queries</p>
+<p>Blueprint functions library queries</p>
         </section>
 
 
@@ -109,7 +114,8 @@ VacEngine.Processor.Library <small class="app-vsn">(Vac Engine v1.0.1)</small>
 
   </div>
 
-    <div class="summary-synopsis"><p>Look for candidataes</p></div>
+    <div class="summary-synopsis"><p>Look for candidates, i.e. functions whose signature match the given argument
+types.</p></div>
 
 </div>
 <div class="summary-row">
@@ -117,6 +123,9 @@ VacEngine.Processor.Library <small class="app-vsn">(Vac Engine v1.0.1)</small>
     <a href="#func_candidates/2">func_candidates(fname, req_args)</a>
 
   </div>
+
+    <div class="summary-synopsis"><p>Look for candidates with given name, i.e. functions whose signature match
+the given argument types and function name.</p></div>
 
 </div>
 <div class="summary-row">
@@ -168,12 +177,18 @@ Functions
     </a>
     <h1 class="signature">candidates(args)</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library.ex#L44" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
   <section class="docstring">
 
-<p>Look for candidataes</p>
+<p>Look for candidates, i.e. functions whose signature match the given argument
+types.</p>
   </section>
 </section>
 <section class="detail" id="func_candidates/2">
@@ -185,12 +200,18 @@ Functions
     </a>
     <h1 class="signature">func_candidates(fname, req_args)</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library.ex#L61" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
   <section class="docstring">
 
-
+<p>Look for candidates with given name, i.e. functions whose signature match
+the given argument types and function name.</p>
   </section>
 </section>
 <section class="detail" id="functions/0">
@@ -201,6 +222,11 @@ Functions
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">functions()</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library.ex#L5" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
 
 
   </div>
@@ -219,6 +245,11 @@ Functions
     </a>
     <h1 class="signature">get_signature(fname, arg_types)</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library.ex#L20" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -236,6 +267,11 @@ Functions
     </a>
     <h1 class="signature">has_function?(fname, arity)</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library.ex#L10" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -249,6 +285,15 @@ Functions
         </section>
 
       <footer class="footer">
+
+        <p>
+          Find it on Hex:
+          <a href="https://hex.pm/packages/vac_engine/1.0.2" class="line footer-hex-package">Package</a>
+          <a href="https://preview.hex.pm/preview/vac_engine/1.0.2" class="line">Preview</a>
+
+            <a href="https://preview.hex.pm/preview/vac_engine/1.0.2/show/lib/vac_engine/processor/library.ex">(current file)</a>
+
+        </p>
 
         <p>
           <span class="line">

@@ -5,12 +5,12 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.25.5">
-    <meta name="project" content="Vac Engine v1.0.1">
+    <meta name="project" content="Vac Engine v1.0.2">
 
-    <title>VacEngine.Pub — Vac Engine v1.0.1</title>
+    <title>VacEngine.Pub — Vac Engine v1.0.2</title>
     <link rel="stylesheet" href="dist/elixir-d1506dba1db7cdc5483e.css" />
 
-    <script src="dist/sidebar_items-985ad71309.js"></script>
+    <script src="dist/sidebar_items-947443f9d8.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -54,18 +54,18 @@
 
   <div class="sidebar-header">
     <div class="sidebar-projectDetails">
-      <a href="VacEngine.html" class="sidebar-projectName">
+      <a href="readme.html" class="sidebar-projectName">
 Vac Engine
       </a>
       <strong class="sidebar-projectVersion">
-        v1.0.1
+        v1.0.2
       </strong>
     </div>
 
   </div>
 
   <ul class="sidebar-listNav">
-    <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+    <li><a id="extras-list-link" href="#full-list">GUIDES</a></li>
 
       <li><a id="modules-list-link" href="#full-list">Modules</a></li>
 
@@ -80,7 +80,12 @@ Vac Engine
     <div id="content" class="content-inner">
 
       <h1>
-VacEngine.Pub <small class="app-vsn">(Vac Engine v1.0.1)</small>
+VacEngine.Pub <small class="app-vsn">(Vac Engine v1.0.2)</small>
+
+          <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/pub.ex#L1" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
+          </a>
 
       </h1>
 
@@ -95,10 +100,10 @@ accessible through the API.</p><h2 id="module-portals" class="section-heading">
 is responsible to give access to a single processor through the API.
 Therefore, a protal has a reference exactly one blueprint in
 the api. The reference is called a &quot;publication&quot;.</p><p>Interface to consume a portal is made of a pair of calls:</p><ul><li>the<a href="#run_cached/1"><code class="inline">run_cached/1</code></a> function and</li><li>the <a href="#info_cached/1"><code class="inline">info_cached/1</code></a>function</li></ul><h4>Run function</h4><p>Runs the linked processor on the given input, using the provided api_key
-to authenticate:</p><pre><code class="makeup elixir"><span class="p" data-group-id="5571208525-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5571208525-2">%{</span><span class="ss">input</span><span class="p">:</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="ss">output</span><span class="p">:</span><span class="w"> </span><span class="n">output</span><span class="p" data-group-id="5571208525-2">}</span><span class="p" data-group-id="5571208525-1">}</span><span class="w"> </span><span class="o">=</span><span class="w">
-  </span><span class="nc">Pub</span><span class="o">.</span><span class="n">run_cached</span><span class="p" data-group-id="5571208525-3">(</span><span class="p" data-group-id="5571208525-4">%{</span><span class="ss">api_key</span><span class="p">:</span><span class="w"> </span><span class="n">api_key</span><span class="p">,</span><span class="w"> </span><span class="ss">portal_id</span><span class="p">:</span><span class="w"> </span><span class="n">portal_id</span><span class="p">,</span><span class="w"> </span><span class="ss">input</span><span class="p">:</span><span class="w"> </span><span class="n">input</span><span class="p" data-group-id="5571208525-4">}</span><span class="p" data-group-id="5571208525-3">)</span></code></pre><p>Note that the in-memory compiled processor is used as indicated by the
-<em>cached</em> suffix.</p><h4>Info function</h4><p>Gets the description of the processor linked to the portal</p><pre><code class="makeup elixir"><span class="p" data-group-id="3656442319-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="3656442319-2">%{</span><span class="ss">input</span><span class="p">:</span><span class="w"> </span><span class="n">input_schema</span><span class="p">,</span><span class="w"> </span><span class="ss">output</span><span class="p">:</span><span class="w"> </span><span class="n">output_schema</span><span class="p">,</span><span class="w"> </span><span class="ss">logic</span><span class="p">:</span><span class="w"> </span><span class="n">logic</span><span class="p" data-group-id="3656442319-2">}</span><span class="p" data-group-id="3656442319-1">}</span><span class="w"> </span><span class="o">=</span><span class="w">
-  </span><span class="nc">Pub</span><span class="o">.</span><span class="n">info_cached</span><span class="p" data-group-id="3656442319-3">(</span><span class="p" data-group-id="3656442319-4">%{</span><span class="ss">api_key</span><span class="p">:</span><span class="w"> </span><span class="n">api_key</span><span class="p">,</span><span class="w"> </span><span class="ss">portal_id</span><span class="p">:</span><span class="w"> </span><span class="n">portal_id</span><span class="p" data-group-id="3656442319-4">}</span><span class="p" data-group-id="3656442319-3">)</span></code></pre><p>Again, the in-memory compiled processor is used.</p><blockquote><p><em>Note: The decription of the corresponding API endpoints is available
+to authenticate:</p><pre><code class="makeup elixir"><span class="p" data-group-id="6793361102-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6793361102-2">%{</span><span class="ss">input</span><span class="p">:</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="ss">output</span><span class="p">:</span><span class="w"> </span><span class="n">output</span><span class="p" data-group-id="6793361102-2">}</span><span class="p" data-group-id="6793361102-1">}</span><span class="w"> </span><span class="o">=</span><span class="w">
+  </span><span class="nc">Pub</span><span class="o">.</span><span class="n">run_cached</span><span class="p" data-group-id="6793361102-3">(</span><span class="p" data-group-id="6793361102-4">%{</span><span class="ss">api_key</span><span class="p">:</span><span class="w"> </span><span class="n">api_key</span><span class="p">,</span><span class="w"> </span><span class="ss">portal_id</span><span class="p">:</span><span class="w"> </span><span class="n">portal_id</span><span class="p">,</span><span class="w"> </span><span class="ss">input</span><span class="p">:</span><span class="w"> </span><span class="n">input</span><span class="p" data-group-id="6793361102-4">}</span><span class="p" data-group-id="6793361102-3">)</span></code></pre><p>Note that the in-memory compiled processor is used as indicated by the
+<em>cached</em> suffix.</p><h4>Info function</h4><p>Gets the description of the processor linked to the portal</p><pre><code class="makeup elixir"><span class="p" data-group-id="1546062534-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1546062534-2">%{</span><span class="ss">input</span><span class="p">:</span><span class="w"> </span><span class="n">input_schema</span><span class="p">,</span><span class="w"> </span><span class="ss">output</span><span class="p">:</span><span class="w"> </span><span class="n">output_schema</span><span class="p">,</span><span class="w"> </span><span class="ss">logic</span><span class="p">:</span><span class="w"> </span><span class="n">logic</span><span class="p" data-group-id="1546062534-2">}</span><span class="p" data-group-id="1546062534-1">}</span><span class="w"> </span><span class="o">=</span><span class="w">
+  </span><span class="nc">Pub</span><span class="o">.</span><span class="n">info_cached</span><span class="p" data-group-id="1546062534-3">(</span><span class="p" data-group-id="1546062534-4">%{</span><span class="ss">api_key</span><span class="p">:</span><span class="w"> </span><span class="n">api_key</span><span class="p">,</span><span class="w"> </span><span class="ss">portal_id</span><span class="p">:</span><span class="w"> </span><span class="n">portal_id</span><span class="p" data-group-id="1546062534-4">}</span><span class="p" data-group-id="1546062534-3">)</span></code></pre><p>Again, the in-memory compiled processor is used.</p><blockquote><p><em>Note: The decription of the corresponding API endpoints is available
 in the swagger documentation at <code class="inline">/priv/static/docs/api.html</code>.</em></p></blockquote><h2 id="module-publications" class="section-heading">
   <a href="#module-publications" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Publications
@@ -107,7 +112,7 @@ in the swagger documentation at <code class="inline">/priv/static/docs/api.html<
 published several times, but a portal can have only one active publication
 at a time.</p><h4>Create a publication</h4><p>Since a portal must give access to exactly processor, publication
 is always made with a blueprint as parameter in the <a href="#publish_blueprint/2"><code class="inline">publish_blueprint/2</code></a>
-function. This function returns the corresponding publication:</p><pre><code class="makeup elixir"><span class="p" data-group-id="3765403682-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">publication</span><span class="p" data-group-id="3765403682-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Pub</span><span class="o">.</span><span class="n">publish_blueprint</span><span class="p" data-group-id="3765403682-2">(</span><span class="p" data-group-id="3765403682-2">)</span></code></pre><h4>Publication deactivation</h4><p>Publication can be deactivated using the <a href="#deactivate_publication/1"><code class="inline">deactivate_publication/1</code></a>. This
+function. This function returns the corresponding publication:</p><pre><code class="makeup elixir"><span class="p" data-group-id="6054850600-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">publication</span><span class="p" data-group-id="6054850600-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Pub</span><span class="o">.</span><span class="n">publish_blueprint</span><span class="p" data-group-id="6054850600-2">(</span><span class="p" data-group-id="6054850600-2">)</span></code></pre><h4>Publication deactivation</h4><p>Publication can be deactivated using the <a href="#deactivate_publication/1"><code class="inline">deactivate_publication/1</code></a>. This
 is necessary if you want to publish a new form to a given portal.</p><h4>Cache management</h4><p>As stated above, blueprints are stored in cache. API keys are also stored in
 cache. It is the responsibility of the consumer to refresh the cache when
 corresponding data should be updated (e.g. when new blueprint is associated
@@ -299,6 +304,11 @@ Functions
     </a>
     <h1 class="signature">bust_api_keys_cache()</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/pub.ex#L335" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -316,6 +326,11 @@ Functions
     </a>
     <h1 class="signature">bust_blueprint_cache(blueprint)</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/pub.ex#L316" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -332,6 +347,11 @@ Functions
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">bust_cache()</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/pub.ex#L330" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
 
 
   </div>
@@ -352,6 +372,11 @@ Functions
     </a>
     <h1 class="signature">change_portal(data, attrs \\ %{})</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/pub.ex#L222" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -371,6 +396,11 @@ Functions
     </a>
     <h1 class="signature">create_portal(workspace, attrs \\ %{})</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/pub.ex#L238" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -387,6 +417,11 @@ Functions
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">deactivate_publication(pub)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/pub.ex#L260" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
 
 
   </div>
@@ -405,6 +440,11 @@ Functions
     </a>
     <h1 class="signature">delete_portal(portal)</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/pub.ex#L247" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -422,6 +462,11 @@ Functions
     </a>
     <h1 class="signature">filter_active_portals(query)</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/pub.ex#L99" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -438,6 +483,11 @@ Functions
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">filter_portals_by_workspace(query, workspace)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/pub.ex#L127" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
 
 
   </div>
@@ -458,6 +508,11 @@ Functions
     </a>
     <h1 class="signature">get_portal!(id, queries \\ &amp;(&amp;1))</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/pub.ex#L93" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -474,6 +529,11 @@ Functions
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">info_cached(args)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/pub.ex#L296" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
 
 
   </div>
@@ -494,6 +554,11 @@ Functions
     </a>
     <h1 class="signature">list_portals(queries \\ &amp;(&amp;1))</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/pub.ex#L84" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -510,6 +575,11 @@ Functions
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">load_portal_active_publication(query)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/pub.ex#L106" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
 
 
   </div>
@@ -528,6 +598,11 @@ Functions
     </a>
     <h1 class="signature">load_portal_publications(query)</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/pub.ex#L117" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -545,6 +620,11 @@ Functions
     </a>
     <h1 class="signature">publish_blueprint(br, portal)</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/pub.ex#L142" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -561,6 +641,11 @@ Functions
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">run_cached(args)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/pub.ex#L278" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
 
 
   </div>
@@ -581,6 +666,11 @@ Functions
     </a>
     <h1 class="signature">update_portal(data, attrs \\ %{})</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/pub.ex#L229" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -594,6 +684,15 @@ Functions
         </section>
 
       <footer class="footer">
+
+        <p>
+          Find it on Hex:
+          <a href="https://hex.pm/packages/vac_engine/1.0.2" class="line footer-hex-package">Package</a>
+          <a href="https://preview.hex.pm/preview/vac_engine/1.0.2" class="line">Preview</a>
+
+            <a href="https://preview.hex.pm/preview/vac_engine/1.0.2/show/lib/vac_engine/pub.ex">(current file)</a>
+
+        </p>
 
         <p>
           <span class="line">

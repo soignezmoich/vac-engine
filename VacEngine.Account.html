@@ -5,12 +5,12 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.25.5">
-    <meta name="project" content="Vac Engine v1.0.1">
+    <meta name="project" content="Vac Engine v1.0.2">
 
-    <title>VacEngine.Account — Vac Engine v1.0.1</title>
+    <title>VacEngine.Account — Vac Engine v1.0.2</title>
     <link rel="stylesheet" href="dist/elixir-d1506dba1db7cdc5483e.css" />
 
-    <script src="dist/sidebar_items-985ad71309.js"></script>
+    <script src="dist/sidebar_items-947443f9d8.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -54,18 +54,18 @@
 
   <div class="sidebar-header">
     <div class="sidebar-projectDetails">
-      <a href="VacEngine.html" class="sidebar-projectName">
+      <a href="readme.html" class="sidebar-projectName">
 Vac Engine
       </a>
       <strong class="sidebar-projectVersion">
-        v1.0.1
+        v1.0.2
       </strong>
     </div>
 
   </div>
 
   <ul class="sidebar-listNav">
-    <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+    <li><a id="extras-list-link" href="#full-list">GUIDES</a></li>
 
       <li><a id="modules-list-link" href="#full-list">Modules</a></li>
 
@@ -80,7 +80,12 @@ Vac Engine
     <div id="content" class="content-inner">
 
       <h1>
-VacEngine.Account <small class="app-vsn">(Vac Engine v1.0.1)</small>
+VacEngine.Account <small class="app-vsn">(Vac Engine v1.0.2)</small>
+
+          <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L1" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
+          </a>
 
       </h1>
 
@@ -104,7 +109,7 @@ with:</p><ul><li>an email login</li><li>a password</li><li>a one-time password p
 <p>Api-keys accesses are used by api consumers to call the application api.</p><p>A api-key can access the application by using a token that contain a password
 and a reference to the role. If an existing token is provided with an api
 request in the authentication header, the request is automatically associated
-with the related role and permissions are granted accordingly.</p><p>Curl example of api call with key:</p><pre><code class="makeup elixir"><span class="n">curl</span><span class="w"> </span><span class="n">https</span><span class="ss">://</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">p</span><span class="o">/</span><span class="mi">8</span><span class="o">/</span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="nc">X</span><span class="w"> </span><span class="nc">POST</span><span class="w"> </span><span class="o">-</span><span class="nc">H</span><span class="w"> </span><span class="s">&quot;Authorization: Bearer api_1234567_123456789012345678901234567890&quot;</span></code></pre><h2 id="module-permissions" class="section-heading">
+with the related role and permissions are granted accordingly.</p><p>Curl example of api call with key:</p><pre><code class="makeup elixir"><span class="n">curl</span><span class="w"> </span><span class="n">https</span><span class="ss">://</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">p</span><span class="o">/</span><span class="mi">8</span><span class="o">/</span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="nc">X</span><span class="w"> </span><span class="nc">POST</span><span class="w">       </span><span class="o">-</span><span class="nc">H</span><span class="w"> </span><span class="s">&quot;Authorization: Bearer api_1234567_123456789012345678901234567890&quot;</span></code></pre><h2 id="module-permissions" class="section-heading">
   <a href="#module-permissions" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Permissions
 </h2>
@@ -114,14 +119,14 @@ with the related role and permissions are granted accordingly.</p><p>Curl exampl
 </h3>
 <p>Permissions are rights to do certain actions in the system. A permission is
 granted to a role to perform a given in a given scope, by using the
-<a href="#grant_permission/3"><code class="inline">grant_permission/3</code></a> (or <a href="#toggle_permission/3"><code class="inline">toggle_permission/3</code></a>) function:</p><pre><code class="makeup elixir"><span class="nc">VacEngine.Account</span><span class="o">.</span><span class="n">grant_permission</span><span class="p" data-group-id="4418254328-1">(</span><span class="n">target_role</span><span class="p">,</span><span class="w"> </span><span class="ss">:list_blueprints_action</span><span class="p">,</span><span class="w"> </span><span class="ss">:global</span><span class="p" data-group-id="4418254328-1">)</span></code></pre><h3 id="module-checking-permission" class="section-heading">
+<a href="#grant_permission/3"><code class="inline">grant_permission/3</code></a> (or <a href="#toggle_permission/3"><code class="inline">toggle_permission/3</code></a>) function:</p><pre><code class="makeup elixir"><span class="nc">VacEngine.Account</span><span class="o">.</span><span class="n">grant_permission</span><span class="p" data-group-id="6993575304-1">(</span><span class="n">target_role</span><span class="p">,</span><span class="w"> </span><span class="ss">:list_blueprints_action</span><span class="p">,</span><span class="w"> </span><span class="ss">:global</span><span class="p" data-group-id="6993575304-1">)</span></code></pre><h3 id="module-checking-permission" class="section-heading">
   <a href="#module-checking-permission" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Checking permission
 </h3>
 <p>When a piece of code should only be accessed by roles with defined permission,
-an conditional block containing the <a href="#can?/3"><code class="inline">can?/3</code></a> function should be added.</p><pre><code class="makeup elixir"><span class="k">if</span><span class="w"> </span><span class="n">can?</span><span class="p" data-group-id="2381456086-1">(</span><span class="n">role</span><span class="p">,</span><span class="w"> </span><span class="ss">:access</span><span class="p">,</span><span class="w"> </span><span class="ss">:editor</span><span class="p" data-group-id="2381456086-1">)</span><span class="w"> </span><span class="k" data-group-id="2381456086-2">do</span><span class="w">
+an conditional block containing the <a href="#can?/3"><code class="inline">can?/3</code></a> function should be added.</p><pre><code class="makeup elixir"><span class="k">if</span><span class="w"> </span><span class="n">can?</span><span class="p" data-group-id="7540543104-1">(</span><span class="n">role</span><span class="p">,</span><span class="w"> </span><span class="ss">:access</span><span class="p">,</span><span class="w"> </span><span class="ss">:editor</span><span class="p" data-group-id="7540543104-1">)</span><span class="w"> </span><span class="k" data-group-id="7540543104-2">do</span><span class="w">
   </span><span class="n">...</span><span class="w">
-</span><span class="k" data-group-id="2381456086-2">end</span></code></pre><p>The function will return true if and only if the current role has the
+</span><span class="k" data-group-id="7540543104-2">end</span></code></pre><p>The function will return true if and only if the current role has the
 corresponding permission therefore granting access or not to the included
 code.</p><h2 id="module-actions" class="section-heading">
   <a href="#module-actions" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
@@ -139,7 +144,14 @@ the <strong>worspace</strong> scopes and the <strong>custom</strong>.</p><h4>Glo
 granted in the global scope are technically &quot;unscoped&quot;.</p><p>Global scope is designated by the <code class="inline">:global</code> atom.</p><h4>Workspace scope</h4><p>A workspace scope is determined by the id of a workspace and grants the rights
 in the context of this workspace. For example, an <code class="inline">:access</code> action permission
 in the workspace with <code class="inline">:id = 1</code> will grant access only to this workspace.</p><p>Workspace scopes are designated a tuple containing the <code class="inline">:workspace</code> atom and
-the id of the workspace, e.g.:</p><pre><code class="makeup elixir"><span class="p" data-group-id="4662080461-1">{</span><span class="ss">:workspace</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p" data-group-id="4662080461-1">}</span></code></pre><h4>Custom scope</h4><p>Other scopes can be created using a custom atom.</p><h2 id="module-security-design" class="section-heading">
+the id of the workspace, e.g.:</p><pre><code class="makeup elixir"><span class="p" data-group-id="7621609058-1">{</span><span class="ss">:workspace</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p" data-group-id="7621609058-1">}</span></code></pre><h4>Custom scope</h4><p>Other scopes can be created using a custom atom.</p><h2 id="module-schemas" class="section-heading">
+  <a href="#module-schemas" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Schemas
+</h2>
+<p>Below, the list of the schemas described in the Account module.</p><h4>AccessToken</h4><p>Access tokens can be:</p><ul><li>API key</li><li>link token (not implemented yet)</li><li>oauth refresh token (not implemented yet)</li><li>oauth access token (not implemented yet)</li></ul><p>Secret format vary depending of the type</p><h4>BlueprintPermission</h4><p>A blueprint permission gives a permission on a blueprint to a role.</p><h4>GlobalPermission</h4><p>A global permission gives a site wide permission to a role.</p><h4>WorkspacePermission</h4><p>A workspace permissions give a workspace wide permission to a role.</p><h4>Role</h4><p>A role is the representation of an actor (user, api request...) to which
+permissions can be attached.</p><h4>Session</h4><p>A session is created every time a user log in and bears the user's
+permissions.</p><p>If the permissions change, the session must be recreated for the change
+to take effect.</p><h4>User</h4><p>A user is a login method for a role of type &quot;user&quot;.</p><h4>Workspace</h4><p>The general container for blueprints and portals.</p><h2 id="module-security-design" class="section-heading">
   <a href="#module-security-design" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Security design
 </h2>
@@ -591,6 +603,11 @@ Functions
     </a>
     <h1 class="signature">activate_role(role)</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L363" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -609,6 +626,11 @@ Functions
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">can?(role, action, scope \\ :global)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L179" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
 
 
   </div>
@@ -629,6 +651,11 @@ Functions
     </a>
     <h1 class="signature">change_role(role, attrs \\ %{})</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L353" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -647,6 +674,11 @@ Functions
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">change_user(data, attrs \\ %{})</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L279" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
 
 
   </div>
@@ -667,6 +699,11 @@ Functions
     </a>
     <h1 class="signature">change_workspace(data, attrs \\ %{})</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L221" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -683,6 +720,11 @@ Functions
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">check_user(email, password)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L267" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
 
 
   </div>
@@ -704,6 +746,11 @@ will be constant.</p>
     </a>
     <h1 class="signature">create_api_token(role, test \\ false)</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L399" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -723,6 +770,11 @@ will be constant.</p>
     </a>
     <h1 class="signature">create_role(type, attrs \\ %{})</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L343" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -739,6 +791,11 @@ will be constant.</p>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">create_session(role, attrs)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L301" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
 
 
   </div>
@@ -757,6 +814,11 @@ will be constant.</p>
     </a>
     <h1 class="signature">create_user(attrs)</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L274" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -774,6 +836,11 @@ will be constant.</p>
     </a>
     <h1 class="signature">create_workspace(attrs)</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L216" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -790,6 +857,11 @@ will be constant.</p>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">deactivate_role(role)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L373" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
 
 
   </div>
@@ -809,6 +881,11 @@ web layer.</p>
     </a>
     <h1 class="signature">delete_role(role)</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L358" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -825,6 +902,11 @@ web layer.</p>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">delete_workspace(data)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L233" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
 
 
   </div>
@@ -843,13 +925,18 @@ web layer.</p>
     </a>
     <h1 class="signature">explode_composite_secret(secret)</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L412" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
   <section class="docstring">
 
-<p>Explode a secret.</p><pre><code class="makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="n">sec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">generate_composite_secret</span><span class="p" data-group-id="4681362477-1">(</span><span class="ss">:role</span><span class="p">,</span><span class="w"> </span><span class="mi">23</span><span class="p" data-group-id="4681362477-1">)</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="p" data-group-id="4681362477-2">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">23</span><span class="p">,</span><span class="w"> </span><span class="ss">prefix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;role&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">secret</span><span class="p">:</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="4681362477-2">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">explode_composite_secret</span><span class="p" data-group-id="4681362477-3">(</span><span class="n">sec</span><span class="p" data-group-id="4681362477-3">)</span></code></pre>
+<p>Explode a secret.</p><pre><code class="makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="n">sec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">generate_composite_secret</span><span class="p" data-group-id="7462097996-1">(</span><span class="ss">:role</span><span class="p">,</span><span class="w"> </span><span class="mi">23</span><span class="p" data-group-id="7462097996-1">)</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="p" data-group-id="7462097996-2">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">23</span><span class="p">,</span><span class="w"> </span><span class="ss">prefix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;role&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">secret</span><span class="p">:</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="7462097996-2">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">explode_composite_secret</span><span class="p" data-group-id="7462097996-3">(</span><span class="n">sec</span><span class="p" data-group-id="7462097996-3">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="fetch_session/1">
@@ -860,6 +947,11 @@ web layer.</p>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">fetch_session(token)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L291" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
 
 
   </div>
@@ -878,6 +970,11 @@ web layer.</p>
     </a>
     <h1 class="signature">filter_accessible_workspaces(query, role)</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L196" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -894,6 +991,11 @@ web layer.</p>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">filter_active_roles(query)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L333" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
 
 
   </div>
@@ -912,6 +1014,11 @@ web layer.</p>
     </a>
     <h1 class="signature">filter_roles_by_type(query, type)</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L328" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -928,6 +1035,11 @@ web layer.</p>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">generate_composite_secret(prefix, id)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L404" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
 
 
   </div>
@@ -948,6 +1060,11 @@ web layer.</p>
     </a>
     <h1 class="signature">generate_secret(length \\ 16)</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L394" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -967,6 +1084,11 @@ web layer.</p>
     </a>
     <h1 class="signature">get_role!(id, queries \\ &amp;(&amp;1))</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L323" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -983,6 +1105,11 @@ web layer.</p>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">get_session!(id)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L296" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
 
 
   </div>
@@ -1003,6 +1130,11 @@ web layer.</p>
     </a>
     <h1 class="signature">get_user!(uid, queries \\ &amp;(&amp;1))</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L246" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -1021,6 +1153,11 @@ web layer.</p>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">get_workspace!(id, queries \\ &amp;(&amp;1))</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L191" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
 
 
   </div>
@@ -1041,6 +1178,11 @@ web layer.</p>
     </a>
     <h1 class="signature">grant_permission(role, action, scope \\ :global)</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L165" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -1057,6 +1199,11 @@ web layer.</p>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">list_api_keys()</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L416" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
 
 
   </div>
@@ -1077,6 +1224,11 @@ web layer.</p>
     </a>
     <h1 class="signature">list_api_tokens(queries \\ &amp;(&amp;1))</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L380" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -1096,6 +1248,11 @@ web layer.</p>
     </a>
     <h1 class="signature">list_roles(queries \\ &amp;(&amp;1))</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L318" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -1114,6 +1271,11 @@ web layer.</p>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">list_users(queries \\ &amp;(&amp;1))</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L241" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
 
 
   </div>
@@ -1135,6 +1297,11 @@ populated</p>
     </a>
     <h1 class="signature">list_workspaces(queries \\ &amp;(&amp;1))</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L186" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -1151,6 +1318,11 @@ populated</p>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">load_api_tokens(query)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L385" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
 
 
   </div>
@@ -1169,6 +1341,11 @@ populated</p>
     </a>
     <h1 class="signature">load_role_sessions(query)</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L338" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -1185,6 +1362,11 @@ populated</p>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">load_user_activity(query)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L254" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
 
 
   </div>
@@ -1204,6 +1386,11 @@ populated</p>
     </a>
     <h1 class="signature">load_user_role(query)</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L259" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -1220,6 +1407,11 @@ populated</p>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">load_workspace_blueprints(query)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L201" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
 
 
   </div>
@@ -1238,6 +1430,11 @@ populated</p>
     </a>
     <h1 class="signature">load_workspace_stats(query)</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L206" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -1254,6 +1451,11 @@ populated</p>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">order_workspaces_by(query, key)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L211" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
 
 
   </div>
@@ -1274,6 +1476,11 @@ populated</p>
     </a>
     <h1 class="signature">revoke_permission(role, action, scope \\ :global)</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L171" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -1290,6 +1497,11 @@ populated</p>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">revoke_session(session)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L311" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
 
 
   </div>
@@ -1310,6 +1522,11 @@ populated</p>
     </a>
     <h1 class="signature">toggle_permission(role, action, scope \\ :global)</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L159" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -1329,6 +1546,11 @@ populated</p>
     </a>
     <h1 class="signature">update_role(role, attrs \\ %{})</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L348" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -1345,6 +1567,11 @@ populated</p>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">update_session(session, attrs)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L306" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
 
 
   </div>
@@ -1363,6 +1590,11 @@ populated</p>
     </a>
     <h1 class="signature">update_user(data, attrs)</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L284" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -1380,6 +1612,11 @@ populated</p>
     </a>
     <h1 class="signature">update_workspace(data, attrs)</h1>
 
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L226" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
@@ -1393,6 +1630,15 @@ populated</p>
         </section>
 
       <footer class="footer">
+
+        <p>
+          Find it on Hex:
+          <a href="https://hex.pm/packages/vac_engine/1.0.2" class="line footer-hex-package">Package</a>
+          <a href="https://preview.hex.pm/preview/vac_engine/1.0.2" class="line">Preview</a>
+
+            <a href="https://preview.hex.pm/preview/vac_engine/1.0.2/show/lib/vac_engine/account.ex">(current file)</a>
+
+        </p>
 
         <p>
           <span class="line">

@@ -5,12 +5,12 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.25.5">
-    <meta name="project" content="Vac Engine v1.0.1">
+    <meta name="project" content="Vac Engine v1.0.2">
 
-    <title>API Reference — Vac Engine v1.0.1</title>
+    <title>API Reference — Vac Engine v1.0.2</title>
     <link rel="stylesheet" href="dist/elixir-d1506dba1db7cdc5483e.css" />
 
-    <script src="dist/sidebar_items-985ad71309.js"></script>
+    <script src="dist/sidebar_items-947443f9d8.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -54,18 +54,18 @@
 
   <div class="sidebar-header">
     <div class="sidebar-projectDetails">
-      <a href="VacEngine.html" class="sidebar-projectName">
+      <a href="readme.html" class="sidebar-projectName">
 Vac Engine
       </a>
       <strong class="sidebar-projectVersion">
-        v1.0.1
+        v1.0.2
       </strong>
     </div>
 
   </div>
 
   <ul class="sidebar-listNav">
-    <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+    <li><a id="extras-list-link" href="#full-list">GUIDES</a></li>
 
       <li><a id="modules-list-link" href="#full-list">Modules</a></li>
 
@@ -80,7 +80,7 @@ Vac Engine
     <div id="content" class="content-inner">
 
 <h1 id="content">
-API Reference <small class="app-vsn">Vac Engine v1.0.1</small>
+API Reference <small class="app-vsn">Vac Engine v1.0.2</small>
 
 </h1>
 
@@ -98,8 +98,8 @@ API Reference <small class="app-vsn">Vac Engine v1.0.1</small>
 
   </div>
 
-    <div class="summary-synopsis"><p>VacEngine keeps the contexts that define your domain
-and business logic.</p></div>
+    <div class="summary-synopsis"><p>This context defines the backend part of the VacEngine application
+i.e. it's business logic and data management.</p></div>
 
 </div>
 <div class="summary-row">
@@ -109,78 +109,6 @@ and business logic.</p></div>
   </div>
 
     <div class="summary-synopsis"><p>Rsponsible for the management of a role-based permission system.</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngine.Account.AccessToken.html">VacEngine.Account.AccessToken</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Access tokens can be</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngine.Account.BlueprintPermission.html">VacEngine.Account.BlueprintPermission</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>A blueprint permission links a blueprint with a role</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngine.Account.GlobalPermission.html">VacEngine.Account.GlobalPermission</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>A global permission gives site wide permission to a role</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngine.Account.Role.html">VacEngine.Account.Role</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>A role is the representation of a actor (user, api request...)</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngine.Account.Session.html">VacEngine.Account.Session</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>A session is created every time a user log in.</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngine.Account.User.html">VacEngine.Account.User</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>A user is a login method for a role of &quot;user&quot; type</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngine.Account.Workspace.html">VacEngine.Account.Workspace</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>A workspace is the general container for blueprints and portals</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngine.Account.WorkspacePermission.html">VacEngine.Account.WorkspacePermission</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Workspace specific permissions</p></div>
 
 </div>
 <div class="summary-row">
@@ -231,74 +159,11 @@ to compute API output from API input.</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="VacEngine.Processor.Assignment.html">VacEngine.Processor.Assignment</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>A blueprint assignment</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
     <a href="VacEngine.Processor.Ast.html">VacEngine.Processor.Ast</a>
 
   </div>
 
     <div class="summary-synopsis"><p>Represent the blueprint &quot;simple&quot; AST</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngine.Processor.AstType.html">VacEngine.Processor.AstType</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Ecto type for AST serialization to the database.</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngine.Processor.Binding.html">VacEngine.Processor.Binding</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>An expression binding</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngine.Processor.BindingElement.html">VacEngine.Processor.BindingElement</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>An expression binding element</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngine.Processor.Blueprint.html">VacEngine.Processor.Blueprint</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>A blueprint</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngine.Processor.Branch.html">VacEngine.Processor.Branch</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>A deduction branch</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngine.Processor.Column.html">VacEngine.Processor.Column</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>A deduction column</p></div>
 
 </div>
 <div class="summary-row">
@@ -312,38 +177,11 @@ to compute API output from API input.</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="VacEngine.Processor.Condition.html">VacEngine.Processor.Condition</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>A branch condition</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
     <a href="VacEngine.Processor.Convert.html">VacEngine.Processor.Convert</a>
 
   </div>
 
     <div class="summary-synopsis"><p>Convert utilities</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngine.Processor.Deduction.html">VacEngine.Processor.Deduction</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>A blueprint deduction</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngine.Processor.Expression.html">VacEngine.Processor.Expression</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>An expression</p></div>
 
 </div>
 <div class="summary-row">
@@ -359,29 +197,11 @@ The information provided by this module correspond to the
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="VacEngine.Processor.Info.Logic.html">VacEngine.Processor.Info.Logic</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Generate a logic summary of a blueprint</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngine.Processor.Info.Schema.html">VacEngine.Processor.Info.Schema</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Generate a JSON schema of the interface of a blueprint</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
     <a href="VacEngine.Processor.Library.html">VacEngine.Processor.Library</a>
 
   </div>
 
-    <div class="summary-synopsis"><p>Library queries</p></div>
+    <div class="summary-synopsis"><p>Blueprint functions library queries</p></div>
 
 </div>
 <div class="summary-row">
@@ -391,15 +211,6 @@ The information provided by this module correspond to the
   </div>
 
     <div class="summary-synopsis"><p>Actual blueprint expression functions</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngine.Processor.ListType.html">VacEngine.Processor.ListType</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Ecto type to allow storing a list in a jsonb field</p></div>
 
 </div>
 <div class="summary-row">
@@ -445,15 +256,6 @@ The information provided by this module correspond to the
   </div>
 
     <div class="summary-synopsis"><p>State heplers to manipulate list varibales</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngine.Processor.Variable.html">VacEngine.Processor.Variable</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>A blueprint variable</p></div>
 
 </div>
 <div class="summary-row">
@@ -1041,7 +843,7 @@ as controllers, views, channels and so on.</p></div>
           Next Page →
         </span>
         <span class="title">
-VacEngine README
+VacEngine
         </span>
       </a>
 
@@ -1049,6 +851,13 @@ VacEngine README
 </div>
 
       <footer class="footer">
+
+        <p>
+          Find it on Hex:
+          <a href="https://hex.pm/packages/vac_engine/1.0.2" class="line footer-hex-package">Package</a>
+          <a href="https://preview.hex.pm/preview/vac_engine/1.0.2" class="line">Preview</a>
+
+        </p>
 
         <p>
           <span class="line">

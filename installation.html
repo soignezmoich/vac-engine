@@ -5,12 +5,12 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.25.5">
-    <meta name="project" content="Vac Engine v1.0.1">
+    <meta name="project" content="Vac Engine v1.0.2">
 
-    <title>VacEngine Installation — Vac Engine v1.0.1</title>
+    <title>Installation — Vac Engine v1.0.2</title>
     <link rel="stylesheet" href="dist/elixir-d1506dba1db7cdc5483e.css" />
 
-    <script src="dist/sidebar_items-985ad71309.js"></script>
+    <script src="dist/sidebar_items-947443f9d8.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -54,18 +54,18 @@
 
   <div class="sidebar-header">
     <div class="sidebar-projectDetails">
-      <a href="VacEngine.html" class="sidebar-projectName">
+      <a href="readme.html" class="sidebar-projectName">
 Vac Engine
       </a>
       <strong class="sidebar-projectVersion">
-        v1.0.1
+        v1.0.2
       </strong>
     </div>
 
   </div>
 
   <ul class="sidebar-listNav">
-    <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+    <li><a id="extras-list-link" href="#full-list">GUIDES</a></li>
 
       <li><a id="modules-list-link" href="#full-list">Modules</a></li>
 
@@ -80,7 +80,12 @@ Vac Engine
     <div id="content" class="content-inner">
 
 <h1 id="content">
-VacEngine Installation
+Installation
+
+    <a href="https://github.com/soignezmoich/vac-engine/blob/master/INSTALLATION.md#L1" title="View Source" class="view-source" rel="help">
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
 
 </h1>
 
@@ -116,11 +121,8 @@ system both:</p><ul><li>when compiling (i.e. when executing &quot;make release&q
   Run time environment variables
 </h3>
 <p>Must be available on the machine that runs the application. The variables are
-partly different for production and development.</p><h4>Production</h4><ul><li><code class="inline">DATABASE_URL</code></li><li><code class="inline">HOST</code></li><li><code class="inline">PORT</code></li><li><code class="inline">SECRET_KEY_BASE</code></li><li><code class="inline">POOL_SIZE</code> ¹</li><li><code class="inline">ADDRESS</code> ²</li><li><code class="inline">SSL_KEY_PATH</code> ³</li><li><code class="inline">SSL_CERT_PATH</code> ³</li></ul><p> ¹ Optional, defaults to 10.
- ² Optional, defaults to &quot;::0&quot;.
- ³ Optional, only necessary if the application is supposed to terminate SSL
- connections.</p><h4>Development</h4><ul><li><code class="inline">DATABASE_URL</code></li><li><code class="inline">DATABASE_TEST_URL</code> ¹</li><li><code class="inline">NO_DEBUG_LOG</code> ²</li></ul><p>¹ Only necessary to run tests.
-² Optional, prevents debug log output.</p><h3 id="session_signing_salt" class="section-heading">
+partly different for production and development.</p><h4>Production</h4><ul><li><code class="inline">DATABASE_URL</code></li><li><code class="inline">HOST</code></li><li><code class="inline">PORT</code></li><li><code class="inline">SECRET_KEY_BASE</code></li><li><code class="inline">POOL_SIZE</code> ¹</li><li><code class="inline">ADDRESS</code> ²</li><li><code class="inline">SSL_KEY_PATH</code> ³</li><li><code class="inline">SSL_CERT_PATH</code> ³</li></ul><ol><li>Optional, defaults to 10. </li><li>Optional, defaults to <code class="inline">::0</code> (all IPv6 and IPv4 interfaces). </li><li>Optional, only necessary if the application is supposed to terminate SSL
+connections.</li></ol><h4>Development</h4><ul><li><code class="inline">DATABASE_URL</code></li><li><code class="inline">DATABASE_TEST_URL</code> ¹</li><li><code class="inline">NO_DEBUG_LOG</code> ²</li></ul><ol><li>Only necessary to run tests. </li><li>Optional, prevents debug log output.</li></ol><h3 id="session_signing_salt" class="section-heading">
   <a href="#session_signing_salt" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   <code class="inline">SESSION_SIGNING_SALT</code>
 </h3>
@@ -218,7 +220,7 @@ the DEVELOPMENT.md and DEPLOYMENT.md files respectively.</p>
           ← Previous Page
         </span>
         <span class="title">
-VacEngine README
+VacEngine
         </span>
       </a>
 
@@ -230,7 +232,7 @@ VacEngine README
           Next Page →
         </span>
         <span class="title">
-VacEngine Deployment
+Deployment
         </span>
       </a>
 
@@ -238,6 +240,15 @@ VacEngine Deployment
 </div>
 
       <footer class="footer">
+
+        <p>
+          Find it on Hex:
+          <a href="https://hex.pm/packages/vac_engine/1.0.2" class="line footer-hex-package">Package</a>
+          <a href="https://preview.hex.pm/preview/vac_engine/1.0.2" class="line">Preview</a>
+
+            <a href="https://preview.hex.pm/preview/vac_engine/1.0.2/show/INSTALLATION.md">(current file)</a>
+
+        </p>
 
         <p>
           <span class="line">
