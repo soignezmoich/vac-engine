@@ -2,7 +2,7 @@ defmodule VacEngine.MixProject do
   use Mix.Project
 
   @source_url "https://github.com/soignezmoich/vac-engine"
-  @version "1.0.2"
+  @version "1.0.2" # also change in api.yaml
 
   @external_resource "#{__DIR__}/.coverignore"
   @ignore_modules File.stream!("#{__DIR__}/.coverignore")
