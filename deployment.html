@@ -120,14 +120,14 @@ will terminate SSL itself, <code class="inline">PORT</code> must be 443.</li></u
   <a href="#reverse-proxy" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Reverse proxy
 </h3>
-<p>If you use a reverse proxy, you must pass the following headers:</p><ul><li><code class="inline">X-Real-IP</code></li><li><code class="inline">X-Forwarded-For</code></li><li><code class="inline">X-Forwarded-Proto</code></li></ul><p>Example Nginx configuration:</p><pre><code class="makeup elixir"><span class="n">server</span><span class="w"> </span><span class="p" data-group-id="7608447762-1">{</span><span class="w">
+<p>If you use a reverse proxy, you must pass the following headers:</p><ul><li><code class="inline">X-Real-IP</code></li><li><code class="inline">X-Forwarded-For</code></li><li><code class="inline">X-Forwarded-Proto</code></li></ul><p>Example Nginx configuration:</p><pre><code class="makeup elixir"><span class="n">server</span><span class="w"> </span><span class="p" data-group-id="1904932813-1">{</span><span class="w">
         </span><span class="n">listen</span><span class="w"> </span><span class="mi">443</span><span class="w"> </span><span class="n">ssl</span><span class="w"> </span><span class="n">http2</span><span class="p">;</span><span class="w">
-        </span><span class="n">listen</span><span class="w"> </span><span class="p" data-group-id="7608447762-2">[</span><span class="o">::</span><span class="p" data-group-id="7608447762-2">]</span><span class="p">:</span><span class="mi">443</span><span class="w"> </span><span class="n">ssl</span><span class="w"> </span><span class="n">http2</span><span class="p">;</span><span class="w">
+        </span><span class="n">listen</span><span class="w"> </span><span class="p" data-group-id="1904932813-2">[</span><span class="o">::</span><span class="p" data-group-id="1904932813-2">]</span><span class="p">:</span><span class="mi">443</span><span class="w"> </span><span class="n">ssl</span><span class="w"> </span><span class="n">http2</span><span class="p">;</span><span class="w">
         </span><span class="n">include</span><span class="w"> </span><span class="n">ssl</span><span class="o">.</span><span class="n">conf</span><span class="p">;</span><span class="w">
         </span><span class="n">include</span><span class="w"> </span><span class="n">errors</span><span class="o">.</span><span class="n">conf</span><span class="p">;</span><span class="w">
         </span><span class="n">server_name</span><span class="w"> </span><span class="n">vac</span><span class="o">-</span><span class="n">engine</span><span class="o">.</span><span class="n">goyman</span><span class="o">.</span><span class="n">com</span><span class="p">;</span><span class="w">
 
-        </span><span class="n">location</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p" data-group-id="7608447762-3">{</span><span class="w">
+        </span><span class="n">location</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p" data-group-id="1904932813-3">{</span><span class="w">
                 </span><span class="n">proxy_set_header</span><span class="w"> </span><span class="nc">Host</span><span class="w"> </span><span class="err">$</span><span class="n">host</span><span class="p">;</span><span class="w">
                 </span><span class="n">proxy_set_header</span><span class="w"> </span><span class="nc">X</span><span class="o">-</span><span class="nc">Real</span><span class="o">-</span><span class="nc">IP</span><span class="w"> </span><span class="err">$</span><span class="n">remote_addr</span><span class="p">;</span><span class="w">
                 </span><span class="n">proxy_set_header</span><span class="w"> </span><span class="nc">X</span><span class="o">-</span><span class="nc">Forwarded</span><span class="o">-</span><span class="nc">For</span><span class="w"> </span><span class="err">$</span><span class="n">proxy_add_x_forwarded_for</span><span class="p">;</span><span class="w">
@@ -137,8 +137,8 @@ will terminate SSL itself, <code class="inline">PORT</code> must be 443.</li></u
                 </span><span class="n">proxy_set_header</span><span class="w"> </span><span class="nc">Connection</span><span class="w"> </span><span class="err">$</span><span class="n">http_connection</span><span class="p">;</span><span class="w">
                 </span><span class="n">proxy_read_timeout</span><span class="w"> </span><span class="mi">86400</span><span class="p">;</span><span class="w">
                 </span><span class="n">proxy_pass</span><span class="w"> </span><span class="n">http</span><span class="ss">://</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">:</span><span class="mi">3003</span><span class="p">;</span><span class="w">
-        </span><span class="p" data-group-id="7608447762-3">}</span><span class="w">
-</span><span class="p" data-group-id="7608447762-1">}</span></code></pre>
+        </span><span class="p" data-group-id="1904932813-3">}</span><span class="w">
+</span><span class="p" data-group-id="1904932813-1">}</span></code></pre>
 <div class="bottom-actions">
   <div class="bottom-actions-item">
 
