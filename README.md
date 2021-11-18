@@ -29,7 +29,7 @@ list of these documents and where to find them.
 ### General documentation
 
 1. **API endpoints** documentation can be found
-   [here](./api.html)
+   [here](https://soignezmoich.github.io/vac-engine/api.html)
 2. **Application manual** *available soon*
 
 ### Technical documentation
