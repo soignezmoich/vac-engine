@@ -98,20 +98,8 @@ defmodule VacEngine.Pub do
 
   def filter_active_portals(query) do
     from(p in query,
-      join: pub in assoc(p, :publications),
-      on: is_nil(pub.deactivated_at)
+      where: not is_nil(p.blueprint_id)
     )
-  end
-
-  def load_portal_active_publication(query) do
-    publications_query =
-      from(r in Publication,
-        order_by: [desc: r.activated_at],
-        where: is_nil(r.deactivated_at),
-        preload: :blueprint
-      )
-
-    from(p in query, preload: [active_publication: ^publications_query])
   end
 
   def load_portal_publications(query) do
@@ -122,6 +110,10 @@ defmodule VacEngine.Pub do
       )
 
     from(p in query, preload: [publications: ^publications_query])
+  end
+
+  def load_portal_blueprint(query) do
+    from(p in query, preload: :blueprint)
   end
 
   def filter_portals_by_workspace(query, workspace) do
@@ -153,26 +145,17 @@ defmodule VacEngine.Pub do
       end,
       []
     )
-    |> Multi.run(:existing, fn repo, _ ->
-      from(p in Publication,
-        where: p.portal_id == ^portal.id and p.blueprint_id == ^br.id
-      )
-      |> repo.one()
-      |> case do
-        nil ->
-          %Publication{
-            workspace_id: br.workspace_id,
-            blueprint_id: br.id,
-            portal_id: portal.id
-          }
-
-        pub ->
-          pub
-      end
-      |> ok()
+    |> Multi.update(:portal, fn _ ->
+      portal
+      |> change_portal(%{})
+      |> Ecto.Changeset.change(blueprint_id: br.id)
     end)
-    |> Multi.insert_or_update(:publication, fn %{existing: existing} ->
-      existing
+    |> Multi.insert(:publication, fn _ ->
+      %Publication{
+        workspace_id: br.workspace_id,
+        blueprint_id: br.id,
+        portal_id: portal.id
+      }
       |> Publication.changeset(%{
         activated_at: NaiveDateTime.utc_now(),
         deactivated_at: nil
@@ -192,7 +175,11 @@ defmodule VacEngine.Pub do
   def publish_blueprint(%Blueprint{} = br, portal_params) do
     Multi.new()
     |> Multi.insert_or_update(:portal, fn _ ->
-      %Portal{workspace_id: br.workspace_id, interface_hash: br.interface_hash}
+      %Portal{
+        workspace_id: br.workspace_id,
+        interface_hash: br.interface_hash,
+        blueprint_id: br.id
+      }
       |> change_portal(portal_params)
     end)
     |> Multi.insert(:publication, fn %{portal: portal} ->
@@ -209,6 +196,36 @@ defmodule VacEngine.Pub do
     |> case do
       {:ok, %{publication: pub, portal: portal}} ->
         {:ok, %{pub | portal: portal}}
+
+      err ->
+        err
+    end
+    |> tap_ok(&bust_cache/0)
+  end
+
+  def unpublish_portal(%Portal{} = portal) do
+    Multi.new()
+    |> Multi.update_all(
+      :deactivate,
+      fn _ ->
+        now = DateTime.truncate(DateTime.utc_now(), :second)
+
+        from(p in Publication,
+          where: p.portal_id == ^portal.id and is_nil(p.deactivated_at),
+          update: [set: [deactivated_at: ^now]]
+        )
+      end,
+      []
+    )
+    |> Multi.update(:portal, fn _ ->
+      portal
+      |> change_portal(%{})
+      |> Ecto.Changeset.change(blueprint_id: nil)
+    end)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{portal: portal}} ->
+        {:ok, portal}
 
       err ->
         err

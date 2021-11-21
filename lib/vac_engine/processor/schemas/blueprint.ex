@@ -26,6 +26,7 @@ defmodule VacEngine.Processor.Blueprint do
 
     has_many(:publications, Publication)
     has_many(:active_publications, Publication)
+    has_many(:inactive_publications, Publication)
 
     field(:draft, :boolean)
 

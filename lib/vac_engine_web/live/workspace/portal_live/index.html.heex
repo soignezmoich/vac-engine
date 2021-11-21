@@ -13,37 +13,37 @@
             <%= p.name %>
           </div>
           <div class="flex">
-            <%= if p.active_publication do %>
+            <%= if p.blueprint do %>
               <span class="text-xs link"
                     phx-hook="clipboardCopy" id={"p_url_#{p.id}"}>
-                <%= Routes.api_pub_url(@socket, :run, p.active_publication.portal_id) %>
+                <%= Routes.api_pub_url(@socket, :run, p.id) %>
               </span>
             <% end %>
           </div>
           <div class="flex flex-wrap mt-2">
-            <%= if p.active_publication do %>
+            <%= if p.blueprint do %>
               <span class="text-sm mr-2">
                 <%= live_redirect(
-                      "Blueprint ##{p.active_publication.blueprint.id}: #{tr(p.active_publication.blueprint.name, 48)}",
+                      "Blueprint ##{p.blueprint.id}: #{tr(p.blueprint.name, 48)}",
                       to: Routes.workspace_blueprint_path(@socket, :summary,
-                          p.workspace_id, p.active_publication.blueprint_id),
+                          p.workspace_id, p.blueprint_id),
                       class: "link"
                     ) %>
               </span>
             <% end %>
           </div>
           <div class="flex flex-wrap mt-2">
-            <%= if p.active_publication do %>
+            <%= if p.blueprint do %>
               <span class="text-sm mr-2">
                 Last published
-                <%= format_date(p.active_publication.activated_at) %>
-              </span>
-              <span class="mr-2 self-center text-gray-700">
-                <.icon name="dot" width="6px" />
+                <%= format_date(Enum.at(p.publications, 0).activated_at) %>
               </span>
             <% else %>
-              <span class="text-sm mr-2">Never published</span>
+              <span class="text-sm mr-2">Not published</span>
             <% end %>
+            <span class="mr-2 self-center text-gray-700">
+              <.icon name="dot" width="6px" />
+            </span>
             <span class="text-sm">Created <%= format_date(p.inserted_at) %></span>
           </div>
         </div>

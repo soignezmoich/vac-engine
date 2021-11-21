@@ -27,19 +27,31 @@
     <%= submit "Update", class: "btn-default", phx_disable_with: "Update in progress..." %>
   </.form>
 
-  <div class="mt-8">
-    <div class="font-bold">
-      URL <span class="text-sm font-normal">(click to copy)</span>
-    </div>
-    <div phx-hook="clipboardCopy"
-         class="text-sm text-blue-500 inline-block" id="url">
-      <%= Routes.api_pub_url(@socket, :run, @portal) %>
-    </div>
-  </div>
+  <h2 class="font-bold text-lg mb-4 mt-8">Publication</h2>
 
-  <h2 class="font-bold text-lg mb-4 mt-8">Publish</h2>
+  <%= case @portal.blueprint do %>
+  <% nil -> %>
+    <div>
+      The portal is not currently published.
+    </div>
+  <% br -> %>
+    <div>
+      The portal is currently published with blueprint:
+      <div class="font-bold">#<%= br.id %>: <%= tr(br.name, 32) %>.</div>
+    </div>
 
-  <div class="flex flex-col w-128">
+    <div class="mt-4">
+      <div class="font-bold">
+        URL <span class="text-sm font-normal">(click to copy)</span>
+      </div>
+      <div phx-hook="clipboardCopy"
+           class="text-sm text-blue-500 inline-block" id="url">
+        <%= Routes.api_pub_url(@socket, :run, @portal) %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="flex flex-col w-128 mt-8">
     <%= if @search_blueprint_visible do %>
       <.form
         let={f}
@@ -122,6 +134,13 @@
                       phx-click="publish">
                 Publish
               </button>
+            <% else %>
+              <.button
+                    class="btn-sm"
+                    click="unpublish"
+                    label="Unpublish"
+                    id={"unpublish-btn-#{p.id}"}
+                    confirm />
             <% end %>
           </div>
         </div>

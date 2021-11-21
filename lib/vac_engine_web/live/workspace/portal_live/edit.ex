@@ -19,6 +19,7 @@ defmodule VacEngineWeb.Workspace.PortalLive.Edit do
       Pub.get_portal!(portal_id, fn query ->
         query
         |> Pub.load_portal_publications()
+        |> Pub.load_portal_blueprint()
       end)
 
     can!(socket, :edit, portal)
@@ -169,6 +170,35 @@ defmodule VacEngineWeb.Workspace.PortalLive.Edit do
     can!(socket, :publish, blueprint)
 
     {:ok, _pub} = Pub.publish_blueprint(blueprint, portal)
+
+    {:noreply,
+     socket
+     |> push_redirect(
+       to:
+         Routes.workspace_portal_path(
+           socket,
+           :edit,
+           portal.workspace_id,
+           portal.id
+         )
+     )}
+  end
+
+  @impl true
+  def handle_event(
+        "unpublish",
+        _,
+        %{
+          assigns: %{
+            workspace: workspace,
+            portal: portal
+          }
+        } = socket
+      ) do
+    can!(socket, :edit, portal)
+    can!(socket, :edit, workspace)
+
+    {:ok, _pub} = Pub.unpublish_portal(portal)
 
     {:noreply,
      socket

@@ -419,10 +419,9 @@ defmodule VacEngine.Account do
       Pub.list_portals(fn query ->
         query
         |> Pub.filter_active_portals()
-        |> Pub.load_portal_active_publication()
       end)
       |> Enum.map(fn portal ->
-        {portal.id, %{blueprint_id: portal.active_publication.blueprint_id}}
+        {portal.id, %{blueprint_id: portal.blueprint_id}}
       end)
       |> Map.new()
 

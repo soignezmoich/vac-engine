@@ -18,8 +18,9 @@ defmodule VacEngineWeb.Workspace.PortalLive.Index do
     portals =
       Pub.list_portals(fn query ->
         query
+        |> Pub.load_portal_blueprint()
+        |> Pub.load_portal_publications()
         |> Pub.filter_portals_by_workspace(workspace)
-        |> Pub.load_portal_active_publication()
       end)
 
     {:ok, assign(socket, portals: portals)}

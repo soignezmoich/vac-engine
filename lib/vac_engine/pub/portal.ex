@@ -8,7 +8,7 @@ defmodule VacEngine.Pub.Portal do
 
   alias VacEngine.Account.Workspace
   alias VacEngine.Pub.Publication
-  alias VacEngine.Pub.Portal
+  alias VacEngine.Processor.Blueprint
 
   schema "portals" do
     timestamps(type: :utc_datetime)
@@ -18,7 +18,7 @@ defmodule VacEngine.Pub.Portal do
     field(:description, :string)
 
     has_many(:publications, Publication)
-    has_one(:active_publication, Publication)
+    belongs_to(:blueprint, Blueprint)
     belongs_to(:workspace, Workspace)
   end
 
@@ -27,21 +27,5 @@ defmodule VacEngine.Pub.Portal do
     portal
     |> cast(attrs, [:name, :description])
     |> validate_required([:name])
-  end
-
-  @doc """
-  Return the active publication or nil if not active
-  """
-  def active_publication(%Portal{publications: pubs}) do
-    Enum.find(pubs, &Publication.active?/1)
-  end
-
-  def active_publication(_), do: nil
-
-  @doc """
-  Is the publication actually active?
-  """
-  def active?(portal) do
-    not is_nil(active_publication(portal))
   end
 end

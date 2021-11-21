@@ -211,6 +211,11 @@ defmodule VacEngine.Processor do
   defdelegate load_blueprint_active_publications(query), to: Blueprints
 
   @doc """
+  Load inactive publications
+  """
+  defdelegate load_blueprint_inactive_publications(query), to: Blueprints
+
+  @doc """
   Load all publications
   """
   defdelegate load_blueprint_publications(query), to: Blueprints

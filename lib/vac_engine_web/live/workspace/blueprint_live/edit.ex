@@ -43,7 +43,8 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.Edit do
     if connected?(socket) do
       Processor.get_blueprint!(id, fn query ->
         query
-        |> Processor.load_blueprint_publications()
+        |> Processor.load_blueprint_active_publications()
+        |> Processor.load_blueprint_inactive_publications()
         |> Processor.load_blueprint_variables()
         |> Processor.load_blueprint_full_deductions()
       end)

@@ -47,36 +47,57 @@
     </div>
   </.form>
 
-  <%= case @blueprint.publications do %>
+  <%= case @blueprint.active_publications do %>
   <% [_|_] = publications -> %>
+    <div class="font-bold mt-8 mb-2">
+      Active publications
+    </div>
     <%= for p <- publications do %>
-      <div class="border-b flex py-4 w-128">
-         <div class="flex flex-col flex-grow">
-         <%= if is_nil(p.deactivated_at) do %>
-           <span class="font-bold">
-             Portal #<%= p.portal_id %>: <%= p.portal.name %>
-           </span>
+      <%= if is_nil(p.deactivated_at) do %>
+        <div class="border-b flex py-4 w-128">
+          <div class="flex flex-col flex-grow">
+            <span class="font-bold">
+              Portal #<%= p.portal_id %>: <%= p.portal.name %>
+            </span>
             <span class="text-sm">Published <%= format_date(p.activated_at) %></span>
-         <% else %>
-           <span class="text-gray-300">
-             Inactive portal #<%= p.portal_id %>: <%= p.portal.name %>
-           </span>
-           <span class="text-sm italic">Deactivated <%= format_date(p.deactivated_at) %></span>
-         <% end %>
           </div>
-         <div class="flex flex-col">
-           <%= live_redirect("Portal details",
-                 to: Routes.workspace_portal_path(@socket, :edit,
-                       p.workspace_id, p.portal_id),
-                 class: "btn"
-               ) %>
-         </div>
-      </div>
+          <div class="flex flex-col">
+            <%= live_redirect("Portal details",
+                  to: Routes.workspace_portal_path(@socket, :edit,
+                        p.workspace_id, p.portal_id),
+                  class: "btn-sm"
+                ) %>
+          </div>
+        </div>
+      <% end %>
     <% end %>
   <% _ -> %>
-    <div class="text-sm mt-2">
-      No active publication
+  <% end %>
+
+  <%= case @blueprint.inactive_publications do %>
+  <% [_|_] = publications -> %>
+    <div class="font-bold mt-8 mb-2">
+      Inactive publications
     </div>
+    <%= for p <- publications do %>
+      <%= if not is_nil(p.deactivated_at) do %>
+        <div class="border-b flex py-4 w-128">
+          <div class="flex flex-col flex-grow">
+            <span class="text-gray-300">
+              Inactive Portal #<%= p.portal_id %>: <%= p.portal.name %>
+            </span>
+            <span class="text-sm italic">Deactivated <%= format_date(p.deactivated_at) %></span>
+          </div>
+          <div class="flex flex-col">
+            <%= live_redirect("Portal details",
+                  to: Routes.workspace_portal_path(@socket, :edit,
+                        p.workspace_id, p.portal_id),
+                  class: "btn-sm"
+                ) %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
   <% end %>
 
 

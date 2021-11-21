@@ -28,10 +28,4 @@ defmodule VacEngine.Pub.Publication do
     |> cast(attrs, [:activated_at, :deactivated_at])
     |> validate_required([])
   end
-
-  @doc """
-  Is the publication actually active?
-  """
-  def active?(%Publication{deactivated_at: nil}), do: true
-  def active?(_), do: false
 end
