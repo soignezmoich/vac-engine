@@ -10,7 +10,7 @@
     <title>VacEngine.Processor — Vac Engine v1.0.2</title>
     <link rel="stylesheet" href="dist/elixir-d1506dba1db7cdc5483e.css" />
 
-    <script src="dist/sidebar_items-1aa3f80cbc.js"></script>
+    <script src="dist/sidebar_items-c8d15bf04c.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -102,14 +102,14 @@ to compute API output from API input.</p><h2 id="module-processors" class="secti
 </h3>
 <p>The role of the processor is to compute the output variables of an api call
 based on the input variables. Such a computation is made using the <a href="#run/2"><code class="inline">run/2</code></a>
-function:</p><pre><code class="makeup elixir"><span class="p" data-group-id="2030732039-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="2030732039-2">%{</span><span class="ss">output</span><span class="p">:</span><span class="w"> </span><span class="n">state</span><span class="o">.</span><span class="n">output</span><span class="p">,</span><span class="w"> </span><span class="ss">input</span><span class="p">:</span><span class="w"> </span><span class="n">state</span><span class="o">.</span><span class="n">input</span><span class="p" data-group-id="2030732039-2">}</span><span class="p" data-group-id="2030732039-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Processor</span><span class="o">.</span><span class="n">run</span><span class="p" data-group-id="2030732039-3">(</span><span class="n">processor</span><span class="p">,</span><span class="w"> </span><span class="n">input</span><span class="p" data-group-id="2030732039-3">)</span></code></pre><h3 id="module-build-a-processor" class="section-heading">
+function:</p><pre><code class="makeup elixir"><span class="p" data-group-id="4044474850-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4044474850-2">%{</span><span class="ss">output</span><span class="p">:</span><span class="w"> </span><span class="n">state</span><span class="o">.</span><span class="n">output</span><span class="p">,</span><span class="w"> </span><span class="ss">input</span><span class="p">:</span><span class="w"> </span><span class="n">state</span><span class="o">.</span><span class="n">input</span><span class="p" data-group-id="4044474850-2">}</span><span class="p" data-group-id="4044474850-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Processor</span><span class="o">.</span><span class="n">run</span><span class="p" data-group-id="4044474850-3">(</span><span class="n">processor</span><span class="p">,</span><span class="w"> </span><span class="n">input</span><span class="p" data-group-id="4044474850-3">)</span></code></pre><h3 id="module-build-a-processor" class="section-heading">
   <a href="#module-build-a-processor" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Build a processor
 </h3>
 <p>A processor is an in memory function, compiled from a description
 called &quot;Blueprint&quot;. The procedure to obtain a blueprint is described
 in the &quot;Blueprint edition&quot; and &quot;Blueprint export/import&quot; sections below.</p><p>The compilation from a blueprint to a processor is made using the
-<code class="inline">Processor.compile_blueprint/1</code> function:</p><pre><code class="makeup elixir"><span class="p" data-group-id="2172940937-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">processor</span><span class="p" data-group-id="2172940937-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Processor</span><span class="o">.</span><span class="n">compile_blueprint</span><span class="p" data-group-id="2172940937-2">(</span><span class="n">blueprint</span><span class="p" data-group-id="2172940937-2">)</span></code></pre><h2 id="module-blueprint" class="section-heading">
+<code class="inline">Processor.compile_blueprint/1</code> function:</p><pre><code class="makeup elixir"><span class="p" data-group-id="2973598953-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">processor</span><span class="p" data-group-id="2973598953-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Processor</span><span class="o">.</span><span class="n">compile_blueprint</span><span class="p" data-group-id="2973598953-2">(</span><span class="n">blueprint</span><span class="p" data-group-id="2973598953-2">)</span></code></pre><h2 id="module-blueprint" class="section-heading">
   <a href="#module-blueprint" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Blueprint
 </h2>
@@ -120,8 +120,8 @@ It has the following composition:</p><pre><code class="makeup elixir"><span clas
     </span><span class="mi">0</span><span class="o">..</span><span class="n">n</span><span class="w">           </span><span class="mi">0</span><span class="o">..</span><span class="n">n</span><span class="w">
       </span><span class="o">|</span><span class="w">             </span><span class="o">|</span><span class="w">
 </span><span class="nc">Variables</span><span class="w">         </span><span class="nc">Deductions</span><span class="w">
-</span><span class="p" data-group-id="1152010637-1">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">output</span><span class="w">      </span><span class="o">|</span><span class="w">
-</span><span class="n">intermediate</span><span class="p" data-group-id="1152010637-1">)</span><span class="w">      </span><span class="mi">0</span><span class="o">..</span><span class="n">n</span><span class="w">
+</span><span class="p" data-group-id="6417275638-1">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">output</span><span class="w">      </span><span class="o">|</span><span class="w">
+</span><span class="n">intermediate</span><span class="p" data-group-id="6417275638-1">)</span><span class="w">      </span><span class="mi">0</span><span class="o">..</span><span class="n">n</span><span class="w">
                     </span><span class="o">|</span><span class="w">
                 </span><span class="bp">_</span><span class="w"> </span><span class="nc">Branches</span><span class="w"> </span><span class="bp">_</span><span class="w">
                </span><span class="o">|</span><span class="w">            </span><span class="o">|</span><span class="w">
@@ -320,6 +320,15 @@ TODO describe attributes</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#load_blueprint_inactive_publications/1">load_blueprint_inactive_publications(query)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Load inactive publications</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#load_blueprint_publications/1">load_blueprint_publications(query)</a>
 
   </div>
@@ -416,7 +425,7 @@ Functions
     </a>
     <h1 class="signature">change_blueprint(blueprint, attrs \\ %{})</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L233" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L238" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -439,7 +448,7 @@ Only root attributes are supported (no variables or deductions)</p>
     </a>
     <h1 class="signature">compile_blueprint(blueprint)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L277" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L282" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -461,7 +470,7 @@ Only root attributes are supported (no variables or deductions)</p>
     </a>
     <h1 class="signature">create_blueprint(workspace, attrs)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L222" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L227" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -484,7 +493,7 @@ TODO describe attributes</p>
     </a>
     <h1 class="signature">create_variable(parent, attrs)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L243" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L248" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -506,7 +515,7 @@ TODO describe attributes</p>
     </a>
     <h1 class="signature">delete_blueprint(blueprint)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L227" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L232" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -528,7 +537,7 @@ TODO describe attributes</p>
     </a>
     <h1 class="signature">delete_variable(var)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L253" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L258" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -594,7 +603,7 @@ TODO describe attributes</p>
     </a>
     <h1 class="signature">flush_processor(processor)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L312" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L317" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -686,7 +695,7 @@ TODO describe attributes</p>
     </a>
     <h1 class="signature">list_compiled_blueprint_modules()</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L317" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L322" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -743,6 +752,28 @@ TODO describe attributes</p>
 <p>Load deductions and arrange them, load_blueprint_variables MUST be called first</p>
   </section>
 </section>
+<section class="detail" id="load_blueprint_inactive_publications/1">
+
+  <div class="detail-header">
+    <a href="#load_blueprint_inactive_publications/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">load_blueprint_inactive_publications(query)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L216" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Load inactive publications</p>
+  </section>
+</section>
 <section class="detail" id="load_blueprint_publications/1">
 
   <div class="detail-header">
@@ -752,7 +783,7 @@ TODO describe attributes</p>
     </a>
     <h1 class="signature">load_blueprint_publications(query)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L216" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L221" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -796,7 +827,7 @@ TODO describe attributes</p>
     </a>
     <h1 class="signature">move_variable(var, new_parent)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L258" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L263" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -820,7 +851,7 @@ TODO describe attributes</p>
     </a>
     <h1 class="signature">run(processor, input, env \\ %{})</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L297" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L302" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -842,7 +873,7 @@ TODO describe attributes</p>
     </a>
     <h1 class="signature">serialize_blueprint(blueprint)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L263" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L268" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -864,7 +895,7 @@ TODO describe attributes</p>
     </a>
     <h1 class="signature">update_blueprint(blueprint, attrs)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L238" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L243" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -886,7 +917,7 @@ TODO describe attributes</p>
     </a>
     <h1 class="signature">update_blueprint_from_file(blueprint, path)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L270" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L275" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -908,7 +939,7 @@ TODO describe attributes</p>
     </a>
     <h1 class="signature">update_variable(var, attrs)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L248" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L253" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
