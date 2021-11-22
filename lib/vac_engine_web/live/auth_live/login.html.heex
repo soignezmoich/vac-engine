@@ -1,10 +1,14 @@
 <.flex_center>
-  <%= cond do %>
-  <% not @connected -> %>
+  <%= case @step do %>
+  <% :loading -> %>
     <.text_card title="Connecting" text="Please wait while the page is connecting."/>
-  <% @success -> %>
+  <% :success -> %>
     <.loader_card title="Login successful" text="Application loading in progress"/>
-  <% true -> %>
+  <% :login_form -> %>
     <.login_form changeset={@changeset} show_password={@show_password} />
+  <% :totp_setup -> %>
+    <.totp_setup_form svg={@totp_svg} error={@totp_error} />
+  <% :totp_check -> %>
+    <.totp_check_form error={@totp_error} />
   <% end %>
 </.flex_center>

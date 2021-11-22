@@ -47,6 +47,23 @@
             confirm: true
       ) %>
     </div>
+    <%= if @user.totp_secret do %>
+      <div>Reset TOTP (user will be prompted on next login)</div>
+      <.button
+            class="btn-sm mr-4"
+            id="reset_totp"
+            click="reset_totp"
+            label="Reset TOTP"
+            confirm />
+    <% else %>
+      <div>User TOTP is NOT active.</div>
+    <% end %>
+  <% else %>
+    <%= if @user.totp_secret do %>
+      <div>User TOTP is active.</div>
+    <% else %>
+      <div>User TOTP is NOT active.</div>
+    <% end %>
   <% end %>
 
   <h2 class="font-bold text-lg mb-4 mt-6">Profile</h2>

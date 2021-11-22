@@ -109,4 +109,15 @@ defmodule VacEngine.Account.Users do
     User.changeset(data, attrs)
     |> Repo.update()
   end
+
+  def gen_totp(user) do
+    secret = NimbleTOTP.secret()
+
+    url =
+      NimbleTOTP.otpauth_uri("VacEngine:#{user.email}", secret,
+        issuer: "VacEngine"
+      )
+
+    {url, secret}
+  end
 end

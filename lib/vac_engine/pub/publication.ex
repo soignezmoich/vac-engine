@@ -9,7 +9,6 @@ defmodule VacEngine.Pub.Publication do
   alias VacEngine.Account.Workspace
   alias VacEngine.Pub.Portal
   alias VacEngine.Processor.Blueprint
-  alias VacEngine.Pub.Publication
 
   schema "publications" do
     timestamps(type: :utc_datetime)

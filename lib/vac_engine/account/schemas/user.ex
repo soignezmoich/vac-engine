@@ -14,7 +14,7 @@ defmodule VacEngine.Account.User do
     field(:email, :string)
     field(:phone, :string)
     field(:encrypted_password, :string)
-    field(:totp_secret, :string)
+    field(:totp_secret, :binary)
 
     belongs_to(:role, Role)
 
@@ -27,7 +27,14 @@ defmodule VacEngine.Account.User do
   @doc false
   def changeset(user, attrs \\ %{}) do
     user
-    |> cast(attrs, [:name, :description, :phone, :password, :email])
+    |> cast(attrs, [
+      :name,
+      :description,
+      :phone,
+      :password,
+      :email,
+      :totp_secret
+    ])
     |> encrypt_password()
     |> validate_required([:name, :encrypted_password, :email])
     |> validate_length(:password, min: 8, max: 1024)

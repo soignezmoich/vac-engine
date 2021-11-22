@@ -82,6 +82,20 @@ defmodule VacEngineWeb.UserLive.Edit do
 
   @impl true
   def handle_event(
+        "reset_totp",
+        _,
+        %{assigns: %{user: user}} = socket
+      ) do
+    not_myself!(socket, user)
+    can!(socket, :manage, :users)
+
+    {:ok, _user} = Account.update_user(user, %{totp_secret: nil})
+
+    {:noreply, socket |> reload_user}
+  end
+
+  @impl true
+  def handle_event(
         "hide_generated_password",
         _,
         socket

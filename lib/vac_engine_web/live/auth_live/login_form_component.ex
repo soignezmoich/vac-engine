@@ -10,8 +10,8 @@ defmodule VacEngineWeb.AuthLive.LoginFormComponent do
         for={@changeset}
         id="login_form"
         phx-throttle="100"
-        phx-change="validate"
-        phx-submit="login"
+        phx-change="login_validate"
+        phx-submit="login_submit"
         class="flex flex-col w-full">
         <.login_label f={f} field={:email} name="Email" />
         <.email_field f={f} />
@@ -19,6 +19,76 @@ defmodule VacEngineWeb.AuthLive.LoginFormComponent do
         <.password_field f={f} visible={@show_password} />
         <.submit_button />
       </.form>
+    </div>
+    """
+  end
+
+  def totp_check_form(assigns) do
+    ~H"""
+    <div class="bg-white border p-2 flex flex-col max-w-md">
+      <h1 class="font-bold text-2xl text-center mb-4">TOTP check</h1>
+      <div class="p-2 text-center font-bold">
+        Enter your 6 digits code below
+      </div>
+      <.form
+        let={f}
+        for={:totp}
+        id="totp_code_form"
+        phx-change="totp_validate"
+        phx-submit="totp_validate"
+        class="flex flex-col w-full items-center">
+        <%= text_input f, :code,
+            class: "code-fld mx-8",
+            autocomplete: "off",
+            phx_hook: "focusOnMount"
+        %>
+
+        <div class="flex h-8">
+          <%= if @error do %>
+            <div class="text-red-600 font-bold my-1">Code is invalid</div>
+          <% end %>
+        </div>
+      </.form>
+    </div>
+    """
+  end
+
+  def totp_setup_form(assigns) do
+    ~H"""
+    <div class="bg-white border p-2 flex flex-col max-w-md">
+      <h1 class="font-bold text-2xl text-center mb-4">TOTP setup</h1>
+      <div class="text-sm p-2">
+        Your account TOTP setup is not complete. To finalize the TOTP setup,
+        please scan the QR code below with your authenticator app and enter the
+        provided code below.
+      </div>
+      <div class="flex justify-center my-8">
+        <%= raw @svg %>
+      </div>
+      <div class="p-2 text-center font-bold">
+        Enter the provided 6 digits code below
+      </div>
+      <.form
+        let={f}
+        for={:totp}
+        id="totp_code_form"
+        phx-change="totp_validate"
+        phx-submit="totp_validate"
+        class="flex flex-col w-full items-center">
+
+        <%= text_input f, :code,
+            class: "code-fld mx-8",
+            autocomplete: "off",
+            phx_hook: "focusOnMount"
+        %>
+
+        <%= if @error do %>
+          <div class="text-red-600 font-bold mt-1">Code is invalid</div>
+        <% end %>
+      </.form>
+      <button class="btn-sm mt-8 self-center" phx-click="totp_skip">
+        Skip for now
+      </button>
     </div>
     """
   end

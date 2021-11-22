@@ -231,7 +231,13 @@ defmodule VacEngine.MixProject do
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
 
       # EX Docs generation
-      {:ex_doc, "~> 0.24", only: :dev, runtime: false}
+      {:ex_doc, "~> 0.24", only: :dev, runtime: false},
+
+      # TOTP
+      {:nimble_totp, "~> 0.1.0"},
+
+      # Generate QR code
+      {:eqrcode, "~> 0.1.10"}
     ]
   end
 

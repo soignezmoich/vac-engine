@@ -86,6 +86,21 @@ svg * {
   }
 }
 
+.code-fld {
+  @apply
+    px-2 py-1
+    text-3xl text-center
+    border shadow-inner
+    bg-blue-50 border-blue-600 text-black;
+
+  font-variant-numeric: tabular-nums lining-nums;
+  width: 8em;
+
+  &:focus {
+    @apply outline-blue border-blue-400;
+  }
+}
+
 .pseudo-txt-fld {
   cursor:text
 }

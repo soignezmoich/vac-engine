@@ -279,9 +279,16 @@ defmodule VacEngine.Account do
   defdelegate change_user(data, attrs \\ %{}), to: Users
 
   @doc """
-  Update user with attributes
+  Update user with attributes. This will cast all user attributes and should
+  only be called from an admin context.
   """
   defdelegate update_user(data, attrs), to: Users
+
+  @doc """
+  Generate a new TOTP url for the given user.
+  Return a `{url, secret}` tuple.
+  """
+  defdelegate gen_totp(user), to: Users
 
   alias VacEngine.Account.Sessions
 

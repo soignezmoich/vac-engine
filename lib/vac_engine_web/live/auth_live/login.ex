@@ -31,12 +31,18 @@ defmodule VacEngineWeb.AuthLive.Login do
 
   @impl true
   def mount(_params, session, socket) do
+    step =
+      if connected?(socket) do
+        :login_form
+      else
+        :loading
+      end
+
     {:ok,
      assign(socket,
-       connected: connected?(socket),
        changeset: LoginForm.changeset(),
        next_url: Map.get(session, "login_next_url", "/"),
-       success: false,
+       step: step,
        show_password: false
      )}
   end
@@ -48,7 +54,7 @@ defmodule VacEngineWeb.AuthLive.Login do
 
   @impl true
   def handle_event(
-        "validate",
+        "login_validate",
         %{"login_form" => attrs},
         socket
       ) do
@@ -61,7 +67,7 @@ defmodule VacEngineWeb.AuthLive.Login do
 
   @impl true
   def handle_event(
-        "login",
+        "login_submit",
         %{"login_form" => attrs},
         socket
       ) do
@@ -70,7 +76,6 @@ defmodule VacEngineWeb.AuthLive.Login do
     |> Ecto.Changeset.apply_action(:insert)
     |> case do
       {:ok, data} ->
-        LoginForm.changeset(attrs)
         check_user(data, socket)
 
       {:error, changeset} ->
@@ -84,6 +89,36 @@ defmodule VacEngineWeb.AuthLive.Login do
   end
 
   @impl true
+  def handle_event(
+        "totp_validate",
+        %{"totp" => %{"code" => code}},
+        %{assigns: %{user: user}} = socket
+      ) do
+    secret = user.totp_secret || socket.assigns.totp_secret
+
+    if String.length(code) == 6 do
+      if NimbleTOTP.valid?(secret, code) do
+        {:ok, user} = Account.update_user(user, %{totp_secret: secret})
+
+        {:noreply, login_success(user, socket)}
+      else
+        {:noreply, assign(socket, totp_error: true)}
+      end
+    else
+      {:noreply, assign(socket, totp_error: false)}
+    end
+  end
+
+  @impl true
+  def handle_event(
+        "totp_skip",
+        _,
+        socket
+      ) do
+    {:noreply, login_success(socket.assigns.user, socket)}
+  end
+
+  @impl true
   def handle_info({:redirect_to, url}, socket) do
     {:noreply, redirect(socket, to: url)}
   end
@@ -91,23 +126,22 @@ defmodule VacEngineWeb.AuthLive.Login do
   defp check_user(%{email: email, password: password} = data, socket) do
     Account.check_user(email, password)
     |> case do
-      {:ok, user} ->
-        token =
-          Phoenix.Token.sign(
-            VacEngineWeb.Endpoint,
-            "login_token",
-            {user.id, socket.assigns.next_url}
-          )
+      {:ok, %{totp_secret: nil} = user} ->
+        {url, secret} = Account.gen_totp(user)
+        svg = url |> EQRCode.encode() |> EQRCode.svg(width: 400)
 
-        url = Routes.login_path(socket, :login, token)
+        {:noreply,
+         assign(socket,
+           step: :totp_setup,
+           user: user,
+           totp_svg: svg,
+           totp_error: false,
+           totp_secret: secret
+         )}
 
-        Process.send_after(
-          self(),
-          {:redirect_to, url},
-          Application.get_env(:vac_engine, :login_delay)
-        )
-
-        {:noreply, assign(socket, success: true)}
+      {:ok, %{totp_secret: _secret} = user} ->
+        {:noreply,
+         assign(socket, step: :totp_check, user: user, totp_error: false)}
 
       _ ->
         {:error, changeset} =
@@ -116,5 +150,24 @@ defmodule VacEngineWeb.AuthLive.Login do
 
         {:noreply, assign(socket, changeset: changeset)}
     end
+  end
+
+  defp login_success(user, socket) do
+    token =
+      Phoenix.Token.sign(
+        VacEngineWeb.Endpoint,
+        "login_token",
+        {user.id, socket.assigns.next_url}
+      )
+
+    url = Routes.login_path(socket, :login, token)
+
+    Process.send_after(
+      self(),
+      {:redirect_to, url},
+      Application.get_env(:vac_engine, :login_delay)
+    )
+
+    assign(socket, step: :success)
   end
 end
