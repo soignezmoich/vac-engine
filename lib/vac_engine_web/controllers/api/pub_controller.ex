@@ -42,7 +42,8 @@ defmodule VacEngineWeb.Api.PubController do
 
     %{
       api_key: api_key,
-      portal_id: portal_id
+      portal_id: portal_id,
+      env: Map.get(params, "env", %{})
     }
     |> Pub.info_cached()
     |> case do
