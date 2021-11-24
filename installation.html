@@ -5,9 +5,9 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.25.5">
-    <meta name="project" content="Vac Engine v1.0.2">
+    <meta name="project" content="Vac Engine v1.0.3">
 
-    <title>Installation — Vac Engine v1.0.2</title>
+    <title>Installation — Vac Engine v1.0.3</title>
     <link rel="stylesheet" href="dist/elixir-d1506dba1db7cdc5483e.css" />
 
     <script src="dist/sidebar_items-c8d15bf04c.js"></script>
@@ -58,7 +58,7 @@
 Vac Engine
       </a>
       <strong class="sidebar-projectVersion">
-        v1.0.2
+        v1.0.3
       </strong>
     </div>
 
@@ -115,14 +115,14 @@ available on the websites the different softwares.</p><h4>erlang and rebar3</h4>
   <a href="#compile-time-environment-variables" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Compile time environment variables
 </h3>
-<p>Must be available on the machine that compiles the application.</p><ul><li><code class="inline">SESSION_SIGNING_SALT</code></li><li><code class="inline">SESSION_ENCRYPTION_SALT</code></li><li><code class="inline">SESSION_KEY</code></li><li><code class="inline">LIVE_VIEW_SALT</code></li></ul><p>All the environment variables above are mandatory. They must be available on the
+<p>Must be available on the machine that compiles the application.</p><ul><li><code class="inline">SESSION_SIGNING_SALT</code></li><li><code class="inline">SESSION_ENCRYPTION_SALT</code></li><li><code class="inline">SESSION_KEY</code></li><li><code class="inline">LIVE_VIEW_SALT</code></li><li><code class="inline">FORCE_SSL</code></li><li><code class="inline">REMOTE_IP_HEADER</code></li></ul><p>All the environment variables above are mandatory. They must be available on the
 system both:</p><ul><li>when compiling (i.e. when executing &quot;make release&quot;) or</li><li>when starting the dev server (i.e. when executing &quot;make server&quot;)</li></ul><h3 id="run-time-environment-variables" class="section-heading">
   <a href="#run-time-environment-variables" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Run time environment variables
 </h3>
 <p>Must be available on the machine that runs the application. The variables are
-partly different for production and development.</p><h4>Production</h4><ul><li><code class="inline">DATABASE_URL</code></li><li><code class="inline">HOST</code></li><li><code class="inline">PORT</code></li><li><code class="inline">SECRET_KEY_BASE</code></li><li><code class="inline">POOL_SIZE</code> ¹</li><li><code class="inline">ADDRESS</code> ²</li><li><code class="inline">SSL_KEY_PATH</code> ³</li><li><code class="inline">SSL_CERT_PATH</code> ³</li></ul><ol><li>Optional, defaults to 10. </li><li>Optional, defaults to <code class="inline">::0</code> (all IPv6 and IPv4 interfaces). </li><li>Optional, only necessary if the application is supposed to terminate SSL
-connections.</li></ol><h4>Development</h4><ul><li><code class="inline">DATABASE_URL</code></li><li><code class="inline">DATABASE_TEST_URL</code> ¹</li><li><code class="inline">NO_DEBUG_LOG</code> ²</li></ul><ol><li>Only necessary to run tests. </li><li>Optional, prevents debug log output.</li></ol><h3 id="session_signing_salt" class="section-heading">
+partly different for production and development.</p><h4>Production</h4><ul><li><code class="inline">DATABASE_URL</code></li><li><code class="inline">HOST</code></li><li><code class="inline">PORT</code></li><li><code class="inline">SECRET_KEY_BASE</code></li><li><code class="inline">POOL_SIZE</code> ¹</li><li><code class="inline">ADDRESS</code> ²</li><li><code class="inline">SSL_KEY_PATH</code> ³</li><li><code class="inline">SSL_CERT_PATH</code> ³</li><li><code class="inline">FORCE_SSL</code> ⁴</li><li><code class="inline">REMOTE_IP_HEADER</code> ⁴</li></ul><ol><li>Optional, defaults to 10.</li><li>Optional, defaults to <code class="inline">::0</code> (all IPv6 and IPv4 interfaces).</li><li>Optional, only necessary if the application is supposed to terminate SSL
+connections.</li><li>Optional.</li></ol><h4>Development</h4><ul><li><code class="inline">DATABASE_URL</code></li><li><code class="inline">DATABASE_TEST_URL</code> ¹</li><li><code class="inline">NO_DEBUG_LOG</code> ²</li></ul><ol><li>Only necessary to run tests.</li><li>Optional, prevents debug log output.</li></ol><h3 id="session_signing_salt" class="section-heading">
   <a href="#session_signing_salt" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   <code class="inline">SESSION_SIGNING_SALT</code>
 </h3>
@@ -138,7 +138,18 @@ connections.</li></ol><h4>Development</h4><ul><li><code class="inline">DATABASE_
   <a href="#live_view_salt" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   <code class="inline">LIVE_VIEW_SALT</code>
 </h3>
-<p>This is the live view salt signing salt. This is a salt and not a secret.</p><p>Must be a random string between 8 and 32 characters long.</p><p>This is a compile time variable.</p><h3 id="database_url" class="section-heading">
+<p>This is the live view salt signing salt. This is a salt and not a secret.</p><p>Must be a random string between 8 and 32 characters long.</p><p>This is a compile time variable.</p><h3 id="force_ssl" class="section-heading">
+  <a href="#force_ssl" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <code class="inline">FORCE_SSL</code>
+</h3>
+<p>If set to <code class="inline">FORWARDED</code> force SSL is enabled and the <code class="inline">X-Forwarded-Proto</code> header is
+required. If set to <code class="inline">FORCE</code> SSL is forced (non HTTP are redirected to HTTPS).</p><h3 id="remote_ip_header" class="section-heading">
+  <a href="#remote_ip_header" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <code class="inline">REMOTE_IP_HEADER</code>
+</h3>
+<p>If the app is behind a proxy, set this header to either <code class="inline">X-Forwarded-For</code>,
+<code class="inline">X-Real-Ip</code>, or <code class="inline">X-Client-Ip</code>. This will tell the App to read the client ip from
+this header. Do not set if not behind a proxy.</p><h3 id="database_url" class="section-heading">
   <a href="#database_url" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   <code class="inline">DATABASE_URL</code>
 </h3>
@@ -243,10 +254,10 @@ Deployment
 
         <p>
           Find it on Hex:
-          <a href="https://hex.pm/packages/vac_engine/1.0.2" class="line footer-hex-package">Package</a>
-          <a href="https://preview.hex.pm/preview/vac_engine/1.0.2" class="line">Preview</a>
+          <a href="https://hex.pm/packages/vac_engine/1.0.3" class="line footer-hex-package">Package</a>
+          <a href="https://preview.hex.pm/preview/vac_engine/1.0.3" class="line">Preview</a>
 
-            <a href="https://preview.hex.pm/preview/vac_engine/1.0.2/show/INSTALLATION.md">(current file)</a>
+            <a href="https://preview.hex.pm/preview/vac_engine/1.0.3/show/INSTALLATION.md">(current file)</a>
 
         </p>
 
