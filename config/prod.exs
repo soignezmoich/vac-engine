@@ -8,7 +8,6 @@ config :vac_engine, VacEngineWeb.Endpoint,
   session_signing_salt: System.fetch_env!("SESSION_SIGNING_SALT"),
   session_encryption_salt: System.fetch_env!("SESSION_ENCRYPTION_SALT"),
   session_key: System.fetch_env!("SESSION_KEY"),
-  force_ssl: [hsts: true, rewrite_on: [:x_forwarded_proto]],
   live_view: [
     signing_salt: System.fetch_env!("LIVE_VIEW_SALT")
   ]
@@ -18,3 +17,24 @@ config :logger, level: :info
 
 # To display a loading spinner for a minimal time, and also protect from DoS
 config :vac_engine, login_delay: 2000
+
+case System.get_env("FORCE_SSL") do
+  "FORWARDED" ->
+    config :vac_engine, VacEngineWeb.Endpoint,
+      force_ssl: [hsts: true, rewrite_on: [:x_forwarded_proto]]
+
+  "FORCE" ->
+    config :vac_engine, VacEngineWeb.Endpoint, force_ssl: [hsts: true]
+
+  _ ->
+    nil
+end
+
+remote_ip_header =
+  System.get_env("REMOTE_IP_HEADER", nil)
+  |> case do
+    nil -> nil
+    s -> String.downcase(s)
+  end
+
+config :vac_engine, remote_ip_header: remote_ip_header

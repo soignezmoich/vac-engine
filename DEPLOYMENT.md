@@ -56,14 +56,15 @@ Two configurations are possible:
   application listener will be on HTTP on the given `PORT`.
 - Configure `SSL_KEY_PATH` and `SSL_CERT_PATH` and the application
   will terminate SSL itself, `PORT` must be 443.
+- `FORCE_SSL` can be `FORWARDED` or `FORCED`
 
 ### Reverse proxy
 
 If you use a reverse proxy, you must pass the following headers:
 
-- `X-Real-IP`
-- `X-Forwarded-For`
-- `X-Forwarded-Proto`
+- `X-Real-IP` or  `X-Forwarded-For` or `X-Client-Ip` and set `REMOTE_IP_HEADER`
+  to the name of the used header (compile time)
+- `X-Forwarded-Proto` and set `FORCE_SSL` to `FORWARDED`
 
 Example Nginx configuration:
 

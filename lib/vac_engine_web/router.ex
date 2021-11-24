@@ -1,8 +1,13 @@
 defmodule VacEngineWeb.Router do
   use VacEngineWeb, :router
 
+  @remote_ip_header Application.compile_env(:vac_engine, :remote_ip_header)
+
   pipeline :browser do
-    plug(RemoteIp)
+    if @remote_ip_header do
+      plug(RemoteIp, headers: [@remote_ip_header])
+    end
+
     plug(:accepts, ["html"])
     plug(:fetch_session)
     plug(:fetch_live_flash)
@@ -14,7 +19,10 @@ defmodule VacEngineWeb.Router do
   end
 
   pipeline :api do
-    plug(RemoteIp)
+    if @remote_ip_header do
+      plug(RemoteIp, headers: [@remote_ip_header])
+    end
+
     plug(:accepts, ["json"])
     plug(:require_api_key)
   end

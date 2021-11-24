@@ -73,6 +73,8 @@ Must be available on the machine that compiles the application.
 - `SESSION_ENCRYPTION_SALT`
 - `SESSION_KEY`
 - `LIVE_VIEW_SALT`
+- `FORCE_SSL`
+- `REMOTE_IP_HEADER`
 
 All the environment variables above are mandatory. They must be available on the
 system both:
@@ -95,11 +97,14 @@ partly different for production and development.
 - `ADDRESS` ²
 - `SSL_KEY_PATH` ³
 - `SSL_CERT_PATH` ³
+- `FORCE_SSL` ⁴
+- `REMOTE_IP_HEADER` ⁴
 
- 1. Optional, defaults to 10. 
- 2. Optional, defaults to `::0` (all IPv6 and IPv4 interfaces). 
+ 1. Optional, defaults to 10.
+ 2. Optional, defaults to `::0` (all IPv6 and IPv4 interfaces).
  3. Optional, only necessary if the application is supposed to terminate SSL
  connections.
+ 4. Optional.
 
 #### Development
 
@@ -107,7 +112,7 @@ partly different for production and development.
 - `DATABASE_TEST_URL` ¹
 - `NO_DEBUG_LOG` ²
 
- 1. Only necessary to run tests. 
+ 1. Only necessary to run tests.
  2. Optional, prevents debug log output.
 
 
@@ -143,6 +148,18 @@ This is the live view salt signing salt. This is a salt and not a secret.
 Must be a random string between 8 and 32 characters long.
 
 This is a compile time variable.
+
+### `FORCE_SSL`
+
+If set to `FORWARDED` force SSL is enabled and the `X-Forwarded-Proto` header is
+required. If set to `FORCE` SSL is forced (non HTTP are redirected to HTTPS).
+
+### `REMOTE_IP_HEADER`
+
+If the app is behind a proxy, set this header to either `X-Forwarded-For`,
+`X-Real-Ip`, or `X-Client-Ip`. This will tell the App to read the client ip from
+this header. Do not set if not behind a proxy.
+
 
 ### `DATABASE_URL`
 
