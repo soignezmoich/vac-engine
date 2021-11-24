@@ -314,7 +314,7 @@ defmodule VacEngine.Pub do
     args
     |> Cache.find_processor()
     |> case do
-      {:ok, processor} ->
+      {:ok, processor, _env} ->
         {:ok, processor.info}
 
       {:error, msg} ->

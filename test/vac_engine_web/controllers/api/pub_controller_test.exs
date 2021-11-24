@@ -122,4 +122,28 @@ defmodule VacEngineWeb.Api.PubControllerTest do
 
     :ok = Pub.bust_cache()
   end
+
+  @tag blueprint_name: :nested_test
+  test "GET /api/p/info", %{
+    conn: conn,
+    api_token: api_token,
+    portal_id: portal_id
+  } do
+    Cases.cases()
+    |> Enum.filter(fn cs -> is_nil(Map.get(cs, :error)) end)
+    |> Enum.each(fn
+      %{blueprint: :nested_test} = cas ->
+        conn =
+          conn
+          |> put_req_header("authorization", "Bearer #{api_token.secret}")
+          |> get("/api/p/#{portal_id}/info")
+
+        assert json_response(conn, 200)
+
+      _ ->
+        nil
+    end)
+
+    :ok = Pub.bust_cache()
+  end
 end
