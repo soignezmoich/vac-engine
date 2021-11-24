@@ -132,7 +132,7 @@ defmodule VacEngineWeb.Api.PubControllerTest do
     Cases.cases()
     |> Enum.filter(fn cs -> is_nil(Map.get(cs, :error)) end)
     |> Enum.each(fn
-      %{blueprint: :nested_test} = cas ->
+      %{blueprint: :nested_test} = _cas ->
         conn =
           conn
           |> put_req_header("authorization", "Bearer #{api_token.secret}")
