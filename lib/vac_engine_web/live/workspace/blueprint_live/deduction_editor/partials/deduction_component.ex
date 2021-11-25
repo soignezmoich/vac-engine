@@ -63,14 +63,24 @@ defmodule VacEngineWeb.Editor.DeductionComponent do
     |> Map.get(:assignments)
     |> List.first()
 
-
-
-
-
-
     ~H"""
-      <div>
-        <%= variable %> = <Cell.render is_condition={false} cell={cell} parent_path={[]} index={0} row_index={0} />
+      <div class="my-2">
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <%= variable %> =
+              </td>
+              <Cell.render
+              is_condition={false}
+              cell={cell}
+              parent_path={@renderable.path ++ ["branches", 0, "assignments", 0]}
+              index={0}
+              row_index={0}
+              selection_path={@selection_path} />
+            </tr>
+          </tbody>
+        </table>
       </div>
     """
   end
