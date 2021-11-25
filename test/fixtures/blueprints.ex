@@ -357,6 +357,35 @@ defmodule Fixtures.Blueprints do
     }
   end
 
+  blueprint(:nil_default_test) do
+    %{
+      variables: [
+        %{name: :a0, type: :string, mapping: :in_optional},
+        %{name: :b0, type: :integer, mapping: :out}
+      ],
+      deductions: [
+        %{
+          branches: [
+            %{
+              conditions: [
+                %{expression: quote(do: neq(@a0, "hello"))}
+              ],
+              assignments: [
+                %{target: :b0, expression: 20}
+              ]
+            },
+            %{
+              conditions: [],
+              assignments: [
+                %{target: :b0, expression: 10}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  end
+
   blueprint(:empty_test) do
     %{
       variables: [],
