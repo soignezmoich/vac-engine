@@ -20,9 +20,8 @@ defmodule VacEngineWeb.Editor.CellComponent do
 
     ~H"""
     <td class={@renderable.cell_style} phx-value-path={@renderable.dot_path} phx-click={"select_cell"}>
-      <%= @renderable.value %>
+      <%= @renderable.value %><%= if (@renderable.type == "operator") do %>(<%= @renderable.args |> Enum.join(", ") %>)<% end %>
       &nbsp;
-      <%= @renderable.args |> Enum.join(", ") %>
       <%= @renderable.description %>
     </td>
     """
