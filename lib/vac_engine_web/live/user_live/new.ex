@@ -51,10 +51,10 @@ defmodule VacEngineWeb.UserLive.New do
 
     Account.create_user(params)
     |> case do
-      {:ok, _result} ->
+      {:ok, user} ->
         {:noreply,
          socket
-         |> push_redirect(to: Routes.user_path(socket, :index))}
+         |> push_redirect(to: Routes.user_path(socket, :edit, user))}
 
       {:error, changeset} ->
         {:noreply, assign(socket, changeset: changeset)}
