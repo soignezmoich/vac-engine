@@ -150,7 +150,7 @@ defmodule VacEngineWeb.HeaderComponent do
     """
   end
 
-  defp admin_element(%{role: nil} = assigns) do
+  defp admin_element(%{role: _} = assigns) do
     ~H""
   end
 
