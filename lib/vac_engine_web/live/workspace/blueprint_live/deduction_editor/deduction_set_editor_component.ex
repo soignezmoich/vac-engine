@@ -3,15 +3,15 @@ defmodule VacEngineWeb.Editor.DeductionSetEditorComponent do
   import VacEngineWeb.Editor.DeductionActionGroupComponent
   import VacEngineWeb.Editor.ExpressionEditorComponent
 
-
   alias VacEngineWeb.Editor.DeductionListComponent, as: DeductionList
 
   @impl true
   def update(assigns, socket) do
-    {:ok, assign(socket,
-      deductions: assigns.deductions,
-      selection_path: nil
-    )}
+    {:ok,
+     assign(socket,
+       deductions: assigns.deductions,
+       selection_path: nil
+     )}
   end
 
   @impl true

@@ -7,18 +7,16 @@ defmodule VacEngineWeb.Editor.VariableComponent do
     assigns =
       assign(
         assigns,
-        path: assigns.path,
         renderable:
           build_renderable(
             assigns.variable,
-            assigns.path,
             assigns.even,
             assigns.selection_path
           )
       )
 
     ~H"""
-    <tr id={@path}
+    <tr id={@variable.path}
       class={"#{@renderable.row_class}"}
       phx-value-path={@renderable.dot_path}
       phx-click={"select_variable"}
@@ -42,11 +40,9 @@ defmodule VacEngineWeb.Editor.VariableComponent do
     """
   end
 
-  def build_renderable(variable, path, even, selection_path) do
+  def build_renderable(variable, even, selection_path) do
     indentation =
-      path
-      # remove root of the path until variable tree
-      |> Enum.drop(2)
+      variable.path
       # remove variable name
       |> Enum.drop(-1)
       # turn the variable parents into indentation
@@ -67,7 +63,7 @@ defmodule VacEngineWeb.Editor.VariableComponent do
       end
       |> Enum.join(", ")
 
-    dot_path = path |> Enum.join(".")
+    dot_path = variable.path |> Enum.join(".")
 
     selected = "bg-pink-600 text-white"
 
@@ -88,7 +84,7 @@ defmodule VacEngineWeb.Editor.VariableComponent do
     unselected = "#{unselected_color} #{unselected_opacity}"
 
     row_class =
-      if selection_path == dot_path do
+      if selection_path == variable.path do
         selected
       else
         unselected

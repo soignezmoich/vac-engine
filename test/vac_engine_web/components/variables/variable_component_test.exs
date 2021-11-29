@@ -7,7 +7,7 @@ defmodule VacEngine.Editor.VariableComponentTest do
   # Name property
 
   @variable %Variable{name: "age"}
-  @path ["variables", "input", "age"]
+  @path ["age"]
   @expected_name "age"
   @even true
   @selection_path nil
@@ -27,7 +27,7 @@ defmodule VacEngine.Editor.VariableComponentTest do
   # Type property
 
   @variable %Variable{type: :integer}
-  @path ["variables", "input", "age"]
+  @path ["age"]
   @expected_type :integer
 
   test "'build_renderable' should build proper type" do
@@ -45,7 +45,7 @@ defmodule VacEngine.Editor.VariableComponentTest do
   # Required property
 
   @variable %Variable{mapping: nil}
-  @path ["variables", "input", "age"]
+  @path ["age"]
   @expected_required ""
 
   test "'build_renderable' should not mark required if mapping==nil" do
@@ -61,7 +61,7 @@ defmodule VacEngine.Editor.VariableComponentTest do
   end
 
   @variable %Variable{mapping: :none}
-  @path ["variables", "input", "age"]
+  @path ["age"]
   @expected_required ""
 
   test "'build_renderable' should not mark required if mapping==none" do
@@ -77,7 +77,7 @@ defmodule VacEngine.Editor.VariableComponentTest do
   end
 
   @variable %Variable{mapping: :out}
-  @path ["variables", "input", "age"]
+  @path ["age"]
   @expected_required ""
 
   test "'build_renderable' should not mark required if mapping==out" do
@@ -93,7 +93,7 @@ defmodule VacEngine.Editor.VariableComponentTest do
   end
 
   @variable %Variable{mapping: :in_optional}
-  @path ["variables", "input", "age"]
+  @path ["age"]
   @expected_required ""
 
   test "'build_renderable' should not mark required if mapping==in_optional" do
@@ -109,7 +109,7 @@ defmodule VacEngine.Editor.VariableComponentTest do
   end
 
   @variable %Variable{mapping: :in_required}
-  @path ["variables", "input", "age"]
+  @path ["age"]
   @expected_required "*"
 
   test "'build_renderable' should not mark required if mapping==in_required" do
@@ -131,7 +131,7 @@ defmodule VacEngine.Editor.VariableComponentTest do
   }
 
   @expected_enum "Bill, Bob"
-  @path ["variables", "input", "name"]
+  @path ["name"]
 
   test "'build_renderable' should build proper enum string" do
     renderable =
@@ -149,7 +149,7 @@ defmodule VacEngine.Editor.VariableComponentTest do
 
   @variable %Variable{}
 
-  @path ["variables", "input", "parent1", "parent2", "name"]
+  @path ["parent1", "parent2", "name"]
 
   @expected_indentation "- - - - "
 
@@ -167,7 +167,7 @@ defmodule VacEngine.Editor.VariableComponentTest do
 
   @variable %Variable{}
 
-  @path ["variables", "input", "name"]
+  @path ["name"]
 
   @expected_indentation ""
 
