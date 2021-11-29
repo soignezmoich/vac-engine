@@ -1,6 +1,9 @@
 defmodule VacEngineWeb.Editor.VariableSetEditorComponent do
   use VacEngineWeb, :live_component
 
+  import VacEngineWeb.Editor.VariableActionGroupComponent
+  import VacEngineWeb.Editor.VariableInspectorComponent
+
   alias VacEngineWeb.Editor.VariableListComponent, as: VariableList
 
   @impl true

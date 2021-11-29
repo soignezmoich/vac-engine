@@ -1,5 +1,8 @@
 defmodule VacEngineWeb.Editor.DeductionSetEditorComponent do
   use VacEngineWeb, :live_component
+  import VacEngineWeb.Editor.DeductionActionGroupComponent
+  import VacEngineWeb.Editor.ExpressionEditorComponent
+
 
   alias VacEngineWeb.Editor.DeductionListComponent, as: DeductionList
 
