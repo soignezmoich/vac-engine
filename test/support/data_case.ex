@@ -31,6 +31,13 @@ defmodule VacEngine.DataCase do
   setup tags do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(VacEngine.Repo)
 
+    VacEngine.Repo.query("select setval('workspaces_id_seq',
+      (select last_value from workspaces_id_seq) + #{:rand.uniform(500)});")
+    VacEngine.Repo.query("select setval('portals_id_seq',
+      (select last_value from portals_id_seq) + #{:rand.uniform(100)});")
+    VacEngine.Repo.query("select setval('blueprints_id_seq',
+      (select last_value from blueprints_id_seq) + #{:rand.uniform(50)});")
+
     unless tags[:async] do
       Ecto.Adapters.SQL.Sandbox.mode(VacEngine.Repo, {:shared, self()})
     end
