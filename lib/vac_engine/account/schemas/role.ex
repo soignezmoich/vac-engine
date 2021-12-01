@@ -8,6 +8,8 @@ defmodule VacEngine.Account.Role do
   alias VacEngine.Account.User
   alias VacEngine.Account.WorkspacePermission
   alias VacEngine.Account.GlobalPermission
+  alias VacEngine.Account.PortalPermission
+  alias VacEngine.Account.BlueprintPermission
   alias VacEngine.Account.Session
   alias VacEngine.Account.AccessToken
 
@@ -17,6 +19,8 @@ defmodule VacEngine.Account.Role do
     belongs_to(:user, User)
     belongs_to(:parent, Role)
     has_many(:workspace_permissions, WorkspacePermission)
+    has_many(:blueprint_permissions, BlueprintPermission)
+    has_many(:portal_permissions, PortalPermission)
     has_one(:global_permission, GlobalPermission)
 
     has_many(:sessions, Session)

@@ -1,4 +1,4 @@
-defmodule VacEngine.Account.BlueprintPermission do
+defmodule VacEngine.Account.PortalPermission do
   @moduledoc false
 
   use Ecto.Schema
@@ -6,34 +6,40 @@ defmodule VacEngine.Account.BlueprintPermission do
   alias Ecto.Changeset
 
   alias VacEngine.Account.Workspace
-  alias VacEngine.Processor.Blueprint
+  alias VacEngine.Pub.Portal
   alias VacEngine.Account.Role
 
-  schema "blueprint_permissions" do
+  schema "portal_permissions" do
     timestamps(type: :utc_datetime)
 
     belongs_to(:workspace, Workspace)
-    belongs_to(:blueprint, Blueprint)
+    belongs_to(:portal, Portal)
     belongs_to(:role, Role)
 
     field(:read, :boolean)
+    field(:run, :boolean)
     field(:write, :boolean)
   end
 
   @doc false
   def changeset(workspace_permission, attrs \\ %{}) do
     workspace_permission
-    |> cast(attrs, [:read, :write])
+    |> cast(attrs, [:read, :run, :write])
     |> validate_required([])
     |> link_flags()
   end
 
   defp link_flags(%Changeset{changes: %{read: false}} = changeset) do
     changeset
-    |> change(%{write: false})
+    |> change(%{write: false, run: false})
   end
 
   defp link_flags(%Changeset{changes: %{write: true}} = changeset) do
+    changeset
+    |> change(%{read: true})
+  end
+
+  defp link_flags(%Changeset{changes: %{run: true}} = changeset) do
     changeset
     |> change(%{read: true})
   end
