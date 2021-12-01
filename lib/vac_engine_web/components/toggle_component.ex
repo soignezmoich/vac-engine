@@ -8,7 +8,7 @@ defmodule VacEngineWeb.ToggleComponent do
     <div class="flex border-cream-200 border cursor-pointer relative select-none"
          id={Map.get(assigns, :id)}
          phx-target={Map.get(assigns, :target)}
-         phx-hook={if Map.has_key?(assigns, :id) do "confirmClick" end}
+         phx-hook={if Map.has_key?(assigns, :id) and Map.get(assigns, :confirm) do "confirmClick" end}
          phx-click={@click}>
       <%= if @value do %>
         <div class="w-10 bg-blue-100"></div>
