@@ -161,4 +161,19 @@ defmodule VacEngine.EctoHelpers do
         {:error, err}
     end
   end
+
+  @doc """
+  Delete all with result wrapping
+  """
+  def delete_all(q) do
+    q
+    |> Repo.delete_all()
+    |> case do
+      {n, _} ->
+        {:ok, n}
+
+      _ ->
+        :error
+    end
+  end
 end
