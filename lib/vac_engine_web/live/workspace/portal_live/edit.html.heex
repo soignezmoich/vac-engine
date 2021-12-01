@@ -51,53 +51,28 @@
     </div>
   <% end %>
 
-  <div class="flex flex-col w-128 mt-8">
-    <%= if @search_blueprint_visible do %>
-      <.form
-        let={f}
-        for={:query}
-        class="w-128 -mt-2"
-        phx-change="search_blueprints"
-        phx-submit="search_blueprints">
 
-        <div class="flex items-end">
-          <div class="flex-grow">
-            <%= label_line_tag f, :query, "Search blueprint" %>
+  <div class="flex flex-col w-128 mt-8">
+    <.live_component
+      id="search_blueprints"
+      module={InlineSearchComponent}
+      results={@blueprint_results}
+      placholder="blueprint name or id"
+      label="Search blueprint"
+      button_label="Change blueprint"
+      action="search_blueprints"
+    >
+      <:result let={br}>
+        <div class="border-b flex items-baseline">
+          <div class="flex-grow py-2 mr-2">
+            #<%= br.id %>: <%= tr(br.name, 32) %>
           </div>
-          <button phx-click="toggle_search_blueprint"
-            class="btn-sm self-start -mt-4">
-            Cancel
+          <button phx-value-id={br.id} phx-click="publish" class="btn">
+            Publish
           </button>
         </div>
-        <div class="flex w-full items-baseline">
-        <%= text_input f, :query, class: "form-fld mb-4 flex-grow",
-            autocomplete: "off",
-            placeholder: "blueprint name or id",
-            phx_debounce: 250, autofocus: true, phx_hook: "focusOnMount" %>
-        </div>
-      </.form>
-      <div class="mb-8">
-        <%= case @blueprint_results do %>
-        <% [_|_] = brs -> %>
-          <%= for br <- brs do %>
-            <div class="border-b flex items-baseline">
-              <div class="flex-grow py-2 mr-2">
-                #<%= br.id %>: <%= tr(br.name, 32) %>
-              </div>
-              <button phx-value-id={br.id} phx-click="publish" class="btn">
-                Publish
-              </button>
-            </div>
-          <% end %>
-        <% _ -> %>
-          <div class="italic">No result</div>
-        <% end %>
-      </div>
-    <% else %>
-      <button phx-click="toggle_search_blueprint" class="btn mb-2 self-start">
-        Change blueprint
-      </button>
-    <% end %>
+      </:result>
+    </.live_component>
     <%= case @portal.publications do %>
     <% [_|_] = pubs -> %>
       <h3 class="font-bold mb-2 mt-4">Publication history</h3>

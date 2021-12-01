@@ -19,7 +19,14 @@ defmodule VacEngine.Account.Sessions do
         r.token == ^token and
           (r.expires_at >
              fragment("timezone('UTC', now())") or is_nil(r.expires_at)),
-      preload: [role: [:global_permission, :workspace_permissions]]
+      preload: [
+        role: [
+          :global_permission,
+          :workspace_permissions,
+          :portal_permissions,
+          :blueprint_permissions
+        ]
+      ]
     )
     |> Repo.one()
     |> case do

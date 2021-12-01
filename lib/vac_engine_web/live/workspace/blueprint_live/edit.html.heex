@@ -28,11 +28,15 @@
         path={["deductions"]}
         selection_path={nil} />
     <% :import -> %>
+      <%= if can?(@role, :write, @blueprint) do %>
       <.live_component
          module={ImportComponent}
          id="import"
          role={@role}
          blueprint={@blueprint} />
+      <% else %>
+        <div>Blueprint is read only.</div>
+      <% end %>
     <% end %>
   </div>
 <% end %>

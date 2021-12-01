@@ -34,6 +34,38 @@ defmodule VacEngineWeb.PermissionHelpers do
   end
 
   def can?(_val, _name, _key), do: false
+  false
+
+  def has?(target, action) do
+    has?(target, action, :global)
+  end
+
+  def has?(%Role{} = role, action, scope) do
+    Account.has?(role, action, scope)
+  end
+
+  def has?(
+        %Phoenix.LiveView.Socket{assigns: %{role_session: %{role: role}}} =
+          _socket,
+        action,
+        scope
+      ) do
+    has?(role, action, scope)
+  end
+
+  def has?(
+        %Phoenix.LiveView.Socket{assigns: %{role: role}} = _socket,
+        action,
+        scope
+      ) do
+    has?(role, action, scope)
+  end
+
+  def has?(%Session{role: role}, action, scope) do
+    has?(role, action, scope)
+  end
+
+  def has?(_val, _name, _key), do: false
 
   def myself?(a, b) do
     role_id(a) == role_id(b)

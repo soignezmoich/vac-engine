@@ -186,14 +186,9 @@ defmodule VacEngine.Processor do
   defdelegate filter_blueprints_by_workspace(query, workspace), to: Blueprints
 
   @doc """
-  Apply search query to a blueprint query
+  Filter accessible blueprints with role
   """
-  defdelegate filter_blueprints_by_query(query, search), to: Blueprints
-
-  @doc """
-  Limit results
-  """
-  defdelegate limit_blueprints(query, limit), to: Blueprints
+  defdelegate filter_accessible_blueprints(query, role), to: Blueprints
 
   @doc """
   Load variables and index them

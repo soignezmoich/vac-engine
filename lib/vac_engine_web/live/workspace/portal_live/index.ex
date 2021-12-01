@@ -11,16 +11,15 @@ defmodule VacEngineWeb.Workspace.PortalLive.Index do
   def mount(
         _params,
         _session,
-        %{assigns: %{workspace: workspace}} = socket
+        %{assigns: %{workspace: workspace, role: role}} = socket
       ) do
-    can!(socket, :publish, workspace)
-
     portals =
       Pub.list_portals(fn query ->
         query
+        |> Pub.filter_portals_by_workspace(workspace)
         |> Pub.load_portal_blueprint()
         |> Pub.load_portal_publications()
-        |> Pub.filter_portals_by_workspace(workspace)
+        |> Pub.filter_accessible_portals(role)
       end)
 
     {:ok, assign(socket, portals: portals)}

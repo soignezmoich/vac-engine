@@ -1,12 +1,10 @@
 defmodule VacEngineWeb.LiveWorkspace do
   import Phoenix.LiveView
-  import VacEngineWeb.PermissionHelpers
 
   def on_mount(:default, %{"workspace_id" => workspace_id}, _session, socket) do
     with {workspace_id, _} <- Integer.parse(workspace_id),
          workspace when not is_nil(workspace) <-
            Enum.find(socket.assigns.workspaces, fn w -> w.id == workspace_id end) do
-      can!(socket, :read, {:workspace, workspace_id})
       {:cont, assign(socket, workspace: workspace)}
     else
       _ ->

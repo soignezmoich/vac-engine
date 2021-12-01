@@ -12,7 +12,7 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.New do
 
   @impl true
   def mount(_params, _session, %{assigns: %{workspace: workspace}} = socket) do
-    can!(socket, :create_blueprint, workspace)
+    can!(socket, :write_blueprints, workspace)
 
     changeset =
       %Blueprint{}
@@ -47,7 +47,7 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.New do
         %{"blueprint" => params},
         %{assigns: %{workspace: workspace}} = socket
       ) do
-    can!(socket, :create_blueprint, workspace)
+    can!(socket, :write_blueprints, workspace)
 
     Processor.create_blueprint(workspace, params)
     |> case do

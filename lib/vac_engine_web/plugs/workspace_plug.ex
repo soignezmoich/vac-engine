@@ -2,13 +2,14 @@ defmodule VacEngineWeb.WorkspacePlug do
   import Plug.Conn
 
   alias VacEngine.Account
+  alias VacEngine.Query
 
   def fetch_workspaces(%{assigns: %{role: role}} = conn, _) do
     workspaces =
       Account.list_workspaces(fn query ->
         query
         |> Account.filter_accessible_workspaces(role)
-        |> Account.order_workspaces_by(:name)
+        |> Query.order_by(:name)
       end)
 
     conn

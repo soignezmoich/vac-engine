@@ -2,8 +2,10 @@ defmodule VacEngineWeb.Workspace.PortalLive.Edit do
   use VacEngineWeb, :live_view
 
   alias VacEngine.Pub
+  alias VacEngine.Query
   alias VacEngine.Pub.Portal
   alias VacEngine.Processor
+  alias VacEngineWeb.InlineSearchComponent
 
   on_mount(VacEngineWeb.LiveRole)
   on_mount(VacEngineWeb.LiveWorkspace)
@@ -22,7 +24,7 @@ defmodule VacEngineWeb.Workspace.PortalLive.Edit do
         |> Pub.load_portal_blueprint()
       end)
 
-    can!(socket, :edit, portal)
+    can!(socket, :write, portal)
 
     changeset =
       portal
@@ -33,8 +35,7 @@ defmodule VacEngineWeb.Workspace.PortalLive.Edit do
      assign(socket,
        portal: portal,
        changeset: changeset,
-       blueprint_results: [],
-       search_blueprint_visible: false
+       blueprint_results: []
      )}
   end
 
@@ -49,7 +50,7 @@ defmodule VacEngineWeb.Workspace.PortalLive.Edit do
         _,
         %{assigns: %{workspace: workspace, portal: portal}} = socket
       ) do
-    can!(socket, :delete, portal)
+    can!(socket, :write, portal)
     {:ok, _} = Pub.delete_portal(portal)
 
     {:noreply,
@@ -80,7 +81,7 @@ defmodule VacEngineWeb.Workspace.PortalLive.Edit do
         %{"portal" => params},
         %{assigns: %{portal: portal}} = socket
       ) do
-    can!(socket, :edit, portal)
+    can!(socket, :write, portal)
 
     Pub.update_portal(portal, params)
     |> case do
@@ -104,37 +105,24 @@ defmodule VacEngineWeb.Workspace.PortalLive.Edit do
 
   @impl true
   def handle_event(
-        "toggle_search_blueprint",
-        _,
-        %{assigns: %{search_blueprint_visible: visibility}} = socket
-      ) do
-    {:noreply,
-     socket
-     |> assign(search_blueprint_visible: !visibility)}
-  end
-
-  @impl true
-  def handle_event(
         "search_blueprints",
         %{"query" => %{"query" => search}},
         %{
           assigns: %{
-            search_blueprint_visible: true,
             workspace: workspace,
             portal: portal
           }
         } = socket
       )
       when is_binary(search) and byte_size(search) > 0 do
-    can!(socket, :edit, portal)
-    can!(socket, :edit, workspace)
+    can!(socket, :write, portal)
 
     results =
       Processor.list_blueprints(fn query ->
         query
         |> Processor.filter_blueprints_by_workspace(workspace)
-        |> Processor.filter_blueprints_by_query(search)
-        |> Processor.limit_blueprints(10)
+        |> Query.filter_by_query(search)
+        |> Query.limit(10)
       end)
 
     {:noreply, assign(socket, blueprint_results: results)}
@@ -156,8 +144,7 @@ defmodule VacEngineWeb.Workspace.PortalLive.Edit do
           }
         } = socket
       ) do
-    can!(socket, :edit, portal)
-    can!(socket, :edit, workspace)
+    can!(socket, :write, portal)
 
     {br_id, ""} = Integer.parse(br_id)
 
@@ -167,7 +154,7 @@ defmodule VacEngineWeb.Workspace.PortalLive.Edit do
         |> Processor.filter_blueprints_by_workspace(workspace)
       end)
 
-    can!(socket, :publish, blueprint)
+    can!(socket, :read, blueprint)
 
     {:ok, _pub} = Pub.publish_blueprint(blueprint, portal)
 
@@ -190,13 +177,12 @@ defmodule VacEngineWeb.Workspace.PortalLive.Edit do
         _,
         %{
           assigns: %{
-            workspace: workspace,
+            workspace: _workspace,
             portal: portal
           }
         } = socket
       ) do
-    can!(socket, :edit, portal)
-    can!(socket, :edit, workspace)
+    can!(socket, :write, portal)
 
     {:ok, _pub} = Pub.unpublish_portal(portal)
 

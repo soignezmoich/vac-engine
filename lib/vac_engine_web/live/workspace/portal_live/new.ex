@@ -10,7 +10,7 @@ defmodule VacEngineWeb.Workspace.PortalLive.New do
 
   @impl true
   def mount(_params, _session, %{assigns: %{workspace: workspace}} = socket) do
-    can!(socket, :create_portal, workspace)
+    can!(socket, :write_portals, workspace)
 
     changeset =
       %Portal{}
@@ -45,7 +45,7 @@ defmodule VacEngineWeb.Workspace.PortalLive.New do
         %{"portal" => params},
         %{assigns: %{workspace: workspace}} = socket
       ) do
-    can!(socket, :create_portal, workspace)
+    can!(socket, :write_portals, workspace)
 
     Pub.create_portal(workspace, params)
     |> case do

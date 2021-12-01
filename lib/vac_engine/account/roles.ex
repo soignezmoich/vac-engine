@@ -7,6 +7,9 @@ defmodule VacEngine.Account.Roles do
   alias VacEngine.Account.Session
   alias VacEngine.Account.Role
   alias VacEngine.Account.GlobalPermission
+  alias VacEngine.Account.WorkspacePermission
+  alias VacEngine.Account.PortalPermission
+  alias VacEngine.Account.BlueprintPermission
   import VacEngine.EctoHelpers, only: [transaction: 2]
   import VacEngine.Pub, only: [bust_api_keys_cache: 0]
   import VacEngine.PipeHelpers
@@ -23,6 +26,40 @@ defmodule VacEngine.Account.Roles do
     |> Repo.get!(id)
   end
 
+  def load_role_permissions(query) do
+    wp_query = from(p in WorkspacePermission, order_by: :id)
+    bp_query = from(p in BlueprintPermission, order_by: :id)
+    pp_query = from(p in PortalPermission, order_by: :id)
+
+    from(r in query,
+      preload: [
+        :global_permission,
+        portal_permissions: ^pp_query,
+        blueprint_permissions: ^bp_query,
+        workspace_permissions: ^wp_query
+      ]
+    )
+  end
+
+  def load_role_permission_scopes(query) do
+    wp_query =
+      from(p in WorkspacePermission, order_by: :id, preload: :workspace)
+
+    bp_query =
+      from(p in BlueprintPermission, order_by: :id, preload: :blueprint)
+
+    pp_query = from(p in PortalPermission, order_by: :id, preload: :portal)
+
+    from(r in query,
+      preload: [
+        :global_permission,
+        portal_permissions: ^pp_query,
+        blueprint_permissions: ^bp_query,
+        workspace_permissions: ^wp_query
+      ]
+    )
+  end
+
   def load_role_sessions(query) do
     sessions_query =
       from(s in Session,
@@ -31,8 +68,6 @@ defmodule VacEngine.Account.Roles do
 
     from(r in query,
       preload: [
-        :global_permission,
-        :workspace_permissions,
         sessions: ^sessions_query
       ]
     )

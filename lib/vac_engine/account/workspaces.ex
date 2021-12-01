@@ -6,6 +6,9 @@ defmodule VacEngine.Account.Workspaces do
   alias VacEngine.Repo
   alias VacEngine.Account.Workspace
   alias VacEngine.Account.Role
+  alias VacEngine.Account.WorkspacePermission
+  alias VacEngine.Account.PortalPermission
+  alias VacEngine.Account.BlueprintPermission
   alias VacEngine.Processor.Blueprint
   alias VacEngine.Pub.Portal
   import VacEngine.EctoHelpers, only: [transaction: 2]
@@ -50,14 +53,30 @@ defmodule VacEngine.Account.Workspaces do
   end
 
   def filter_accessible_workspaces(query, %Role{} = role) do
-    from(w in query,
-      join: p in assoc(w, :permissions),
-      where: p.role_id == ^role.id and p.read == true
-    )
-  end
+    workspace_permissions =
+      from(p in WorkspacePermission,
+        where: p.role_id == ^role.id,
+        select: p.workspace_id
+      )
 
-  def order_workspaces_by(query, key) do
-    from(r in query, order_by: field(r, ^key))
+    portal_permissions =
+      from(p in PortalPermission,
+        where: p.role_id == ^role.id,
+        select: p.workspace_id
+      )
+
+    blueprint_permissions =
+      from(p in BlueprintPermission,
+        where: p.role_id == ^role.id,
+        select: p.workspace_id
+      )
+
+    from(w in query,
+      where:
+        w.id in subquery(workspace_permissions) or
+          w.id in subquery(portal_permissions) or
+          w.id in subquery(blueprint_permissions)
+    )
   end
 
   def create_workspace(attrs) do

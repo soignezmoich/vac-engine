@@ -1,0 +1,19 @@
+<div class={klass("flex items-center justify-center w-full p-2", [
+    {"bg-cream-100", !@has},
+    {"bg-blue-50", @has},
+    {Map.get(assigns, :class), Map.has_key?(assigns, :class)}
+  ])}>
+
+  <%= if not @readonly do %>
+    <.toggle
+        id={@toggle_id}
+        value={@has}
+        click="toggle_permission"
+        target={@myself}
+         />
+  <% else %>
+    <span class="font-bold">
+      <%= format_bool(@has) %>
+    </span>
+  <% end %>
+</div>

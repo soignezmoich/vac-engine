@@ -44,6 +44,163 @@
     <% end %>
   </div>
 
+
+  <%#
+    ----- Super admin permission ----
+  %>
+
+  <h2 class="font-bold text-lg mb-3 mt-6">Permissions</h2>
+  <div class="flex flex-col items-start">
+    <div class="grid grid-cols-2 border items-stretch">
+      <div class="uppercase text-gray-600 p-1 text-center col-start-2 bg-gray-100">
+        All access
+      </div>
+      <div class="font-bold text-gray-600 px-4 text-right flex items-center justify-end">
+        All workspaces
+      </div>
+      <.live_component
+        id="permision_line.global.super_admin"
+        module={PermissionToggleComponent}
+        role={@edited_role}
+        scope={:global}
+        action={:super_admin}
+        />
+    </div>
+  </div>
+
+  <%= if not has?(@edited_role, :super_admin) do %>
+
+  <%#
+    ----- Per workspace permissions ----
+  %>
+
+  <div class="flex flex-col items-start">
+    <h3 class="font-bold mb-3 mt-6">Workspace permissions</h3>
+
+    <.live_component
+      id="search_workspaces"
+      module={InlineSearchComponent}
+      results={@workspace_results}
+      placholder="workspace name or id"
+      label="Search workspace"
+      button_label="Add workspace"
+      action="search_workspaces"
+    >
+      <:result let={ws}>
+        <div class="border-b flex items-baseline">
+          <div class="flex-grow py-2 mr-2">
+            #<%= ws.id %>: <%= tr(ws.name, 32) %>
+          </div>
+          <button phx-value-id={ws.id} phx-click="define_workspace_permission"
+                  class="btn">
+            Define permissions
+          </button>
+        </div>
+      </:result>
+    </.live_component>
+
+    <%= case @edited_role.workspace_permissions do %>
+      <% [_|_] = perms -> %>
+        <div class="grid grid-cols-6 border items-stretch w-128">
+          <div class="uppercase text-sm text-gray-600 p-1 text-center col-start-4 col-span-2 bg-gray-100">
+            Run portals
+          </div>
+          <div class=""></div>
+          <%= for perm <- perms do %>
+            <div class="font-bold text-gray-600 px-4 text-right flex items-center justify-end text-sm col-span-3">
+              #<%= perm.workspace_id %>: <%= tr(perm.workspace.name, 32) %>
+            </div>
+            <.live_component
+              id={"permision_line.ws.#{perm.workspace.id}.run_portals"}
+              class="col-span-2"
+              module={PermissionToggleComponent}
+              role={@edited_role}
+              scope={perm.workspace}
+              action={:run_portals}
+              />
+            <div class="flex justify-center items-center">
+              <.button
+                    class="btn-sm"
+                    id={"delete_workspace_permission_#{perm.id}"}
+                    values={%{id: perm.id}}
+                    click="delete_workspace_permission"
+                    label="Delete"
+                    confirm />
+            </div>
+          <% end %>
+        </div>
+      <% _ -> %>
+        <div>This user has no workspace specific permission yet.</div>
+    <% end %>
+  </div>
+
+  <%#
+    ----- Per portal permissions ----
+  %>
+
+  <div class="flex flex-col items-start">
+    <h3 class="font-bold mb-3 mt-6">Portal permissions</h3>
+
+    <.live_component
+      id="search_portals"
+      module={InlineSearchComponent}
+      results={@portal_results}
+      placholder="portal name or id"
+      label="Search portal"
+      button_label="Add portal"
+      action="search_portals"
+    >
+      <:result let={ws}>
+        <div class="border-b flex items-baseline">
+          <div class="flex-grow py-2 mr-2">
+            #<%= ws.id %>: <%= tr(ws.name, 32) %>
+          </div>
+          <button phx-value-id={ws.id} phx-click="define_portal_permission"
+                  class="btn">
+            Define permissions
+          </button>
+        </div>
+      </:result>
+    </.live_component>
+
+    <%= case @edited_role.portal_permissions do %>
+      <% [_|_] = perms -> %>
+        <div class="grid grid-cols-6 border items-stretch w-128">
+          <div class="uppercase text-sm text-gray-600 p-1 text-center col-start-4 col-span-2 bg-gray-100">
+            Run
+          </div>
+          <div class=""></div>
+          <%= for perm <- perms do %>
+            <div class="font-bold text-gray-600 px-4 text-right flex items-center justify-end text-sm col-span-3">
+              #<%= perm.portal_id %>: <%= tr(perm.portal.name, 32) %>
+            </div>
+            <.live_component
+              id={"permision_line.pr.#{perm.portal.id}.run"}
+              class="col-span-2"
+              module={PermissionToggleComponent}
+              role={@edited_role}
+              scope={perm.portal}
+              action={:run}
+              />
+            <div class="flex justify-center items-center">
+              <.button
+                    class="btn-sm"
+                    id={"delete_portal_permission_#{perm.id}"}
+                    values={%{id: perm.id}}
+                    click="delete_portal_permission"
+                    label="Delete"
+                    confirm />
+            </div>
+          <% end %>
+        </div>
+      <% _ -> %>
+        <div>This user has no portal specific permission yet.</div>
+    <% end %>
+  </div>
+  <% end %>
+
+  <h2 class="font-bold text-lg mb-3 mt-6">Manage API key</h2>
+
   <.button
    class="btn mt-8"
    click="delete"

@@ -1,6 +1,7 @@
 defmodule VacEngineWeb.LiveRole do
   import Phoenix.LiveView
   alias VacEngine.Account
+  alias VacEngine.Query
 
   def on_mount(
         :default,
@@ -29,7 +30,7 @@ defmodule VacEngineWeb.LiveRole do
         Account.list_workspaces(fn query ->
           query
           |> Account.filter_accessible_workspaces(role)
-          |> Account.order_workspaces_by(:name)
+          |> Query.order_by(:name)
         end)
       end)
 

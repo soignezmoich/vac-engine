@@ -1,8 +1,10 @@
 <div class="p-4 w-full max-w-3xl">
-  <%= live_redirect("Create blueprint",
-        to: Routes.workspace_blueprint_path(@socket, :new, @workspace),
-        class: "mb-4 btn-default inline-block"
-      ) %>
+  <%= if can?(@role, :write_blueprints, @workspace) do %>
+    <%= live_redirect("Create blueprint",
+          to: Routes.workspace_blueprint_path(@socket, :new, @workspace),
+          class: "mb-4 btn-default inline-block"
+        ) %>
+  <% end %>
 
   <%= case @blueprints do %>
   <% [_|_] = blueprints -> %>

@@ -2,6 +2,7 @@ defmodule VacEngineWeb.WorkspaceLive.Index do
   use VacEngineWeb, :live_view
 
   alias VacEngine.Account
+  alias VacEngine.Query
 
   on_mount(VacEngineWeb.LiveRole)
   on_mount({VacEngineWeb.LiveLocation, ~w(admin workspace)a})
@@ -16,7 +17,7 @@ defmodule VacEngineWeb.WorkspaceLive.Index do
          Account.list_workspaces(fn query ->
            query
            |> Account.load_workspace_stats()
-           |> Account.order_workspaces_by(:name)
+           |> Query.order_by(:name)
          end)
      )}
   end

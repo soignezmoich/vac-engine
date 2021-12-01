@@ -1,7 +1,7 @@
 defmodule VacEngineWeb.Workspace.BlueprintLive.Edit do
   use VacEngineWeb, :live_view
 
-  import VacEngineWeb.PermissionHelpers, only: [can!: 3]
+  import VacEngineWeb.PermissionHelpers
 
   alias VacEngine.Processor
   alias VacEngineWeb.Workspace.BlueprintLive.SummaryComponent
@@ -17,7 +17,7 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.Edit do
   def mount(%{"blueprint_id" => blueprint_id}, _session, socket) do
     blueprint = get_blueprint(blueprint_id, socket)
 
-    can!(socket, :edit, blueprint)
+    can!(socket, :read, blueprint)
 
     {:ok, assign(socket, blueprint: blueprint)}
   end

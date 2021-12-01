@@ -8,14 +8,16 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.Index do
   on_mount({VacEngineWeb.LiveLocation, ~w(workspace blueprint index)a})
 
   @impl true
-  def mount(_params, _session, socket) do
-    can!(socket, :super_admin, :global)
-    workspace = socket.assigns.workspace
-
+  def mount(
+        _params,
+        _session,
+        %{assigns: %{workspace: workspace, role: role}} = socket
+      ) do
     blueprints =
       Processor.list_blueprints(fn query ->
         query
         |> Processor.filter_blueprints_by_workspace(workspace)
+        |> Processor.filter_accessible_blueprints(role)
         |> Processor.load_blueprint_active_publications()
       end)
 

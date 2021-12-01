@@ -4,6 +4,8 @@ defmodule VacEngine.Account.AccessTokens do
   import Ecto.Query
   alias Ecto.Multi
   alias VacEngine.Repo
+  alias VacEngine.Account
+  alias VacEngine.Pub
   alias VacEngine.Account.AccessToken
   alias VacEngine.Account.Role
   import VacEngine.EctoHelpers, only: [transaction: 2]
@@ -88,5 +90,36 @@ defmodule VacEngine.Account.AccessTokens do
       )
 
     from(r in query, preload: [api_tokens: ^token_query])
+  end
+
+  def list_api_keys() do
+    Account.list_roles(fn query ->
+      query
+      |> Account.filter_active_roles()
+      |> Account.filter_roles_by_type(:api)
+      |> Account.load_api_tokens()
+      |> Account.load_role_permissions()
+    end)
+    |> Enum.map(fn r ->
+      portals = map_portals(r)
+
+      r.api_tokens
+      |> Enum.map(fn t ->
+        %{secret: t.secret, portals: portals}
+      end)
+    end)
+    |> List.flatten()
+  end
+
+  defp map_portals(role) do
+    Pub.list_portals(fn query ->
+      query
+      |> Pub.filter_active_portals()
+      |> Pub.filter_accessible_portals(role)
+    end)
+    |> Enum.map(fn portal ->
+      {portal.id, %{blueprint_id: portal.blueprint_id}}
+    end)
+    |> Map.new()
   end
 end

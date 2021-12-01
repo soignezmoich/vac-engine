@@ -73,8 +73,11 @@ defmodule VacEngine.Pub do
   alias VacEngine.Pub.Portal
   alias VacEngine.Pub.Cache
   alias VacEngine.Pub.Publication
+  alias VacEngine.Account.Role
   alias VacEngine.Processor.Blueprint
   alias VacEngine.Processor
+  alias VacEngine.Account.WorkspacePermission
+  alias VacEngine.Account.PortalPermission
   import VacEngine.PipeHelpers
   import VacEngine.EctoHelpers, only: [transaction: 2]
 
@@ -118,6 +121,32 @@ defmodule VacEngine.Pub do
 
   def filter_portals_by_workspace(query, workspace) do
     from(p in query, where: p.workspace_id == ^workspace.id)
+  end
+
+  def filter_accessible_portals(query, %Role{
+        global_permission: %{super_admin: true}
+      }) do
+    query
+  end
+
+  def filter_accessible_portals(query, role) do
+    workspace_permissions =
+      from(p in WorkspacePermission,
+        where: p.role_id == ^role.id and p.read_portals == true,
+        select: p.workspace_id
+      )
+
+    portal_permissions =
+      from(p in PortalPermission,
+        where: p.role_id == ^role.id and p.read == true,
+        select: p.portal_id
+      )
+
+    from(p in query,
+      where:
+        p.workspace_id in subquery(workspace_permissions) or
+          p.id in subquery(portal_permissions)
+    )
   end
 
   @doc """

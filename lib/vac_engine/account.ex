@@ -149,8 +149,6 @@ defmodule VacEngine.Account do
     no simple editor can influence the behaviour of the api.
   """
 
-  alias VacEngine.Account
-
   alias VacEngine.Account.Permissions
 
   @doc """
@@ -171,12 +169,33 @@ defmodule VacEngine.Account do
   defdelegate revoke_permission(role, action, scope \\ :global),
     to: Permissions
 
+  @doc """
+  Check permission directly without infer
+  """
+  defdelegate has_permission?(role, action, scope \\ :global),
+    to: Permissions
+
+  @doc """
+  Create permissions for scope
+  """
+  defdelegate create_permissions(role, scope), to: Permissions
+
+  @doc """
+  Delete all permissions for scope
+  """
+  defdelegate delete_permissions(role, scope), to: Permissions
+
   alias VacEngine.Account.Can
 
   @doc """
   Check action against role with scope.
   """
   defdelegate can?(role, action, scope \\ :global), to: Can
+
+  @doc """
+  Check action against role with scope.
+  """
+  defdelegate has?(role, action, scope \\ :global), to: Can
 
   alias VacEngine.Account.Workspaces
 
@@ -204,11 +223,6 @@ defmodule VacEngine.Account do
   Load blueprint_count and active_publication_count
   """
   defdelegate load_workspace_stats(query), to: Workspaces
-
-  @doc """
-  Order workspace by key
-  """
-  defdelegate order_workspaces_by(query, key), to: Workspaces
 
   @doc """
   Create a workspace with attributes
@@ -340,9 +354,19 @@ defmodule VacEngine.Account do
   defdelegate filter_active_roles(query), to: Roles
 
   @doc """
-  Load session assoc with all permissions
+  Load session assoc
   """
   defdelegate load_role_sessions(query), to: Roles
+
+  @doc """
+  Load all permission assoc
+  """
+  defdelegate load_role_permissions(query), to: Roles
+
+  @doc """
+  Load all permission assoc with scope (workspace, portal, blueprint)
+  """
+  defdelegate load_role_permission_scopes(query), to: Roles
 
   @doc """
   Create a role with attributes
@@ -418,32 +442,8 @@ defmodule VacEngine.Account do
   """
   defdelegate explode_composite_secret(secret), to: AccessTokens
 
-  alias VacEngine.Pub
-
-  def list_api_keys() do
-    # TODO actually check role portal id permissions
-    portals =
-      Pub.list_portals(fn query ->
-        query
-        |> Pub.filter_active_portals()
-      end)
-      |> Enum.map(fn portal ->
-        {portal.id, %{blueprint_id: portal.blueprint_id}}
-      end)
-      |> Map.new()
-
-    list_roles(fn query ->
-      query
-      |> Account.filter_active_roles()
-      |> Account.filter_roles_by_type(:api)
-      |> Account.load_api_tokens()
-    end)
-    |> Enum.map(fn r ->
-      r.api_tokens
-      |> Enum.map(fn t ->
-        %{secret: t.secret, portals: portals}
-      end)
-    end)
-    |> List.flatten()
-  end
+  @doc """
+  List API keys with portal access for cached API access
+  """
+  defdelegate list_api_keys(), to: AccessTokens
 end

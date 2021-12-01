@@ -43,7 +43,7 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.SummaryComponent do
         %{"blueprint" => params},
         %{assigns: %{blueprint: blueprint}} = socket
       ) do
-    can!(socket, :update, :blueprint)
+    can!(socket, :write, blueprint)
 
     Processor.update_blueprint(blueprint, params)
     |> case do
@@ -76,7 +76,8 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.SummaryComponent do
         %{"portal" => params},
         %{assigns: %{blueprint: blueprint}} = socket
       ) do
-    can!(socket, :publish, blueprint)
+    can!(socket, :write_portals, blueprint.workspace)
+    can!(socket, :write, blueprint)
 
     blueprint
     |> Pub.publish_blueprint(params)
@@ -105,7 +106,7 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.SummaryComponent do
         _,
         %{assigns: %{blueprint: blueprint}} = socket
       ) do
-    can!(socket, :delete, blueprint)
+    can!(socket, :write, blueprint)
 
     {:ok, _} = Processor.delete_blueprint(blueprint)
 

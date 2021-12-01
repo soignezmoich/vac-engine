@@ -7,6 +7,9 @@ defmodule VacEngine.Processor.Blueprints do
   alias VacEngine.Repo
   alias VacEngine.Processor.Blueprint
   alias VacEngine.Account.Workspace
+  alias VacEngine.Account.WorkspacePermission
+  alias VacEngine.Account.Role
+  alias VacEngine.Account.BlueprintPermission
   alias VacEngine.Processor.Variable
   alias VacEngine.Processor.Assignment
   alias VacEngine.Processor.Condition
@@ -38,23 +41,31 @@ defmodule VacEngine.Processor.Blueprints do
     from(b in query, where: b.workspace_id == ^workspace.id)
   end
 
-  def filter_blueprints_by_query(query, search) do
-    Integer.parse(search)
-    |> case do
-      {n, ""} ->
-        from(b in query, where: b.id == ^n)
 
-      _ ->
-        search = "%#{search}%"
-
-        from(b in query,
-          where: ilike(b.name, ^search) or ilike(b.description, ^search)
-        )
-    end
+  def filter_accessible_blueprints(query, %Role{
+        global_permission: %{super_admin: true}
+      }) do
+    query
   end
 
-  def limit_blueprints(query, limit) do
-    from(b in query, limit: ^limit)
+  def filter_accessible_blueprints(query, role) do
+    workspace_permissions =
+      from(p in WorkspacePermission,
+        where: p.role_id == ^role.id and p.read_blueprints == true,
+        select: p.workspace_id
+      )
+
+    blueprint_permissions =
+      from(p in BlueprintPermission,
+        where: p.role_id == ^role.id and p.read == true,
+        select: p.blueprint_id
+      )
+
+    from(b in query,
+      where:
+        b.workspace_id in subquery(workspace_permissions) or
+          b.id in subquery(blueprint_permissions)
+    )
   end
 
   def load_blueprint_active_publications(query) do

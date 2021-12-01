@@ -1,8 +1,10 @@
 <div class="p-4 w-full max-w-3xl">
-  <%= live_redirect("Create portal",
-        to: Routes.workspace_portal_path(@socket, :new, @workspace.id),
-        class: "inline-block mb-4 btn-default"
-      ) %>
+  <%= if can?(@role, :write_portals, @workspace) do %>
+    <%= live_redirect("Create portal",
+          to: Routes.workspace_portal_path(@socket, :new, @workspace.id),
+          class: "inline-block mb-4 btn-default"
+        ) %>
+  <% end %>
   <%= case @portals do %>
   <% [_|_] = portals -> %>
     <%= for p <- portals do %>

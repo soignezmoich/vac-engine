@@ -1,0 +1,43 @@
+<div>
+<%= if @search_visible do %>
+  <.form
+    let={f}
+    for={:query}
+    class="w-128 -mt-2"
+    phx-change={@action}
+    phx-submit={@action}>
+
+    <div class="flex items-end">
+      <div class="flex-grow">
+        <%= label_line_tag f, :query, @label %>
+      </div>
+      <button phx-click="toggle_search"
+              phx-target={@myself}
+        class="btn-sm self-start -mt-4">
+        Cancel
+      </button>
+    </div>
+    <div class="flex w-full items-baseline">
+    <%= text_input f, :query, class: "form-fld mb-4 flex-grow",
+        autocomplete: "off",
+        placeholder: @placholder,
+        phx_debounce: 250, autofocus: true, phx_hook: "focusOnMount" %>
+    </div>
+  </.form>
+  <div class="mb-8">
+    <%= case @results do %>
+    <% [_|_] = results -> %>
+      <%= for r <- results do %>
+        <%= render_slot(@result, r) %>
+      <% end %>
+    <% _ -> %>
+      <div class="italic">No result</div>
+    <% end %>
+  </div>
+<% else %>
+  <button phx-target={@myself}
+          phx-click="toggle_search" class="btn mb-2 self-start">
+    <%= @button_label %>
+  </button>
+<% end %>
+</div>
