@@ -47,7 +47,8 @@ module.exports = {
       },
       width: {
         128: '32rem',
-        192: '48rem'
+        192: '48rem',
+        256: '64rem',
       },
       maxWidth: {
        '2xs': '10rem'
