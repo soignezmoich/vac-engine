@@ -198,20 +198,20 @@ defmodule VacEngineWeb.ApiKeyLive.Edit do
   @impl true
   def handle_event(
         "define_portal_permission",
-        %{"id" => wid},
+        %{"id" => id},
         %{assigns: %{edited_role: edited_role, portal_results: results}} =
           socket
       ) do
     can!(socket, :manage, :api_keys)
 
-    {wid, _} = Integer.parse(wid)
+    {id, _} = Integer.parse(id)
 
     send_update(InlineSearchComponent,
       id: "search_portals",
       search_visible: false
     )
 
-    portal = EnumHelpers.find_by(results, :id, wid)
+    portal = EnumHelpers.find_by(results, :id, id)
 
     {:ok, _perm} = Account.create_permissions(edited_role, portal)
 
