@@ -33,6 +33,14 @@
   </.form>
 
   <h2 class="font-bold text-lg mt-8 mb-4">
+    Export
+  </h2>
+  <%= link("Download JSON",
+        to: Routes.export_path(@socket, :blueprint, @blueprint),
+        class: "btn inline-block"
+      ) %>
+
+  <h2 class="font-bold text-lg mt-8 mb-4">
     Publications
   </h2>
 
