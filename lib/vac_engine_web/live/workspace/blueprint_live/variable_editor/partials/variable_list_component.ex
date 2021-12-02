@@ -2,9 +2,9 @@ defmodule VacEngineWeb.Editor.VariableListComponent do
   use Phoenix.Component
 
   import Elixir.Integer
+  import VacEngine.VariableHelpers
   import VacEngineWeb.IconComponent
 
-  alias VacEngine.Processor.Variable, as: PVariable
   alias VacEngineWeb.Editor.VariableComponent, as: Variable
 
   def render(assigns) do
@@ -31,13 +31,14 @@ defmodule VacEngineWeb.Editor.VariableListComponent do
           </tr>
         </thead>
         <tbody>
-          <%= for {%{path: path, variable: variable}, index}
+          <%= for {variable, index}
                   <- @renderable.input_variables |> Enum.with_index() do %>
             <Variable.render
               variable={variable}
-              path={path}
-            even={is_even(index)}
-            mapping="input" />
+              even={is_even(index)}
+              mapping="input"
+              selection_path={@selection_path}
+            />
         <% end %>
         <tr><td><br/><br/></td></tr>
       </tbody>
@@ -57,13 +58,14 @@ defmodule VacEngineWeb.Editor.VariableListComponent do
       </tr>
       </thead>
       <tbody>
-        <%= for {%{path: path, variable: variable}, index}
+        <%= for {variable, index}
                 <- @renderable.intermediate_variables |> Enum.with_index() do %>
           <Variable.render
             variable={variable}
-            path={path}
             even={is_even(index)}
-            mapping="intermediate" />
+            mapping="intermediate"
+            selection_path={@selection_path}
+          />
         <% end %>
         <tr><td><br/><br/></td></tr>
       </tbody>
@@ -83,13 +85,14 @@ defmodule VacEngineWeb.Editor.VariableListComponent do
       </tr>
       </thead>
       <tbody>
-        <%= for {%{path: path, variable: variable}, index}
+        <%= for {variable, index}
                 <- @renderable.output_variables |> Enum.with_index() do %>
           <Variable.render
             variable={variable}
-            path={path}
             even={is_even(index)}
-            mapping="output" />
+            mapping="output"
+            selection_path={@selection_path}
+          />
         <% end %>
       </tbody>
     </table>
@@ -97,59 +100,14 @@ defmodule VacEngineWeb.Editor.VariableListComponent do
   end
 
   def build_renderable(variables) do
-    input =
-      variables
-      |> Enum.filter(fn variable -> PVariable.input?(variable) end)
-      |> Enum.flat_map(fn variable ->
-        flatten_tree(["input", "variables"], variable)
-      end)
-      |> Enum.map(fn {path, variable} ->
-        %{path: path |> Enum.reverse(), variable: variable}
-      end)
-
-    output =
-      variables
-      |> Enum.filter(fn variable -> PVariable.output?(variable) end)
-      |> Enum.flat_map(fn variable ->
-        flatten_tree(["output", "variables"], variable)
-      end)
-      |> Enum.map(fn {path, variable} ->
-        %{path: path |> Enum.reverse(), variable: variable}
-      end)
-
-    intermediate =
-      variables
-      |> Enum.filter(fn variable ->
-        !PVariable.input?(variable) && !PVariable.output?(variable)
-      end)
-      |> Enum.flat_map(fn variable ->
-        flatten_tree(["intermediate", "variables"], variable)
-      end)
-      |> Enum.map(fn {path, variable} ->
-        %{path: path |> Enum.reverse(), variable: variable}
-      end)
+    input = variables |> flatten_variables("input")
+    output = variables |> flatten_variables("output")
+    intermediate = variables |> flatten_variables("intermediate")
 
     %{
       input_variables: input,
       output_variables: output,
       intermediate_variables: intermediate
     }
-  end
-
-  # Flatten the variable tree as a (reversed) list and add path each variable.
-  defp flatten_tree(parent_path, variable) do
-    current_path = [variable.name | parent_path]
-
-    case variable do
-      %{children: children} ->
-        [
-          {current_path, variable}
-          | children
-            |> Enum.flat_map(fn child -> flatten_tree(current_path, child) end)
-        ]
-
-      _ ->
-        [{current_path, variable}]
-    end
   end
 end

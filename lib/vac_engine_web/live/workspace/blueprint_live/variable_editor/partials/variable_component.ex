@@ -7,14 +7,20 @@ defmodule VacEngineWeb.Editor.VariableComponent do
     assigns =
       assign(
         assigns,
-        path: assigns.path,
-        renderable: build_renderable(assigns.variable, assigns.path)
+        renderable:
+          build_renderable(
+            assigns.variable,
+            assigns.even,
+            assigns.selection_path
+          )
       )
 
     ~H"""
-    <% color = if @mapping == "output" do "bg-blue-200" else "bg-cream-200" end %>
-    <% opacity = if @even do "bg-opacity-30" else "bg-opacity-50" end %>
-    <tr id={@path} class={"#{color} #{opacity}"}>
+    <tr id={@variable.path}
+      class={"#{@renderable.row_class}"}
+      phx-value-path={@renderable.dot_path}
+      phx-click={"select_variable"}
+      phx-target={"#variable_editor"}>
       <td class="px-2">
         <div class="mx-1 whitespace-nowrap">
             <%= @renderable.indentation %><%= @renderable.name %>
@@ -22,7 +28,7 @@ defmodule VacEngineWeb.Editor.VariableComponent do
       </td>
       <td class="px-2">
         <div>
-          <%= @renderable.type %><span class="text-red-500 font-bold"><%= @renderable.required %></span>
+          <%= @renderable.type %><%= @renderable.required %>
         </div>
       </td>
       <td class="px-2">
@@ -34,11 +40,9 @@ defmodule VacEngineWeb.Editor.VariableComponent do
     """
   end
 
-  def build_renderable(variable, path) do
+  def build_renderable(variable, even, selection_path) do
     indentation =
-      path
-      # remove root of the path until variable tree
-      |> Enum.drop(2)
+      variable.path
       # remove variable name
       |> Enum.drop(-1)
       # turn the variable parents into indentation
@@ -59,12 +63,41 @@ defmodule VacEngineWeb.Editor.VariableComponent do
       end
       |> Enum.join(", ")
 
+    dot_path = variable.path |> Enum.join(".")
+
+    selected = "bg-pink-600 text-white"
+
+    unselected_color =
+      if variable.mapping == "output" do
+        "bg-blue-200"
+      else
+        "bg-cream-200"
+      end
+
+    unselected_opacity =
+      if even do
+        "bg-opacity-30"
+      else
+        "bg-opacity-50"
+      end
+
+    unselected = "#{unselected_color} #{unselected_opacity}"
+
+    row_class =
+      if selection_path == variable.path do
+        selected
+      else
+        unselected
+      end
+
     %{
       name: variable.name,
       type: variable.type,
       indentation: indentation,
       required: required,
-      enum: enum
+      enum: enum,
+      row_class: row_class,
+      dot_path: dot_path
     }
   end
 end

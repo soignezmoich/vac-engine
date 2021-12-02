@@ -30,7 +30,7 @@ defmodule VacEngine.Editor.VariableListComponentTest do
   @renderable %{
     input_variables: [
       %{
-        path: ["variables", "input", "in_required"],
+        path: ["in_required"],
         variable: %Variable{
           mapping: :in_required,
           children: [],
@@ -38,7 +38,7 @@ defmodule VacEngine.Editor.VariableListComponentTest do
         }
       },
       %{
-        path: ["variables", "input", "in_optional"],
+        path: ["in_optional"],
         variable: %Variable{
           mapping: :in_optional,
           children: [],
@@ -48,13 +48,13 @@ defmodule VacEngine.Editor.VariableListComponentTest do
     ],
     intermediate_variables: [
       %{
-        path: ["variables", "intermediate", "intermediate"],
+        path: ["intermediate"],
         variable: %Variable{mapping: nil, children: [], name: "intermediate"}
       }
     ],
     output_variables: [
       %{
-        path: ["variables", "output", "out"],
+        path: ["out"],
         variable: %Variable{mapping: :out, children: [], name: "out"}
       }
     ]
@@ -79,7 +79,7 @@ defmodule VacEngine.Editor.VariableListComponentTest do
     intermediate_variables: [],
     output_variables: [
       %{
-        path: ["variables", "output", "out"],
+        path: ["out"],
         variable: %Variable{
           mapping: :out,
           children: [%Variable{mapping: :out, children: [], name: "out_nested"}],
@@ -87,7 +87,7 @@ defmodule VacEngine.Editor.VariableListComponentTest do
         }
       },
       %{
-        path: ["variables", "output", "out", "out_nested"],
+        path: ["out", "out_nested"],
         variable: %Variable{mapping: :out, children: [], name: "out_nested"}
       }
     ]
