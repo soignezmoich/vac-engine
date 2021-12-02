@@ -70,7 +70,7 @@ defmodule VacEngine.VariableHelpers do
   """
   def get_containers(variables, mapping \\ nil) do
     variables
-      |> flatten_variables(mapping)
-      |> Enum.filter(&(&1.type == :map))
+    |> flatten_variables(mapping)
+    |> Enum.filter(&(&1.type == :map))
   end
 end

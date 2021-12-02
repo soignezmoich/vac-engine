@@ -96,8 +96,4 @@ defmodule VacEngineWeb.Editor.VariableInspectorComponent do
     </div>
     """
   end
-
-  defp name_editor do
-
-  end
 end

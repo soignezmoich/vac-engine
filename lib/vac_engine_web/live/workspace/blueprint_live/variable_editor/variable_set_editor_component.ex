@@ -15,10 +15,11 @@ defmodule VacEngineWeb.Editor.VariableSetEditorComponent do
         variables: assigns.variables,
         selection_path: nil,
         selected_variable: nil,
-        map_variables: nil, # maybe compute them here
+        # maybe compute them here
+        map_variables: nil,
         input_containers: [],
         intermediate_containers: [],
-        output_containers: [],
+        output_containers: []
       )
     }
   end
@@ -58,10 +59,9 @@ defmodule VacEngineWeb.Editor.VariableSetEditorComponent do
        selected_variable: selected_variable,
        input_containers: input_containers,
        intermediate_containers: intermediate_containers,
-       output_containers: output_containers,
+       output_containers: output_containers
      })}
   end
-
 
   # defp get_mapping_key(variable) do
 
