@@ -81,6 +81,9 @@ svg * {
   &:focus:not([readonly]) {
     @apply outline-blue border-blue-400;
   }
+  &[readonly] {
+    @apply bg-cream-100 border-cream-600;
+  }
   &[readonly]:focus {
     @apply outline-cream;
   }
