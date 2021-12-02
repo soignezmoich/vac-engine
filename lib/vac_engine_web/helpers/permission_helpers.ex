@@ -13,6 +13,22 @@ defmodule VacEngineWeb.PermissionHelpers do
   end
 
   def can?(
+        %Plug.Conn{assigns: %{role_session: %{role: role}}} = _socket,
+        action,
+        scope
+      ) do
+    can?(role, action, scope)
+  end
+
+  def can?(
+        %Plug.Conn{assigns: %{role: role}} = _socket,
+        action,
+        scope
+      ) do
+    can?(role, action, scope)
+  end
+
+  def can?(
         %Phoenix.LiveView.Socket{assigns: %{role_session: %{role: role}}} =
           _socket,
         action,
@@ -42,6 +58,22 @@ defmodule VacEngineWeb.PermissionHelpers do
 
   def has?(%Role{} = role, action, scope) do
     Account.has?(role, action, scope)
+  end
+
+  def has?(
+        %Plug.Conn{assigns: %{role_session: %{role: role}}} = _socket,
+        action,
+        scope
+      ) do
+    has?(role, action, scope)
+  end
+
+  def has?(
+        %Plug.Conn{assigns: %{role: role}} = _socket,
+        action,
+        scope
+      ) do
+    has?(role, action, scope)
   end
 
   def has?(
