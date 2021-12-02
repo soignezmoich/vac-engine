@@ -4,7 +4,11 @@
       <div class="flex-shrink-0 mx-2">
         <.variable_action_group />
         <div class="h-4" />
-        <.variable_inspector variable={@selected_variable} />
+        <.variable_inspector
+          variable={@selected_variable}
+          input_containers={@input_containers}
+          intermediate_containers={@intermediate_containers}
+          output_containers={@output_containers} />
       </div>
     </div>
     <div class="flex-grow flex flex-col overflow-y-auto">

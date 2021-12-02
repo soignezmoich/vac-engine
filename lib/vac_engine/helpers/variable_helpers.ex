@@ -63,4 +63,14 @@ defmodule VacEngine.VariableHelpers do
 
     get_variable_at(variable.children, traversed_path ++ [next], tail)
   end
+
+  @doc """
+  Get the (flattened) container variables.
+  An optional argument can define a mapping filter.
+  """
+  def get_containers(variables, mapping \\ nil) do
+    variables
+      |> flatten_variables(mapping)
+      |> Enum.filter(&(&1.type == :map))
+  end
 end

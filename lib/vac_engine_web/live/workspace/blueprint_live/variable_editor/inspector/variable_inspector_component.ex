@@ -1,6 +1,8 @@
 defmodule VacEngineWeb.Editor.VariableInspectorComponent do
   use Phoenix.Component
 
+  import VacEngineWeb.ToggleComponent
+
   alias VacEngine.Processor.Variable
 
   def variable_inspector(%{variable: nil} = assigns) do
@@ -26,23 +28,35 @@ defmodule VacEngineWeb.Editor.VariableInspectorComponent do
       <div class="text-sm my-1">
         Container
       </div>
+      <%
+        containers = case {Variable.input?(@variable), Variable.output?(@variable)} do
+          {true, _} -> @input_containers
+          {false, false} -> @intermediate_containers
+          {_, true} -> @output_containers
+        end
+        variable_container_path = @variable.path |> Enum.drop(-1)
+      %>
       <select class="form-fld w-full">
-        <option><%= @variable.path |> Enum.drop(-1) |> Enum.join(".") %></option>
-        <option>root</option>
-        <option>container1</option>
-        <option>container2</option>
-        <option>container1.subcontainer</option>
+        <option value=""><%="<root>"%></option>
+        <%= for container <- containers do %>
+          <% dot_path = container.path |> Enum.join(".") %>
+          <option value={dot_path} selected={variable_container_path == container.path}>
+            <%=  dot_path %>
+          </option>
+        <% end %>
       </select>
       <div class="h-2" />
       <div class="text-sm my-1">
         Type
       </div>
       <select class="form-fld w-full">
-        <option selected={@variable.type == :boolean}>boolean</option>
-        <option selected={@variable.type == :integer}>integer</option>
-        <option selected={@variable.type == :string}>string</option>
-        <option selected={@variable.type == :date}>date</option>
-        <option selected={@variable.type == :map}>map</option>
+        <option value={:boolean} selected={@variable.type == :boolean}>boolean</option>
+        <option value={:integer} selected={@variable.type == :integer}>integer</option>
+        <option value={:number} selected={@variable.type == :number}>number</option>
+        <option value={:string} selected={@variable.type == :string}>string</option>
+        <option value={:date} selected={@variable.type == :date}>date</option>
+        <option value={:datetime} selected={@variable.type == :datetime}>datetime</option>
+        <option value={:map} selected={@variable.type == :map}>map</option>
       </select>
       <div class="h-2" />
       <%= if @variable.type == :string do %>
@@ -62,21 +76,28 @@ defmodule VacEngineWeb.Editor.VariableInspectorComponent do
         </div>
         <div class="h-2" />
       <% end %>
-      <div class="text-sm my-1">
-        Position
-      </div>
-      <select class="form-fld w-full">
-        <option selected={Variable.input?(@variable)}>input</option>
-        <option selected={Variable.output?(@variable)}>output</option>
-        <option selected={!Variable.input?(@variable) && !Variable.output?(@variable)}>intermediate</option>
-      </select>
-      <div class="h-2" />
-      <div class="grid grid-cols-2 gap-1.5 mt-1">
-        <button class="btn">Cancel</button>
-        <button class="btn btn-default">Save</button>
-      </div>
+      <%= if Variable.input?(@variable) do %>
+        <div class="text-sm my-1">
+          Required?
+        </div>
+        <div class="w-20">
+          <.toggle
+            value={Variable.required?(@variable)}
+            click="toggle_required"
+            id={'#{@variable.path |> Enum.join(".")}.toggle_required'}
+          confirm />
+        </div>
+        <div class="h-2" />
+        <div class="grid grid-cols-2 gap-1.5 mt-1">
+          <button class="btn">Cancel</button>
+          <button class="btn btn-default">Save</button>
+        </div>
+      <% end %>
     </div>
-
     """
+  end
+
+  defp name_editor do
+
   end
 end

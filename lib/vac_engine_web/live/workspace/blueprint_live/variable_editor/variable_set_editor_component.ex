@@ -14,7 +14,11 @@ defmodule VacEngineWeb.Editor.VariableSetEditorComponent do
       assign(socket,
         variables: assigns.variables,
         selection_path: nil,
-        selected_variable: nil
+        selected_variable: nil,
+        map_variables: nil, # maybe compute them here
+        input_containers: [],
+        intermediate_containers: [],
+        output_containers: [],
       )
     }
   end
@@ -36,12 +40,34 @@ defmodule VacEngineWeb.Editor.VariableSetEditorComponent do
       socket.assigns.variables
       |> get_variable_at(selection_path)
 
+    input_containers =
+      socket.assigns.variables
+      |> get_containers("input")
+
+    intermediate_containers =
+      socket.assigns.variables
+      |> get_containers("intermediate")
+
+    output_containers =
+      socket.assigns.variables
+      |> get_containers("output")
+
     {:noreply,
      assign(socket, %{
        selection_path: selection_path,
-       selected_variable: selected_variable
+       selected_variable: selected_variable,
+       input_containers: input_containers,
+       intermediate_containers: intermediate_containers,
+       output_containers: output_containers,
      })}
   end
+
+
+  # defp get_mapping_key(variable) do
+
+  #   {input, output} = {input?(variable), output?(variable)}
+
+  # end
 
   # defp get_containers(variable) do
   #   %{
