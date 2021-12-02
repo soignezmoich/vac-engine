@@ -8,14 +8,17 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.Pick do
   on_mount({VacEngineWeb.LiveLocation, ~w(blueprint pick)a})
 
   @impl true
-  def mount(_params, _session, socket) do
-    workspace = socket.assigns.workspace
-
+  def mount(
+        _params,
+        _session,
+        %{assigns: %{workspace: workspace, role: role}} = socket
+      ) do
     blueprints =
       Processor.list_blueprints(fn query ->
         query
         |> Processor.filter_blueprints_by_workspace(workspace)
         |> Processor.load_blueprint_active_publications()
+        |> Processor.filter_accessible_blueprints(role)
       end)
 
     {:ok, assign(socket, blueprints: blueprints)}

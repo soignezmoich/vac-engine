@@ -21,7 +21,11 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.Index do
         |> Processor.load_blueprint_active_publications()
       end)
 
-    {:ok, assign(socket, blueprints: blueprints)}
+    {:ok,
+     assign(socket,
+       blueprints: blueprints,
+       can_read_portals: can?(socket, :read_portals, workspace)
+     )}
   end
 
   @impl true

@@ -6,7 +6,6 @@ defmodule VacEngineWeb.Editor.DeductionComponent do
   alias VacEngineWeb.Editor.CellComponent, as: Cell
 
   def render(assigns) do
-
     %{deduction: deduction, parent_path: parent_path, index: index} = assigns
 
     assigns =
@@ -14,18 +13,14 @@ defmodule VacEngineWeb.Editor.DeductionComponent do
         renderable: build_renderable(deduction, parent_path, index)
       )
 
-
-      if length(assigns.renderable.cond_columns) > 0 do
-        render_full(assigns)
-      else
-        render_short(assigns)
-      end
-
+    if length(assigns.renderable.cond_columns) > 0 do
+      render_full(assigns)
+    else
+      render_short(assigns)
+    end
   end
 
-
   def render_full(assigns) do
-
     ~H"""
     <div class="h-4" />
     <div class="shadow-lg">
@@ -50,21 +45,17 @@ defmodule VacEngineWeb.Editor.DeductionComponent do
   end
 
   def render_short(assigns) do
+    variable =
+      assigns.renderable.assign_columns
+      |> List.first()
+      |> Map.get(:variable)
+      |> Enum.join(".")
 
-    variable = assigns.renderable.assign_columns
-    |> List.first()
-    |> Map.get(:variable)
-    |> Enum.join(".")
-
-    cell = assigns.renderable.branches
-    |> List.first()
-    |> Map.get(:assignments)
-    |> List.first()
-
-
-
-
-
+    cell =
+      assigns.renderable.branches
+      |> List.first()
+      |> Map.get(:assignments)
+      |> List.first()
 
     ~H"""
       <div>

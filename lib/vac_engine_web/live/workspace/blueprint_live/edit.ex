@@ -19,7 +19,11 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.Edit do
 
     can!(socket, :read, blueprint)
 
-    {:ok, assign(socket, blueprint: blueprint)}
+    {:ok,
+     assign(socket,
+       blueprint: blueprint,
+       can_write: can?(socket, :write, blueprint)
+     )}
   end
 
   @impl true

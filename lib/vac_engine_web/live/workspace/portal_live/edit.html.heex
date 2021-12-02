@@ -19,12 +19,17 @@
     phx-submit="update">
 
     <%= label_line_tag f, :name, "Name" %>
-    <%= text_input f, :name, class: "form-fld mb-4", autofocus: true %>
+    <%= text_input f, :name,
+          class: "form-fld mb-4",
+          autofocus: true,
+          readonly: !@can_write %>
 
     <%= label_line_tag f, :description, "Description" %>
-    <%= textarea f, :description, class: "form-fld mb-4" %>
+    <%= textarea f, :description, class: "form-fld mb-4", readonly: !@can_write %>
 
-    <%= submit "Update", class: "btn-default", phx_disable_with: "Update in progress..." %>
+    <%= if @can_write do %>
+      <%= submit "Update", class: "btn-default", phx_disable_with: "Update in progress..." %>
+    <% end  %>
   </.form>
 
   <h2 class="font-bold text-lg mb-4 mt-8">Publication</h2>
@@ -36,8 +41,12 @@
     </div>
   <% br -> %>
     <div>
-      The portal is currently published with blueprint:
-      <div class="font-bold">#<%= br.id %>: <%= tr(br.name, 32) %>.</div>
+      The portal is currently published with blueprint
+      <%= live_redirect("##{br.id}: #{tr(br.name, 32)}",
+          to: Routes.workspace_blueprint_path(@socket, :summary,
+               br.workspace_id, br.id),
+          class: "link font-bold"
+      ) %>.
     </div>
 
     <div class="mt-4">
@@ -51,91 +60,94 @@
     </div>
   <% end %>
 
+  <%= if @can_write do %>
 
-  <div class="flex flex-col w-128 mt-8">
-    <.live_component
-      id="search_blueprints"
-      module={InlineSearchComponent}
-      results={@blueprint_results}
-      placholder="blueprint name or id"
-      label="Search blueprint"
-      button_label="Change blueprint"
-      action="search_blueprints"
-    >
-      <:result let={br}>
-        <div class="border-b flex items-baseline">
-          <div class="flex-grow py-2 mr-2">
-            #<%= br.id %>: <%= tr(br.name, 32) %>
+    <div class="flex flex-col w-128 mt-8">
+      <.live_component
+        id="search_blueprints"
+        module={InlineSearchComponent}
+        results={@blueprint_results}
+        placholder="blueprint name or id"
+        label="Search blueprint"
+        button_label="Change blueprint"
+        action="search_blueprints"
+      >
+        <:result let={br}>
+          <div class="border-b flex items-baseline">
+            <div class="flex-grow py-2 mr-2">
+              #<%= br.id %>: <%= tr(br.name, 32) %>
+            </div>
+            <button phx-value-id={br.id} phx-click="publish" class="btn">
+              Publish
+            </button>
           </div>
-          <button phx-value-id={br.id} phx-click="publish" class="btn">
-            Publish
-          </button>
-        </div>
-      </:result>
-    </.live_component>
-    <%= case @portal.publications do %>
-    <% [_|_] = pubs -> %>
-      <h3 class="font-bold mb-2 mt-4">Publication history</h3>
-      <%= for p <- pubs do %>
-        <div class="flex border-b py-1 ">
-          <div class="flex flex-col flex-grow">
-            <%= if is_nil(p.deactivated_at) do %>
-              <span class="font-bold">Active</span>
-            <% end %>
-            <span class="text-sm">
-              <%= live_redirect("##{p.blueprint.id}: #{tr(p.blueprint.name, 32)}",
-                  to: Routes.workspace_blueprint_path(@socket, :summary,
-                    @workspace, p.blueprint_id),
-                  class: "text-blue-500"
-              ) %>
-            </span>
-            <%= if not is_nil(p.deactivated_at) do %>
-              <span class="italic text-sm">
-              Deactivated
-              <%= format_date(p.deactivated_at) %>
-              </span>
-            <% end %>
-            <%= if is_nil(p.deactivated_at) do %>
+        </:result>
+      </.live_component>
+      <%= case @portal.publications do %>
+      <% [_|_] = pubs -> %>
+        <h3 class="font-bold mb-2 mt-4">Publication history</h3>
+        <%= for p <- pubs do %>
+          <div class="flex border-b py-1 ">
+            <div class="flex flex-col flex-grow">
+              <%= if is_nil(p.deactivated_at) do %>
+                <span class="font-bold">Active</span>
+              <% end %>
               <span class="text-sm">
-                Published
-                <%= format_date(p.activated_at) %>
+                <%= live_redirect("##{p.blueprint.id}: #{tr(p.blueprint.name, 32)}",
+                    to: Routes.workspace_blueprint_path(@socket, :summary,
+                      @workspace, p.blueprint_id),
+                    class: "text-blue-500"
+                ) %>
               </span>
-            <% end %>
+              <%= if not is_nil(p.deactivated_at) do %>
+                <span class="italic text-sm">
+                Deactivated
+                <%= format_date(p.deactivated_at) %>
+                </span>
+              <% end %>
+              <%= if is_nil(p.deactivated_at) do %>
+                <span class="text-sm">
+                  Published
+                  <%= format_date(p.activated_at) %>
+                </span>
+              <% end %>
+            </div>
+            <div class="flex flex-col">
+              <%= if not is_nil(p.deactivated_at) do %>
+                <button class="btn-sm mt-1"
+                        phx-value-id={p.blueprint_id}
+                        phx-click="publish">
+                  Publish
+                </button>
+              <% else %>
+                <.button
+                      class="btn-sm"
+                      click="unpublish"
+                      label="Unpublish"
+                      id={"unpublish-btn-#{p.id}"}
+                      confirm />
+              <% end %>
+            </div>
           </div>
-          <div class="flex flex-col">
-            <%= if not is_nil(p.deactivated_at) do %>
-              <button class="btn-sm mt-1"
-                      phx-value-id={p.blueprint_id}
-                      phx-click="publish">
-                Publish
-              </button>
-            <% else %>
-              <.button
-                    class="btn-sm"
-                    click="unpublish"
-                    label="Unpublish"
-                    id={"unpublish-btn-#{p.id}"}
-                    confirm />
-            <% end %>
-          </div>
+        <% end %>
+      <% _ -> %>
+        <div class="italic">
+          Portal is not published
         </div>
       <% end %>
-    <% _ -> %>
-      <div class="italic">
-        Portal is not published
-      </div>
-    <% end %>
 
-  </div>
+    </div>
 
-  <h2 class="font-bold text-lg mb-4 mt-8">Manage portal</h2>
-  <div class="mt-4">
-    <.button
-          class="btn mr-4"
-          click="delete"
-          label="Delete portal"
-          id="delete-btn"
-          confirm />
-  </div>
+    <h2 class="font-bold text-lg mb-4 mt-8">Manage portal</h2>
+    <div class="mt-4">
+      <.button
+            class="btn mr-4"
+            click="delete"
+            label="Delete portal"
+            id="delete-btn"
+            confirm />
+    </div>
+
+  <% end %>
 
 </div>

@@ -24,7 +24,7 @@ defmodule VacEngineWeb.Workspace.PortalLive.Edit do
         |> Pub.load_portal_blueprint()
       end)
 
-    can!(socket, :write, portal)
+    can!(socket, :read, portal)
 
     changeset =
       portal
@@ -33,6 +33,7 @@ defmodule VacEngineWeb.Workspace.PortalLive.Edit do
 
     {:ok,
      assign(socket,
+       can_write: can?(socket, :write, portal),
        portal: portal,
        changeset: changeset,
        blueprint_results: []

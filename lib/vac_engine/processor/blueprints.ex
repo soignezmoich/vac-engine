@@ -41,7 +41,6 @@ defmodule VacEngine.Processor.Blueprints do
     from(b in query, where: b.workspace_id == ^workspace.id)
   end
 
-
   def filter_accessible_blueprints(query, %Role{
         global_permission: %{super_admin: true}
       }) do

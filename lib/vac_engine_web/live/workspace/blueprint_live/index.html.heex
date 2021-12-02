@@ -16,18 +16,24 @@
           <span class="text-sm">Created <%= format_date(br.inserted_at) %></span>
           <%= case br.active_publications do %>
           <% [_|_] = pubs -> %>
-            <div class="flex items-baseline mt-2 flex-wrap">
-              <div class="text-sm">
-                Publications
+            <div class="flex items-baseline mt-2 flex-wrap text-sm">
+              <div class="mr-2">
+                Published in:
               </div>
-              <%= for p <- pubs do %>
-                <div class="text-sm ml-1 p-1">
-                  <%= live_redirect(p.portal.name,
-                        to: Routes.workspace_portal_path(@socket, :edit,
-                              p.workspace_id, p.portal_id),
-                        class: "link"
-                      ) %>
-                </div>
+              <%= for p <- Enum.intersperse(pubs, :sep) do %>
+                <%= if p == :sep do %>
+                  <div style="padding-right:0.3em">,</div>
+                <% else %>
+                  <%= if @can_read_portals do %>
+                    <%= live_redirect(p.portal.name,
+                          to: Routes.workspace_portal_path(@socket, :edit,
+                                p.workspace_id, p.portal_id),
+                          class: "link"
+                        ) %>
+                  <% else %>
+                    <span><%= p.portal.name %></span>
+                  <% end %>
+                <% end %>
               <% end %>
             </div>
           <% _ -> %>
@@ -45,7 +51,7 @@
       </div>
     <% end %>
   <% _ -> %>
-    <p class="font-bold">No blueprint.</p>
+    <p class="font-bold">No blueprint found or you do not have access to any.</p>
   <% end %>
 
 </div>

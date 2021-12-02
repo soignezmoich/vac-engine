@@ -16,8 +16,11 @@ defmodule VacEngineWeb.Workspace.BlueprintLive.SummaryComponent do
 
     {:ok,
      assign(socket,
+       can_read_portals:
+         can?(socket, :read_portals, assigns.blueprint.workspace),
        changeset: changeset,
        blueprint: assigns.blueprint,
+       can_write: assigns.can_write,
        role: assigns.role,
        portal_changeset: portal_changeset
      )}

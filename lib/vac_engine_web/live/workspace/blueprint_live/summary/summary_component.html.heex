@@ -18,105 +18,121 @@
     phx-submit="update">
 
     <%= label_line_tag f, :name, "Name" %>
-    <%= text_input f, :name, class: "form-fld mb-4", autofocus: true %>
+    <%= text_input f, :name,
+          class: "form-fld mb-4",
+          autofocus: true,
+          readonly: !@can_write %>
 
     <%= label_line_tag f, :description, "Description" %>
-    <%= textarea f, :description, class: "form-fld mb-4" %>
+    <%= textarea f, :description, class: "form-fld mb-4",
+          readonly: !@can_write %>
 
-    <%= submit "Update", class: "btn-default", phx_disable_with: "Update in progress..." %>
+    <%= if @can_write do %>
+      <%= submit "Update", class: "btn-default", phx_disable_with: "Update in progress..." %>
+    <% end %>
   </.form>
 
   <h2 class="font-bold text-lg mt-8 mb-4">
     Publications
   </h2>
-  <.form
-    let={f}
-    for={@portal_changeset}
-    class="w-128"
-    phx-throttle="100"
-    phx-target={@myself}
-    phx-change="validate_portal"
-    phx-submit="publish_new_portal">
 
-    <%= label_line_tag f, :name, "New portal name" %>
-    <div class="flex w-full items-baseline">
-    <%= text_input f, :name, class: "form-fld mb-4 flex-grow mr-2", autofocus: true %>
-    <%= submit "Publish in new portal",
-          class: "btn-default",
-          phx_disable_with: "Publishing in progress..." %>
-    </div>
-  </.form>
+  <%= if @can_write do %>
+    <.form
+      let={f}
+      for={@portal_changeset}
+      class="w-128"
+      phx-throttle="100"
+      phx-target={@myself}
+      phx-change="validate_portal"
+      phx-submit="publish_new_portal">
 
-  <%= case @blueprint.active_publications do %>
-  <% [_|_] = publications -> %>
-    <div class="font-bold mt-8 mb-2">
-      Active publications
-    </div>
-    <%= for p <- publications do %>
-      <%= if is_nil(p.deactivated_at) do %>
-        <div class="border-b flex py-4 w-128">
-          <div class="flex flex-col flex-grow">
-            <span class="font-bold">
-              Portal #<%= p.portal_id %>: <%= p.portal.name %>
-            </span>
-            <span class="text-sm">Published <%= format_date(p.activated_at) %></span>
-          </div>
-          <div class="flex flex-col">
-            <%= live_redirect("Portal details",
-                  to: Routes.workspace_portal_path(@socket, :edit,
-                        p.workspace_id, p.portal_id),
-                  class: "btn-sm"
-                ) %>
-          </div>
-        </div>
-      <% end %>
-    <% end %>
-  <% _ -> %>
+      <%= label_line_tag f, :name, "New portal name" %>
+      <div class="flex w-full items-baseline">
+      <%= text_input f, :name, class: "form-fld mb-4 flex-grow mr-2", autofocus: true %>
+      <%= submit "Publish in new portal",
+            class: "btn-default",
+            phx_disable_with: "Publishing in progress..." %>
+      </div>
+    </.form>
   <% end %>
 
-  <%= case @blueprint.inactive_publications do %>
-  <% [_|_] = publications -> %>
-    <div class="font-bold mt-8 mb-2">
-      Inactive publications
-    </div>
-    <%= for p <- publications do %>
-      <%= if not is_nil(p.deactivated_at) do %>
-        <div class="border-b flex py-4 w-128">
-          <div class="flex flex-col flex-grow">
-            <span class="text-gray-300">
-              Inactive Portal #<%= p.portal_id %>: <%= p.portal.name %>
-            </span>
-            <span class="text-sm italic">Deactivated <%= format_date(p.deactivated_at) %></span>
+    <%= case @blueprint.active_publications do %>
+    <% [_|_] = publications -> %>
+      <div class="font-bold mt-8 mb-2">
+        Active publications
+      </div>
+      <%= for p <- publications do %>
+        <%= if is_nil(p.deactivated_at) do %>
+          <div class="border-b flex py-4 w-128">
+            <div class="flex flex-col flex-grow">
+              <span class="font-bold">
+                Portal #<%= p.portal_id %>: <%= p.portal.name %>
+              </span>
+              <span class="text-sm">Published <%= format_date(p.activated_at) %></span>
+            </div>
+            <div class="flex flex-col">
+              <%= if @can_read_portals do %>
+                <%= live_redirect("Portal details",
+                      to: Routes.workspace_portal_path(@socket, :edit,
+                            p.workspace_id, p.portal_id),
+                      class: "btn-sm"
+                    ) %>
+              <% end %>
+            </div>
           </div>
-          <div class="flex flex-col">
-            <%= live_redirect("Portal details",
-                  to: Routes.workspace_portal_path(@socket, :edit,
-                        p.workspace_id, p.portal_id),
-                  class: "btn-sm"
-                ) %>
-          </div>
-        </div>
+        <% end %>
       <% end %>
+    <% _ -> %>
     <% end %>
-  <% _ -> %>
-  <% end %>
+
+    <%= case @blueprint.inactive_publications do %>
+    <% [_|_] = publications -> %>
+      <div class="font-bold mt-8 mb-2">
+        Inactive publications
+      </div>
+      <%= for p <- publications do %>
+        <%= if not is_nil(p.deactivated_at) do %>
+          <div class="border-b flex py-4 w-128">
+            <div class="flex flex-col flex-grow">
+              <span class="text-gray-300">
+                Inactive Portal #<%= p.portal_id %>: <%= p.portal.name %>
+              </span>
+              <span class="text-sm italic">Deactivated <%= format_date(p.deactivated_at) %></span>
+            </div>
+            <div class="flex flex-col">
+              <%= if @can_read_portals do %>
+                <%= live_redirect("Portal details",
+                      to: Routes.workspace_portal_path(@socket, :edit,
+                            p.workspace_id, p.portal_id),
+                      class: "btn-sm"
+                    ) %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    <% _ -> %>
+    <% end %>
 
 
-  <div class="font-bold text-lg mt-8 mb-4">
-    Manage blueprint
-  </div>
-  <%= case @blueprint.publications do %>
-  <% [_|_] -> %>
-    <div class="italic mt-8 mb-4">
-      Blueprint has publications and cannot be deleted. Delete portals first.
+  <%= if @can_write do %>
+    <div class="font-bold text-lg mt-8 mb-4">
+      Manage blueprint
     </div>
-  <% _ -> %>
-    <.button
-          class="btn mr-4"
-          click="delete"
-          label="Delete"
-          target={@myself}
-          id="delete-btn"
-          confirm />
+    <%= case @blueprint.publications do %>
+    <% [_|_] -> %>
+      <div class="italic mt-8 mb-4">
+        Blueprint has publications and cannot be deleted. Delete portals first.
+      </div>
+    <% _ -> %>
+      <.button
+            class="btn mr-4"
+            click="delete"
+            label="Delete"
+            target={@myself}
+            id="delete-btn"
+            confirm />
+    <% end %>
+
   <% end %>
 </div>
