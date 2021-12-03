@@ -121,16 +121,17 @@ defmodule VacEngine.PermissionTest do
     assert get_ws(user1) == [ws]
     user1 = delete(user1, portal)
     assert get_ws(user1) == []
+    user1 = grant(user1, :read_blueprints, ws2)
+    assert get_ws(user1) == [ws2]
   end
 
   test "per blueprint permissions", %{
     user1: user1,
     workspaces: workspaces,
-    blueprints: blueprints,
-    portals: portals
+    blueprints: blueprints
   } do
     [ws | _] = workspaces
-    [br, br1, br2 | _] = blueprints
+    [br, br1 | _] = blueprints
     assert get_ws(user1) == []
     assert get_bs(user1, ws) == []
     user1 = grant(user1, :read_blueprints, ws)

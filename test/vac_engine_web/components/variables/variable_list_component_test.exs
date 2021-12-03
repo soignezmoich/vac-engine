@@ -1,8 +1,8 @@
-defmodule VacEngine.Editor.VariableListComponentTest do
+defmodule VacEngine.EditorLive.VariableListComponentTest do
   use ExUnit.Case
 
   alias VacEngine.Processor.Variable
-  alias VacEngineWeb.Editor.VariableListComponent
+  alias VacEngineWeb.EditorLive.VariableListComponent
 
   # empty variable list
 
@@ -21,42 +21,52 @@ defmodule VacEngine.Editor.VariableListComponentTest do
   # non empty variable list
 
   @variable_list [
-    %Variable{mapping: :out, children: [], name: "out"},
-    %Variable{mapping: :in_required, children: [], name: "in_required"},
-    %Variable{mapping: :in_optional, children: [], name: "in_optional"},
-    %Variable{mapping: nil, children: [], name: "intermediate"}
+    %Variable{mapping: :out, children: [], name: "out", path: ~w(out)},
+    %Variable{
+      mapping: :in_required,
+      children: [],
+      name: "in_required",
+      path: ~w(in_required)
+    },
+    %Variable{
+      mapping: :in_optional,
+      children: [],
+      name: "in_optional",
+      path: ~w(in_optional)
+    },
+    %Variable{
+      mapping: nil,
+      children: [],
+      name: "intermediate",
+      path: ~w(intermediate)
+    }
   ]
 
   @renderable %{
     input_variables: [
-      %{
-        path: ["in_required"],
-        variable: %Variable{
-          mapping: :in_required,
-          children: [],
-          name: "in_required"
-        }
+      %Variable{
+        mapping: :in_required,
+        children: [],
+        name: "in_required",
+        path: ~w(in_required)
       },
-      %{
-        path: ["in_optional"],
-        variable: %Variable{
-          mapping: :in_optional,
-          children: [],
-          name: "in_optional"
-        }
+      %Variable{
+        mapping: :in_optional,
+        children: [],
+        name: "in_optional",
+        path: ~w(in_optional)
       }
     ],
     intermediate_variables: [
-      %{
-        path: ["intermediate"],
-        variable: %Variable{mapping: nil, children: [], name: "intermediate"}
+      %Variable{
+        mapping: nil,
+        children: [],
+        name: "intermediate",
+        path: ~w(intermediate)
       }
     ],
     output_variables: [
-      %{
-        path: ["out"],
-        variable: %Variable{mapping: :out, children: [], name: "out"}
-      }
+      %Variable{mapping: :out, children: [], name: "out", path: ~w(out)}
     ]
   }
 
@@ -69,8 +79,16 @@ defmodule VacEngine.Editor.VariableListComponentTest do
   @variable_list [
     %Variable{
       mapping: :out,
-      children: [%Variable{mapping: :out, children: [], name: "out_nested"}],
-      name: "out"
+      children: [
+        %Variable{
+          mapping: :out,
+          children: [],
+          name: "out_nested",
+          path: ~w(out out_nested)
+        }
+      ],
+      name: "out",
+      path: ~w(out)
     }
   ]
 
@@ -78,17 +96,24 @@ defmodule VacEngine.Editor.VariableListComponentTest do
     input_variables: [],
     intermediate_variables: [],
     output_variables: [
-      %{
-        path: ["out"],
-        variable: %Variable{
-          mapping: :out,
-          children: [%Variable{mapping: :out, children: [], name: "out_nested"}],
-          name: "out"
-        }
+      %Variable{
+        mapping: :out,
+        children: [
+          %Variable{
+            mapping: :out,
+            children: [],
+            name: "out_nested",
+            path: ~w(out out_nested)
+          }
+        ],
+        name: "out",
+        path: ~w(out)
       },
-      %{
-        path: ["out", "out_nested"],
-        variable: %Variable{mapping: :out, children: [], name: "out_nested"}
+      %Variable{
+        mapping: :out,
+        children: [],
+        name: "out_nested",
+        path: ~w(out out_nested)
       }
     ]
   }

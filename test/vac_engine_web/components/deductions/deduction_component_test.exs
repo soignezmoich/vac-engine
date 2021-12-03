@@ -1,10 +1,10 @@
-defmodule VacEngine.Editor.DeductionComponentTest do
+defmodule VacEngine.EditorLive.DeductionComponentTest do
   use ExUnit.Case
 
   alias VacEngine.Processor.Branch
   alias VacEngine.Processor.Column
   alias VacEngine.Processor.Deduction
-  alias VacEngineWeb.Editor.DeductionComponent
+  alias VacEngineWeb.EditorLive.DeductionComponent
 
   # Branches property
 

@@ -1,0 +1,22 @@
+<div class="relative flex-grow" id="variable_editor">
+  <div class="absolute inset-0 flex min-h-0">
+    <div class="w-64 mr-2 flex flex-col overflow-y-auto mt-3">
+      <div class="flex-shrink-0 mx-2">
+        <.variable_action_group />
+        <div class="h-4" />
+        <.live_component
+              module={VariableInspectorComponent}
+              id="variable_inspector"
+              variables={@variables}
+              variable={@selected_variable} />
+      </div>
+    </div>
+    <div class="flex-grow flex flex-col overflow-y-auto">
+      <div class="flex-shrink text-xs">
+        <VariableList.render
+          variables={@variables}
+          selection_path={@selection_path} />
+      </div>
+    </div>
+  </div>
+</div>

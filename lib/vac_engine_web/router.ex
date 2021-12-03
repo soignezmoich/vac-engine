@@ -48,7 +48,7 @@ defmodule VacEngineWeb.Router do
 
     get("/export/blueprints/:blueprint_id", ExportController, :blueprint)
 
-    scope "/w/:workspace_id", Workspace, as: :workspace do
+    scope "/w/:workspace_id", as: :workspace do
       pipe_through([:fetch_current_workspace])
 
       live("/", DashboardLive.Index, :index, as: :dashboard)

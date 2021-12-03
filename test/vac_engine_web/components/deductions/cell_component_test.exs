@@ -1,9 +1,9 @@
-defmodule VacEngine.Editor.CellComponentTest do
+defmodule VacEngine.EditorLive.CellComponentTest do
   use ExUnit.Case
 
   alias VacEngine.Processor.Assignment
   alias VacEngine.Processor.Condition
-  alias VacEngineWeb.Editor.CellComponent
+  alias VacEngineWeb.EditorLive.CellComponent
 
   # Type property
 
@@ -22,7 +22,8 @@ defmodule VacEngine.Editor.CellComponentTest do
         @cell,
         @parent_path,
         @index,
-        @row_index
+        @row_index,
+        nil
       )
 
     assert renderable |> Map.get(:type) == @expected_type
@@ -39,7 +40,8 @@ defmodule VacEngine.Editor.CellComponentTest do
         @cell,
         @parent_path,
         @index,
-        @row_index
+        @row_index,
+        nil
       )
 
     assert renderable |> Map.get(:type) == @expected_type
@@ -56,7 +58,8 @@ defmodule VacEngine.Editor.CellComponentTest do
         @cell,
         @parent_path,
         @index,
-        @row_index
+        @row_index,
+        nil
       )
 
     assert renderable |> Map.get(:type) == @expected_type
@@ -73,7 +76,8 @@ defmodule VacEngine.Editor.CellComponentTest do
         @cell,
         @parent_path,
         @index,
-        @row_index
+        @row_index,
+        nil
       )
 
     assert renderable |> Map.get(:type) == @expected_type
@@ -90,7 +94,8 @@ defmodule VacEngine.Editor.CellComponentTest do
         @cell,
         @parent_path,
         @index,
-        @row_index
+        @row_index,
+        nil
       )
 
     assert renderable |> Map.get(:type) == @expected_type
@@ -107,7 +112,8 @@ defmodule VacEngine.Editor.CellComponentTest do
         @cell,
         @parent_path,
         @index,
-        @row_index
+        @row_index,
+        nil
       )
 
     assert renderable |> Map.get(:type) == @expected_type
@@ -130,7 +136,8 @@ defmodule VacEngine.Editor.CellComponentTest do
         @cell,
         @parent_path,
         @index,
-        @row_index
+        @row_index,
+        nil
       )
 
     assert renderable |> Map.get(:value) == @expected_value
@@ -147,7 +154,8 @@ defmodule VacEngine.Editor.CellComponentTest do
         @cell,
         @parent_path,
         @index,
-        @row_index
+        @row_index,
+        nil
       )
 
     assert renderable |> Map.get(:value) == @expected_value
@@ -164,7 +172,8 @@ defmodule VacEngine.Editor.CellComponentTest do
         @cell,
         @parent_path,
         @index,
-        @row_index
+        @row_index,
+        nil
       )
 
     assert renderable |> Map.get(:value) == @expected_value
@@ -181,7 +190,8 @@ defmodule VacEngine.Editor.CellComponentTest do
         @cell,
         @parent_path,
         @index,
-        @row_index
+        @row_index,
+        nil
       )
 
     assert renderable |> Map.get(:value) == @expected_value
@@ -198,7 +208,8 @@ defmodule VacEngine.Editor.CellComponentTest do
         @cell,
         @parent_path,
         @index,
-        @row_index
+        @row_index,
+        nil
       )
 
     assert renderable |> Map.get(:value) == @expected_value
@@ -215,7 +226,8 @@ defmodule VacEngine.Editor.CellComponentTest do
         @cell,
         @parent_path,
         @index,
-        @row_index
+        @row_index,
+        nil
       )
 
     assert renderable |> Map.get(:value) == @expected_value
@@ -234,7 +246,8 @@ defmodule VacEngine.Editor.CellComponentTest do
         @cell,
         @parent_path,
         @index,
-        @row_index
+        @row_index,
+        nil
       )
 
     assert renderable |> Map.get(:args) == ["10"]
@@ -252,7 +265,8 @@ defmodule VacEngine.Editor.CellComponentTest do
         @cell,
         @parent_path,
         @index,
-        @row_index
+        @row_index,
+        nil
       )
 
     assert renderable |> Map.get(:args) == ["@bla", "10"]
@@ -269,7 +283,8 @@ defmodule VacEngine.Editor.CellComponentTest do
         @cell,
         @parent_path,
         @index,
-        @row_index
+        @row_index,
+        nil
       )
 
     assert renderable
@@ -286,7 +301,8 @@ defmodule VacEngine.Editor.CellComponentTest do
         @cell,
         @parent_path,
         @index,
-        @row_index
+        @row_index,
+        nil
       )
 
     assert renderable
@@ -309,7 +325,8 @@ defmodule VacEngine.Editor.CellComponentTest do
         @cell,
         @parent_path,
         @index,
-        @row_index
+        @row_index,
+        nil
       )
 
     assert renderable |> Map.get(:dot_path) == @expected_dot_path
@@ -328,7 +345,8 @@ defmodule VacEngine.Editor.CellComponentTest do
         @cell,
         @parent_path,
         @index,
-        @row_index
+        @row_index,
+        nil
       )
 
     assert renderable |> Map.get(:dot_path) == @expected_dot_path
@@ -353,7 +371,8 @@ defmodule VacEngine.Editor.CellComponentTest do
         @cell,
         @parent_path,
         @index,
-        @row_index
+        @row_index,
+        nil
       )
 
     assert renderable |> Map.get(:description) == @expected_description
@@ -376,7 +395,8 @@ defmodule VacEngine.Editor.CellComponentTest do
         @cell,
         @parent_path,
         @index,
-        @row_index
+        @row_index,
+        nil
       )
 
     assert renderable |> Map.get(:description) == @expected_description

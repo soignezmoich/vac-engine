@@ -1,11 +1,11 @@
-defmodule VacEngine.Editor.BranchComponentTest do
+defmodule VacEngine.EditorLive.BranchComponentTest do
   use ExUnit.Case
 
   alias VacEngine.Processor.Assignment
   alias VacEngine.Processor.Branch
   alias VacEngine.Processor.Column
   alias VacEngine.Processor.Condition
-  alias VacEngineWeb.Editor.BranchComponent
+  alias VacEngineWeb.EditorLive.BranchComponent
 
   # Has cond cells? property
 

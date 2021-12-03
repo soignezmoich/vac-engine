@@ -1,8 +1,8 @@
-defmodule VacEngine.Editor.DeductionHeaderComponentTest do
+defmodule VacEngine.EditorLive.DeductionHeaderComponentTest do
   use ExUnit.Case
 
   alias VacEngine.Processor.Column
-  alias VacEngineWeb.Editor.DeductionHeaderComponent
+  alias VacEngineWeb.EditorLive.DeductionHeaderComponent
 
   # Has conds? property
 
