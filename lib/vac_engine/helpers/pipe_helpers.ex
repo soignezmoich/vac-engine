@@ -11,6 +11,13 @@ defmodule VacEngine.PipeHelpers do
   end
 
   @doc """
+  Wrap into tuple pair
+  """
+  def pair(val, res) do
+    {res, val}
+  end
+
+  @doc """
   Tap only if ok tuple
   """
   def tap_ok({:ok, ok_val} = result, fun) do
