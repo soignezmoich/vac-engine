@@ -328,7 +328,7 @@ defmodule VacEngine.Processor.Variable do
     enum = get_field(changeset, :enum)
 
     cond do
-      Meta.enum_type?(type) && is_list(enum) &&
+      Meta.enum_type?(type) && is_list(enum) && Enum.count(enum) > 0 &&
           Enum.all?(enum, fn v ->
             Meta.of_type?(type, v)
           end) ->
