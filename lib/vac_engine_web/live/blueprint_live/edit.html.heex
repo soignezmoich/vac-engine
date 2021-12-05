@@ -38,6 +38,12 @@
       <% else %>
         <div>Blueprint is read only.</div>
       <% end %>
+    <% :simulations -> %>
+      <.live_component
+         module={SimulationEditorComponent}
+         id="simulation_editor"
+         role={@role}
+         blueprint={@blueprint} />
     <% end %>
   </div>
 <% end %>

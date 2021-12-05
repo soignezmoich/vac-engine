@@ -82,6 +82,13 @@ defmodule VacEngineWeb.Router do
         as: :blueprint
       )
 
+      live(
+        "/blueprints/:blueprint_id/simulations",
+        BlueprintLive.Edit,
+        :simulations,
+        as: :blueprint
+      )
+
       live("/portals", PortalLive.Index, :index, as: :portal)
       live("/portals/new", PortalLive.New, :new, as: :portal)
       live("/portals/:portal_id", PortalLive.Edit, :edit, as: :portal)
