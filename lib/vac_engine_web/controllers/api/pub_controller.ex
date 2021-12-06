@@ -50,6 +50,9 @@ defmodule VacEngineWeb.Api.PubController do
       {:ok, info} ->
         render(conn, "info.json", info: info)
 
+      {:error, :not_found} ->
+        {:error, :not_found, "api key or portal not found"}
+
       {:error, msg} ->
         {:error, :bad_request, msg}
 
