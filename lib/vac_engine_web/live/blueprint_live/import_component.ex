@@ -32,7 +32,7 @@ defmodule VacEngineWeb.BlueprintLive.ImportComponent do
       end)
       |> Enum.map(fn
         {:ok, br} = res ->
-          send(self(), {:update_blueprint, br})
+          send(self(), :reload_blueprint)
           res
 
         {:error, err} when is_binary(err) ->

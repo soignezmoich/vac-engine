@@ -19,10 +19,15 @@
       Inspect variable
     </div>
     <hr />
-    <%= label(f, :name, "Variable name", class: "text-sm mt-4 mb-1") %>
+    <%= label(f, :name, "Name", class: "text-sm mt-4 mb-1") %>
     <%= text_input f, :name,
           class: "form-fld w-full text-sm",
           autofocus: true,
+          disabled: !@can_write %>
+    <%= label(f, :description, "Description", class: "text-sm mt-4 mb-1") %>
+    <%= textarea f, :description,
+          class: "form-fld w-full text-sm",
+          style: "height: 5em",
           disabled: !@can_write %>
     <%= label(f, :parent_id, "Container", class: "text-sm mt-4 mb-1") %>
     <%= select(f, :parent_id, @containers, class: "form-fld text-sm",

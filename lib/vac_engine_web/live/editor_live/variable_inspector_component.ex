@@ -12,6 +12,8 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
   alias VacEngineWeb.EditorLive.VariableEditorComponent
   alias VacEngineWeb.EditorLive.VariableListComponent
 
+  import VacEngineWeb.BlueprintLive.Edit, only: [get_blueprint!: 2]
+
   @types ~w( boolean integer number string date datetime map)a
 
   @impl true
@@ -19,6 +21,7 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
     {:ok,
      assign(socket,
        types: @types,
+       variable: nil,
        can_write: false,
        blueprint: nil,
        containers: [],
@@ -29,10 +32,15 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
   end
 
   @impl true
-  def update(
-        assigns,
-        socket
-      ) do
+  def update(%{action: {:select_variable, var}}, socket) do
+    socket
+    |> assign(variable: var)
+    |> set_variable
+    |> ok()
+  end
+
+  @impl true
+  def update(assigns, socket) do
     socket
     |> assign(assigns)
     |> set_variable()
@@ -120,13 +128,9 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
     end
     |> case do
       {:ok, var} ->
-        send_update(VariableEditorComponent,
-          id: "variable_editor",
-          action: {:select_variable, var}
-        )
-
-        send(self(), {:update_blueprint, blueprint})
-        {:noreply, socket}
+        socket
+        |> update_notify_var(var)
+        |> pair(:noreply)
 
       {:error, changeset} ->
         {:noreply, assign(socket, changeset: changeset)}
@@ -171,13 +175,9 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
     |> Repo.transaction()
     |> case do
       {:ok, %{move: var, update: _var}} ->
-        send_update(VariableEditorComponent,
-          id: "variable_editor",
-          action: {:select_variable, var}
-        )
-
-        send(self(), {:update_blueprint, blueprint})
-        {:noreply, socket}
+        socket
+        |> update_notify_var(var)
+        |> pair(:noreply)
 
       {:error, _, changeset, _} ->
         {:noreply, assign(socket, changeset: changeset)}
@@ -214,13 +214,9 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
     Processor.delete_variable(variable)
     |> case do
       {:ok, _var} ->
-        send_update(VariableEditorComponent,
-          id: "variable_editor",
-          action: {:select_variable, nil}
-        )
-
-        send(self(), {:update_blueprint, blueprint})
-        {:noreply, socket}
+        socket
+        |> update_notify_var(nil)
+        |> pair(:noreply)
 
       _error ->
         {:noreply, socket}
@@ -330,6 +326,24 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
       containers: containers(variable, blueprint.variables),
       used?: Processor.variable_used?(variable)
     )
+  end
+
+  defp update_notify_var(%{assigns: %{blueprint: blueprint}} = socket, var) do
+    blueprint = get_blueprint!(blueprint.id, socket)
+    send(self(), {:update_blueprint, blueprint})
+
+    var =
+      case var do
+        nil ->
+          nil
+
+        var ->
+          blueprint.variable_id_index |> Map.get(var.id)
+      end
+
+    socket
+    |> assign(variable: var)
+    |> set_variable
   end
 
   defp update_changeset(

@@ -1,7 +1,8 @@
 defmodule VacEngineWeb.EditorLive.VariableComponent do
   use VacEngineWeb, :live_component
 
-  alias VacEngineWeb.EditorLive.VariableEditorComponent
+  alias VacEngineWeb.EditorLive.VariableInspectorComponent
+  alias VacEngineWeb.EditorLive.VariableListComponent
 
   @impl true
   def update(
@@ -18,8 +19,13 @@ defmodule VacEngineWeb.EditorLive.VariableComponent do
 
   @impl true
   def handle_event("select", _, socket) do
-    send_update(VariableEditorComponent,
-      id: "variable_editor",
+    send_update(VariableListComponent,
+      id: "variable_list",
+      action: {:select_variable, socket.assigns.variable}
+    )
+
+    send_update(VariableInspectorComponent,
+      id: "variable_inspector",
       action: {:select_variable, socket.assigns.variable}
     )
 

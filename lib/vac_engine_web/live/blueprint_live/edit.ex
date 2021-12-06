@@ -16,7 +16,7 @@ defmodule VacEngineWeb.BlueprintLive.Edit do
 
   @impl true
   def mount(%{"blueprint_id" => blueprint_id}, _session, socket) do
-    blueprint = get_blueprint(blueprint_id, socket)
+    blueprint = get_blueprint!(blueprint_id, socket)
 
     can!(socket, :read, blueprint)
 
@@ -35,11 +35,22 @@ defmodule VacEngineWeb.BlueprintLive.Edit do
 
   @impl true
   def handle_info({:update_blueprint, br}, socket) do
-    br = get_blueprint(br.id, socket)
     {:noreply, assign(socket, blueprint: br)}
   end
 
-  defp get_blueprint(id, socket) do
+  @impl true
+  def handle_info(:reload_blueprint, socket) do
+    {:noreply,
+     assign(socket,
+       blueprint:
+         get_blueprint!(
+           socket.assigns.blueprint.id,
+           socket
+         )
+     )}
+  end
+
+  def get_blueprint!(id, socket) do
     if connected?(socket) do
       Processor.get_blueprint!(id, fn query ->
         query

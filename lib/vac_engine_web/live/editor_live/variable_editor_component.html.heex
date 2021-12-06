@@ -9,8 +9,7 @@
               module={VariableInspectorComponent}
               id="variable_inspector"
               blueprint={@blueprint}
-              role={@role}
-              variable={@selected_variable} />
+              role={@role}/>
       </div>
     </div>
     <div class="flex-grow flex flex-col overflow-y-auto">
@@ -18,8 +17,7 @@
         <.live_component
               module={VariableListComponent}
               id="variable_list"
-              blueprint={@blueprint}
-              selected_variable={@selected_variable} />
+              blueprint={@blueprint} />
       </div>
     </div>
   </div>
