@@ -106,14 +106,14 @@ defmodule VacEngine.Account.Roles do
     Multi.new()
     |> Multi.update(:role, change_role(role, attrs))
     |> transaction(:role)
-    |> tap_ok(&bust_api_keys_cache/0)
+    |> tap_ok(&bust_role_cache/1)
   end
 
   def delete_role(%Role{} = role) do
     Multi.new()
     |> Multi.delete(:role, role)
     |> transaction(:role)
-    |> tap_ok(&bust_api_keys_cache/0)
+    |> tap_ok(&bust_role_cache/1)
   end
 
   def activate_role(%Role{} = role) do
@@ -138,6 +138,9 @@ defmodule VacEngine.Account.Roles do
       []
     )
     |> transaction(:role)
-    |> tap_ok(&bust_api_keys_cache/0)
+    |> tap_ok(&bust_role_cache/1)
   end
+
+  def bust_role_cache(%Role{type: :api}), do: bust_api_keys_cache()
+  def bust_role_cache(_), do: nil
 end

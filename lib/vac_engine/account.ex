@@ -394,6 +394,11 @@ defmodule VacEngine.Account do
   defdelegate activate_role(role), to: Roles
 
   @doc """
+  Bust role cache
+  """
+  defdelegate bust_role_cache(role), to: Roles
+
+  @doc """
   Desactivate a role.
 
   Will revoke all sessions.

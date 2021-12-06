@@ -11,7 +11,9 @@ defmodule VacEngine.Account.Permissions do
   alias VacEngine.Account.BlueprintPermission
   alias VacEngine.Processor.Blueprint
   alias VacEngine.Pub.Portal
+  import VacEngine.Account, only: [bust_role_cache: 1]
   import VacEngine.EctoHelpers, only: [transaction: 2, delete_all: 1]
+  import VacEngine.PipeHelpers
 
   def grant_permission(role, action, scope) do
     do_change_permission(role, scope, %{action => true})
@@ -58,6 +60,7 @@ defmodule VacEngine.Account.Permissions do
       GlobalPermission.changeset(perm, bake_toggle(perm, attrs))
     end)
     |> transaction(:update)
+    |> tap_ok(fn _ -> bust_role_cache(role) end)
   end
 
   defp do_change_permission(role, %Workspace{id: wid}, attrs) do
@@ -84,6 +87,7 @@ defmodule VacEngine.Account.Permissions do
       WorkspacePermission.changeset(perm, bake_toggle(perm, attrs))
     end)
     |> transaction(:update)
+    |> tap_ok(fn _ -> bust_role_cache(role) end)
   end
 
   defp do_change_permission(role, %Blueprint{id: bid}, attrs) do
@@ -114,6 +118,7 @@ defmodule VacEngine.Account.Permissions do
       BlueprintPermission.changeset(perm, bake_toggle(perm, attrs))
     end)
     |> transaction(:update)
+    |> tap_ok(fn _ -> bust_role_cache(role) end)
   end
 
   defp do_change_permission(role, %Portal{id: pid}, attrs) do
@@ -144,6 +149,7 @@ defmodule VacEngine.Account.Permissions do
       PortalPermission.changeset(perm, bake_toggle(perm, attrs))
     end)
     |> transaction(:update)
+    |> tap_ok(fn _ -> bust_role_cache(role) end)
   end
 
   defp do_delete_permissions(role, %Workspace{id: wid}) do
@@ -151,6 +157,7 @@ defmodule VacEngine.Account.Permissions do
       where: p.workspace_id == ^wid and p.role_id == ^role.id
     )
     |> delete_all()
+    |> tap_ok(fn _ -> bust_role_cache(role) end)
   end
 
   defp do_delete_permissions(role, %Blueprint{id: bid}) do
@@ -158,6 +165,7 @@ defmodule VacEngine.Account.Permissions do
       where: p.blueprint_id == ^bid and p.role_id == ^role.id
     )
     |> delete_all()
+    |> tap_ok(fn _ -> bust_role_cache(role) end)
   end
 
   defp do_delete_permissions(role, %Portal{id: pid}) do
@@ -165,6 +173,7 @@ defmodule VacEngine.Account.Permissions do
       where: p.portal_id == ^pid and p.role_id == ^role.id
     )
     |> delete_all()
+    |> tap_ok(fn _ -> bust_role_cache(role) end)
   end
 
   def get_permissions(role, :global) do

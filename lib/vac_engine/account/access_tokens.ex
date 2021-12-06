@@ -9,7 +9,7 @@ defmodule VacEngine.Account.AccessTokens do
   alias VacEngine.Account.AccessToken
   alias VacEngine.Account.Role
   import VacEngine.EctoHelpers, only: [transaction: 2]
-  import VacEngine.Pub, only: [bust_api_keys_cache: 0]
+  import VacEngine.Account, only: [bust_role_cache: 1]
   import VacEngine.PipeHelpers
 
   def generate_secret(length \\ 16) do
@@ -68,7 +68,7 @@ defmodule VacEngine.Account.AccessTokens do
       |> AccessToken.changeset()
     end)
     |> transaction(:token)
-    |> tap_ok(&bust_api_keys_cache/0)
+    |> tap_ok(&bust_role_cache/1)
   end
 
   def list_api_tokens(queries \\ & &1) do
@@ -115,7 +115,7 @@ defmodule VacEngine.Account.AccessTokens do
     Pub.list_portals(fn query ->
       query
       |> Pub.filter_active_portals()
-      |> Pub.filter_accessible_portals(role)
+      |> Pub.filter_runnable_portals(role)
     end)
     |> Enum.map(fn portal ->
       {portal.id, %{blueprint_id: portal.blueprint_id}}
