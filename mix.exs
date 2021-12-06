@@ -197,12 +197,12 @@ defmodule VacEngine.MixProject do
       # Phoenix
       {:phoenix, "~> 1.6.0"},
       {:phoenix_ecto, "~> 4.4"},
-      {:phoenix_html, "~> 3.0.4"},
+      {:phoenix_html, "~> 3.1.0"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_dashboard, "~> 0.6.0"},
-      {:phoenix_live_view, "~> 0.17.1"},
+      {:phoenix_live_view, "~> 0.17.5"},
       {:telemetry_metrics, "~> 0.6.1"},
-      {:telemetry_poller, "~> 0.4"},
+      {:telemetry_poller, "~> 1.0"},
 
       # DB Connection
       {:ecto_sql, "~> 3.7"},
