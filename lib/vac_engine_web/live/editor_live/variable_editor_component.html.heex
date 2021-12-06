@@ -1,7 +1,7 @@
 <div class="relative flex-grow" id="variable_editor">
   <div class="absolute inset-0 flex min-h-0">
     <div class="w-64 mr-2 flex flex-col overflow-y-auto">
-      <div class="flex-shrink-0 mx-2">
+      <div class="flex-shrink-0 mr-2">
         <%= if can?(@role, :write, @blueprint) do %>
           <.variable_action_group />
         <% end %>
