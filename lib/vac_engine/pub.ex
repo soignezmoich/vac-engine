@@ -149,6 +149,32 @@ defmodule VacEngine.Pub do
     )
   end
 
+  def filter_runnable_portals(query, %Role{
+        global_permission: %{super_admin: true}
+      }) do
+    query
+  end
+
+  def filter_runnable_portals(query, role) do
+    workspace_permissions =
+      from(p in WorkspacePermission,
+        where: p.role_id == ^role.id and p.run_portals == true,
+        select: p.workspace_id
+      )
+
+    portal_permissions =
+      from(p in PortalPermission,
+        where: p.role_id == ^role.id and p.run == true,
+        select: p.portal_id
+      )
+
+    from(p in query,
+      where:
+        p.workspace_id in subquery(workspace_permissions) or
+          p.id in subquery(portal_permissions)
+    )
+  end
+
   @doc """
   Publish a blueprint.
 
