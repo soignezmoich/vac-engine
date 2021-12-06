@@ -141,6 +141,10 @@ defmodule VacEngine.Processor.Meta do
 
   def input?(nil), do: false
 
+  def input?(mapping) when is_binary(mapping) do
+    input?(String.to_existing_atom(mapping))
+  end
+
   def input?(mapping) do
     case mapping do
       :in_required -> true
@@ -154,6 +158,10 @@ defmodule VacEngine.Processor.Meta do
 
   def output?(nil), do: false
 
+  def output?(mapping) when is_binary(mapping) do
+    output?(String.to_existing_atom(mapping))
+  end
+
   def output?(mapping) do
     case mapping do
       :in_required -> false
@@ -163,6 +171,12 @@ defmodule VacEngine.Processor.Meta do
       :out -> true
       :none -> false
     end
+  end
+
+  def required?(nil), do: false
+
+  def required?(mapping) when is_binary(mapping) do
+    required?(String.to_existing_atom(mapping))
   end
 
   def required?(mapping) do

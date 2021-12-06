@@ -1,0 +1,17 @@
+<tr class={@row_class} phx-click="select" phx-target={@myself}>
+  <td class="px-2">
+    <div class="mx-1 whitespace-nowrap">
+      <%= @indentation %><%= @name %>
+    </div>
+  </td>
+  <td class="px-2">
+    <div>
+      <%= @type %><%= @required %>
+    </div>
+  </td>
+  <td class="px-2">
+    <div>
+      <%= @enum %>
+    </div>
+  </td>
+</tr>

@@ -14,4 +14,7 @@ defmodule VacEngineWeb.FormatHelpers do
   def tr(str, length) do
     String.slice(str, 0..(length - 1)) <> "…"
   end
+
+  def selected?(a, b) when is_nil(a) or is_nil(b), do: false
+  def selected?(a, b), do: a.id == b.id
 end

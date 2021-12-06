@@ -1,46 +1,32 @@
 defmodule VacEngineWeb.EditorLive.VariableComponent do
-  use Phoenix.Component
+  use VacEngineWeb, :live_component
 
-  def render(assigns) do
-    # prefix={@path |> Enum.drop(-1) |> Enum.drop(2)}
+  alias VacEngineWeb.EditorLive.VariableEditorComponent
 
-    assigns =
-      assign(
-        assigns,
-        renderable:
-          build_renderable(
-            assigns.variable,
-            assigns.even,
-            assigns.selection_path
-          )
-      )
-
-    ~H"""
-    <tr id={@variable.path}
-      class={"#{@renderable.row_class}"}
-      phx-value-path={@renderable.dot_path}
-      phx-click={"select_variable"}
-      phx-target={"#variable_editor"}>
-      <td class="px-2">
-        <div class="mx-1 whitespace-nowrap">
-            <%= @renderable.indentation %><%= @renderable.name %>
-        </div>
-      </td>
-      <td class="px-2">
-        <div>
-          <%= @renderable.type %><%= @renderable.required %>
-        </div>
-      </td>
-      <td class="px-2">
-        <div>
-          <%= @renderable.enum %>
-        </div>
-      </td>
-    </tr>
-    """
+  @impl true
+  def update(
+        %{variable: variable, selected: selected, even: even},
+        socket
+      ) do
+    {
+      :ok,
+      socket
+      |> assign(build_renderable(variable, even, selected))
+      |> assign(variable: variable)
+    }
   end
 
-  def build_renderable(variable, even, selection_path) do
+  @impl true
+  def handle_event("select", _, socket) do
+    send_update(VariableEditorComponent,
+      id: "variable_editor",
+      action: {:select_variable, socket.assigns.variable}
+    )
+
+    {:noreply, socket}
+  end
+
+  def build_renderable(variable, even, is_selected) do
     indentation =
       variable.path
       # remove variable name
@@ -84,7 +70,7 @@ defmodule VacEngineWeb.EditorLive.VariableComponent do
     unselected = "#{unselected_color} #{unselected_opacity}"
 
     row_class =
-      if selection_path == variable.path do
+      if is_selected do
         selected
       else
         unselected

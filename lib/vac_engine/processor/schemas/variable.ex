@@ -39,6 +39,21 @@ defmodule VacEngine.Processor.Variable do
   end
 
   @doc false
+  def changeset(data, attrs) do
+    data
+    |> cast(attrs, [
+      :parent_id,
+      :enum,
+      :name,
+      :type,
+      :mapping,
+      :description
+    ])
+    |> validate_enum()
+    |> validate_required([:name, :type])
+  end
+
+  @doc false
   def create_changeset(data, attrs, ctx) do
     attrs =
       attrs
@@ -64,6 +79,10 @@ defmodule VacEngine.Processor.Variable do
     |> validate_children_state()
     |> validate_parent_type()
     |> check_constraint(:name, name: :variables_name_slug)
+    |> unique_constraint(:name, name: :variables_blueprint_id_name_index)
+    |> unique_constraint(:name,
+      name: :variables_blueprint_id_parent_id_name_index
+    )
   end
 
   @doc false
@@ -85,6 +104,11 @@ defmodule VacEngine.Processor.Variable do
     |> validate_children_state()
     |> validate_parent_type()
     |> prevent_type_change_when_used()
+    |> check_constraint(:name, name: :variables_name_slug)
+    |> unique_constraint(:name, name: :variables_blueprint_id_name_index)
+    |> unique_constraint(:name,
+      name: :variables_blueprint_id_parent_id_name_index
+    )
   end
 
   @doc false
@@ -92,6 +116,11 @@ defmodule VacEngine.Processor.Variable do
     data
     |> cast(%{}, [])
     |> put_change(:parent_id, parent_id)
+    |> check_constraint(:name, name: :variables_name_slug)
+    |> unique_constraint(:name, name: :variables_blueprint_id_name_index)
+    |> unique_constraint(:name,
+      name: :variables_blueprint_id_parent_id_name_index
+    )
     |> prepare_changes(fn changeset ->
       repo = changeset.repo
       id = get_field(changeset, :id)

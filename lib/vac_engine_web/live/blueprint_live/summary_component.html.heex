@@ -21,11 +21,11 @@
     <%= text_input f, :name,
           class: "form-fld mb-4",
           autofocus: true,
-          readonly: !@can_write %>
+          disabled: !@can_write %>
 
     <%= label_line_tag f, :description, "Description" %>
     <%= textarea f, :description, class: "form-fld mb-4",
-          readonly: !@can_write %>
+          disabled: !@can_write %>
 
     <%= if @can_write do %>
       <%= submit "Update", class: "btn-default", phx_disable_with: "Update in progress..." %>

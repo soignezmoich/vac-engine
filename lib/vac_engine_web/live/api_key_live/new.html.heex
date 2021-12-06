@@ -18,7 +18,11 @@
     <%= textarea f, :description, class: "form-fld mb-4" %>
 
     <%= label_line_tag f, :test, "Flags" %>
-    <.toggle_field form={f} field={:test} label="Test Key" class="mb-4" />
+    <div class="flex items-center mb-6">
+      <%= label f, :test, class: "font-bold mr-8" %>
+
+      <%= checkbox f, :test, class: "form-ckb" %>
+    </div>
 
     <%= submit "Create", class: "btn-default", phx_disable_with: "Creation in progress..." %>
   </.form>

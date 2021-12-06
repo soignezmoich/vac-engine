@@ -37,21 +37,21 @@ svg * {
 
 .btn {
   @apply px-2 py-1 bg-cream-400 text-gray-50 font-bold;
-  &:hover {
+  &:not(:disabled):hover {
     @apply bg-gray-600;
   }
 }
 
 .btn-sm {
   @apply px-2 py-1 bg-cream-400 text-gray-50 text-sm;
-  &:hover {
+  &:not(:disabled):hover {
     @apply bg-gray-600;
   }
 }
 
 .btn-default {
   @apply px-2 py-1 bg-blue-600 text-gray-50 font-bold;
-  &:hover {
+  &:not(:disabled):hover {
     @apply bg-gray-600;
   }
 }
@@ -59,7 +59,7 @@ svg * {
 .btn-cancel {
   @apply px-2 py-1 bg-cream-200 text-gray-800 font-bold;
 
-  &:hover {
+  &:not(:disabled):hover {
     @apply bg-gray-600 text-gray-50;
   }
 }
@@ -78,13 +78,13 @@ svg * {
     border shadow-inner
     bg-blue-50 border-blue-600 text-black;
 
-  &:focus:not([readonly]) {
+  &:focus:not([disabled]) {
     @apply outline-blue border-blue-400;
   }
-  &[readonly] {
+  &[disabled] {
     @apply bg-cream-100 border-cream-600;
   }
-  &[readonly]:focus {
+  &[disabled]:focus {
     @apply outline-cream;
   }
 }
@@ -113,8 +113,7 @@ input.form-fld {
 }
 
 select.form-fld {
-  @apply
-    pr-10;
+  @apply pr-10 h-8;
 }
 
 textarea.form-fld {
@@ -158,22 +157,28 @@ progress::-webkit-progress-value {
   border-width: 0 !important;
 }
 
-[type=checkbox] + .checkbox-after {
-  @apply bg-red-600 absolute inset-0 pointer-events-none;
+
+.form-ckb {
+  @apply relative border bg-cream-100 w-20 h-8 border-cream-600;
+  &:after {
+    @apply absolute left-0 w-1/2 top-0 bottom-0 font-bold bg-cream-600 pt-1
+    text-center text-cream-50;
+    content: "No";
+  }
 }
 
-[type=checkbox] + .checkbox-after .sel {
-  @apply hidden;
+.form-ckb:checked {
+  @apply bg-blue-100 border-blue-600;
+  &:after {
+    @apply absolute left-1/2 right-0 top-0 bottom-0 font-bold bg-blue-500 pt-1 text-center text-blue-50;
+    content: "Yes";
+  }
 }
 
-[type=checkbox] + .checkbox-after .unsel {
-  @apply flex;
+.divide-black .form-ckb {
+  @apply border-cream-900;
 }
 
-[type=checkbox]:checked + .checkbox-after .sel {
-  @apply flex;
-}
-
-[type=checkbox]:checked + .checkbox-after .unsel {
-  @apply hidden;
+.divide-black .form-ckb:checked {
+  @apply border-blue-900;
 }

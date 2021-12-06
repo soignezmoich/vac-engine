@@ -243,6 +243,11 @@ defmodule VacEngine.Processor do
   defdelegate create_variable(parent, attrs), to: Variables
 
   @doc """
+  Change variable with attributes (no children, used for form validation)
+  """
+  defdelegate change_variable(var, attrs), to: Variables
+
+  @doc """
   Update variable with attributes
   """
   defdelegate update_variable(var, attrs), to: Variables
@@ -256,6 +261,11 @@ defmodule VacEngine.Processor do
   Move variable to new parent
   """
   defdelegate move_variable(var, new_parent), to: Variables
+
+  @doc """
+  Check if variable is used (expensive, will hit DB)
+  """
+  defdelegate variable_used?(var), to: Variables
 
   @doc """
   Convert to map for serialization

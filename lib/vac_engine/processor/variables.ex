@@ -9,6 +9,11 @@ defmodule VacEngine.Processor.Variables do
   alias VacEngine.Processor.Meta
   import VacEngine.EctoHelpers, only: [transaction: 2]
 
+  def create_variable(%Blueprint{} = parent, attrs) do
+    Variable.create_changeset(%Variable{}, attrs, create_context(parent))
+    |> insert_variable()
+  end
+
   def create_variable(%Variable{} = parent, attrs) do
     Variable.create_changeset(
       %Variable{parent_id: parent.id},
@@ -18,9 +23,9 @@ defmodule VacEngine.Processor.Variables do
     |> insert_variable()
   end
 
-  def create_variable(%Blueprint{} = parent, attrs) do
-    Variable.create_changeset(%Variable{}, attrs, create_context(parent))
-    |> insert_variable()
+  def change_variable(var_or_changeset, attrs) do
+    # TODO no expression casting
+    Variable.changeset(var_or_changeset, attrs)
   end
 
   def update_variable(%Variable{} = var, attrs) do
@@ -82,5 +87,11 @@ defmodule VacEngine.Processor.Variables do
 
   defp create_context(%Variable{} = parent) do
     %{blueprint_id: parent.blueprint_id, workspace_id: parent.workspace_id}
+  end
+
+  def variable_used?(%Variable{id: nil}), do: false
+
+  def variable_used?(%Variable{id: id}) when is_integer(id) do
+    Variable.used?(id, Repo)
   end
 end

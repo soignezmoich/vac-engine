@@ -1,46 +1,35 @@
 defmodule VacEngineWeb.EditorLive.VariableEditorComponent do
   use VacEngineWeb, :live_component
 
-  import VacEngine.VariableHelpers
   import VacEngineWeb.EditorLive.VariableActionGroupComponent
   alias VacEngineWeb.EditorLive.VariableInspectorComponent
-
-  alias VacEngineWeb.EditorLive.VariableListComponent, as: VariableList
+  alias VacEngineWeb.EditorLive.VariableListComponent
+  alias VacEngine.Processor.Variable
+  import VacEngine.PipeHelpers
 
   @impl true
-  def update(assigns, socket) do
-    {
-      :ok,
-      assign(socket,
-        variables: assigns.variables,
-        selection_path: nil,
-        selected_variable: nil,
-        # maybe compute them here
-      )
-    }
+  def mount(socket) do
+    {:ok, assign(socket, selected_variable: nil)}
   end
 
   @impl true
-  def handle_event("select_variable", params, socket) do
-    selection_path =
-      case params do
-        %{"path" => dot_path} when is_binary(dot_path) ->
-          dot_path |> String.split(".")
+  def update(%{action: {:select_variable, var}}, socket) do
+    {:ok, assign(socket, selected_variable: var)}
+  end
 
-        _ ->
-          nil
-      end
+  @impl true
+  def update(
+        %{blueprint: blueprint} = assigns,
+        %{assigns: %{selected_variable: %Variable{id: id}}} = socket
+      ) do
+    socket
+    |> assign(selected_variable: Map.get(blueprint.variable_id_index, id))
+    |> assign(assigns)
+    |> ok()
+  end
 
-    # TODO sanitize path parameter
-
-    selected_variable =
-      socket.assigns.variables
-      |> get_variable_at(selection_path)
-
-    {:noreply,
-     assign(socket, %{
-       selection_path: selection_path,
-       selected_variable: selected_variable
-     })}
+  @impl true
+  def update(assigns, socket) do
+    {:ok, assign(socket, assigns)}
   end
 end

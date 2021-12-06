@@ -107,7 +107,7 @@ defmodule VacEngineWeb.HeaderComponent do
         <% [_a, _b | _] -> %>
           <div class="border-l border-gray-50 flex justify-center items-center px-1 relative"
                 data-dropdown="workspace-dropdown">
-            <.icon name="hero/chevron-double-down" width="1rem" />
+            <.icon name="hero/chevron-double-down" width="18px" />
             <div id="workspace-dropdown"
                  class="absolute top-full right-0 bg-blue-700 z-50 border
                  mt-px -mr-px m-w-0 min-w-min hidden
@@ -177,7 +177,7 @@ defmodule VacEngineWeb.HeaderComponent do
       )}>
 
       <%= if Map.get(assigns, :i) do %>
-        <div class="mr-2"><.icon name={@i} width="1.25rem" /></div>
+        <div class="mr-2"><.icon name={@i} width="24px" /></div>
       <% end %>
       <%= live_patch @l, to: @a, class: "py-0.5 block" %>
       <%= if Map.get(assigns, :s) do %>

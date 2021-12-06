@@ -34,11 +34,6 @@ defmodule VacEngineWeb.BlueprintLive.Edit do
   end
 
   @impl true
-  def handle_event("save", _params, socket) do
-    {:noreply, socket}
-  end
-
-  @impl true
   def handle_info({:update_blueprint, br}, socket) do
     br = get_blueprint(br.id, socket)
     {:noreply, assign(socket, blueprint: br)}

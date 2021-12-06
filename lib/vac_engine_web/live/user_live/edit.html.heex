@@ -78,16 +78,16 @@
     phx-submit="update">
 
     <%= label_line_tag f, :name, "Full name" %>
-    <%= text_input f, :name, class: "form-fld mb-4", autofocus: true, readonly: !@edit %>
+    <%= text_input f, :name, class: "form-fld mb-4", autofocus: true, disabled: !@edit %>
 
     <%= label_line_tag f, :email, "Email address" %>
-    <%= text_input f, :email, class: "form-fld mb-4", readonly: !@edit %>
+    <%= text_input f, :email, class: "form-fld mb-4", disabled: !@edit %>
 
     <%= label_line_tag f, :phone, "Phone number" %>
-    <%= text_input f, :phone, class: "form-fld mb-4", readonly: !@edit %>
+    <%= text_input f, :phone, class: "form-fld mb-4", disabled: !@edit %>
 
     <%= label_line_tag f, :description, "Description" %>
-    <%= textarea f, :description, class: "form-fld mb-4", readonly: !@edit %>
+    <%= textarea f, :description, class: "form-fld mb-4", disabled: !@edit %>
 
     <%= if @edit do %>
       <%= submit "Update", class: "btn-default", phx_disable_with: "Update in progress..." %>

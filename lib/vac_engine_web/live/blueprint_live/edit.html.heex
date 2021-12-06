@@ -15,29 +15,24 @@
          blueprint={@blueprint} />
     <% :variables -> %>
       <.live_component
-        module={VariableEditorComponent}
-        id="variable_editor"
-        variables={@blueprint.variables}
-        path={["variables"]}
-        focus_path={[]} />
+         module={VariableEditorComponent}
+         id="variable_editor"
+         role={@role}
+         blueprint={@blueprint} />
     <% :deductions -> %>
       <.live_component
-        module={DeductionEditorComponent}
-        id="deduction_editor"
-        deductions={@blueprint.deductions}
-        variables={@blueprint.variables}
-        path={["deductions"]}
-        selection_path={nil} />
+         module={DeductionEditorComponent}
+         id="deduction_editor"
+         deductions={@blueprint.deductions}
+         variables={@blueprint.variables}
+         path={["deductions"]}
+         selection_path={nil} />
     <% :import -> %>
-      <%= if can?(@role, :write, @blueprint) do %>
       <.live_component
          module={ImportComponent}
          id="import"
          role={@role}
          blueprint={@blueprint} />
-      <% else %>
-        <div>Blueprint is read only.</div>
-      <% end %>
     <% :simulations -> %>
       <.live_component
          module={SimulationEditorComponent}

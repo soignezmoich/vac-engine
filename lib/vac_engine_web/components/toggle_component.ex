@@ -32,23 +32,4 @@ defmodule VacEngineWeb.ToggleComponent do
     </div>
     """
   end
-
-  def toggle_field(assigns) do
-    ~H"""
-    <div class={"flex items-center select-none #{Map.get(assigns, :class)}"}>
-      <div class="font-bold mr-2"><%= @label %></div>
-      <div class="relative h-8 w-20">
-        <%= checkbox @form, @field, class: "border h-8 w-20" %>
-        <div class="checkbox-after font-bold flex flex-stretch border h-8 w-20">
-          <div class="sel bg-blue-100 items-stretch w-20 text-gray-50">
-            <div class="w-10 ml-10 bg-blue-500 flex items-center justify-center">Yes</div>
-          </div>
-          <div class="unsel bg-cream-100 items-stretch w-20 text-gray-100">
-            <div class="w-10 bg-cream-500 flex items-center justify-center">No</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    """
-  end
 end

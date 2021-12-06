@@ -1,8 +1,8 @@
 <section>
+<%= if can?(@role, :write, @blueprint) do %>
   <h2 class="font-bold text-xl mb-4">
     Select a json file
   </h2>
-
 
   <form id="upload-form"
         phx-submit="save"
@@ -71,5 +71,7 @@
       <% end %>
     </div>
   </form>
-
+<% else %>
+  <div>Blueprint is read only.</div>
+<% end %>
 </section>

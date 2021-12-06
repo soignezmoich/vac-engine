@@ -1,0 +1,113 @@
+<div id="variable_inspector" class="w-full divide-black border-black bg-white filter drop-shadow-lg p-3">
+<%= case @changeset do %>
+<% nil -> %>
+  <div class="text-sm text-center">
+    No variable selected.
+  </div>
+<% changeset -> %>
+  <.form
+    let={f}
+    for={changeset}
+    id={"edit_variable_form_#{@variable.id || "new"}"}
+    class="flex flex-col w-full divide-black"
+    phx-target={@myself}
+    phx-throttle="100"
+    phx-change="validate"
+    phx-submit="save">
+    <div class="font-bold">
+      Inspect variable
+    </div>
+    <hr />
+    <%= label(f, :name, "Variable name", class: "text-sm mt-4 mb-1") %>
+    <%= text_input f, :name,
+          class: "form-fld w-full text-sm",
+          autofocus: true,
+          disabled: !@can_write %>
+    <%= label(f, :parent_id, "Container", class: "text-sm mt-4 mb-1") %>
+    <%= select(f, :parent_id, @containers, class: "form-fld text-sm",
+        prompt: "-- root --",
+        disabled: !@can_write) %>
+    <%= label(f, :type, "Type", class: "text-sm mt-4 mb-1") %>
+    <%= select(f, :type, @types, class: "form-fld text-sm", disabled: !@can_write || @used?) %>
+    <%= if @used? do %>
+      <div class="text-xs">Type cannot be changed when variable is used</div>
+    <% end %>
+
+    <%= if "string" == form_value(f, :type) do %>
+      <div class="text-sm mt-4 mb-1">
+        Allowed values
+      </div>
+      <div class="flex flex-wrap">
+      <%= case input_value(f, :enum) do %>
+        <% nil -> %>
+        <div class="font-bold mb-2">Any</div>
+        <% vals -> %>
+        <%= for {v, idx} <- vals |> Enum.with_index() do %>
+          <div class="flex items-center border mr-1 mb-1 pl-2 text-sm">
+            <%= v %>
+            <button class="btn-sm ml-2"
+                    type="button"
+                    disabled={!@can_write}
+                    phx-target={@myself}
+                    phx-click="remove_enum"
+                    phx-value-idx={idx}>
+              <.icon name="hero/x" width="18px" />
+            </button>
+          </div>
+        <% end %>
+      <% end %>
+      </div>
+      <div class="flex">
+        <%= text_input :enum, :new, class: "form-fld text-sm w-full mr-2",
+              value: @enum_new,
+              placeholder: "add value",
+              disabled: !@can_write %>
+              <button class="btn-sm flex-shrink-0"
+                      type="button"
+                      disabled={!@can_write}
+                      phx-target={@myself}
+                      phx-click="add_enum">
+          <.icon name="hero/plus" width="18px" />
+        </button>
+      </div>
+    <% end %>
+
+
+    <%= if Meta.input?(form_value(f, :mapping)) do %>
+      <div class="flex items-center mt-4">
+        <%= label(f, :mapping, "Required?", class: "text-sm flex-grow") %>
+        <%= checkbox f, :mapping, class: "form-ckb",
+            checked_value: "in_required", unchecked_value: "in_optional",
+            disabled: !@can_write %>
+      </div>
+    <% end %>
+
+    <%= if @can_write do %>
+      <%= cond do %>
+        <% changeset.changes == %{} && changeset.errors == [] -> %>
+          <div class="text-green-600 italic mt-4 text-center">Saved</div>
+        <% changeset.errors != [] -> %>
+          <%= for {fld, err} <- changeset.errors do %>
+            <div class="text-red-600 mt-4">
+              <span class="capitalize"><%= fld %></span>
+              <%= translate_error(err)%>
+            </div>
+          <% end %>
+          <button class="btn mt-4" type="button" phx-click="cancel" phx-target={@myself}>Cancel</button>
+        <% true -> %>
+        <div class="grid grid-cols-2 gap-1.5 mt-4">
+          <button class="btn" type="button" phx-click="cancel" phx-target={@myself}>Cancel</button>
+          <button class="btn btn-default" type="submit">Save</button>
+        </div>
+      <% end %>
+      <%= cond do %>
+      <% @used? -> %>
+        <div class="text-xs mt-4">This variable is used and cannot be deleted.</div>
+      <% @variable.id != nil -> %>
+        <button class="btn mt-4" type="button" phx-click="delete" phx-target={@myself}>Delete</button>
+      <% true -> %>
+      <% end %>
+    <% end %>
+  </.form>
+<% end %>
+</div>
