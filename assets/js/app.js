@@ -96,6 +96,30 @@ Hooks.confirmClick = {
   }
 }
 
+Hooks.action = {
+  mounted () {
+    this.actionFns = {
+      scroll_to: this.scrollTo
+    }
+    this.handleEvent("action", (data) => {
+      if (data.id == this.el.id) {
+        this.doAction(data.action, data.params)
+      }
+    })
+  },
+  doAction (action, params) {
+    let actionFn = this.actionFns[action]
+    if (actionFn) {
+      actionFn.apply(this, params)
+    }
+  },
+  scrollTo (target) {
+    let targetEl = document.getElementById(target)
+    let offset =  targetEl.getBoundingClientRect().top -  this.el.getBoundingClientRect().top
+    this.el.scrollTo({top: this.el.scrollTop + offset, behavior: "smooth"})
+  }
+}
+
 const TIMEOUTS = {}
 
 function addTimeout (name, delay, fun) {

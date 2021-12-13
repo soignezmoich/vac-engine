@@ -22,7 +22,7 @@ defmodule VacEngine.Processor.BindingElement do
   end
 
   @doc false
-  def changeset(data, attrs, ctx, _opts \\ []) do
+  def nested_changeset(data, attrs, ctx, _opts \\ []) do
     data
     |> cast(attrs, [:position, :index, :variable_id])
     |> change(blueprint_id: ctx.blueprint_id, workspace_id: ctx.workspace_id)

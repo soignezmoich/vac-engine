@@ -42,10 +42,10 @@ defmodule VacEngine.Processor.Expression do
   end
 
   @doc false
-  def changeset(data, attrs, ctx, opts \\ [])
+  def nested_changeset(data, attrs, ctx, opts \\ [])
 
   @doc false
-  def changeset(data, attrs, ctx, opts) do
+  def nested_changeset(data, attrs, ctx, opts) do
     nobindings = Keyword.get(opts, :nobindings, false)
 
     attrs
@@ -64,7 +64,7 @@ defmodule VacEngine.Processor.Expression do
           blueprint_id: ctx.blueprint_id,
           workspace_id: ctx.workspace_id
         )
-        |> cast_assoc(:bindings, with: {Binding, :changeset, [ctx]})
+        |> cast_assoc(:bindings, with: {Binding, :nested_changeset, [ctx]})
         |> validate_required([])
 
       {:error, err} ->

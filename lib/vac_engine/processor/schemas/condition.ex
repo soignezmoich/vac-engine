@@ -28,13 +28,13 @@ defmodule VacEngine.Processor.Condition do
   end
 
   @doc false
-  def changeset(data, attrs, ctx) do
+  def nested_changeset(data, attrs, ctx) do
     attrs = wrap_in_map(attrs, :expression, :ast)
 
     data
     |> cast(attrs, [:description])
     |> change(blueprint_id: ctx.blueprint_id, workspace_id: ctx.workspace_id)
-    |> cast_assoc(:expression, with: {Expression, :changeset, [ctx]})
+    |> cast_assoc(:expression, with: {Expression, :nested_changeset, [ctx]})
     |> validate_required([])
     |> Branch.map_branch_element(attrs, :condition)
   end

@@ -9,7 +9,6 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
   import VacEngine.PipeHelpers
   alias VacEngine.Repo
   alias Ecto.Multi
-  alias VacEngineWeb.EditorLive.VariableEditorComponent
   alias VacEngineWeb.EditorLive.VariableListComponent
 
   import VacEngineWeb.BlueprintLive.Edit, only: [get_blueprint!: 2]

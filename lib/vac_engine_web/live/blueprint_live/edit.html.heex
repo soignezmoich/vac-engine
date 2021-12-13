@@ -23,10 +23,8 @@
       <.live_component
          module={DeductionEditorComponent}
          id="deduction_editor"
-         deductions={@blueprint.deductions}
-         variables={@blueprint.variables}
-         path={["deductions"]}
-         selection_path={nil} />
+         role={@role}
+         blueprint={@blueprint} />
     <% :import -> %>
       <.live_component
          module={ImportComponent}

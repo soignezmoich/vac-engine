@@ -1,49 +1,42 @@
-defmodule VacEngineWeb.EditorLive.CellComponent do
-  use Phoenix.Component
-
+defmodule VacEngineWeb.EditorLive.DeductionCellComponent do
+  use VacEngineWeb, :live_component
+  import VacEngine.PipeHelpers
   import Elixir.Integer
 
-  def render(assigns) do
-    %{
-      is_condition: is_condition,
-      cell: cell,
-      parent_path: parent_path,
-      index: index,
-      row_index: row_index
-    } = assigns
+  alias VacEngineWeb.EditorLive.DeductionListComponent
+  alias VacEngineWeb.EditorLive.DeductionInspectorComponent
+  import VacEngineWeb.EditorLive.DeductionMacros
 
-    assigns =
-      assign(assigns,
-        renderable:
-          build_renderable(
-            is_condition,
-            cell,
-            parent_path,
-            index,
-            row_index,
-            assigns.selection_path
-          )
+  @impl true
+  def update(
+        %{
+          is_condition: is_condition,
+          cell: cell,
+          path: path,
+          selected_path: selected_path
+        },
+        socket
+      ) do
+    socket
+    |> assign(
+      build_renderable(
+        is_condition,
+        cell,
+        path,
+        selected_path
       )
-
-    ~H"""
-    <td class={@renderable.cell_style}
-      phx-value-path={@renderable.dot_path}
-      phx-click={"select_cell"}
-      phx-target="#deduction_editor">
-      <%= @renderable.value %><%= if (@renderable.type == "operator") do %>(<%= @renderable.args |> Enum.join(", ") %>)<% end %>
-      &nbsp;
-      <%= @renderable.description %>
-    </td>
-    """
+    )
+    |> assign(path: path)
+    |> ok()
   end
+
+  handle_select_event()
 
   def build_renderable(
         is_condition,
         cell,
-        parent_path,
-        index,
-        row_index,
-        selection_path
+        path,
+        selected_path
       ) do
     {type, value, args} =
       case cell do
@@ -67,18 +60,16 @@ defmodule VacEngineWeb.EditorLive.CellComponent do
           {"nil", "-", []}
       end
 
-    conditions_or_assignments =
-      if is_condition do
-        "conditions"
-      else
-        "assignments"
-      end
-
-    path = parent_path ++ [conditions_or_assignments, index]
-
     dot_path = path |> Enum.join(".")
 
-    selected = dot_path == selection_path
+    selected =
+      case selected_path do
+        nil ->
+          false
+
+        list ->
+          List.starts_with?(list, path)
+      end
 
     args =
       args
@@ -106,6 +97,8 @@ defmodule VacEngineWeb.EditorLive.CellComponent do
         {_, "true", _} -> "bg-green-200 font-semibold"
         {false, _, _} -> "bg-blue-200"
       end
+
+    [_, _, _, row_index | _] = path
 
     bg_opacity =
       case {selected, is_even(row_index)} do

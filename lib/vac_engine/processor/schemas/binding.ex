@@ -22,7 +22,7 @@ defmodule VacEngine.Processor.Binding do
   end
 
   @doc false
-  def changeset(data, attrs, ctx, _opts \\ []) do
+  def nested_changeset(data, attrs, ctx, _opts \\ []) do
     attrs
     |> get_in_attrs(:path)
     |> Enum.reduce({[], []}, fn
@@ -64,7 +64,9 @@ defmodule VacEngine.Processor.Binding do
           blueprint_id: ctx.blueprint_id,
           workspace_id: ctx.workspace_id
         )
-        |> cast_assoc(:elements, with: {BindingElement, :changeset, [ctx]})
+        |> cast_assoc(:elements,
+          with: {BindingElement, :nested_changeset, [ctx]}
+        )
         |> validate_required([])
     end
   end

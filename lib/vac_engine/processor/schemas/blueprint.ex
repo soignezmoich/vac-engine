@@ -69,7 +69,7 @@ defmodule VacEngine.Processor.Blueprint do
 
     data
     |> cast(attrs, [])
-    |> cast_assoc(:deductions, with: {Deduction, :changeset, [ctx]})
+    |> cast_assoc(:deductions, with: {Deduction, :nested_changeset, [ctx]})
   end
 
   @doc """

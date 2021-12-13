@@ -279,6 +279,12 @@ defmodule VacEngine.Processor do
   """
   defdelegate update_blueprint_from_file(blueprint, path), to: Blueprints
 
+  alias VacEngine.Processor.Deductions
+
+  defdelegate create_deduction(blueprint, attrs \\ %{}), to: Deductions
+  defdelegate delete_deduction(deduction), to: Deductions
+  defdelegate update_deduction(deduction, attrs), to: Deductions
+
   defstruct blueprint: nil, compiled_module: nil, state: nil, info: nil
 
   @doc """

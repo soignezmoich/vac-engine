@@ -1,0 +1,11 @@
+<div id="deduction_list">
+  <%= for {deduction, index} <- @deductions |> Enum.with_index() do %>
+    <.live_component
+         id={"deduction.#{deduction.id}"}
+         module={DeductionComponent}
+         deduction={deduction}
+         path={[:deductions, index]}
+         selected_path={@selected_path}
+    />
+  <% end %>
+</div>

@@ -1,15 +1,19 @@
 <div class="relative flex-grow" id="deduction_editor">
   <div class="absolute inset-0 flex min-h-0">
-    <div class="w-64 flex-shrink-0 mr-2 flex flex-col overflow-y-auto mt-3">
-      <div class="mx-2">
-        <.deduction_action_group />
-        <div class="h-4" />
-        <.expression_editor />
+    <%= if can?(@role, :write, @blueprint) do %>
+      <div class="w-64 flex-shrink-0 mr-2 flex flex-col overflow-y-auto">
+        <.live_component
+           id="deduction_inspector"
+           module={DeductionInspectorComponent}
+           blueprint={@blueprint}
+           role={@role} />
       </div>
-    </div>
-    <div class="flex-grow flex flex-col overflow-y-auto">
+    <% end %>
+    <div class="flex-grow flex flex-col overflow-y-auto"
+           id="deduction_list_wrapper"
+           phx-hook="action">
       <div class="flex-shrink text-xs">
-        <DeductionList.render deductions={@deductions} selection_path={@selection_path} />
+        <.live_component id="deduction_list" module={DeductionList} deductions={@blueprint.deductions} />
       </div>
     </div>
   </div>

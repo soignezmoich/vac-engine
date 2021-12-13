@@ -3,6 +3,9 @@ defmodule VacEngine.EctoHelpers do
   Set of utilities to help manipulate data in Ecto Schema.
   """
   alias VacEngine.Repo
+  import Ecto.Query
+  import Ecto.Changeset
+  alias Ecto.Multi
 
   @doc """
   Used to get data in attributesm will try atom and string keys.
@@ -174,6 +177,89 @@ defmodule VacEngine.EctoHelpers do
 
       _ ->
         :error
+    end
+  end
+
+  @doc """
+  Helper to manage position shifting
+  """
+  def shift_position(changeset, group_field, group_value) do
+    new_pos = get_change(changeset, :position)
+
+    max_query =
+      from(r in changeset.data.__struct__,
+        where: field(r, ^group_field) == ^group_value,
+        select: max(r.position)
+      )
+
+    max_pos = changeset.repo.one!(max_query) || 0
+
+    cond do
+      changeset.action == :update && new_pos ->
+        old_pos = changeset.data.position
+
+        cond do
+          new_pos > max_pos ->
+            add_error(changeset, :position, "is too large, max #{max_pos}")
+
+          new_pos < 0 ->
+            add_error(changeset, :position, "is too small, min 0")
+
+          true ->
+            dec_query =
+              from(r in changeset.data.__struct__,
+                where:
+                  r.position >= ^old_pos and
+                    field(r, ^group_field) == ^group_value
+              )
+
+            inc_query =
+              from(r in changeset.data.__struct__,
+                where:
+                  r.position >= ^new_pos and
+                    field(r, ^group_field) == ^group_value
+              )
+
+            Multi.new()
+            |> Multi.update_all(:decrement, dec_query, inc: [position: -1])
+            |> Multi.update_all(:increment, inc_query, inc: [position: 1])
+            |> changeset.repo.transaction()
+            |> case do
+              {:ok, _} -> changeset
+              _ -> add_error(changeset, :position, "shifting error")
+            end
+        end
+
+      changeset.action == :insert && !new_pos ->
+        put_change(changeset, :position, max_pos + 1)
+
+      changeset.action == :insert && new_pos ->
+        cond do
+          new_pos > max_pos + 1 ->
+            add_error(changeset, :position, "is too large, max #{max_pos + 1}")
+
+          new_pos < 0 ->
+            add_error(changeset, :position, "is too small, min 0")
+
+          true ->
+            inc_query =
+              from(r in changeset.data.__struct__,
+                where:
+                  r.position >= ^new_pos and
+                    field(r, ^group_field) == ^group_value
+              )
+
+            Multi.new()
+            |> Multi.update_all(:increment, inc_query, inc: [position: 1])
+            |> changeset.repo.transaction()
+            |> case do
+              {:ok, _} -> changeset
+              _ -> add_error(changeset, :position, "shifting error")
+            end
+        end
+
+      true ->
+        changeset
     end
   end
 end

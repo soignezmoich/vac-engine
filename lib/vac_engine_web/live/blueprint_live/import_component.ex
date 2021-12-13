@@ -31,7 +31,7 @@ defmodule VacEngineWeb.BlueprintLive.ImportComponent do
         Processor.update_blueprint_from_file(blueprint, path)
       end)
       |> Enum.map(fn
-        {:ok, br} = res ->
+        {:ok, _br} = res ->
           send(self(), :reload_blueprint)
           res
 

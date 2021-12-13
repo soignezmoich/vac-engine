@@ -1,0 +1,31 @@
+<thead>
+  <tr>
+    <%= if @has_conds? do %>
+      <th colspan={@cond_count} class="bg-cream-500 text-white px-4">
+      </th>
+      <th class="bg-white w-5"></th>
+    <% end %>
+    <th colspan={@assign_count} class="whitespace-nowrap bg-blue-500 text-white py-1 px-4">
+      <%= @assign_prefix %> ->
+    </th>
+  </tr>
+  <tr>
+    <%= if @has_conds? do %>
+      <%= for cond_label <- @cond_labels do %>
+        <th class="bg-cream-400 text-white py-1 px-4">
+          <div class="mx-1">
+            <%= cond_label %>
+          </div>
+        </th>
+      <% end %>
+      <th class="bg-white"></th>
+    <% end %>
+    <%= for assign_label <- @assign_labels do %>
+      <th class="bg-blue-400 text-white py-1 px-4">
+        <div class="mx-1">
+          <%= assign_label %>
+        </div>
+      </th>
+    <% end %>
+  </tr>
+</thead>

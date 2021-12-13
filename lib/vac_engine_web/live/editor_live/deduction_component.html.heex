@@ -1,0 +1,45 @@
+<div id={"deduction.#{@deduction.id}"} class="select-none">
+  <%= case @render_type do %>
+  <% :short -> %>
+    <table class="my-1">
+      <tbody>
+        <tr>
+          <td>
+            <%= @short_variable %> =
+          </td>
+          <.live_component
+            module={DeductionCellComponent}
+            id={"deduction.#{@deduction.id}.short"}
+            path={@path ++ [:branches, 0, :assignments, 0]}
+            is_condition={false}
+            cell={@short_cell}
+            selected_path={@selected_path} />
+        </tr>
+      </tbody>
+    </table>
+  <% :full -> %>
+    <table class="min-w-full my-4">
+      <.live_component
+        module={DeductionHeaderComponent}
+        id={"deduction.#{@deduction.id}.header"}
+        path={@path ++ [:header]}
+        cond_columns={@cond_columns}
+        assign_columns={@assign_columns}
+        selected_path={@selected_path} />
+      <tbody>
+        <%= for {branch, index} <- @deduction.branches |> Enum.with_index() do %>
+          <.live_component
+            module={DeductionBranchComponent}
+            id={"branch.#{branch.id}"}
+            branch={branch}
+            path={@path ++ [:branches, index]}
+            cond_columns={@cond_columns}
+            assign_columns={@assign_columns}
+            selected_path={@selected_path} />
+        <% end %>
+      </tbody>
+    </table>
+  <% :empty -> %>
+    <div phx-click="select" phx-target={@myself}>-- Empty deduction --</div>
+  <% end %>
+</div>

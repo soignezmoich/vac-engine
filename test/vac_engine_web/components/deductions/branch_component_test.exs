@@ -5,15 +5,13 @@ defmodule VacEngine.EditorLive.BranchComponentTest do
   alias VacEngine.Processor.Branch
   alias VacEngine.Processor.Column
   alias VacEngine.Processor.Condition
-  alias VacEngineWeb.EditorLive.BranchComponent
+  alias VacEngineWeb.EditorLive.DeductionBranchComponent, as: BranchComponent
 
   # Has cond cells? property
 
   @branch %Branch{conditions: [], assignments: []}
   @cond_columns []
   @assign_columns []
-  @parent_path ["deductions", 2]
-  @index 5
   @expected_has_cond_cells? false
 
   test "'build_renderable' should make has_cond_cells? false if no condition column" do
@@ -21,9 +19,7 @@ defmodule VacEngine.EditorLive.BranchComponentTest do
       BranchComponent.build_renderable(
         @branch,
         @cond_columns,
-        @assign_columns,
-        @parent_path,
-        @index
+        @assign_columns
       )
 
     assert renderable |> Map.get(:has_cond_cells?) == @expected_has_cond_cells?
@@ -32,8 +28,6 @@ defmodule VacEngine.EditorLive.BranchComponentTest do
   @branch %Branch{conditions: [], assignments: []}
   @cond_columns [%Column{type: :condition}]
   @assign_columns []
-  @parent_path ["deductions", 2]
-  @index 5
   @expected_has_cond_cells? true
 
   test "'build_renderable' should make has_cond_cells? true if some condition column" do
@@ -41,9 +35,7 @@ defmodule VacEngine.EditorLive.BranchComponentTest do
       BranchComponent.build_renderable(
         @branch,
         @cond_columns,
-        @assign_columns,
-        @parent_path,
-        @index
+        @assign_columns
       )
 
     assert renderable |> Map.get(:has_cond_cells?) == @expected_has_cond_cells?
@@ -62,8 +54,6 @@ defmodule VacEngine.EditorLive.BranchComponentTest do
     %Column{type: :condition, id: 1}
   ]
   @assign_columns []
-  @parent_path ["deductions", 2]
-  @index 5
   @expected_cond_cells [@condition, @condition2]
 
   test "'build_renderable' should make cond_cells if some condition column" do
@@ -71,9 +61,7 @@ defmodule VacEngine.EditorLive.BranchComponentTest do
       BranchComponent.build_renderable(
         @branch,
         @cond_columns,
-        @assign_columns,
-        @parent_path,
-        @index
+        @assign_columns
       )
 
     assert renderable |> Map.get(:cond_cells) == @expected_cond_cells
@@ -92,8 +80,6 @@ defmodule VacEngine.EditorLive.BranchComponentTest do
     %Column{type: :assignment, id: 3},
     %Column{type: :assignment, id: 4}
   ]
-  @parent_path ["deductions", 2]
-  @index 5
   @expected_assign_cells [@assignment, @assignment2]
 
   test "'build_renderable' should make assign_cells" do
@@ -101,32 +87,9 @@ defmodule VacEngine.EditorLive.BranchComponentTest do
       BranchComponent.build_renderable(
         @branch,
         @cond_columns,
-        @assign_columns,
-        @parent_path,
-        @index
+        @assign_columns
       )
 
     assert renderable |> Map.get(:assign_cells) == @expected_assign_cells
-  end
-
-  # Path property
-  @branch %Branch{conditions: [], assignments: []}
-  @cond_columns []
-  @assign_columns []
-  @parent_path ["deductions", 2]
-  @index 5
-  @expected_path ["deductions", 2, "branches", 5]
-
-  test "'build_renderable' should make correct path" do
-    renderable =
-      BranchComponent.build_renderable(
-        @branch,
-        @cond_columns,
-        @assign_columns,
-        @parent_path,
-        @index
-      )
-
-    assert renderable |> Map.get(:path) == @expected_path
   end
 end

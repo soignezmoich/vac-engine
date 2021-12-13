@@ -30,7 +30,7 @@ defmodule VacEngine.Processor.Branch do
   end
 
   @doc false
-  def changeset(data, attrs, ctx) do
+  def nested_changeset(data, attrs, ctx) do
     attrs =
       attrs
       |> set_positions(:conditions)
@@ -39,8 +39,8 @@ defmodule VacEngine.Processor.Branch do
     data
     |> cast(attrs, [:description, :position])
     |> change(blueprint_id: ctx.blueprint_id, workspace_id: ctx.workspace_id)
-    |> cast_assoc(:conditions, with: {Condition, :changeset, [ctx]})
-    |> cast_assoc(:assignments, with: {Assignment, :changeset, [ctx]})
+    |> cast_assoc(:conditions, with: {Condition, :nested_changeset, [ctx]})
+    |> cast_assoc(:assignments, with: {Assignment, :nested_changeset, [ctx]})
     |> validate_required([])
   end
 

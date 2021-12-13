@@ -35,7 +35,7 @@ defmodule VacEngine.Processor.Column do
   end
 
   @doc false
-  def changeset(data, attrs, ctx) do
+  def nested_changeset(data, attrs, ctx) do
     attrs
     |> get_in_attrs(:variable)
     |> Meta.cast_path()
@@ -62,7 +62,7 @@ defmodule VacEngine.Processor.Column do
           blueprint_id: ctx.blueprint_id,
           workspace_id: ctx.workspace_id
         )
-        |> cast_assoc(:expression, with: {Expression, :changeset, [ctx]})
+        |> cast_assoc(:expression, with: {Expression, :nested_changeset, [ctx]})
         |> validate_required([])
 
       {:error, msg} ->
