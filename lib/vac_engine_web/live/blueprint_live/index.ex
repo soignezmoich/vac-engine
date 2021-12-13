@@ -2,6 +2,7 @@ defmodule VacEngineWeb.BlueprintLive.Index do
   use VacEngineWeb, :live_view
 
   alias VacEngine.Processor
+  alias VacEngine.Query
 
   on_mount(VacEngineWeb.LiveRole)
   on_mount(VacEngineWeb.LiveWorkspace)
@@ -19,6 +20,7 @@ defmodule VacEngineWeb.BlueprintLive.Index do
         |> Processor.filter_blueprints_by_workspace(workspace)
         |> Processor.filter_accessible_blueprints(role)
         |> Processor.load_blueprint_active_publications()
+        |> Query.order_by(:id)
       end)
 
     {:ok,
