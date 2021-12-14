@@ -386,10 +386,8 @@ defmodule VacEngine.Pub do
   Bust cache only if blueprint is currently active
   """
   def bust_blueprint_cache(%Blueprint{} = blueprint) do
-    from(p in Publication,
-      where:
-        p.blueprint_id == ^blueprint.id and
-          is_nil(p.deactivated_at),
+    from(p in Portal,
+      where: p.blueprint_id == ^blueprint.id,
       select: count(p.id) > 0
     )
     |> Repo.one()
