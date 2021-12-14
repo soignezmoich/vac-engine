@@ -1,0 +1,27 @@
+<div class="w-full bg-white filter drop-shadow-lg p-3 cursor-default">
+    <div class="float-right">
+        <form phx-change="set_filter" phx-target={@myself}>
+            Show:
+            <select name="filter" id="select_filter" class="form-fld">
+                <option value="all" selected={@filter=="all"}>
+                    All
+                </option>
+                <option value="case" selected={@filter=="case"}>
+                    Case only
+                </option>
+            </select>
+        </form>
+    </div>
+
+    <div class="text-lg font-bold h-10 border-b border-black">Output</div>
+        <table>
+            <tbody>
+                <%= for variable <- @blueprint.variables |> flatten_variables("output") do %>
+                <OutputVariableEditor.render
+                variable={variable}
+                case={@case}
+                filter={@filter} />
+        <% end %>
+    </tbody>
+    </table>
+</div>
