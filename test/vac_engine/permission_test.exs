@@ -4,6 +4,7 @@ defmodule VacEngine.PermissionTest do
   alias VacEngine.Account
   alias VacEngine.Processor
   alias VacEngine.Pub
+  alias VacEngine.Query
 
   setup do
     {:ok, super_admin} =
@@ -180,6 +181,7 @@ defmodule VacEngine.PermissionTest do
       q
       |> Processor.filter_blueprints_by_workspace(ws)
       |> Processor.filter_accessible_blueprints(role)
+      |> Query.order_by(:id)
     end)
   end
 end
