@@ -192,7 +192,11 @@ defmodule VacEngine.EctoHelpers do
         select: max(r.position)
       )
 
-    max_pos = changeset.repo.one!(max_query) || 0
+    {max_pos, empty?} = changeset.repo.one!(max_query)
+                        |> case do
+                          nil -> {0, true}
+                          n -> {n, false}
+                        end
 
     cond do
       changeset.action == :update && new_pos ->
@@ -229,6 +233,9 @@ defmodule VacEngine.EctoHelpers do
               _ -> add_error(changeset, :position, "shifting error")
             end
         end
+
+      changeset.action == :insert && empty? ->
+        put_change(changeset, :position, 0)
 
       changeset.action == :insert && !new_pos ->
         put_change(changeset, :position, max_pos + 1)
