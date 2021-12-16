@@ -40,6 +40,9 @@ svg * {
   &:not(:disabled):hover {
     @apply bg-gray-600;
   }
+  &[disabled] {
+    @apply bg-cream-200;
+  }
 }
 
 .btn-sm {
