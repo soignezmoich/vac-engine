@@ -30,6 +30,17 @@ defmodule VacEngine.Processor.Branch do
   end
 
   @doc false
+  def changeset(data, attrs) do
+    data
+    |> cast(attrs, [:description, :position])
+    |> validate_required([])
+    |> prepare_changes(fn changeset ->
+      deduction_id = get_field(changeset, :deduction_id)
+      shift_position(changeset, :deduction_id, deduction_id)
+    end)
+  end
+
+  @doc false
   def nested_changeset(data, attrs, ctx) do
     attrs =
       attrs

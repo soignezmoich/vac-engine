@@ -4,7 +4,7 @@ defmodule VacEngine.Processor.Deduction do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias VacEngine.EctoHelpers
+  import VacEngine.EctoHelpers
   alias VacEngine.Account.Workspace
   alias VacEngine.Processor.Blueprint
   alias VacEngine.Processor.Branch
@@ -32,7 +32,7 @@ defmodule VacEngine.Processor.Deduction do
     |> validate_required([])
     |> prepare_changes(fn changeset ->
       blueprint_id = get_field(changeset, :blueprint_id)
-      EctoHelpers.shift_position(changeset, :blueprint_id, blueprint_id)
+      shift_position(changeset, :blueprint_id, blueprint_id)
     end)
   end
 
@@ -40,8 +40,8 @@ defmodule VacEngine.Processor.Deduction do
   def nested_changeset(data, attrs, ctx) do
     attrs =
       attrs
-      |> EctoHelpers.set_positions(:branches)
-      |> EctoHelpers.set_positions(:columns)
+      |> set_positions(:branches)
+      |> set_positions(:columns)
 
     data
     |> cast(attrs, [:description, :position])
