@@ -115,8 +115,16 @@ Hooks.action = {
   },
   scrollTo (target) {
     let targetEl = document.getElementById(target)
-    let offset =  targetEl.getBoundingClientRect().top -  this.el.getBoundingClientRect().top
-    this.el.scrollTo({top: this.el.scrollTop + offset, behavior: "smooth"})
+    let targetRect = targetEl.getBoundingClientRect()
+    let rect = this.el.getBoundingClientRect()
+    let offset =  targetRect.top -  rect.top
+    console.log(targetRect)
+    console.log(rect)
+    console.log(offset)
+
+    if (offset < 0 || offset > rect.height) {
+      this.el.scrollTo({top: this.el.scrollTop + offset, behavior: "smooth"})
+    }
   }
 }
 
