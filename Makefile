@@ -20,6 +20,11 @@ test: export DATABASE_URL=${DATABASE_TEST_URL}
 test: deps test-db
 	mix test $(test_name)
 
+test-fast: export MIX_ENV=test
+test-fast: export DATABASE_URL=${DATABASE_TEST_URL}
+test-fast:
+	mix test $(test_name)
+
 .PHONY: test-db
 
 test-db: export MIX_ENV=test
