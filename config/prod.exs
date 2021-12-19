@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 # Those values are compile time
 # All environment variables used in this file will be compiled into the

@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 config :vac_engine, VacEngine.Repo, pool: Ecto.Adapters.SQL.Sandbox
 
