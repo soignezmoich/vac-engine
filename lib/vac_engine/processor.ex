@@ -287,6 +287,9 @@ defmodule VacEngine.Processor do
   defdelegate create_branch(deduction, attrs \\ %{}), to: Deductions
   defdelegate delete_branch(branch), to: Deductions
   defdelegate update_branch(branch, attrs), to: Deductions
+  defdelegate create_column(blueprint, deduction, attrs), to: Deductions
+  defdelegate update_column(column, attrs), to: Deductions
+  defdelegate delete_column(column), to: Deductions
 
   defstruct blueprint: nil, compiled_module: nil, state: nil, info: nil
 
