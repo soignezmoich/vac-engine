@@ -192,11 +192,12 @@ defmodule VacEngine.EctoHelpers do
         select: max(r.position)
       )
 
-    {max_pos, empty?} = changeset.repo.one!(max_query)
-                        |> case do
-                          nil -> {0, true}
-                          n -> {n, false}
-                        end
+    {max_pos, empty?} =
+      changeset.repo.one!(max_query)
+      |> case do
+        nil -> {0, true}
+        n -> {n, false}
+      end
 
     cond do
       changeset.action == :update && new_pos ->
