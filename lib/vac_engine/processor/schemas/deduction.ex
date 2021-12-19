@@ -49,6 +49,10 @@ defmodule VacEngine.Processor.Deduction do
     |> cast_assoc(:branches, with: {Branch, :nested_changeset, [ctx]})
     |> cast_assoc(:columns, with: {Column, :nested_changeset, [ctx]})
     |> validate_required([])
+    |> prepare_changes(fn changeset ->
+      blueprint_id = get_field(changeset, :blueprint_id)
+      shift_position(changeset, :blueprint_id, blueprint_id)
+    end)
   end
 
   @doc """

@@ -3,6 +3,7 @@ defmodule VacEngine.Processor.Column do
 
   use Ecto.Schema
   import Ecto.Changeset
+  import Ecto.Query
 
   alias VacEngine.Account.Workspace
   alias VacEngine.Processor.Blueprint
@@ -35,6 +36,20 @@ defmodule VacEngine.Processor.Column do
   end
 
   @doc false
+  def changeset(data, attrs) do
+    data
+    |> cast(attrs, [:description, :position])
+    |> validate_required([])
+    |> prepare_changes(fn changeset ->
+      deduction_id = get_field(changeset, :deduction_id)
+
+      changeset
+      |> constraint_position()
+      |> shift_position(:deduction_id, deduction_id)
+    end)
+  end
+
+  @doc false
   def nested_changeset(data, attrs, ctx) do
     attrs
     |> get_in_attrs(:variable)
@@ -64,6 +79,13 @@ defmodule VacEngine.Processor.Column do
         )
         |> cast_assoc(:expression, with: {Expression, :nested_changeset, [ctx]})
         |> validate_required([])
+        |> prepare_changes(fn changeset ->
+          deduction_id = get_field(changeset, :deduction_id)
+
+          changeset
+          |> constraint_position()
+          |> shift_position(:deduction_id, deduction_id)
+        end)
 
       {:error, msg} ->
         data
@@ -101,5 +123,44 @@ defmodule VacEngine.Processor.Column do
       type: c.type
     }
     |> compact
+  end
+
+  def constraint_position(changeset) do
+    deduction_id = get_field(changeset, :deduction_id)
+    position = get_field(changeset, :position)
+    type = get_field(changeset, :type)
+
+    offset =
+      case changeset.action do
+        :update -> -1
+        :insert -> 0
+      end
+
+    from(c in Column,
+      where: c.deduction_id == ^deduction_id and c.type == :assignment,
+      order_by: c.position,
+      select: c.position,
+      limit: 1
+    )
+    |> changeset.repo.one()
+    |> case do
+      nil ->
+        changeset
+
+      split_position ->
+        position =
+          case type do
+            :condition ->
+              min(position, split_position + offset)
+
+            :assignment ->
+              max(position, split_position)
+
+            _ ->
+              raise "invalid type"
+          end
+
+        put_change(changeset, :position, position)
+    end
   end
 end

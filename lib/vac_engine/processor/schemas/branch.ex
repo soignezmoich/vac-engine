@@ -53,6 +53,10 @@ defmodule VacEngine.Processor.Branch do
     |> cast_assoc(:conditions, with: {Condition, :nested_changeset, [ctx]})
     |> cast_assoc(:assignments, with: {Assignment, :nested_changeset, [ctx]})
     |> validate_required([])
+    |> prepare_changes(fn changeset ->
+      deduction_id = get_field(changeset, :deduction_id)
+      shift_position(changeset, :deduction_id, deduction_id)
+    end)
   end
 
   @doc false
