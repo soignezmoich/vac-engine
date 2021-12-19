@@ -6,7 +6,7 @@
       <div class="grid grid-cols-4 my-1 gap-1.5 w-full">
         <button class="btn btn-default flex justify-center items-center"
                 disabled={!@can_add_deduction?}
-                phx-click="add_deduction"
+                phx-click="new_deduction"
                 phx-target={@myself}>
           <.icon name="hero/plus" width="1.25rem" />
         </button>
@@ -62,21 +62,79 @@
         Column actions
       </div>
       <div class="grid grid-cols-4 my-1 gap-1.5 w-full">
-        <div class="btn btn-default flex justify-center items-center">
+        <button class="btn btn-default flex justify-center items-center"
+                disabled={!@can_add_column?}
+                phx-click="new_column"
+                phx-target={@myself}>
           <.icon name="hero/plus" width="1.25rem" />
-        </div>
-        <div class="btn btn-default flex justify-center items-center">
+        </button>
+        <button class="btn btn-default flex justify-center items-center"
+                disabled={!@can_move_left_column?}
+                phx-click="move_column_left"
+                phx-target={@myself}>
           <.icon name="hero/arrow-left" width="1.25rem" />
-        </div>
-        <div class="btn btn-default flex justify-center items-center">
+        </button>
+        <button class="btn btn-default flex justify-center items-center"
+                disabled={!@can_move_right_column?}
+                phx-click="move_column_right"
+                phx-target={@myself}>
           <.icon name="hero/arrow-right" width="1.25rem" />
-        </div>
-        <div class="btn btn-default flex justify-center items-center">
+        </button>
+        <button class="btn btn-default flex justify-center items-center"
+                disabled={!@can_delete_column?}
+                phx-click="delete_column"
+                phx-target={@myself}>
           <.icon name="hero/trash" width="1.25rem" />
-        </div>
+        </button>
       </div>
     </div>
     <div class="w-full divide-black bg-white filter drop-shadow-lg p-3 mt-4">
-      <%=inspect @selected_path %>
+      <%= case @inspector do %>
+      <% :new_deduction -> %>
+      <.form
+        let={f}
+        for={@changeset}
+        as={:deduction}
+        id="deduction_form"
+        phx-throttle="100"
+        phx-submit="add_deduction"
+        phx-target={@myself}
+        class="flex flex-col w-full">
+          <div class="font-bold mb-2">New deduction</div>
+          <%= label(f, :variable, "Variable", class: "text-sm mb-1") %>
+          <%= select(f, :variable, @variables, class: "form-fld text-sm mb-2") %>
+          <%= submit("Add", class: "btn-default mb-2") %>
+          <button phx-click="cancel"
+                  phx-target={@myself}
+                  class="btn"
+                  type="button">
+            Cancel
+          </button>
+        </.form>
+      <% :new_column -> %>
+      <.form
+        let={f}
+        for={@changeset}
+        as={:column}
+        id="column_form"
+        phx-throttle="100"
+        phx-submit="add_column"
+        phx-target={@myself}
+        class="flex flex-col w-full">
+          <div class="font-bold mb-2">New column</div>
+          <%= label(f, :type, "Type", class: "text-sm mb-1") %>
+          <%= select(f, :type, [:condition, :assignment], class: "form-fld text-sm mb-2") %>
+          <%= label(f, :variable, "Variable", class: "text-sm mb-1") %>
+          <%= select(f, :variable, @variables, class: "form-fld text-sm mb-2") %>
+          <%= submit("Add", class: "btn-default mb-2") %>
+          <button phx-click="cancel"
+                  phx-target={@myself}
+                  class="btn"
+                  type="button">
+            Cancel
+          </button>
+        </.form>
+      <% _ -> %>
+      <% end %>
     </div>
 </div>

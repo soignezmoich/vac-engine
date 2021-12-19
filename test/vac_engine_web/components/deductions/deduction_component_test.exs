@@ -10,20 +10,20 @@ defmodule VacEngine.EditorLive.DeductionComponentTest do
 
   @deduction %Deduction{branches: [], columns: []}
   @expected_branches []
-  @path [0]
+  @sel %{}
 
   test "'build_renderable' should build empty branches array if deduction has none" do
-    renderable = DeductionComponent.build_renderable(@deduction, @path, nil)
+    renderable = DeductionComponent.build_renderable(@deduction, @sel)
 
     assert renderable |> Map.get(:branches) == @expected_branches
   end
 
   @deduction %Deduction{branches: [%Branch{}], columns: []}
   @expected_branches [%Branch{}]
-  @path [0]
+  @sel %{}
 
   test "'build_renderable' should build branches array if deduction has some" do
-    renderable = DeductionComponent.build_renderable(@deduction, @path, nil)
+    renderable = DeductionComponent.build_renderable(@deduction, @sel)
 
     assert renderable |> Map.get(:branches) == @expected_branches
   end
@@ -45,10 +45,10 @@ defmodule VacEngine.EditorLive.DeductionComponentTest do
   }
   @expected_cond_columns [@cond_column, @cond_column_2]
   @expected_assign_columns [@assign_column, @assign_column_2]
-  @path [2]
+  @sel %{}
 
   test "'build_renderable' should build proper cond and assign columns" do
-    renderable = DeductionComponent.build_renderable(@deduction, @path, nil)
+    renderable = DeductionComponent.build_renderable(@deduction, @sel)
 
     assert renderable |> Map.get(:cond_columns) == @expected_cond_columns
     assert renderable |> Map.get(:assign_columns) == @expected_assign_columns

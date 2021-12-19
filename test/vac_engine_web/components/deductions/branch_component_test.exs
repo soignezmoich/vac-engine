@@ -64,7 +64,8 @@ defmodule VacEngine.EditorLive.BranchComponentTest do
         @assign_columns
       )
 
-    assert renderable |> Map.get(:cond_cells) == @expected_cond_cells
+    assert renderable |> Map.get(:cond_cells) |> Enum.map(&elem(&1, 1)) ==
+             @expected_cond_cells
   end
 
   # assignment cells property
@@ -90,6 +91,7 @@ defmodule VacEngine.EditorLive.BranchComponentTest do
         @assign_columns
       )
 
-    assert renderable |> Map.get(:assign_cells) == @expected_assign_cells
+    assert renderable |> Map.get(:assign_cells) |> Enum.map(&elem(&1, 1)) ==
+             @expected_assign_cells
   end
 end

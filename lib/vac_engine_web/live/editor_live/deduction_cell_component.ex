@@ -5,38 +5,61 @@ defmodule VacEngineWeb.EditorLive.DeductionCellComponent do
 
   alias VacEngineWeb.EditorLive.DeductionListComponent
   alias VacEngineWeb.EditorLive.DeductionInspectorComponent
-  import VacEngineWeb.EditorLive.DeductionMacros
 
   @impl true
   def update(
         %{
-          is_condition: is_condition,
+          column: column,
+          branch: branch,
           cell: cell,
-          path: path,
-          selected_path: selected_path
-        },
+          selection: selection
+        } = assigns,
         socket
       ) do
     socket
     |> assign(
       build_renderable(
-        is_condition,
+        branch,
+        column,
         cell,
-        path,
-        selected_path
+        selection
       )
     )
-    |> assign(path: path)
+    |> assign(assigns)
     |> ok()
   end
 
-  handle_select_event()
+  @impl true
+  def handle_event(
+        "select",
+        _,
+        %{assigns: %{deduction: deduction, column: column, branch: branch}} =
+          socket
+      ) do
+    selection = %{
+      column: column,
+      branch: branch,
+      deduction: deduction
+    }
+
+    send_update(DeductionListComponent,
+      id: "deduction_list",
+      action: {:select, selection}
+    )
+
+    send_update(DeductionInspectorComponent,
+      id: "deduction_inspector",
+      action: {:select, selection}
+    )
+
+    {:noreply, socket}
+  end
 
   def build_renderable(
-        is_condition,
+        branch,
+        column,
         cell,
-        path,
-        selected_path
+        selection
       ) do
     {type, value, args} =
       case cell do
@@ -60,15 +83,15 @@ defmodule VacEngineWeb.EditorLive.DeductionCellComponent do
           {"nil", "-", []}
       end
 
-    dot_path = path |> Enum.join(".")
+    is_condition = column.type == :condition
 
     selected =
-      case selected_path do
-        nil ->
-          false
+      case selection do
+        %{branch: %{id: bid}, column: %{id: cid}} ->
+          bid == branch.id && cid == column.id
 
-        list ->
-          List.starts_with?(list, path)
+        _ ->
+          false
       end
 
     args =
@@ -98,10 +121,8 @@ defmodule VacEngineWeb.EditorLive.DeductionCellComponent do
         {false, _, _} -> "bg-blue-200"
       end
 
-    [_, _, _, row_index | _] = path
-
     bg_opacity =
-      case {selected, is_even(row_index)} do
+      case {selected, is_even(branch.position)} do
         {true, _} -> ""
         {false, true} -> "bg-opacity-30"
         {false, false} -> "bg-opacity-50"
@@ -121,11 +142,11 @@ defmodule VacEngineWeb.EditorLive.DeductionCellComponent do
       end
 
     %{
+      column: column,
       type: type,
       value: value,
       args: args,
       cell_style: cell_style,
-      dot_path: dot_path,
       description: description,
       selected: selected
     }

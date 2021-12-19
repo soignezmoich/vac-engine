@@ -1,55 +1,27 @@
 <div id={"deduction.#{@deduction.id}"}
-     phx-click="select" phx-target={@myself}
-     class={klass("select-none my-1 border-2", [
+     class={klass("select-none my-1 border-2 min-w-min", [
      {"border-red-500", @selected?},
      {"border-transparent", !@selected?}])}>
-  <%= case @render_type do %>
-  <% :short -> %>
-    <table>
-      <tbody>
-        <tr>
-          <td>
-            <%= @short_variable %> =
-          </td>
-          <.live_component
-            module={DeductionCellComponent}
-            id={"deduction.#{@deduction.id}.short"}
-            path={@path ++ [:branches, 0, :assignments, 0]}
-            is_condition={false}
-            cell={@short_cell}
-            selected_path={@selected_path} />
-        </tr>
-      </tbody>
-    </table>
-  <% :full -> %>
-    <table class="min-w-full">
-      <.live_component
-        module={DeductionHeaderComponent}
-        id={"deduction.#{@deduction.id}.header"}
-        path={@path ++ [:header]}
-        cond_columns={@cond_columns}
-        assign_columns={@assign_columns}
-        selected_path={@selected_path} />
-      <tbody>
-        <%= for {branch, index} <- @deduction.branches |> Enum.with_index() do %>
-          <.live_component
-            module={DeductionBranchComponent}
-            id={"branch.#{branch.id}"}
-            branch={branch}
-            path={@path ++ [:branches, index]}
-            cond_columns={@cond_columns}
-            assign_columns={@assign_columns}
-            selected_path={@selected_path} />
-        <% end %>
-      </tbody>
-    </table>
-  <% :empty -> %>
-    <div>
-    -- Empty deduction --
 
-    <%= for {branch, index} <- @deduction.branches |> Enum.with_index() do %>
-      <div>branch</div>
-    <% end %>
-    </div>
-  <% end %>
+  <table class="min-w-full">
+    <.live_component
+      module={DeductionHeaderComponent}
+      id={"deduction.#{@deduction.id}.header"}
+      cond_columns={@cond_columns}
+      assign_columns={@assign_columns}
+      selection={@selection} />
+    <tbody>
+      <%= for branch <- @branches do %>
+        <.live_component
+          module={DeductionBranchComponent}
+          id={"branch.#{branch.id}"}
+          branch={branch}
+          deduction={@deduction}
+          cond_columns={@cond_columns}
+          assign_columns={@assign_columns}
+          selection={@selection} />
+      <% end %>
+    </tbody>
+  </table>
+
 </div>

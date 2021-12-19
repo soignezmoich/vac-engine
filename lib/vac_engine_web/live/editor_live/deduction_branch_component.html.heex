@@ -1,25 +1,27 @@
 <tr class="bg-white">
   <%= if @has_cond_cells? do %>
-    <%= for {cond_cell, index} <- @cond_cells |> Enum.with_index() do %>
+  <%= for {column, cell} <- @cond_cells do %>
       <.live_component
-        id={"branch.#{@branch.id}.cond.#{index}"}
+        id={"cell.#{@branch.id}.#{column.id}"}
         module={DeductionCellComponent}
-        is_condition={true}
-        cell={cond_cell}
-        path={@path ++ [:conditions, index]}
-        selected_path={@selected_path} />
+        deduction={@deduction}
+        branch={@branch}
+        cell={cell}
+        column={column}
+        selection={@selection} />
     <% end %>
     <td class="bg-white text-gray-200">
       <.icon name="hero/arrow-sm-right" width="1.25rem" />
     </td>
   <% end %>
-  <%= for {assign_cell, index} <- @assign_cells |> Enum.with_index() do %>
+  <%= for {column, cell} <- @assign_cells do %>
     <.live_component
-      id={"branch.#{@branch.id}.assign.#{index}"}
+      id={"cell.#{@branch.id}.#{column.id}"}
       module={DeductionCellComponent}
-      is_condition={false}
-      cell={assign_cell}
-      path={@path ++ [:assignments, index]}
-      selected_path={@selected_path} />
+      deduction={@deduction}
+      branch={@branch}
+      cell={cell}
+      column={column}
+      selection={@selection} />
   <% end %>
 </tr>

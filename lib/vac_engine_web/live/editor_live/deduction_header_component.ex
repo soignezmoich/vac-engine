@@ -8,14 +8,13 @@ defmodule VacEngineWeb.EditorLive.DeductionHeaderComponent do
         %{
           cond_columns: cond_columns,
           assign_columns: assign_columns,
-          path: path,
-          selected_path: selected_path
+          selection: selection
         },
         socket
       ) do
     socket
     |> assign(build_renderable(cond_columns, assign_columns))
-    |> assign(path: path, selected_path: selected_path)
+    |> assign(selection: selection)
     |> ok()
   end
 

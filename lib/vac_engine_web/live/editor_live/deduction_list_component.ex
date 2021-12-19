@@ -5,12 +5,12 @@ defmodule VacEngineWeb.EditorLive.DeductionListComponent do
 
   @impl true
   def mount(socket) do
-    {:ok, assign(socket, selected_path: nil)}
+    {:ok, assign(socket, selection: nil)}
   end
 
   @impl true
-  def update(%{action: {:select_path, path}}, socket) do
-    {:ok, assign(socket, selected_path: path)}
+  def update(%{action: {:select, selection}}, socket) do
+    {:ok, assign(socket, selection: selection)}
   end
 
   @impl true

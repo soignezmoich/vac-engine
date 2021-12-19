@@ -8,10 +8,10 @@ defmodule VacEngineWeb.EditorLive.DeductionBranchComponent do
   def update(
         %{
           branch: branch,
+          deduction: deduction,
           cond_columns: cond_columns,
           assign_columns: assign_columns,
-          path: path,
-          selected_path: selected_path
+          selection: selection
         },
         socket
       ) do
@@ -23,7 +23,7 @@ defmodule VacEngineWeb.EditorLive.DeductionBranchComponent do
         assign_columns
       )
     )
-    |> assign(path: path, branch: branch, selected_path: selected_path)
+    |> assign(branch: branch, selection: selection, deduction: deduction)
     |> ok()
   end
 
@@ -33,13 +33,17 @@ defmodule VacEngineWeb.EditorLive.DeductionBranchComponent do
     cond_cells =
       cond_columns
       |> Enum.map(fn column ->
-        Enum.find(conditions, &(&1.column_id == column.id))
+        conditions
+        |> Enum.find(&(&1.column_id == column.id))
+        |> then(&{column, &1})
       end)
 
     assign_cells =
       assign_columns
       |> Enum.map(fn column ->
-        Enum.find(assignments, &(&1.column_id == column.id))
+        assignments
+        |> Enum.find(&(&1.column_id == column.id))
+        |> then(&{column, &1})
       end)
 
     has_cond_cells? = length(cond_cells) > 0
