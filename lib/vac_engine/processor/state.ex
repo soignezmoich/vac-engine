@@ -2,6 +2,7 @@ defmodule VacEngine.Processor.State do
   @moduledoc """
   Processor state
   """
+  alias VacEngine.Processor.Convert
   alias VacEngine.Processor.State
   alias VacEngine.Processor.Compiler
   alias VacEngine.Processor.Variable
@@ -158,19 +159,7 @@ defmodule VacEngine.Processor.State do
         end)
 
       true ->
-        compatible =
-          (is_list(value) && Meta.list_type?(ptype)) ||
-            (is_map(value) && Meta.is_type?(type, :map, in_list)) ||
-            (is_integer(value) && Meta.is_type?(type, :integer, in_list)) ||
-            (is_binary(value) && Meta.is_type?(type, :string, in_list)) ||
-            (is_boolean(value) && Meta.is_type?(type, :boolean, in_list)) ||
-            (is_number(value) && Meta.is_type?(type, :number, in_list)) ||
-            (is_struct(value, NaiveDateTime) &&
-               Meta.is_type?(type, :date, in_list)) ||
-            (is_struct(value, Date) &&
-               Meta.is_type?(type, :date, in_list)) ||
-            (is_struct(value, NaiveDateTime) &&
-               Meta.is_type?(type, :datetime, in_list))
+        {compatible, value} = map_value(value, type, ptype, in_list)
 
         if compatible do
           heap =
@@ -181,6 +170,54 @@ defmodule VacEngine.Processor.State do
         else
           state
         end
+    end
+  end
+
+  defp map_value(value, type, ptype, in_list) do
+    cond do
+      is_list(value) && Meta.list_type?(ptype) ->
+        {true, value}
+
+      is_map(value) && Meta.is_type?(type, :map, in_list) ->
+        {true, value}
+
+      is_integer(value) && Meta.is_type?(type, :integer, in_list) ->
+        {true, value}
+
+      is_binary(value) && Meta.is_type?(type, :string, in_list) ->
+        {true, value}
+
+      is_boolean(value) && Meta.is_type?(type, :boolean, in_list) ->
+        {true, value}
+
+      is_number(value) && Meta.is_type?(type, :number, in_list) ->
+        {true, value}
+
+      is_struct(value, NaiveDateTime) && Meta.is_type?(type, :date, in_list) ->
+        {true, value}
+
+      is_struct(value, Date) && Meta.is_type?(type, :date, in_list) ->
+        {true, value}
+
+      is_struct(value, NaiveDateTime) && Meta.is_type?(type, :datetime, in_list) ->
+        {true, value}
+
+      is_binary(value) && Meta.is_type?(type, :date, in_list) ->
+        try do
+          {true, Convert.parse_date(value)}
+        catch
+          _ -> {false, nil}
+        end
+
+      is_binary(value) && Meta.is_type?(type, :datetime, in_list) ->
+        try do
+          {true, Convert.parse_datetime(value)}
+        catch
+          _ -> {false, nil}
+        end
+
+      true ->
+        {false, nil}
     end
   end
 

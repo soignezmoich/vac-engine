@@ -169,7 +169,7 @@ defmodule Fixtures.Cases do
     %{
       input: %{birthdate: "1980-05-04"},
       env: %{now: "2020-04-03"},
-      output: %{now: "2020-04-03", age: 39}
+      output: %{now: "2020-04-03", age: 39, date: "2010-05-07"}
     }
   end
 end

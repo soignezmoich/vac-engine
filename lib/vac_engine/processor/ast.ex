@@ -57,7 +57,7 @@ defmodule VacEngine.Processor.Ast do
   defp sanitize!(var) when is_atom(var), do: sanitize!(to_string(var))
 
   defp sanitize!(var) when is_binary(var) do
-    Regex.replace(~r/[^a-zA-Z0-9_]/, var, "_")
+    Regex.replace(~r/[^a-zA-Z0-9-:_]/, var, "_")
   end
 
   defp sanitize!(list) when is_list(list) do
