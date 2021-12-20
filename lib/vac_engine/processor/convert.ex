@@ -16,6 +16,10 @@ defmodule VacEngine.Processor.Convert do
   def parse_bool("YES"), do: true
   def parse_bool("NO"), do: false
 
+  def parse_bool(b) do
+    throw({:invalid_bool, "invalid bool #{b}"})
+  end
+
   @date_formats ~w({YYYY}-{0M}-{0D} {YYYY})
 
   def parse_date(str) do
@@ -46,5 +50,36 @@ defmodule VacEngine.Processor.Convert do
       nil -> throw({:invalid_input, "invalid string for date #{str}"})
       date -> date
     end
+  end
+
+  def parse_number(str) do
+    Float.parse(str)
+    |> case do
+      {f, _} -> f
+      _ -> throw({:invalid_number, "invalid number #{str}"})
+    end
+  end
+
+  def parse_integer(str) do
+    Integer.parse(str)
+    |> case do
+      {f, _} -> f
+      _ -> throw({:invalid_number, "invalid integer #{str}"})
+    end
+  end
+
+  def parse_string(str, _t) when not is_binary(str) do
+    throw({:invalid_type, "#{str} cannot be parsed"})
+  end
+
+  def parse_string(str, :string), do: str
+  def parse_string(str, :date), do: parse_date(str)
+  def parse_string(str, :datetime), do: parse_datetime(str)
+  def parse_string(str, :boolean), do: parse_bool(str)
+  def parse_string(str, :number), do: parse_number(str)
+  def parse_string(str, :integer), do: parse_integer(str)
+
+  def parse_string(_str, t) do
+    throw({:invalid_type, "type #{t} cannot be parsed"})
   end
 end
