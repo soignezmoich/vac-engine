@@ -279,7 +279,7 @@ defmodule VacEngine.Processor.State do
         Timex.format!(data, "{ISOdate}")
 
       :datetime ->
-        Timex.format!(data, "{ISO:Extended}")
+        Timex.format!(data, "{ISO:Extended:Z}")
 
       nil ->
         nil
