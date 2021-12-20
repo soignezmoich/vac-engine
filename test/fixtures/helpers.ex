@@ -83,6 +83,10 @@ defmodule Fixtures.Helpers do
     |> stringify_keys()
   end
 
+  defp stringify_keys(v) when is_struct(v, Date), do: v
+  defp stringify_keys(v) when is_struct(v, DateTime), do: v
+  defp stringify_keys(v) when is_struct(v, NaiveDateTime), do: v
+
   defp stringify_keys(map) when is_map(map) do
     map
     |> Enum.map(fn {key, val} ->
@@ -114,6 +118,10 @@ defmodule Fixtures.Helpers do
     map
     |> atomify_keys()
   end
+
+  defp atomify_keys(v) when is_struct(v, Date), do: v
+  defp atomify_keys(v) when is_struct(v, DateTime), do: v
+  defp atomify_keys(v) when is_struct(v, NaiveDateTime), do: v
 
   defp atomify_keys(map) when is_map(map) do
     map

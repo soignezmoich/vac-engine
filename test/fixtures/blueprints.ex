@@ -427,6 +427,7 @@ defmodule Fixtures.Blueprints do
         %{name: :birthdate, type: :date, mapping: :in_required},
         %{name: :now, type: :date, mapping: :out},
         %{name: :date, type: :date, mapping: :out},
+        %{name: :datetime, type: :datetime, mapping: :out},
         %{name: :age, type: :integer, mapping: :out}
       ],
       deductions: [
@@ -437,7 +438,8 @@ defmodule Fixtures.Blueprints do
               assignments: [
                 %{target: :now, expression: quote(do: now())},
                 %{target: :age, expression: quote(do: age(@birthdate))},
-                %{target: :date, expression: "2010-05-02"}
+                %{target: :date, expression: ~D[2010-05-02]},
+                %{target: :datetime, expression: ~N[2010-05-02 14:23:04]}
               ]
             }
           ]
@@ -447,7 +449,11 @@ defmodule Fixtures.Blueprints do
             %{
               conditions: [],
               assignments: [
-                %{target: :date, expression: quote(do: add_days(@date, 5))}
+                %{target: :date, expression: quote(do: add_days(@date, 5))},
+                %{
+                  target: :datetime,
+                  expression: quote(do: add_days(@datetime, 5))
+                }
               ]
             }
           ]

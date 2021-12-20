@@ -202,20 +202,6 @@ defmodule VacEngine.Processor.State do
       is_struct(value, NaiveDateTime) && Meta.is_type?(type, :datetime, in_list) ->
         {true, value}
 
-      is_binary(value) && Meta.is_type?(type, :date, in_list) ->
-        try do
-          {true, Convert.parse_date(value)}
-        catch
-          _ -> {false, nil}
-        end
-
-      is_binary(value) && Meta.is_type?(type, :datetime, in_list) ->
-        try do
-          {true, Convert.parse_datetime(value)}
-        catch
-          _ -> {false, nil}
-        end
-
       true ->
         {false, nil}
     end

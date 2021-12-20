@@ -19,6 +19,22 @@ defmodule VacEngine.Processor.Ast do
       {:error, msg}
   end
 
+  defp sanitize!(d) when is_struct(d, Date) do
+    {:date, [], [d.year, d.month, d.day]}
+  end
+
+  defp sanitize!(d) when is_struct(d, NaiveDateTime) do
+    {:datetime, [], [d.year, d.month, d.day, d.hour, d.minute, d.second]}
+  end
+
+  defp sanitize!({:date, _m, [year, month, day]}) do
+    {:date, [], [year, month, day]}
+  end
+
+  defp sanitize!({:datetime, _m, [year, month, day, hour, minute, second]}) do
+    {:datetime, [], [year, month, day, hour, minute, second]}
+  end
+
   defp sanitize!({f, m, args}) when is_list(args) and is_binary(f) do
     fname = convert_atom(f)
     sanitize!({fname, m, args})
@@ -64,7 +80,7 @@ defmodule VacEngine.Processor.Ast do
     Enum.map(list, &sanitize!/1)
   end
 
-  defp sanitize!(_expr) do
+  defp sanitize!(expr) do
     throw({:invalid_expression, "invalid expression"})
   end
 
@@ -147,6 +163,16 @@ defmodule VacEngine.Processor.Ast do
   catch
     {_code, msg} ->
       {:error, msg}
+  end
+
+  defp insert_signatures!({:date, m, args}, _bindings) do
+    m = Keyword.put(m, :signature, {[], :date})
+    {:date, m, args}
+  end
+
+  defp insert_signatures!({:datetime, m, args}, _bindings) do
+    m = Keyword.put(m, :signature, {[], :datetime})
+    {:datetime, m, args}
   end
 
   defp insert_signatures!({:var, m, [pos] = r}, bindings) do

@@ -91,6 +91,21 @@ defmodule VacEngine.Processor.Compiler do
   def compile_ast!({:or, m, args}), do: compile_ast!({:or_, m, args})
   def compile_ast!({:is_nil, m, args}), do: compile_ast!({:is_nil_, m, args})
 
+  def compile_ast!({:date, _m, [year, month, day]}) do
+    quote do
+      Date.from_erl!({unquote(year), unquote(month), unquote(day)})
+    end
+  end
+
+  def compile_ast!({:datetime, _m, [year, month, day, hour, minute, second]}) do
+    quote do
+      NaiveDateTime.from_erl!(
+        {{unquote(year), unquote(month), unquote(day)},
+         {unquote(hour), unquote(minute), unquote(second)}}
+      )
+    end
+  end
+
   def compile_ast!({fname, _m, args}) do
     fref =
       {:., [],

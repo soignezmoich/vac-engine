@@ -5,6 +5,8 @@ defmodule VacEngine.Processor.AstTest do
 
   @elixir_ast %{
     ok: [
+      {~D[2020-06-23], {:date, [], [2020, 6, 23]}},
+      {~N[2020-06-23 14:02:12], {:datetime, [], [2020, 6, 23, 14, 2, 12]}},
       {quote(do: gt(4, a)), {:gt, [], [4, "a"]}},
       {quote(do: gt(4, 5)), {:gt, [], [4, 5]}},
       {quote(do: lt(add(@a, 5), 8)),
@@ -18,6 +20,8 @@ defmodule VacEngine.Processor.AstTest do
   }
   @json_ast %{
     ok: [
+      {%{"l" => "datetime", "r" => [2020, 4, 23, 16, 23, 14], "m" => %{}},
+       {:datetime, [], [2020, 4, 23, 16, 23, 14]}},
       {%{"l" => "gt", "r" => [4, "a"], "m" => %{}}, {:gt, [], [4, "a"]}},
       {%{
          "l" => "lt",
@@ -60,6 +64,7 @@ defmodule VacEngine.Processor.AstTest do
   end
 
   @sig_ast [
+    {~D[2010-01-02], {:date, [signature: {[], :date}], [2010, 1, 2]}},
     {quote(do: gt(4, 9)),
      {:gt, [signature: {[:integer, :integer], :boolean}], [4, 9]}},
     {quote(do: gt(4, @a)),
