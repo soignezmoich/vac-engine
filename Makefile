@@ -64,12 +64,11 @@ migrate: deps
 
 clean:
 	cd assets && make clean
-	- mix phx.digest.clean --all
+	git clean -d -f -x -e ".envrc"
 	rm -fr _build
 	rm -fr deps
 	rm -fr docs
 	rm -fr erl_crash.dump
-	rm -fr blueprints/json
 
 
 .PHONY: server
