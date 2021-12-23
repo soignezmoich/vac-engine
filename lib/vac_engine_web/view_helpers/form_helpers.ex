@@ -18,4 +18,8 @@ defmodule VacEngineWeb.FormHelpers do
     |> html_escape
     |> safe_to_string
   end
+
+  def hash(val) do
+    :crypto.hash(:md5, inspect(val)) |> Base.encode16()
+  end
 end
