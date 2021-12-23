@@ -17,7 +17,7 @@ defmodule VacEngineWeb.BlueprintLive.SummaryComponent do
     {:ok,
      assign(socket,
        can_read_portals:
-         can?(socket, :read_portals, assigns.blueprint.workspace),
+         can?(assigns.role, :read_portals, assigns.blueprint.workspace),
        changeset: changeset,
        blueprint: assigns.blueprint,
        can_write: assigns.can_write,
@@ -51,7 +51,7 @@ defmodule VacEngineWeb.BlueprintLive.SummaryComponent do
     Processor.update_blueprint(blueprint, params)
     |> case do
       {:ok, br} ->
-        send(self(), {:update_blueprint, br})
+        send(self(), :reload_blueprint)
         {:noreply, socket}
 
       {:error, changeset} ->
