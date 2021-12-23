@@ -160,8 +160,10 @@ defmodule VacEngine.Processor.Compiler do
       end)
 
     now = Timex.format!(Timex.now(), "{ISOdate} {ISOtime}Z")
-    br_info = "Blueprint: ##{blueprint.id}. Name: #{blueprint.name}. " <>
-              "Compiled: #{now}. App version: #{VacEngine.version}."
+
+    br_info =
+      "Blueprint: ##{blueprint.id}. Name: #{blueprint.name}. " <>
+        "Compiled: #{now}. App version: #{VacEngine.version()}."
 
     fn_asts = [
       quote do
