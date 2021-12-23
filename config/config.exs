@@ -31,7 +31,7 @@ config :vac_engine, VacEngineWeb.Endpoint,
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
-  metadata: [:remote_ip, :request_id]
+  metadata: [:remote_ip, :request_id, :context]
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
