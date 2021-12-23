@@ -24,7 +24,7 @@ defmodule VacEngine.Processor.Variables do
   end
 
   def change_variable(var_or_changeset, attrs) do
-    # TODO no expression casting
+    # TODO no expression casting (default value)
     Variable.changeset(var_or_changeset, attrs)
   end
 
