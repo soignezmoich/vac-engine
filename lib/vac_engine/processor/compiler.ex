@@ -159,7 +159,7 @@ defmodule VacEngine.Processor.Compiler do
         end
       end)
 
-    now = Timex.format!(Timex.now(), "{ISOdate} {ISOtime}Z")
+    now = Timex.format!(Timex.now(), "{ISOdate} {h24}:{m}:{s} Z")
 
     br_info =
       "Blueprint: ##{blueprint.id}. Name: #{blueprint.name}. " <>
