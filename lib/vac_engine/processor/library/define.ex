@@ -39,7 +39,8 @@ defmodule VacEngine.Processor.Library.Define do
       name: name,
       arity: arity,
       label: label,
-      short: short
+      short: short,
+      name_arity: "#{name}/#{arity}"
     }
 
     funcs = Module.get_attribute(env.module, :functions) || %{}
