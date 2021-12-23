@@ -343,20 +343,22 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
     Changeset.get_field(changeset, :type)
     |> case do
       :constant ->
-        Changeset.get_field(changeset, :constant)
+        if changeset.valid? do
+          Changeset.get_field(changeset, :constant)
+        else
+          nil
+        end
 
       :variable ->
-        path =
-          Changeset.get_field(changeset, :variable)
-          |> case do
-            v when is_binary(v) ->
-              String.split(v, ".")
+        Changeset.get_field(changeset, :variable)
+        |> case do
+          v when is_binary(v) ->
+            path = String.split(v, ".")
+            {:var, [], [path]}
 
-            _ ->
-              []
-          end
-
-        {:var, [], [path]}
+          _ ->
+            nil
+        end
 
       :function ->
         fname = Changeset.get_field(changeset, :function)

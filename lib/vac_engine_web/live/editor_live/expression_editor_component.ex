@@ -14,14 +14,15 @@ defmodule VacEngineWeb.EditorLive.ExpressionEditorComponent do
       type: :constant,
       changeset: nil,
       return_type: nil,
-      transient_ast: nil
+      transient_ast: nil,
+      error: nil
     )
     |> ok()
   end
 
   @impl true
   def update(%{action: {:update_ast, ast}}, socket) do
-    {:ok, assign(socket, transient_ast: ast)}
+    {:ok, assign(socket, transient_ast: ast, error: nil)}
   end
 
   @impl true
@@ -34,7 +35,10 @@ defmodule VacEngineWeb.EditorLive.ExpressionEditorComponent do
 
   @impl true
   def handle_event("cancel", _, socket) do
-    {:noreply, socket |> bump_form_id()}
+    socket
+    |> assign(error: nil)
+    |> bump_form_id()
+    |> pair(:noreply)
   end
 
   @impl true
@@ -52,7 +56,7 @@ defmodule VacEngineWeb.EditorLive.ExpressionEditorComponent do
 
     send(self(), :reload_blueprint)
 
-    {:noreply, socket}
+    {:noreply, assign(socket, error: nil)}
   end
 
   @impl true
@@ -68,11 +72,21 @@ defmodule VacEngineWeb.EditorLive.ExpressionEditorComponent do
           }
         } = socket
       ) do
-    {:ok, _} = Processor.update_cell(ast, blueprint, branch, column)
+    case ast do
+      nil ->
+        :error
 
-    send(self(), :reload_blueprint)
+      ast ->
+        Processor.update_cell(ast, blueprint, branch, column)
+    end
+    |> case do
+      {:ok, _res} ->
+        send(self(), :reload_blueprint)
+        {:noreply, socket}
 
-    {:noreply, socket}
+      _ ->
+        {:noreply, assign(socket, error: "Cannot save changes")}
+    end
   end
 
   defp parse_expression(
