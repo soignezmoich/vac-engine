@@ -419,60 +419,83 @@ defmodule VacEngine.Processor.LibraryTest do
   end
 
   test "candidates" do
+    assert candidates(%{name: :latest, arity: 2, arguments: [:date]})
+           |> Enum.count() == 1
+
+    assert candidates(%{name: "latest/3", arguments: [:date]}) |> Enum.count() ==
+             1
+
+    assert candidates(%{name: "latest", arguments: [:date]}) |> Enum.count() ==
+             2
+
     assert [
              %{
                label: "Equals to",
+               arity: 2,
                name: :eq,
                short: "=",
+               name_arity: "eq/2",
                signatures: [{[:string, :string], :boolean}]
              },
              %{
                label: "Not equal to",
+               arity: 2,
                name: :neq,
                short: "≠",
+               name_arity: "neq/2",
                signatures: [{[:string, :string], :boolean}]
              }
-           ] == candidates([:string, :string])
+           ] == candidates(%{arguments: [:string, :string]})
 
     assert [
              %{
                label: "Add",
+               arity: 2,
                name: :add,
                short: "+",
+               name_arity: "add/2",
                signatures: [
                  {[:integer, :number], :number},
-                 {[:integer, :integer], :number}
+                 {[:integer, :integer], :integer}
                ]
              }
-           ] == func_candidates(:add, [:integer])
+           ] == candidates(%{name: :add, arguments: [:integer]})
 
-    assert [] == func_candidates(:non_existing, [:any])
+    assert [] == candidates(%{name: :non_existing, arguments: [:any]})
 
     assert [
              %{
                label: "And",
+               arity: 2,
                name: :and,
-               short: "AND()",
+               short: "AND",
+               name_arity: "and/2",
                signatures: [{[:boolean, :boolean], :boolean}]
              },
              %{
                label: "Equals to",
+               arity: 2,
                name: :eq,
                short: "=",
+               name_arity: "eq/2",
                signatures: [{[:boolean, :boolean], :boolean}]
              },
              %{
                label: "Not equal to",
+               arity: 2,
                name: :neq,
                short: "≠",
+               name_arity: "neq/2",
                signatures: [{[:boolean, :boolean], :boolean}]
              },
              %{
                label: "Or",
+               arity: 2,
                name: :or,
-               short: "OR()",
+               short: "OR",
+               name_arity: "or/2",
                signatures: [{[:boolean, :boolean], :boolean}]
              }
-           ] == candidates([:boolean, :boolean])
+           ] == candidates(%{arguments: [:boolean, :boolean]})
   end
 end

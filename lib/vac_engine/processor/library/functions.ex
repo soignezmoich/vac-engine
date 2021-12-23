@@ -74,7 +74,7 @@ defmodule VacEngine.Processor.Library.Functions do
     Boolean AND
   """
   @label "And"
-  @short "AND()"
+  @short "AND"
   @rename :and
   @signature {[:boolean, :boolean], :boolean}
   def and_(nil, nil), do: nil
@@ -89,7 +89,7 @@ defmodule VacEngine.Processor.Library.Functions do
     Boolean OR
   """
   @label "Or"
-  @short "OR()"
+  @short "OR"
   @rename :or
   @signature {[:boolean, :boolean], :boolean}
   def or_(nil, nil), do: nil
@@ -254,7 +254,7 @@ defmodule VacEngine.Processor.Library.Functions do
   """
   @label "Add"
   @short "+"
-  @signature {[:integer, :integer], :number}
+  @signature {[:integer, :integer], :integer}
   @signature {[:number, :number], :number}
   @signature {[:number, :integer], :number}
   @signature {[:integer, :number], :number}
@@ -269,7 +269,7 @@ defmodule VacEngine.Processor.Library.Functions do
   """
   @label "Sub"
   @short "-"
-  @signature {[:integer, :integer], :number}
+  @signature {[:integer, :integer], :integer}
   @signature {[:number, :number], :number}
   @signature {[:number, :integer], :number}
   @signature {[:integer, :number], :number}
@@ -284,7 +284,7 @@ defmodule VacEngine.Processor.Library.Functions do
   """
   @label "Mult"
   @short "×"
-  @signature {[:integer, :integer], :number}
+  @signature {[:integer, :integer], :integer}
   @signature {[:number, :number], :number}
   @signature {[:number, :integer], :number}
   @signature {[:integer, :number], :number}
@@ -299,7 +299,7 @@ defmodule VacEngine.Processor.Library.Functions do
   """
   @label "Div"
   @short "÷"
-  @signature {[:integer, :integer], :number}
+  @signature {[:integer, :integer], :integer}
   @signature {[:number, :number], :number}
   @signature {[:number, :integer], :number}
   @signature {[:integer, :number], :number}
@@ -313,8 +313,9 @@ defmodule VacEngine.Processor.Library.Functions do
     Get the current time
   """
   @label "Now"
-  @short "NOW()"
+  @short "NOW"
   @signature {[], :datetime}
+  @signature {[], :date}
   def now() do
     raise "this function is just a placeholder and should not be called"
   end
@@ -330,7 +331,7 @@ defmodule VacEngine.Processor.Library.Functions do
     Value returned in years.
   """
   @label "Age"
-  @short "AGE()"
+  @short "AGE"
   @signature {[:date], :integer}
   def age(_) do
     raise "this function is just a placeholder and should not be called"
@@ -348,7 +349,7 @@ defmodule VacEngine.Processor.Library.Functions do
     Return earliest date
   """
   @label "Earliest"
-  @short "EARLIEST()"
+  @short "EARLIEST/2"
   @signature {[:date, :date], :date}
   @signature {[:datetime, :datetime], :datetime}
   def earliest(a, b) when is_nil(a) and is_nil(b), do: nil
@@ -368,7 +369,7 @@ defmodule VacEngine.Processor.Library.Functions do
     Return latest date
   """
   @label "Earliest"
-  @short "EARLIEST()"
+  @short "EARLIEST/3"
   @signature {[:date, :date, :date], :date}
   @signature {[:datetime, :datetime, :datetime], :datetime}
   def earliest(nil, nil, nil), do: nil
@@ -387,7 +388,7 @@ defmodule VacEngine.Processor.Library.Functions do
     Return latest date
   """
   @label "Latest"
-  @short "LATEST()"
+  @short "LATEST/2"
   @signature {[:date, :date], :date}
   @signature {[:datetime, :datetime], :datetime}
   def latest(a, b) when is_nil(a) and is_nil(b), do: nil
@@ -407,7 +408,7 @@ defmodule VacEngine.Processor.Library.Functions do
     Return latest date
   """
   @label "Latest"
-  @short "LATEST()"
+  @short "LATEST/3"
   @signature {[:date, :date, :date], :date}
   @signature {[:datetime, :datetime, :datetime], :datetime}
   def latest(nil, nil, nil), do: nil
@@ -426,7 +427,7 @@ defmodule VacEngine.Processor.Library.Functions do
     Add years to date
   """
   @label "Add years"
-  @short "ADD_YEARS()"
+  @short "ADD_YEARS"
   @signature {[:date, :integer], :date}
   @signature {[:datetime, :integer], :datetime}
   def add_years(date, years) when is_nil(date) or is_nil(years), do: nil
@@ -439,7 +440,7 @@ defmodule VacEngine.Processor.Library.Functions do
     Add months to date
   """
   @label "Add months"
-  @short "ADD_MONTHS()"
+  @short "ADD_MONTHS"
   @signature {[:date, :integer], :date}
   @signature {[:datetime, :integer], :datetime}
   def add_months(date, months) when is_nil(date) or is_nil(months), do: nil
@@ -452,7 +453,7 @@ defmodule VacEngine.Processor.Library.Functions do
     Add weeks to date
   """
   @label "Add weeks"
-  @short "ADD_WEEKS()"
+  @short "ADD_WEEKS"
   @signature {[:date, :integer], :date}
   @signature {[:datetime, :integer], :datetime}
   def add_weeks(date, weeks) when is_nil(date) or is_nil(weeks), do: nil
@@ -465,7 +466,7 @@ defmodule VacEngine.Processor.Library.Functions do
     Add days to date
   """
   @label "Add days"
-  @short "ADD_DAYS()"
+  @short "ADD_DAYS"
   @signature {[:date, :integer], :date}
   @signature {[:datetime, :integer], :datetime}
   def add_days(date, days) when is_nil(date) or is_nil(days), do: nil
@@ -478,7 +479,7 @@ defmodule VacEngine.Processor.Library.Functions do
     Add hours to date
   """
   @label "Add hours"
-  @short "ADD_HOURS()"
+  @short "ADD_HOURS"
   @signature {[:datetime, :integer], :datetime}
   def add_hours(date, hours) when is_nil(date) or is_nil(hours), do: nil
 
@@ -490,7 +491,7 @@ defmodule VacEngine.Processor.Library.Functions do
     Add minutes to date
   """
   @label "Add minutes"
-  @short "ADD_MINUTES()"
+  @short "ADD_MINUTES"
   @signature {[:datetime, :integer], :datetime}
   def add_minutes(date, minutes) when is_nil(date) or is_nil(minutes),
     do: nil
@@ -503,7 +504,7 @@ defmodule VacEngine.Processor.Library.Functions do
     Add seconds to date
   """
   @label "Add seconds"
-  @short "ADD_SECONDS()"
+  @short "ADD_SECONDS"
   @signature {[:datetime, :integer], :datetime}
   def add_seconds(date, seconds) when is_nil(date) or is_nil(seconds),
     do: nil
@@ -518,7 +519,7 @@ defmodule VacEngine.Processor.Library.Functions do
     Always return a positive  number.
   """
   @label "Years between"
-  @short "YEARS_BETWEEN()"
+  @short "YEARS_BETWEEN"
   @signature {[:date, :date], :integer}
   @signature {[:datetime, :datetime], :integer}
   def years_between(a, b) when is_nil(a) or is_nil(b), do: nil
@@ -533,7 +534,7 @@ defmodule VacEngine.Processor.Library.Functions do
     Always return a positive  number.
   """
   @label "Months between"
-  @short "MONTHS_BETWEEN()"
+  @short "MONTHS_BETWEEN"
   @signature {[:date, :date], :integer}
   @signature {[:datetime, :datetime], :integer}
   def months_between(a, b) when is_nil(a) or is_nil(b), do: nil
@@ -548,7 +549,7 @@ defmodule VacEngine.Processor.Library.Functions do
     Always return a positive  number.
   """
   @label "Weeks between"
-  @short "WEEKS_BETWEEN()"
+  @short "WEEKS_BETWEEN"
   @signature {[:date, :date], :integer}
   @signature {[:datetime, :datetime], :integer}
   def weeks_between(a, b) when is_nil(a) or is_nil(b), do: nil
@@ -563,7 +564,7 @@ defmodule VacEngine.Processor.Library.Functions do
     Always return a positive  number.
   """
   @label "Days between"
-  @short "DAYS_BETWEEN()"
+  @short "DAYS_BETWEEN"
   @signature {[:date, :date], :integer}
   @signature {[:datetime, :datetime], :integer}
   def days_between(a, b) when is_nil(a) or is_nil(b), do: nil
@@ -578,7 +579,7 @@ defmodule VacEngine.Processor.Library.Functions do
     Always return a positive  number.
   """
   @label "Hours between"
-  @short "HOURS_BETWEEN()"
+  @short "HOURS_BETWEEN"
   @signature {[:date, :date], :integer}
   @signature {[:datetime, :datetime], :integer}
   def hours_between(a, b) when is_nil(a) or is_nil(b), do: nil
@@ -593,7 +594,7 @@ defmodule VacEngine.Processor.Library.Functions do
     Always return a positive  number.
   """
   @label "Minutes between"
-  @short "MINUTES_BETWEEN()"
+  @short "MINUTES_BETWEEN"
   @signature {[:date, :date], :integer}
   @signature {[:datetime, :datetime], :integer}
   def minutes_between(a, b) when is_nil(a) or is_nil(b), do: nil
@@ -608,7 +609,7 @@ defmodule VacEngine.Processor.Library.Functions do
     Always return a positive  number.
   """
   @label "Seconds between"
-  @short "SECONDS_BETWEEN()"
+  @short "SECONDS_BETWEEN"
   @signature {[:date, :date], :integer}
   @signature {[:datetime, :datetime], :integer}
   def seconds_between(a, b) when is_nil(a) or is_nil(b), do: nil

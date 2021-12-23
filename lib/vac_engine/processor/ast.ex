@@ -80,7 +80,7 @@ defmodule VacEngine.Processor.Ast do
     Enum.map(list, &sanitize!/1)
   end
 
-  defp sanitize!(expr) do
+  defp sanitize!(_expr) do
     throw({:invalid_expression, "invalid expression"})
   end
 
@@ -211,6 +211,14 @@ defmodule VacEngine.Processor.Ast do
     ast
   end
 
+  def return_type(ast) do
+    typeof(ast)
+  catch
+    {_code, _msg} -> nil
+  end
+
+  defp typeof({:date, _, _r}), do: :date
+  defp typeof({:datetime, _, _r}), do: :datetime
   defp typeof({_f, [signature: {_args, ret}], _r}), do: ret
   defp typeof(v) when is_integer(v), do: :integer
   defp typeof(v) when is_number(v), do: :number
@@ -320,6 +328,16 @@ defmodule VacEngine.Processor.Ast do
     "@#{Enum.join(path, ".")}"
   end
 
+  def describe({:date, _m, [year, month, day]}) do
+    date = Date.from_erl!({year, month, day})
+    Timex.format!(date, "{ISOdate}")
+  end
+
+  def describe({:datetime, _m, [year, month, day, hour, minute, second]}) do
+    date = NaiveDateTime.from_erl!({{year, month, day}, {hour, minute, second}})
+    Timex.format!(date, "{ISO:Extended:Z}")
+  end
+
   def describe({f, _, args}) do
     args =
       args
@@ -329,8 +347,66 @@ defmodule VacEngine.Processor.Ast do
     "#{f}(#{args})"
   end
 
+  def describe(ast) when is_binary(ast), do: ast
+
   def describe(ast) do
     inspect(ast)
+  end
+
+  def node_type({:date, _, _}) do
+    :constant
+  end
+
+  def node_type({:datetime, _, _}) do
+    :constant
+  end
+
+  def node_type({:var, _, _}) do
+    :variable
+  end
+
+  def node_type({_f, _, _}) do
+    :function
+  end
+
+  def node_type(nil) do
+    nil
+  end
+
+  def node_type(_) do
+    :constant
+  end
+
+  def variable_name({:var, _, [path]}) do
+    path |> Enum.join(".")
+  end
+
+  def variable_name(_) do
+    nil
+  end
+
+  def function_name({f, _, _}) when f != :date and f != :datetime do
+    f
+  end
+
+  def function_name(_) do
+    nil
+  end
+
+  def function_arity({f, _, args}) when f != :date and f != :datetime do
+    Enum.count(args)
+  end
+
+  def function_arity(_) do
+    0
+  end
+
+  def function_arguments({f, _, args}) when f != :date and f != :datetime do
+    args
+  end
+
+  def function_arguments(_) do
+    nil
   end
 
   defp convert_atom(a) when is_atom(a), do: a

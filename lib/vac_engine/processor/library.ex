@@ -41,56 +41,83 @@ defmodule VacEngine.Processor.Library do
   Look for candidates, i.e. functions whose signature match the given argument
   types.
   """
-  def candidates(args) when is_list(args) do
-    candidates({args, :any})
-  end
+  def candidates(request) do
+    request =
+      Map.get(request, :name)
+      |> case do
+        s when is_binary(s) ->
+          String.split(s, "/")
+          |> case do
+            [name, arity] ->
+              Map.merge(request, %{
+                name: String.to_existing_atom(name),
+                arity: String.to_integer(arity)
+              })
 
-  def candidates({req_args, req_ret}) when is_list(req_args) do
+            [name] ->
+              Map.put(request, :name, String.to_existing_atom(name))
+          end
+
+        _name ->
+          request
+      end
+
     functions()
-    |> Enum.reduce(%{}, fn {fname, funcs}, candidates ->
-      filter_candidates(funcs, {req_args, req_ret}, fname, candidates)
-    end)
-    |> Map.values()
-    |> Enum.sort_by(& &1.name)
+    |> filter_name(Map.get(request, :name))
+    |> flatten_funcs()
+    |> filter_arity(Map.get(request, :arity))
+    |> filter_signatures(
+      Map.get(request, :arguments),
+      Map.get(request, :return)
+    )
+    |> Enum.sort()
   end
 
-  @doc """
-  Look for candidates with given name, i.e. functions whose signature match
-  the given argument types and function name.
-  """
-  def func_candidates(fname, req_args) when is_list(req_args) do
-    func_candidates(fname, {req_args, :any})
+  defp filter_name(funcs, nil), do: funcs
+
+  defp filter_name(funcs, name) do
+    %{
+      name => Map.get(funcs, name)
+    }
   end
 
-  def func_candidates(fname, {req_args, req_ret}) when is_list(req_args) do
-    functions()
-    |> Map.get(fname)
-    |> filter_candidates({req_args, req_ret}, fname, %{})
-    |> Map.values()
-    |> Enum.sort_by(& &1.name)
-  end
-
-  defp filter_candidates(nil, _, _, _), do: %{}
-
-  defp filter_candidates(funcs, {req_args, req_ret}, fname, candidates) do
+  defp flatten_funcs(funcs) do
     funcs
-    |> Enum.reduce(candidates, fn {_arity, func}, candidates ->
-      func.signatures
-      |> Enum.reduce(candidates, fn {sig_args, sig_ret}, candidates ->
-        if (req_ret == :any || req_ret == sig_ret) &&
-             args_partial_match?(sig_args, req_args) do
-          candidates
-          |> update_in([fname], fn f ->
-            (f || %{})
-            |> Map.merge(Map.take(func, [:label, :short, :name]))
-          end)
-          |> update_in([fname, :signatures], fn sigs ->
-            (sigs || []) ++ [{sig_args, sig_ret}]
-          end)
-        else
-          candidates
-        end
+    |> Map.values()
+    |> Enum.map(fn
+      nil -> []
+      map -> Map.values(map)
+    end)
+    |> List.flatten()
+  end
+
+  defp filter_arity(funcs, nil), do: funcs
+
+  defp filter_arity(funcs, arity) do
+    funcs
+    |> Enum.filter(fn f ->
+      f.arity == arity
+    end)
+  end
+
+  defp filter_signatures(funcs, nil, nil), do: funcs
+
+  defp filter_signatures(funcs, args, ret) do
+    funcs
+    |> Enum.map(fn f ->
+      f.signatures
+      |> Enum.filter(fn {sig_args, _sig_ret} ->
+        args_partial_match?(sig_args, args)
       end)
+      |> Enum.filter(fn {_sig_args, sig_ret} ->
+        ret == nil || ret == :any || sig_ret == ret
+      end)
+      |> then(fn sigs ->
+        Map.put(f, :signatures, sigs)
+      end)
+    end)
+    |> Enum.filter(fn f ->
+      Enum.count(f.signatures) > 0
     end)
   end
 
@@ -108,6 +135,8 @@ defmodule VacEngine.Processor.Library do
   defp args_partial_match?(sig_args, req_args)
        when length(sig_args) < length(req_args),
        do: false
+
+  defp args_partial_match?(_sig_args, nil), do: true
 
   defp args_partial_match?(sig_args, req_args) do
     req_args
