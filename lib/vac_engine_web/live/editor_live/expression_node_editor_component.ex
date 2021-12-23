@@ -284,7 +284,12 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
         })
         |> List.first()
 
-      signatures = candidate.signatures
+      {arity, signatures} =
+        if candidate do
+          {candidate.arity, candidate.signatures}
+        else
+          {0, []}
+        end
 
       arguments =
         arguments
@@ -295,8 +300,8 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
         |> Map.new()
 
       arguments =
-        0..candidate.arity
-        |> Enum.take(candidate.arity)
+        0..arity
+        |> Enum.take(arity)
         |> Enum.reduce({[], []}, fn idx, {acc_types, acc_args} ->
           arg_types =
             signatures
