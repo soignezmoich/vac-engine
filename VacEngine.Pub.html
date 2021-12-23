@@ -10,7 +10,7 @@
     <title>VacEngine.Pub — Vac Engine v1.0.3</title>
     <link rel="stylesheet" href="dist/elixir-b5076885a795c65e636c.css" />
 
-    <script src="dist/sidebar_items-a8fe058c8d.js"></script>
+    <script src="dist/sidebar_items-3a4f8516fb.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -102,10 +102,10 @@ accessible through the API.</p><h2 id="module-portals" class="section-heading">
 is responsible to give access to a single processor through the API.
 Therefore, a protal has a reference exactly one blueprint in
 the api. The reference is called a &quot;publication&quot;.</p><p>Interface to consume a portal is made of a pair of calls:</p><ul><li>the<a href="#run_cached/1"><code class="inline">run_cached/1</code></a> function and</li><li>the <a href="#info_cached/1"><code class="inline">info_cached/1</code></a>function</li></ul><h4>Run function</h4><p>Runs the linked processor on the given input, using the provided api_key
-to authenticate:</p><pre><code class="makeup elixir"><span class="p" data-group-id="7252373464-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7252373464-2">%{</span><span class="ss">input</span><span class="p">:</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="ss">output</span><span class="p">:</span><span class="w"> </span><span class="n">output</span><span class="p" data-group-id="7252373464-2">}</span><span class="p" data-group-id="7252373464-1">}</span><span class="w"> </span><span class="o">=</span><span class="w">
-  </span><span class="nc">Pub</span><span class="o">.</span><span class="n">run_cached</span><span class="p" data-group-id="7252373464-3">(</span><span class="p" data-group-id="7252373464-4">%{</span><span class="ss">api_key</span><span class="p">:</span><span class="w"> </span><span class="n">api_key</span><span class="p">,</span><span class="w"> </span><span class="ss">portal_id</span><span class="p">:</span><span class="w"> </span><span class="n">portal_id</span><span class="p">,</span><span class="w"> </span><span class="ss">input</span><span class="p">:</span><span class="w"> </span><span class="n">input</span><span class="p" data-group-id="7252373464-4">}</span><span class="p" data-group-id="7252373464-3">)</span></code></pre><p>Note that the in-memory compiled processor is used as indicated by the
-<em>cached</em> suffix.</p><h4>Info function</h4><p>Gets the description of the processor linked to the portal</p><pre><code class="makeup elixir"><span class="p" data-group-id="6117863878-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6117863878-2">%{</span><span class="ss">input</span><span class="p">:</span><span class="w"> </span><span class="n">input_schema</span><span class="p">,</span><span class="w"> </span><span class="ss">output</span><span class="p">:</span><span class="w"> </span><span class="n">output_schema</span><span class="p">,</span><span class="w"> </span><span class="ss">logic</span><span class="p">:</span><span class="w"> </span><span class="n">logic</span><span class="p" data-group-id="6117863878-2">}</span><span class="p" data-group-id="6117863878-1">}</span><span class="w"> </span><span class="o">=</span><span class="w">
-  </span><span class="nc">Pub</span><span class="o">.</span><span class="n">info_cached</span><span class="p" data-group-id="6117863878-3">(</span><span class="p" data-group-id="6117863878-4">%{</span><span class="ss">api_key</span><span class="p">:</span><span class="w"> </span><span class="n">api_key</span><span class="p">,</span><span class="w"> </span><span class="ss">portal_id</span><span class="p">:</span><span class="w"> </span><span class="n">portal_id</span><span class="p" data-group-id="6117863878-4">}</span><span class="p" data-group-id="6117863878-3">)</span></code></pre><p>Again, the in-memory compiled processor is used.</p><blockquote><p><em>Note: The decription of the corresponding API endpoints is available
+to authenticate:</p><pre><code class="makeup elixir"><span class="p" data-group-id="6998521276-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6998521276-2">%{</span><span class="ss">input</span><span class="p">:</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="ss">output</span><span class="p">:</span><span class="w"> </span><span class="n">output</span><span class="p" data-group-id="6998521276-2">}</span><span class="p" data-group-id="6998521276-1">}</span><span class="w"> </span><span class="o">=</span><span class="w">
+  </span><span class="nc">Pub</span><span class="o">.</span><span class="n">run_cached</span><span class="p" data-group-id="6998521276-3">(</span><span class="p" data-group-id="6998521276-4">%{</span><span class="ss">api_key</span><span class="p">:</span><span class="w"> </span><span class="n">api_key</span><span class="p">,</span><span class="w"> </span><span class="ss">portal_id</span><span class="p">:</span><span class="w"> </span><span class="n">portal_id</span><span class="p">,</span><span class="w"> </span><span class="ss">input</span><span class="p">:</span><span class="w"> </span><span class="n">input</span><span class="p" data-group-id="6998521276-4">}</span><span class="p" data-group-id="6998521276-3">)</span></code></pre><p>Note that the in-memory compiled processor is used as indicated by the
+<em>cached</em> suffix.</p><h4>Info function</h4><p>Gets the description of the processor linked to the portal</p><pre><code class="makeup elixir"><span class="p" data-group-id="5397175385-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5397175385-2">%{</span><span class="ss">input</span><span class="p">:</span><span class="w"> </span><span class="n">input_schema</span><span class="p">,</span><span class="w"> </span><span class="ss">output</span><span class="p">:</span><span class="w"> </span><span class="n">output_schema</span><span class="p">,</span><span class="w"> </span><span class="ss">logic</span><span class="p">:</span><span class="w"> </span><span class="n">logic</span><span class="p" data-group-id="5397175385-2">}</span><span class="p" data-group-id="5397175385-1">}</span><span class="w"> </span><span class="o">=</span><span class="w">
+  </span><span class="nc">Pub</span><span class="o">.</span><span class="n">info_cached</span><span class="p" data-group-id="5397175385-3">(</span><span class="p" data-group-id="5397175385-4">%{</span><span class="ss">api_key</span><span class="p">:</span><span class="w"> </span><span class="n">api_key</span><span class="p">,</span><span class="w"> </span><span class="ss">portal_id</span><span class="p">:</span><span class="w"> </span><span class="n">portal_id</span><span class="p" data-group-id="5397175385-4">}</span><span class="p" data-group-id="5397175385-3">)</span></code></pre><p>Again, the in-memory compiled processor is used.</p><blockquote><p><em>Note: The decription of the corresponding API endpoints is available
 in the swagger documentation at <code class="inline">/priv/static/docs/api.html</code>.</em></p></blockquote><h2 id="module-publications" class="section-heading">
   <a href="#module-publications" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Publications
@@ -114,7 +114,7 @@ in the swagger documentation at <code class="inline">/priv/static/docs/api.html<
 published several times, but a portal can have only one active publication
 at a time.</p><h4>Create a publication</h4><p>Since a portal must give access to exactly processor, publication
 is always made with a blueprint as parameter in the <a href="#publish_blueprint/2"><code class="inline">publish_blueprint/2</code></a>
-function. This function returns the corresponding publication:</p><pre><code class="makeup elixir"><span class="p" data-group-id="4338031243-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">publication</span><span class="p" data-group-id="4338031243-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Pub</span><span class="o">.</span><span class="n">publish_blueprint</span><span class="p" data-group-id="4338031243-2">(</span><span class="p" data-group-id="4338031243-2">)</span></code></pre><h4>Publication deactivation</h4><p>Publication can be deactivated using the <a href="#deactivate_publication/1"><code class="inline">deactivate_publication/1</code></a>. This
+function. This function returns the corresponding publication:</p><pre><code class="makeup elixir"><span class="p" data-group-id="0335765869-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">publication</span><span class="p" data-group-id="0335765869-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Pub</span><span class="o">.</span><span class="n">publish_blueprint</span><span class="p" data-group-id="0335765869-2">(</span><span class="p" data-group-id="0335765869-2">)</span></code></pre><h4>Publication deactivation</h4><p>Publication can be deactivated using the <a href="#deactivate_publication/1"><code class="inline">deactivate_publication/1</code></a>. This
 is necessary if you want to publish a new form to a given portal.</p><h4>Cache management</h4><p>As stated above, blueprints are stored in cache. API keys are also stored in
 cache. It is the responsibility of the consumer to refresh the cache when
 corresponding data should be updated (e.g. when new blueprint is associated
@@ -150,7 +150,7 @@ are modified). This can be done using the <a href="#bust_cache/0"><code class="i
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#bust_blueprint_cache/1" translate="no">bust_blueprint_cache(blueprint)</a>
+          <a href="#bust_blueprint_cache/1" translate="no">bust_blueprint_cache(blueprint_id)</a>
 
         </div>
 
@@ -347,7 +347,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">bust_api_keys_cache()</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/pub.ex#L405" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/pub.ex#L413" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -367,7 +367,7 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">bust_blueprint_cache(blueprint)</h1>
+    <h1 class="signature" translate="no">bust_blueprint_cache(blueprint_id)</h1>
 
       <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/pub.ex#L388" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
@@ -391,7 +391,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">bust_cache()</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/pub.ex#L400" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/pub.ex#L408" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>

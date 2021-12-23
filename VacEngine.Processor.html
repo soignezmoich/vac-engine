@@ -10,7 +10,7 @@
     <title>VacEngine.Processor — Vac Engine v1.0.3</title>
     <link rel="stylesheet" href="dist/elixir-b5076885a795c65e636c.css" />
 
-    <script src="dist/sidebar_items-a8fe058c8d.js"></script>
+    <script src="dist/sidebar_items-3a4f8516fb.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -104,14 +104,14 @@ to compute API output from API input.</p><h2 id="module-processors" class="secti
 </h3>
 <p>The role of the processor is to compute the output variables of an api call
 based on the input variables. Such a computation is made using the <a href="#run/2"><code class="inline">run/2</code></a>
-function:</p><pre><code class="makeup elixir"><span class="p" data-group-id="5569110270-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5569110270-2">%{</span><span class="ss">output</span><span class="p">:</span><span class="w"> </span><span class="n">state</span><span class="o">.</span><span class="n">output</span><span class="p">,</span><span class="w"> </span><span class="ss">input</span><span class="p">:</span><span class="w"> </span><span class="n">state</span><span class="o">.</span><span class="n">input</span><span class="p" data-group-id="5569110270-2">}</span><span class="p" data-group-id="5569110270-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Processor</span><span class="o">.</span><span class="n">run</span><span class="p" data-group-id="5569110270-3">(</span><span class="n">processor</span><span class="p">,</span><span class="w"> </span><span class="n">input</span><span class="p" data-group-id="5569110270-3">)</span></code></pre><h3 id="module-build-a-processor" class="section-heading">
+function:</p><pre><code class="makeup elixir"><span class="p" data-group-id="5700827352-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5700827352-2">%{</span><span class="ss">output</span><span class="p">:</span><span class="w"> </span><span class="n">state</span><span class="o">.</span><span class="n">output</span><span class="p">,</span><span class="w"> </span><span class="ss">input</span><span class="p">:</span><span class="w"> </span><span class="n">state</span><span class="o">.</span><span class="n">input</span><span class="p" data-group-id="5700827352-2">}</span><span class="p" data-group-id="5700827352-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Processor</span><span class="o">.</span><span class="n">run</span><span class="p" data-group-id="5700827352-3">(</span><span class="n">processor</span><span class="p">,</span><span class="w"> </span><span class="n">input</span><span class="p" data-group-id="5700827352-3">)</span></code></pre><h3 id="module-build-a-processor" class="section-heading">
   <a href="#module-build-a-processor" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Build a processor
 </h3>
 <p>A processor is an in memory function, compiled from a description
 called &quot;Blueprint&quot;. The procedure to obtain a blueprint is described
 in the &quot;Blueprint edition&quot; and &quot;Blueprint export/import&quot; sections below.</p><p>The compilation from a blueprint to a processor is made using the
-<code class="inline">Processor.compile_blueprint/1</code> function:</p><pre><code class="makeup elixir"><span class="p" data-group-id="2019022877-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">processor</span><span class="p" data-group-id="2019022877-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Processor</span><span class="o">.</span><span class="n">compile_blueprint</span><span class="p" data-group-id="2019022877-2">(</span><span class="n">blueprint</span><span class="p" data-group-id="2019022877-2">)</span></code></pre><h2 id="module-blueprint" class="section-heading">
+<code class="inline">Processor.compile_blueprint/1</code> function:</p><pre><code class="makeup elixir"><span class="p" data-group-id="1296563493-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">processor</span><span class="p" data-group-id="1296563493-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Processor</span><span class="o">.</span><span class="n">compile_blueprint</span><span class="p" data-group-id="1296563493-2">(</span><span class="n">blueprint</span><span class="p" data-group-id="1296563493-2">)</span></code></pre><h2 id="module-blueprint" class="section-heading">
   <a href="#module-blueprint" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Blueprint
 </h2>
@@ -122,8 +122,8 @@ It has the following composition:</p><pre><code class="makeup elixir"><span clas
     </span><span class="mi">0</span><span class="o">..</span><span class="n">n</span><span class="w">           </span><span class="mi">0</span><span class="o">..</span><span class="n">n</span><span class="w">
       </span><span class="o">|</span><span class="w">             </span><span class="o">|</span><span class="w">
 </span><span class="nc">Variables</span><span class="w">         </span><span class="nc">Deductions</span><span class="w">
-</span><span class="p" data-group-id="0261404839-1">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">output</span><span class="w">      </span><span class="o">|</span><span class="w">
-</span><span class="n">intermediate</span><span class="p" data-group-id="0261404839-1">)</span><span class="w">      </span><span class="mi">0</span><span class="o">..</span><span class="n">n</span><span class="w">
+</span><span class="p" data-group-id="6484765195-1">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">output</span><span class="w">      </span><span class="o">|</span><span class="w">
+</span><span class="n">intermediate</span><span class="p" data-group-id="6484765195-1">)</span><span class="w">      </span><span class="mi">0</span><span class="o">..</span><span class="n">n</span><span class="w">
                     </span><span class="o">|</span><span class="w">
                 </span><span class="bp">_</span><span class="w"> </span><span class="nc">Branches</span><span class="w"> </span><span class="bp">_</span><span class="w">
                </span><span class="o">|</span><span class="w">            </span><span class="o">|</span><span class="w">
