@@ -50,7 +50,7 @@ defmodule VacEngineWeb.BlueprintLive.SummaryComponent do
 
     Processor.update_blueprint(blueprint, params)
     |> case do
-      {:ok, br} ->
+      {:ok, _br} ->
         send(self(), :reload_blueprint)
         {:noreply, socket}
 
