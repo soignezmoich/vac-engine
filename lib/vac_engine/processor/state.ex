@@ -2,7 +2,6 @@ defmodule VacEngine.Processor.State do
   @moduledoc """
   Processor state
   """
-  alias VacEngine.Processor.Convert
   alias VacEngine.Processor.State
   alias VacEngine.Processor.Compiler
   alias VacEngine.Processor.Variable
