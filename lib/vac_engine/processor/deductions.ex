@@ -6,6 +6,8 @@ defmodule VacEngine.Processor.Deductions do
   alias VacEngine.Repo
   alias VacEngine.Processor.Blueprint
   alias VacEngine.Processor.Deduction
+  alias VacEngine.Processor.Condition
+  alias VacEngine.Processor.Assignment
   alias VacEngine.Processor.Branch
   alias VacEngine.Processor.Column
   import VacEngine.EctoHelpers
@@ -112,5 +114,64 @@ defmodule VacEngine.Processor.Deductions do
     |> Multi.update_all(:decrement, dec_query, inc: [position: -1])
     |> Multi.delete(:column, column)
     |> transaction(:column)
+  end
+
+  def update_cell(ast, blueprint, branch, column) do
+    conditons_query =
+      from(c in Condition,
+        where: c.column_id == ^column.id and c.branch_id == ^branch.id
+      )
+
+    assignments_query =
+      from(c in Assignment,
+        where: c.column_id == ^column.id and c.branch_id == ^branch.id
+      )
+
+    ctx = %{
+      blueprint_id: blueprint.id,
+      workspace_id: blueprint.workspace_id,
+      variables: blueprint.variables,
+      variable_path_index: blueprint.variable_path_index
+    }
+
+    item =
+      case column.type do
+        :condition ->
+          %Condition{column_id: column.id, branch_id: branch.id}
+          |> Condition.nested_changeset(%{expression: ast}, ctx)
+
+        :assignment ->
+          %Assignment{
+            column_id: column.id,
+            branch_id: branch.id
+          }
+          |> Assignment.nested_changeset(
+            %{expression: ast, target: column.variable},
+            ctx
+          )
+      end
+
+    Multi.new()
+    |> Multi.delete_all(:delete_conditions, conditons_query)
+    |> Multi.delete_all(:delete_assignments, assignments_query)
+    |> Multi.insert(:insert, item)
+    |> transaction(:insert)
+  end
+
+  def delete_cell(branch, column) do
+    conditons_query =
+      from(c in Condition,
+        where: c.column_id == ^column.id and c.branch_id == ^branch.id
+      )
+
+    assignments_query =
+      from(c in Assignment,
+        where: c.column_id == ^column.id and c.branch_id == ^branch.id
+      )
+
+    Multi.new()
+    |> Multi.delete_all(:delete_conditions, conditons_query)
+    |> Multi.delete_all(:delete_assignments, assignments_query)
+    |> transaction(:delete_assignments)
   end
 end

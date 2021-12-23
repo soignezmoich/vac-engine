@@ -290,6 +290,8 @@ defmodule VacEngine.Processor do
   defdelegate create_column(blueprint, deduction, attrs), to: Deductions
   defdelegate update_column(column, attrs), to: Deductions
   defdelegate delete_column(column), to: Deductions
+  defdelegate update_cell(ast, blueprint, branch, column), to: Deductions
+  defdelegate delete_cell(branch, column), to: Deductions
 
   defstruct blueprint: nil, compiled_module: nil, state: nil, info: nil
 
