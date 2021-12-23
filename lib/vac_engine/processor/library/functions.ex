@@ -323,7 +323,6 @@ defmodule VacEngine.Processor.Library.Functions do
   @label "Now"
   @short "NOW"
   @signature {[], :datetime}
-  @signature {[], :date}
   def now() do
     raise "this function is just a placeholder and should not be called"
   end
@@ -331,6 +330,21 @@ defmodule VacEngine.Processor.Library.Functions do
   @doc false
   def now_(state) do
     state.env.now
+  end
+
+  @doc """
+    Get the current day
+  """
+  @label "Today"
+  @short "TODAY"
+  @signature {[], :date}
+  def today() do
+    raise "this function is just a placeholder and should not be called"
+  end
+
+  @doc false
+  def today_(state) do
+    Timex.to_date(state.env.now)
   end
 
   @doc """

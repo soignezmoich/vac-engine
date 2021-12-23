@@ -81,6 +81,11 @@ defmodule VacEngine.Processor.Compiler do
     |> prepend_state_arg()
   end
 
+  def compile_ast!({:today, m, args}) do
+    compile_ast!({:today_, m, args})
+    |> prepend_state_arg()
+  end
+
   def compile_ast!({:age, m, args}) do
     compile_ast!({:age_, m, args})
     |> prepend_state_arg()
