@@ -8,6 +8,7 @@ defmodule VacEngine.Pub.Cache do
   alias VacEngine.Account
   alias VacEngine.Processor
   alias VacEngine.Pub.Cache
+  require Logger
 
   @check_interval Application.compile_env!(:vac_engine, :cache_check_interval)
 
@@ -36,6 +37,9 @@ defmodule VacEngine.Pub.Cache do
 
   @impl true
   def init(_opts) do
+    Logger.metadata(context: "pub_cache")
+    Logger.info("Starting pub cache")
+
     send(self(), :check_version)
 
     {:ok, %Cache{}}
@@ -50,6 +54,8 @@ defmodule VacEngine.Pub.Cache do
     {:ok, %{rows: [[blueprints_version]]}} =
       "SELECT nextval('pub_cache_blueprints_version')"
       |> Repo.query()
+
+    Logger.info("Busting pub cache")
 
     cache =
       %{
@@ -68,6 +74,8 @@ defmodule VacEngine.Pub.Cache do
     {:ok, %{rows: [[api_keys_version]]}} =
       "SELECT nextval('pub_cache_api_keys_version')"
       |> Repo.query()
+
+    Logger.info("Busting pub cache permissions")
 
     cache =
       %{
@@ -144,11 +152,15 @@ defmodule VacEngine.Pub.Cache do
   end
 
   defp refresh(cache) do
+    Logger.info("Refreshing processors")
+
     flush_processors(cache)
     %{cache | processors: %{}}
   end
 
   defp refresh_api_keys(cache) do
+    Logger.info("Refreshing permissions")
+
     Account.list_api_keys()
     |> Enum.map(fn k ->
       %{id: id, prefix: _prefix, secret: secret} =
@@ -167,6 +179,8 @@ defmodule VacEngine.Pub.Cache do
     |> get_in([Access.key(:processors), blueprint_id])
     |> case do
       nil ->
+        Logger.info("Compiling blueprint ##{blueprint_id}")
+
         blueprint_id
         |> Processor.get_blueprint!(fn query ->
           query
