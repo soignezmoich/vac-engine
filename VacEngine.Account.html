@@ -4,17 +4,17 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.25.5">
+    <meta name="generator" content="ExDoc v0.26.0">
     <meta name="project" content="Vac Engine v1.0.3">
 
     <title>VacEngine.Account — Vac Engine v1.0.3</title>
-    <link rel="stylesheet" href="dist/elixir-d1506dba1db7cdc5483e.css" />
+    <link rel="stylesheet" href="dist/elixir-b5076885a795c65e636c.css" />
 
-    <script src="dist/sidebar_items-c8d15bf04c.js"></script>
+    <script src="dist/sidebar_items-a8fe058c8d.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/app-7b632b26f13d5e0d20e1.js"></script>
+    <script async src="dist/app-a404e1e870b77c874f9e.js"></script>
 
 
   </head>
@@ -54,10 +54,10 @@
 
   <div class="sidebar-header">
     <div class="sidebar-projectDetails">
-      <a href="readme.html" class="sidebar-projectName">
+      <a href="readme.html" class="sidebar-projectName" translate="no">
 Vac Engine
       </a>
-      <strong class="sidebar-projectVersion">
+      <strong class="sidebar-projectVersion" translate="no">
         v1.0.3
       </strong>
     </div>
@@ -79,18 +79,20 @@ Vac Engine
   <div class="content-outer">
     <div id="content" class="content-inner">
 
-      <h1>
-VacEngine.Account <small class="app-vsn">(Vac Engine v1.0.3)</small>
+<h1>
+  <span translate="no">VacEngine.Account</span> 
+  <small class="app-vsn" translate="no">(Vac Engine v1.0.3)</small>
 
-          <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L1" title="View Source" class="view-source" rel="help">
-            <span class="icon-code" aria-hidden="true"></span>
-            <span class="sr-only">View Source</span>
-          </a>
-
-      </h1>
+    <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L1" title="View Source" class="view-source" rel="help">
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
 
 
-        <section id="moduledoc">
+</h1>
+
+
+  <section id="moduledoc">
 <p>Rsponsible for the management of a role-based permission system.</p><h2 id="module-roles" class="section-heading">
   <a href="#module-roles" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Roles
@@ -119,14 +121,14 @@ with the related role and permissions are granted accordingly.</p><p>Curl exampl
 </h3>
 <p>Permissions are rights to do certain actions in the system. A permission is
 granted to a role to perform a given in a given scope, by using the
-<a href="#grant_permission/3"><code class="inline">grant_permission/3</code></a> (or <a href="#toggle_permission/3"><code class="inline">toggle_permission/3</code></a>) function:</p><pre><code class="makeup elixir"><span class="nc">VacEngine.Account</span><span class="o">.</span><span class="n">grant_permission</span><span class="p" data-group-id="7371574904-1">(</span><span class="n">target_role</span><span class="p">,</span><span class="w"> </span><span class="ss">:list_blueprints_action</span><span class="p">,</span><span class="w"> </span><span class="ss">:global</span><span class="p" data-group-id="7371574904-1">)</span></code></pre><h3 id="module-checking-permission" class="section-heading">
+<a href="#grant_permission/3"><code class="inline">grant_permission/3</code></a> (or <a href="#toggle_permission/3"><code class="inline">toggle_permission/3</code></a>) function:</p><pre><code class="makeup elixir"><span class="nc">VacEngine.Account</span><span class="o">.</span><span class="n">grant_permission</span><span class="p" data-group-id="0694019592-1">(</span><span class="n">target_role</span><span class="p">,</span><span class="w"> </span><span class="ss">:list_blueprints_action</span><span class="p">,</span><span class="w"> </span><span class="ss">:global</span><span class="p" data-group-id="0694019592-1">)</span></code></pre><h3 id="module-checking-permission" class="section-heading">
   <a href="#module-checking-permission" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Checking permission
 </h3>
 <p>When a piece of code should only be accessed by roles with defined permission,
-an conditional block containing the <a href="#can?/3"><code class="inline">can?/3</code></a> function should be added.</p><pre><code class="makeup elixir"><span class="k">if</span><span class="w"> </span><span class="n">can?</span><span class="p" data-group-id="1128662409-1">(</span><span class="n">role</span><span class="p">,</span><span class="w"> </span><span class="ss">:access</span><span class="p">,</span><span class="w"> </span><span class="ss">:editor</span><span class="p" data-group-id="1128662409-1">)</span><span class="w"> </span><span class="k" data-group-id="1128662409-2">do</span><span class="w">
+an conditional block containing the <a href="#can?/3"><code class="inline">can?/3</code></a> function should be added.</p><pre><code class="makeup elixir"><span class="k">if</span><span class="w"> </span><span class="n">can?</span><span class="p" data-group-id="7350668778-1">(</span><span class="n">role</span><span class="p">,</span><span class="w"> </span><span class="ss">:access</span><span class="p">,</span><span class="w"> </span><span class="ss">:editor</span><span class="p" data-group-id="7350668778-1">)</span><span class="w"> </span><span class="k" data-group-id="7350668778-2">do</span><span class="w">
   </span><span class="n">...</span><span class="w">
-</span><span class="k" data-group-id="1128662409-2">end</span></code></pre><p>The function will return true if and only if the current role has the
+</span><span class="k" data-group-id="7350668778-2">end</span></code></pre><p>The function will return true if and only if the current role has the
 corresponding permission therefore granting access or not to the included
 code.</p><h2 id="module-actions" class="section-heading">
   <a href="#module-actions" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
@@ -144,7 +146,7 @@ the <strong>worspace</strong> scopes and the <strong>custom</strong>.</p><h4>Glo
 granted in the global scope are technically &quot;unscoped&quot;.</p><p>Global scope is designated by the <code class="inline">:global</code> atom.</p><h4>Workspace scope</h4><p>A workspace scope is determined by the id of a workspace and grants the rights
 in the context of this workspace. For example, an <code class="inline">:access</code> action permission
 in the workspace with <code class="inline">:id = 1</code> will grant access only to this workspace.</p><p>Workspace scopes are designated a tuple containing the <code class="inline">:workspace</code> atom and
-the id of the workspace, e.g.:</p><pre><code class="makeup elixir"><span class="p" data-group-id="5296577223-1">{</span><span class="ss">:workspace</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p" data-group-id="5296577223-1">}</span></code></pre><h4>Custom scope</h4><p>Other scopes can be created using a custom atom.</p><h2 id="module-schemas" class="section-heading">
+the id of the workspace, e.g.:</p><pre><code class="makeup elixir"><span class="p" data-group-id="4510259885-1">{</span><span class="ss">:workspace</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p" data-group-id="4510259885-1">}</span></code></pre><h4>Custom scope</h4><p>Other scopes can be created using a custom atom.</p><h2 id="module-schemas" class="section-heading">
   <a href="#module-schemas" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Schemas
 </h2>
@@ -159,452 +161,560 @@ to take effect.</p><h4>User</h4><p>A user is a login method for a role of type &
 to ensure security of the system:</p><ul><li>Users are authenticated using MFA (login/password + authentication).</li><li>Treatment of wrong login/password pairs are treated in constant time.</li><li>Sessions linked to role of all types (api-keys, users, tokens)
 can be revocated by admin at any time.</li><li>Only admins have the right to publish a blueprint on a portal so that
 no simple editor can influence the behaviour of the api.</li></ul>
-        </section>
+  </section>
 
 
-        <section id="summary" class="details-list">
-          <h1 class="section-heading">
-            <a class="hover-link" href="#summary">
-              <span class="icon-link" aria-hidden="true"></span>
-              <span class="sr-only">Link to this section</span>
-            </a>
-            Summary
-          </h1>
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <span class="icon-link" aria-hidden="true"></span>
+        <span class="sr-only">Link to this section</span>
+      </a>
+      Summary
+    </h1>
 
   <div class="summary-functions summary">
     <h2>
       <a href="#functions">Functions</a>
     </h2>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#activate_role/1">activate_role(role)</a>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#activate_role/1" translate="no">activate_role(role)</a>
 
-    <div class="summary-synopsis"><p>Activate a role</p></div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#can?/3">can?(role, action, scope \\ :global)</a>
+          <div class="summary-synopsis"><p>Activate a role</p></div>
 
-  </div>
+      </div>
 
-    <div class="summary-synopsis"><p>Check action against role with scope.</p></div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#bust_role_cache/1" translate="no">bust_role_cache(role)</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#change_role/2">change_role(role, attrs \\ %{})</a>
+        </div>
 
-  </div>
+          <div class="summary-synopsis"><p>Bust role cache</p></div>
 
-    <div class="summary-synopsis"><p>Cast attributes into a changeset</p></div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#change_user/2">change_user(data, attrs \\ %{})</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#can?/3" translate="no">can?(role, action, scope \\ :global)</a>
 
-  </div>
+        </div>
 
-    <div class="summary-synopsis"><p>Cast attributes into a changeset</p></div>
+          <div class="summary-synopsis"><p>Check action against role with scope.</p></div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#change_workspace/2">change_workspace(data, attrs \\ %{})</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#change_role/2" translate="no">change_role(role, attrs \\ %{})</a>
 
-    <div class="summary-synopsis"><p>Cast attributes into a changeset</p></div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#check_user/2">check_user(email, password)</a>
+          <div class="summary-synopsis"><p>Cast attributes into a changeset</p></div>
 
-  </div>
+      </div>
 
-    <div class="summary-synopsis"><p>Check a email/password and return the user if both are valid (used for login)</p></div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#change_user/2" translate="no">change_user(data, attrs \\ %{})</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#create_api_token/2">create_api_token(role, test \\ false)</a>
+        </div>
 
-  </div>
+          <div class="summary-synopsis"><p>Cast attributes into a changeset</p></div>
 
-    <div class="summary-synopsis"><p>Create an access token as API for a given role</p></div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#create_role/2">create_role(type, attrs \\ %{})</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#change_workspace/2" translate="no">change_workspace(data, attrs \\ %{})</a>
 
-  </div>
+        </div>
 
-    <div class="summary-synopsis"><p>Create a role with attributes</p></div>
+          <div class="summary-synopsis"><p>Cast attributes into a changeset</p></div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#create_session/2">create_session(role, attrs)</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#check_user/2" translate="no">check_user(email, password)</a>
 
-    <div class="summary-synopsis"><p>Create a session with attributes</p></div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#create_user/1">create_user(attrs)</a>
+          <div class="summary-synopsis"><p>Check a email/password and return the user if both are valid (used for login)</p></div>
 
-  </div>
+      </div>
 
-    <div class="summary-synopsis"><p>Create a user with attributes</p></div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#create_api_token/2" translate="no">create_api_token(role, test \\ false)</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#create_workspace/1">create_workspace(attrs)</a>
+        </div>
 
-  </div>
+          <div class="summary-synopsis"><p>Create an access token as API for a given role</p></div>
 
-    <div class="summary-synopsis"><p>Create a workspace with attributes</p></div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#deactivate_role/1">deactivate_role(role)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#create_permissions/2" translate="no">create_permissions(role, scope)</a>
 
-  </div>
+        </div>
 
-    <div class="summary-synopsis"><p>Desactivate a role.</p></div>
+          <div class="summary-synopsis"><p>Create permissions for scope</p></div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#delete_role/1">delete_role(role)</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#create_role/2" translate="no">create_role(type, attrs \\ %{})</a>
 
-    <div class="summary-synopsis"><p>Delete role</p></div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#delete_workspace/1">delete_workspace(data)</a>
+          <div class="summary-synopsis"><p>Create a role with attributes</p></div>
 
-  </div>
+      </div>
 
-    <div class="summary-synopsis"><p>Delete workspace.</p></div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#create_session/2" translate="no">create_session(role, attrs)</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#explode_composite_secret/1">explode_composite_secret(secret)</a>
+        </div>
 
-  </div>
+          <div class="summary-synopsis"><p>Create a session with attributes</p></div>
 
-    <div class="summary-synopsis"><p>Explode a secret.</p></div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#fetch_session/1">fetch_session(token)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#create_user/1" translate="no">create_user(attrs)</a>
 
-  </div>
+        </div>
 
-    <div class="summary-synopsis"><p>Try to find a session with given token</p></div>
+          <div class="summary-synopsis"><p>Create a user with attributes</p></div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#filter_accessible_workspaces/2">filter_accessible_workspaces(query, role)</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#create_workspace/1" translate="no">create_workspace(attrs)</a>
 
-    <div class="summary-synopsis"><p>Filter available workspaces for a given role</p></div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#filter_active_roles/1">filter_active_roles(query)</a>
+          <div class="summary-synopsis"><p>Create a workspace with attributes</p></div>
 
-  </div>
+      </div>
 
-    <div class="summary-synopsis"><p>Filter active role</p></div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#deactivate_role/1" translate="no">deactivate_role(role)</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#filter_roles_by_type/2">filter_roles_by_type(query, type)</a>
+        </div>
 
-  </div>
+          <div class="summary-synopsis"><p>Desactivate a role.</p></div>
 
-    <div class="summary-synopsis"><p>Filter role by type</p></div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#gen_totp/1">gen_totp(user)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#delete_permissions/2" translate="no">delete_permissions(role, scope)</a>
 
-  </div>
+        </div>
 
-    <div class="summary-synopsis"><p>Generate a new TOTP url for the given user.
+          <div class="summary-synopsis"><p>Delete all permissions for scope</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#delete_role/1" translate="no">delete_role(role)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Delete role</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#delete_workspace/1" translate="no">delete_workspace(data)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Delete workspace.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#explode_composite_secret/1" translate="no">explode_composite_secret(secret)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Explode a secret.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#fetch_session/1" translate="no">fetch_session(token)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Try to find a session with given token</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#filter_accessible_workspaces/2" translate="no">filter_accessible_workspaces(query, role)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Filter available workspaces for a given role</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#filter_active_roles/1" translate="no">filter_active_roles(query)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Filter active role</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#filter_roles_by_type/2" translate="no">filter_roles_by_type(query, type)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Filter role by type</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#gen_totp/1" translate="no">gen_totp(user)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Generate a new TOTP url for the given user.
 Return a <code class="inline">{url, secret}</code> tuple.</p></div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#generate_composite_secret/2">generate_composite_secret(prefix, id)</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#generate_composite_secret/2" translate="no">generate_composite_secret(prefix, id)</a>
 
-    <div class="summary-synopsis"><p>Generate a secret with a prefix and id.</p></div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#generate_secret/1">generate_secret(length \\ 16)</a>
+          <div class="summary-synopsis"><p>Generate a secret with a prefix and id.</p></div>
 
-  </div>
+      </div>
 
-    <div class="summary-synopsis"><p>Generates a human friendly secret of <code class="inline">length</code> bytes long.</p></div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#generate_secret/1" translate="no">generate_secret(length \\ 16)</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#get_role!/2">get_role!(id, queries \\ &amp;(&amp;1))</a>
+        </div>
 
-  </div>
+          <div class="summary-synopsis"><p>Generates a human friendly secret of <code class="inline">length</code> bytes long.</p></div>
 
-    <div class="summary-synopsis"><p>Get a role with id, raise if not found.</p></div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#get_session!/1">get_session!(id)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#get_role!/2" translate="no">get_role!(id, queries \\ &amp;(&amp;1))</a>
 
-  </div>
+        </div>
 
-    <div class="summary-synopsis"><p>Get a session with id, raise if not found.</p></div>
+          <div class="summary-synopsis"><p>Get a role with id, raise if not found.</p></div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#get_user!/2">get_user!(uid, queries \\ &amp;(&amp;1))</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#get_session!/1" translate="no">get_session!(id)</a>
 
-    <div class="summary-synopsis"><p>Get a user with id, raise if not found.</p></div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#get_workspace!/2">get_workspace!(id, queries \\ &amp;(&amp;1))</a>
+          <div class="summary-synopsis"><p>Get a session with id, raise if not found.</p></div>
 
-  </div>
+      </div>
 
-    <div class="summary-synopsis"><p>Get a workspace with id, raise if not found.</p></div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#get_user!/2" translate="no">get_user!(uid, queries \\ &amp;(&amp;1))</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#grant_permission/3">grant_permission(role, action, scope \\ :global)</a>
+        </div>
 
-  </div>
+          <div class="summary-synopsis"><p>Get a user with id, raise if not found.</p></div>
 
-    <div class="summary-synopsis"><p>Grant permission with an action and scope</p></div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#list_api_keys/0">list_api_keys()</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#get_workspace!/2" translate="no">get_workspace!(id, queries \\ &amp;(&amp;1))</a>
 
-  </div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#list_api_tokens/1">list_api_tokens(queries \\ &amp;(&amp;1))</a>
+          <div class="summary-synopsis"><p>Get a workspace with id, raise if not found.</p></div>
 
-  </div>
+      </div>
 
-    <div class="summary-synopsis"><p>Return all API tokens</p></div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#grant_permission/3" translate="no">grant_permission(role, action, scope \\ :global)</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#list_roles/1">list_roles(queries \\ &amp;(&amp;1))</a>
+        </div>
 
-  </div>
+          <div class="summary-synopsis"><p>Grant permission with an action and scope</p></div>
 
-    <div class="summary-synopsis"><p>List roles</p></div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#list_users/1">list_users(queries \\ &amp;(&amp;1))</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#has?/3" translate="no">has?(role, action, scope \\ :global)</a>
 
-  </div>
+        </div>
 
-    <div class="summary-synopsis"><p>Return all users with <code class="inline">last_login_at</code> and <code class="inline">last_active_at</code> virtual fields
+          <div class="summary-synopsis"><p>Check action against role with scope.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#has_permission?/3" translate="no">has_permission?(role, action, scope \\ :global)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Check permission directly without infer</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#list_api_keys/0" translate="no">list_api_keys()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>List API keys with portal access for cached API access</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#list_api_tokens/1" translate="no">list_api_tokens(queries \\ &amp;(&amp;1))</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Return all API tokens</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#list_roles/1" translate="no">list_roles(queries \\ &amp;(&amp;1))</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>List roles</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#list_users/1" translate="no">list_users(queries \\ &amp;(&amp;1))</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Return all users with <code class="inline">last_login_at</code> and <code class="inline">last_active_at</code> virtual fields
 populated</p></div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#list_workspaces/1">list_workspaces(queries \\ &amp;(&amp;1))</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#list_workspaces/1" translate="no">list_workspaces(queries \\ &amp;(&amp;1))</a>
 
-    <div class="summary-synopsis"><p>List all workspaces</p></div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#load_api_tokens/1">load_api_tokens(query)</a>
+          <div class="summary-synopsis"><p>List all workspaces</p></div>
 
-  </div>
+      </div>
 
-    <div class="summary-synopsis"><p>Load te <code class="inline">api_tokens</code> assoc of a given role</p></div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#load_api_tokens/1" translate="no">load_api_tokens(query)</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#load_role_sessions/1">load_role_sessions(query)</a>
+        </div>
 
-  </div>
+          <div class="summary-synopsis"><p>Load te <code class="inline">api_tokens</code> assoc of a given role</p></div>
 
-    <div class="summary-synopsis"><p>Load session assoc with all permissions</p></div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#load_user_activity/1">load_user_activity(query)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#load_role_permission_scopes/1" translate="no">load_role_permission_scopes(query)</a>
 
-  </div>
+        </div>
 
-    <div class="summary-synopsis"><p>Preload user activity</p></div>
+          <div class="summary-synopsis"><p>Load all permission assoc with scope (workspace, portal, blueprint)</p></div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#load_user_role/1">load_user_role(query)</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#load_role_permissions/1" translate="no">load_role_permissions(query)</a>
 
-    <div class="summary-synopsis"><p>Load role assoc</p></div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#load_workspace_blueprints/1">load_workspace_blueprints(query)</a>
+          <div class="summary-synopsis"><p>Load all permission assoc</p></div>
 
-  </div>
+      </div>
 
-    <div class="summary-synopsis"><p>Load blueprints assoc</p></div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#load_role_sessions/1" translate="no">load_role_sessions(query)</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#load_workspace_stats/1">load_workspace_stats(query)</a>
+        </div>
 
-  </div>
+          <div class="summary-synopsis"><p>Load session assoc</p></div>
 
-    <div class="summary-synopsis"><p>Load blueprint_count and active_publication_count</p></div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#order_workspaces_by/2">order_workspaces_by(query, key)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#load_user_activity/1" translate="no">load_user_activity(query)</a>
 
-  </div>
+        </div>
 
-    <div class="summary-synopsis"><p>Order workspace by key</p></div>
+          <div class="summary-synopsis"><p>Preload user activity</p></div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#revoke_permission/3">revoke_permission(role, action, scope \\ :global)</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#load_user_role/1" translate="no">load_user_role(query)</a>
 
-    <div class="summary-synopsis"><p>Revoke permission with an action and scope</p></div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#revoke_session/1">revoke_session(session)</a>
+          <div class="summary-synopsis"><p>Load role assoc</p></div>
 
-  </div>
+      </div>
 
-    <div class="summary-synopsis"><p>Revoke session</p></div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#load_workspace_blueprints/1" translate="no">load_workspace_blueprints(query)</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#toggle_permission/3">toggle_permission(role, action, scope \\ :global)</a>
+        </div>
 
-  </div>
+          <div class="summary-synopsis"><p>Load blueprints assoc</p></div>
 
-    <div class="summary-synopsis"><p>Toggle permission with an action and scope</p></div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#update_role/2">update_role(role, attrs \\ %{})</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#load_workspace_stats/1" translate="no">load_workspace_stats(query)</a>
 
-  </div>
+        </div>
 
-    <div class="summary-synopsis"><p>Update role with attributes</p></div>
+          <div class="summary-synopsis"><p>Load blueprint_count and active_publication_count</p></div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#update_session/2">update_session(session, attrs)</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#revoke_permission/3" translate="no">revoke_permission(role, action, scope \\ :global)</a>
 
-    <div class="summary-synopsis"><p>Update session with attributes</p></div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#update_user/2">update_user(data, attrs)</a>
+          <div class="summary-synopsis"><p>Revoke permission with an action and scope</p></div>
 
-  </div>
+      </div>
 
-    <div class="summary-synopsis"><p>Update user with attributes. This will cast all user attributes and should
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#revoke_session/1" translate="no">revoke_session(session)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Revoke session</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#toggle_permission/3" translate="no">toggle_permission(role, action, scope \\ :global)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Toggle permission with an action and scope</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#update_role/2" translate="no">update_role(role, attrs \\ %{})</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Update role with attributes</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#update_session/2" translate="no">update_session(session, attrs)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Update session with attributes</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#update_user/2" translate="no">update_user(data, attrs)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Update user with attributes. This will cast all user attributes and should
 only be called from an admin context.</p></div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#update_workspace/2">update_workspace(data, attrs)</a>
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#update_workspace/2" translate="no">update_workspace(data, attrs)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Update workspace with attributes</p></div>
+
+      </div>
 
   </div>
 
-    <div class="summary-synopsis"><p>Update workspace with attributes</p></div>
-
-</div>
-
-  </div>
-
-        </section>
+  </section>
 
 
-        <section id="functions" class="details-list">
-          <h1 class="section-heading">
-            <a class="hover-link" href="#functions">
-              <span class="icon-link" aria-hidden="true"></span>
-              <span class="sr-only">Link to this section</span>
-            </a>
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <span class="icon-link" aria-hidden="true"></span>
+        <span class="sr-only">Link to this section</span>
+      </a>
 Functions
-          </h1>
-          <div class="functions-list">
+    </h1>
+    <div class="functions-list">
 <section class="detail" id="activate_role/1">
 
   <div class="detail-header">
@@ -612,9 +722,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">activate_role(role)</h1>
+    <h1 class="signature" translate="no">activate_role(role)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L370" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L394" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -627,6 +737,28 @@ Functions
 <p>Activate a role</p>
   </section>
 </section>
+<section class="detail" id="bust_role_cache/1">
+
+  <div class="detail-header">
+    <a href="#bust_role_cache/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">bust_role_cache(role)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L399" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Bust role cache</p>
+  </section>
+</section>
 <section class="detail" id="can?/3">
 
     <span id="can?/2"></span>
@@ -636,9 +768,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">can?(role, action, scope \\ :global)</h1>
+    <h1 class="signature" translate="no">can?(role, action, scope \\ :global)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L179" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L193" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -660,9 +792,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">change_role(role, attrs \\ %{})</h1>
+    <h1 class="signature" translate="no">change_role(role, attrs \\ %{})</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L360" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L384" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -684,9 +816,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">change_user(data, attrs \\ %{})</h1>
+    <h1 class="signature" translate="no">change_user(data, attrs \\ %{})</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L279" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L293" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -708,9 +840,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">change_workspace(data, attrs \\ %{})</h1>
+    <h1 class="signature" translate="no">change_workspace(data, attrs \\ %{})</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L221" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L235" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -730,9 +862,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">check_user(email, password)</h1>
+    <h1 class="signature" translate="no">check_user(email, password)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L267" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L281" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -755,9 +887,9 @@ will be constant.</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">create_api_token(role, test \\ false)</h1>
+    <h1 class="signature" translate="no">create_api_token(role, test \\ false)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L406" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L435" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -770,6 +902,28 @@ will be constant.</p>
 <p>Create an access token as API for a given role</p>
   </section>
 </section>
+<section class="detail" id="create_permissions/2">
+
+  <div class="detail-header">
+    <a href="#create_permissions/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">create_permissions(role, scope)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L181" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Create permissions for scope</p>
+  </section>
+</section>
 <section class="detail" id="create_role/2">
 
     <span id="create_role/1"></span>
@@ -779,9 +933,9 @@ will be constant.</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">create_role(type, attrs \\ %{})</h1>
+    <h1 class="signature" translate="no">create_role(type, attrs \\ %{})</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L350" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L374" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -801,9 +955,9 @@ will be constant.</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">create_session(role, attrs)</h1>
+    <h1 class="signature" translate="no">create_session(role, attrs)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L308" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L322" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -823,9 +977,9 @@ will be constant.</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">create_user(attrs)</h1>
+    <h1 class="signature" translate="no">create_user(attrs)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L274" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L288" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -845,9 +999,9 @@ will be constant.</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">create_workspace(attrs)</h1>
+    <h1 class="signature" translate="no">create_workspace(attrs)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L216" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L230" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -867,9 +1021,9 @@ will be constant.</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">deactivate_role(role)</h1>
+    <h1 class="signature" translate="no">deactivate_role(role)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L380" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L409" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -883,6 +1037,28 @@ will be constant.</p>
 web layer.</p>
   </section>
 </section>
+<section class="detail" id="delete_permissions/2">
+
+  <div class="detail-header">
+    <a href="#delete_permissions/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">delete_permissions(role, scope)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L186" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Delete all permissions for scope</p>
+  </section>
+</section>
 <section class="detail" id="delete_role/1">
 
   <div class="detail-header">
@@ -890,9 +1066,9 @@ web layer.</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">delete_role(role)</h1>
+    <h1 class="signature" translate="no">delete_role(role)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L365" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L389" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -912,9 +1088,9 @@ web layer.</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">delete_workspace(data)</h1>
+    <h1 class="signature" translate="no">delete_workspace(data)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L233" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L247" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -934,9 +1110,9 @@ web layer.</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">explode_composite_secret(secret)</h1>
+    <h1 class="signature" translate="no">explode_composite_secret(secret)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L419" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L448" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -946,8 +1122,8 @@ web layer.</p>
 
   <section class="docstring">
 
-<p>Explode a secret.</p><pre><code class="makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="n">sec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">generate_composite_secret</span><span class="p" data-group-id="7546351103-1">(</span><span class="ss">:role</span><span class="p">,</span><span class="w"> </span><span class="mi">23</span><span class="p" data-group-id="7546351103-1">)</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="p" data-group-id="7546351103-2">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">23</span><span class="p">,</span><span class="w"> </span><span class="ss">prefix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;role&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">secret</span><span class="p">:</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="7546351103-2">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">explode_composite_secret</span><span class="p" data-group-id="7546351103-3">(</span><span class="n">sec</span><span class="p" data-group-id="7546351103-3">)</span></code></pre>
+<p>Explode a secret.</p><pre><code class="makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="n">sec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">generate_composite_secret</span><span class="p" data-group-id="5740350444-1">(</span><span class="ss">:role</span><span class="p">,</span><span class="w"> </span><span class="mi">23</span><span class="p" data-group-id="5740350444-1">)</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="p" data-group-id="5740350444-2">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">23</span><span class="p">,</span><span class="w"> </span><span class="ss">prefix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;role&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">secret</span><span class="p">:</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="5740350444-2">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">explode_composite_secret</span><span class="p" data-group-id="5740350444-3">(</span><span class="n">sec</span><span class="p" data-group-id="5740350444-3">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="fetch_session/1">
@@ -957,9 +1133,9 @@ web layer.</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">fetch_session(token)</h1>
+    <h1 class="signature" translate="no">fetch_session(token)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L298" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L312" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -979,9 +1155,9 @@ web layer.</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">filter_accessible_workspaces(query, role)</h1>
+    <h1 class="signature" translate="no">filter_accessible_workspaces(query, role)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L196" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L215" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1001,9 +1177,9 @@ web layer.</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">filter_active_roles(query)</h1>
+    <h1 class="signature" translate="no">filter_active_roles(query)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L340" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L354" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1023,9 +1199,9 @@ web layer.</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">filter_roles_by_type(query, type)</h1>
+    <h1 class="signature" translate="no">filter_roles_by_type(query, type)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L335" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L349" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1045,9 +1221,9 @@ web layer.</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">gen_totp(user)</h1>
+    <h1 class="signature" translate="no">gen_totp(user)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L291" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L305" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1068,9 +1244,9 @@ Return a <code class="inline">{url, secret}</code> tuple.</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">generate_composite_secret(prefix, id)</h1>
+    <h1 class="signature" translate="no">generate_composite_secret(prefix, id)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L411" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L440" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1092,9 +1268,9 @@ Return a <code class="inline">{url, secret}</code> tuple.</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">generate_secret(length \\ 16)</h1>
+    <h1 class="signature" translate="no">generate_secret(length \\ 16)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L401" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L430" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1116,9 +1292,9 @@ Return a <code class="inline">{url, secret}</code> tuple.</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">get_role!(id, queries \\ &amp;(&amp;1))</h1>
+    <h1 class="signature" translate="no">get_role!(id, queries \\ &amp;(&amp;1))</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L330" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L344" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1138,9 +1314,9 @@ Return a <code class="inline">{url, secret}</code> tuple.</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">get_session!(id)</h1>
+    <h1 class="signature" translate="no">get_session!(id)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L303" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L317" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1162,9 +1338,9 @@ Return a <code class="inline">{url, secret}</code> tuple.</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">get_user!(uid, queries \\ &amp;(&amp;1))</h1>
+    <h1 class="signature" translate="no">get_user!(uid, queries \\ &amp;(&amp;1))</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L246" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L260" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1186,9 +1362,9 @@ Return a <code class="inline">{url, secret}</code> tuple.</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">get_workspace!(id, queries \\ &amp;(&amp;1))</h1>
+    <h1 class="signature" translate="no">get_workspace!(id, queries \\ &amp;(&amp;1))</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L191" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L210" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1210,9 +1386,9 @@ Return a <code class="inline">{url, secret}</code> tuple.</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">grant_permission(role, action, scope \\ :global)</h1>
+    <h1 class="signature" translate="no">grant_permission(role, action, scope \\ :global)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L165" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L163" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1225,16 +1401,18 @@ Return a <code class="inline">{url, secret}</code> tuple.</p>
 <p>Grant permission with an action and scope</p>
   </section>
 </section>
-<section class="detail" id="list_api_keys/0">
+<section class="detail" id="has?/3">
+
+    <span id="has?/2"></span>
 
   <div class="detail-header">
-    <a href="#list_api_keys/0" class="detail-link" title="Link to this function">
+    <a href="#has?/3" class="detail-link" title="Link to this function">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">list_api_keys()</h1>
+    <h1 class="signature" translate="no">has?(role, action, scope \\ :global)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L423" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L198" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1244,7 +1422,53 @@ Return a <code class="inline">{url, secret}</code> tuple.</p>
 
   <section class="docstring">
 
+<p>Check action against role with scope.</p>
+  </section>
+</section>
+<section class="detail" id="has_permission?/3">
 
+    <span id="has_permission?/2"></span>
+
+  <div class="detail-header">
+    <a href="#has_permission?/3" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">has_permission?(role, action, scope \\ :global)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L175" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Check permission directly without infer</p>
+  </section>
+</section>
+<section class="detail" id="list_api_keys/0">
+
+  <div class="detail-header">
+    <a href="#list_api_keys/0" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">list_api_keys()</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L453" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>List API keys with portal access for cached API access</p>
   </section>
 </section>
 <section class="detail" id="list_api_tokens/1">
@@ -1256,9 +1480,9 @@ Return a <code class="inline">{url, secret}</code> tuple.</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">list_api_tokens(queries \\ &amp;(&amp;1))</h1>
+    <h1 class="signature" translate="no">list_api_tokens(queries \\ &amp;(&amp;1))</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L387" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L416" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1280,9 +1504,9 @@ Return a <code class="inline">{url, secret}</code> tuple.</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">list_roles(queries \\ &amp;(&amp;1))</h1>
+    <h1 class="signature" translate="no">list_roles(queries \\ &amp;(&amp;1))</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L325" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L339" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1304,9 +1528,9 @@ Return a <code class="inline">{url, secret}</code> tuple.</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">list_users(queries \\ &amp;(&amp;1))</h1>
+    <h1 class="signature" translate="no">list_users(queries \\ &amp;(&amp;1))</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L241" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L255" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1329,9 +1553,9 @@ populated</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">list_workspaces(queries \\ &amp;(&amp;1))</h1>
+    <h1 class="signature" translate="no">list_workspaces(queries \\ &amp;(&amp;1))</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L186" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L205" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1351,9 +1575,9 @@ populated</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">load_api_tokens(query)</h1>
+    <h1 class="signature" translate="no">load_api_tokens(query)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L392" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L421" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1366,16 +1590,16 @@ populated</p>
 <p>Load te <code class="inline">api_tokens</code> assoc of a given role</p>
   </section>
 </section>
-<section class="detail" id="load_role_sessions/1">
+<section class="detail" id="load_role_permission_scopes/1">
 
   <div class="detail-header">
-    <a href="#load_role_sessions/1" class="detail-link" title="Link to this function">
+    <a href="#load_role_permission_scopes/1" class="detail-link" title="Link to this function">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">load_role_sessions(query)</h1>
+    <h1 class="signature" translate="no">load_role_permission_scopes(query)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L345" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L369" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1385,7 +1609,51 @@ populated</p>
 
   <section class="docstring">
 
-<p>Load session assoc with all permissions</p>
+<p>Load all permission assoc with scope (workspace, portal, blueprint)</p>
+  </section>
+</section>
+<section class="detail" id="load_role_permissions/1">
+
+  <div class="detail-header">
+    <a href="#load_role_permissions/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">load_role_permissions(query)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L364" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Load all permission assoc</p>
+  </section>
+</section>
+<section class="detail" id="load_role_sessions/1">
+
+  <div class="detail-header">
+    <a href="#load_role_sessions/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">load_role_sessions(query)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L359" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Load session assoc</p>
   </section>
 </section>
 <section class="detail" id="load_user_activity/1">
@@ -1395,9 +1663,9 @@ populated</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">load_user_activity(query)</h1>
+    <h1 class="signature" translate="no">load_user_activity(query)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L254" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L268" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1418,9 +1686,9 @@ populated</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">load_user_role(query)</h1>
+    <h1 class="signature" translate="no">load_user_role(query)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L259" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L273" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1440,9 +1708,9 @@ populated</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">load_workspace_blueprints(query)</h1>
+    <h1 class="signature" translate="no">load_workspace_blueprints(query)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L201" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L220" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1462,9 +1730,9 @@ populated</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">load_workspace_stats(query)</h1>
+    <h1 class="signature" translate="no">load_workspace_stats(query)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L206" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L225" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1477,28 +1745,6 @@ populated</p>
 <p>Load blueprint_count and active_publication_count</p>
   </section>
 </section>
-<section class="detail" id="order_workspaces_by/2">
-
-  <div class="detail-header">
-    <a href="#order_workspaces_by/2" class="detail-link" title="Link to this function">
-      <span class="icon-link" aria-hidden="true"></span>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature">order_workspaces_by(query, key)</h1>
-
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L211" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-<p>Order workspace by key</p>
-  </section>
-</section>
 <section class="detail" id="revoke_permission/3">
 
     <span id="revoke_permission/2"></span>
@@ -1508,9 +1754,9 @@ populated</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">revoke_permission(role, action, scope \\ :global)</h1>
+    <h1 class="signature" translate="no">revoke_permission(role, action, scope \\ :global)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L171" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L169" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1530,9 +1776,9 @@ populated</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">revoke_session(session)</h1>
+    <h1 class="signature" translate="no">revoke_session(session)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L318" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L332" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1554,9 +1800,9 @@ populated</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">toggle_permission(role, action, scope \\ :global)</h1>
+    <h1 class="signature" translate="no">toggle_permission(role, action, scope \\ :global)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L159" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L157" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1578,9 +1824,9 @@ populated</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">update_role(role, attrs \\ %{})</h1>
+    <h1 class="signature" translate="no">update_role(role, attrs \\ %{})</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L355" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L379" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1600,9 +1846,9 @@ populated</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">update_session(session, attrs)</h1>
+    <h1 class="signature" translate="no">update_session(session, attrs)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L313" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L327" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1622,9 +1868,9 @@ populated</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">update_user(data, attrs)</h1>
+    <h1 class="signature" translate="no">update_user(data, attrs)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L285" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L299" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1645,9 +1891,9 @@ only be called from an admin context.</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">update_workspace(data, attrs)</h1>
+    <h1 class="signature" translate="no">update_workspace(data, attrs)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/account.ex#L226" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/account.ex#L240" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1661,8 +1907,8 @@ only be called from an admin context.</p>
   </section>
 </section>
 
-          </div>
-        </section>
+    </div>
+  </section>
 
       <footer class="footer">
 
@@ -1678,12 +1924,12 @@ only be called from an admin context.</p>
         <p>
           <span class="line">
             Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.25.5) for the
-            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.26.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>.
           </span>
           <span class="line">
             Designed by
-            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire" translate="no">Friedel Ziegelmayer</a>.
           </span>
         </p>
         <p>
@@ -1693,15 +1939,11 @@ only be called from an admin context.</p>
           <button class="line footer-button display-shortcuts-help">
             Display keyboard shortcuts
           </button>
-          <button class="line footer-button night-mode-toggle">
-            Toggle night mode
-          </button>
           <button class="line footer-button display-quick-switch">
             Go to a HexDocs package
           </button>
-          <button class="line footer-button tooltips-toggle">
-            <span class="tooltips-option-disable">Disable tooltips</span>
-            <span class="tooltips-option-enable">Enable tooltips</span>
+          <button class="line footer-button display-settings">
+            Settings
           </button>
         </p>
       </footer>

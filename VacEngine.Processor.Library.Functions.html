@@ -4,17 +4,17 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.25.5">
+    <meta name="generator" content="ExDoc v0.26.0">
     <meta name="project" content="Vac Engine v1.0.3">
 
     <title>VacEngine.Processor.Library.Functions — Vac Engine v1.0.3</title>
-    <link rel="stylesheet" href="dist/elixir-d1506dba1db7cdc5483e.css" />
+    <link rel="stylesheet" href="dist/elixir-b5076885a795c65e636c.css" />
 
-    <script src="dist/sidebar_items-c8d15bf04c.js"></script>
+    <script src="dist/sidebar_items-a8fe058c8d.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/app-7b632b26f13d5e0d20e1.js"></script>
+    <script async src="dist/app-a404e1e870b77c874f9e.js"></script>
 
 
   </head>
@@ -54,10 +54,10 @@
 
   <div class="sidebar-header">
     <div class="sidebar-projectDetails">
-      <a href="readme.html" class="sidebar-projectName">
+      <a href="readme.html" class="sidebar-projectName" translate="no">
 Vac Engine
       </a>
-      <strong class="sidebar-projectVersion">
+      <strong class="sidebar-projectVersion" translate="no">
         v1.0.3
       </strong>
     </div>
@@ -79,403 +79,444 @@ Vac Engine
   <div class="content-outer">
     <div id="content" class="content-inner">
 
-      <h1>
-VacEngine.Processor.Library.Functions <small class="app-vsn">(Vac Engine v1.0.3)</small>
+<h1>
+  <span translate="no">VacEngine.Processor.Library.Functions</span> 
+  <small class="app-vsn" translate="no">(Vac Engine v1.0.3)</small>
 
-          <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L1" title="View Source" class="view-source" rel="help">
-            <span class="icon-code" aria-hidden="true"></span>
-            <span class="sr-only">View Source</span>
-          </a>
-
-      </h1>
+    <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L1" title="View Source" class="view-source" rel="help">
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
 
 
-        <section id="moduledoc">
+</h1>
+
+
+  <section id="moduledoc">
 <p>Actual blueprint expression functions</p><p>Functions defined in this module correspond to the functions
 available to compose complex blueprint expressions.</p><p>Function have:</p><ul><li>a name (the actual function)</li><li>a short name, defined by a <code class="inline">@short</code> attribute</li><li>a label, defined by a <code class="inline">@label</code> attribute</li><li>one or more signatures, defined by a <code class="inline">@signature</code> attribute. Each signature
 defines a valid type combination of argument and output</li><li>one or more implementations to handle all the possible types and inputs</li></ul>
-        </section>
+  </section>
 
 
-        <section id="summary" class="details-list">
-          <h1 class="section-heading">
-            <a class="hover-link" href="#summary">
-              <span class="icon-link" aria-hidden="true"></span>
-              <span class="sr-only">Link to this section</span>
-            </a>
-            Summary
-          </h1>
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <span class="icon-link" aria-hidden="true"></span>
+        <span class="sr-only">Link to this section</span>
+      </a>
+      Summary
+    </h1>
 
   <div class="summary-functions summary">
     <h2>
       <a href="#functions">Functions</a>
     </h2>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#add/2">add(a, b)</a>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#add/2" translate="no">add(a, b)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Add two values</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#add_days/2" translate="no">add_days(date, days)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Add days to date</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#add_hours/2" translate="no">add_hours(date, hours)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Add hours to date</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#add_minutes/2" translate="no">add_minutes(date, minutes)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Add minutes to date</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#add_months/2" translate="no">add_months(date, months)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Add months to date</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#add_seconds/2" translate="no">add_seconds(date, seconds)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Add seconds to date</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#add_weeks/2" translate="no">add_weeks(date, weeks)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Add weeks to date</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#add_years/2" translate="no">add_years(date, years)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Add years to date</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#age/1" translate="no">age(_)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Calculate age in years given a birthdate</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#and_/2" translate="no">and_(a, b)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Boolean AND</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#days_between/2" translate="no">days_between(a, b)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Return the day difference between two dates</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#div/2" translate="no">div(a, b)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Divide two values</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#earliest/2" translate="no">earliest(a, b)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Return earliest date</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#earliest/3" translate="no">earliest(a, b, b)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Return latest date</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#eq/2" translate="no">eq(a, b)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Check equality of two expressions.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#gt/2" translate="no">gt(a, b)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Check if a is greater than b. For date, a is after b.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#gte/2" translate="no">gte(a, b)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Check if a is greater than or equal to b. For date, a is after b.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#hours_between/2" translate="no">hours_between(a, b)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Return the hour difference between two dates</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#is_date/1" translate="no">is_date(a)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Check if struct is date</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#is_false/1" translate="no">is_false(arg1)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Check if boolean is false</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#is_nil_/1" translate="no">is_nil_(arg1)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Check if variable is nil</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#is_not_nil/1" translate="no">is_not_nil(arg1)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Check if variable is not nil</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#is_true/1" translate="no">is_true(arg1)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Check if boolean is true</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#latest/2" translate="no">latest(a, b)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Return latest date</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#latest/3" translate="no">latest(a, b, b)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Return latest date</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#lt/2" translate="no">lt(a, b)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Check if a is less than b</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#lte/2" translate="no">lte(a, b)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Check if a is less than or equal to b</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#minutes_between/2" translate="no">minutes_between(a, b)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Return the minute difference between two dates</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#months_between/2" translate="no">months_between(a, b)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Return the month difference between two dates</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#mult/2" translate="no">mult(a, b)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Multiply two values</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#neq/2" translate="no">neq(a, b)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Check inequality of two expressions.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#not_/1" translate="no">not_(arg1)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Inverse boolean</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#now/0" translate="no">now()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Get the current time</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#or_/2" translate="no">or_(a, b)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Boolean OR</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#seconds_between/2" translate="no">seconds_between(a, b)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Return the second difference between two dates</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#sub/2" translate="no">sub(a, b)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Subtract two values</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#var/1" translate="no">var(name)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Get a variable value</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#weeks_between/2" translate="no">weeks_between(a, b)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Return the week difference between two dates</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#years_between/2" translate="no">years_between(a, b)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>  Return the year difference between two dates</p></div>
+
+      </div>
 
   </div>
 
-    <div class="summary-synopsis"><p>  Add two values</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#add_days/2">add_days(date, days)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Add days to date</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#add_hours/2">add_hours(date, hours)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Add hours to date</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#add_minutes/2">add_minutes(date, minutes)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Add minutes to date</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#add_months/2">add_months(date, months)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Add months to date</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#add_seconds/2">add_seconds(date, seconds)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Add seconds to date</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#add_weeks/2">add_weeks(date, weeks)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Add weeks to date</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#add_years/2">add_years(date, years)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Add years to date</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#age/1">age(_)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Calculate age in years given a birthdate</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#and_/2">and_(a, b)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Boolean AND</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#days_between/2">days_between(a, b)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Return the day difference between two dates</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#div/2">div(a, b)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Divide two values</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#earliest/2">earliest(a, b)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Return earliest date</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#earliest/3">earliest(a, b, b)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Return latest date</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#eq/2">eq(a, b)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Check equality of two expressions.</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#gt/2">gt(a, b)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Check if a is greater than b. For date, a is after b.</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#gte/2">gte(a, b)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Check if a is greater than or equal to b. For date, a is after b.</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#hours_between/2">hours_between(a, b)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Return the hour difference between two dates</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#is_date/1">is_date(a)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Check if struct is date</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#is_false/1">is_false(arg1)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Check if boolean is false</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#is_nil_/1">is_nil_(arg1)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Check if variable is nil</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#is_not_nil/1">is_not_nil(arg1)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Check if variable is not nil</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#is_true/1">is_true(arg1)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Check if boolean is true</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#latest/2">latest(a, b)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Return latest date</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#latest/3">latest(a, b, b)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Return latest date</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#lt/2">lt(a, b)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Check if a is less than b</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#lte/2">lte(a, b)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Check if a is less than or equal to b</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#minutes_between/2">minutes_between(a, b)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Return the minute difference between two dates</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#months_between/2">months_between(a, b)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Return the month difference between two dates</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#mult/2">mult(a, b)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Multiply two values</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#neq/2">neq(a, b)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Check inequality of two expressions.</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#not_/1">not_(arg1)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Inverse boolean</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#now/0">now()</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Get the current time</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#or_/2">or_(a, b)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Boolean OR</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#seconds_between/2">seconds_between(a, b)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Return the second difference between two dates</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#sub/2">sub(a, b)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Subtract two values</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#var/1">var(name)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Get a variable value</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#weeks_between/2">weeks_between(a, b)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Return the week difference between two dates</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#years_between/2">years_between(a, b)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>  Return the year difference between two dates</p></div>
-
-</div>
-
-  </div>
-
-        </section>
-
-
-        <section id="functions" class="details-list">
-          <h1 class="section-heading">
-            <a class="hover-link" href="#functions">
-              <span class="icon-link" aria-hidden="true"></span>
-              <span class="sr-only">Link to this section</span>
-            </a>
+  </section>
+
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <span class="icon-link" aria-hidden="true"></span>
+        <span class="sr-only">Link to this section</span>
+      </a>
 Functions
-          </h1>
-          <div class="functions-list">
+    </h1>
+    <div class="functions-list">
 <section class="detail" id="add/2">
 
   <div class="detail-header">
@@ -483,9 +524,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">add(a, b)</h1>
+    <h1 class="signature" translate="no">add(a, b)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L261" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L261" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -505,9 +546,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">add_days(date, days)</h1>
+    <h1 class="signature" translate="no">add_days(date, days)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L471" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L472" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -527,9 +568,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">add_hours(date, hours)</h1>
+    <h1 class="signature" translate="no">add_hours(date, hours)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L483" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L484" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -549,9 +590,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">add_minutes(date, minutes)</h1>
+    <h1 class="signature" translate="no">add_minutes(date, minutes)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L495" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L496" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -571,9 +612,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">add_months(date, months)</h1>
+    <h1 class="signature" translate="no">add_months(date, months)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L445" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L446" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -593,9 +634,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">add_seconds(date, seconds)</h1>
+    <h1 class="signature" translate="no">add_seconds(date, seconds)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L508" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L509" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -615,9 +656,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">add_weeks(date, weeks)</h1>
+    <h1 class="signature" translate="no">add_weeks(date, weeks)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L458" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L459" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -637,9 +678,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">add_years(date, years)</h1>
+    <h1 class="signature" translate="no">add_years(date, years)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L432" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L433" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -659,9 +700,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">age(_)</h1>
+    <h1 class="signature" translate="no">age(_)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L335" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L336" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -681,9 +722,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">and_(a, b)</h1>
+    <h1 class="signature" translate="no">and_(a, b)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L80" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L80" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -703,9 +744,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">days_between(a, b)</h1>
+    <h1 class="signature" translate="no">days_between(a, b)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L569" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L570" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -725,9 +766,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">div(a, b)</h1>
+    <h1 class="signature" translate="no">div(a, b)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L306" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L306" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -747,9 +788,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">earliest(a, b)</h1>
+    <h1 class="signature" translate="no">earliest(a, b)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L354" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L355" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -769,9 +810,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">earliest(a, b, b)</h1>
+    <h1 class="signature" translate="no">earliest(a, b, b)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L374" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L375" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -791,9 +832,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">eq(a, b)</h1>
+    <h1 class="signature" translate="no">eq(a, b)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L127" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L127" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -813,9 +854,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">gt(a, b)</h1>
+    <h1 class="signature" translate="no">gt(a, b)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L179" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L179" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -835,9 +876,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">gte(a, b)</h1>
+    <h1 class="signature" translate="no">gte(a, b)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L200" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L200" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -857,9 +898,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">hours_between(a, b)</h1>
+    <h1 class="signature" translate="no">hours_between(a, b)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L584" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L585" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -879,9 +920,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this macro</span>
     </a>
-    <h1 class="signature">is_date(a)</h1>
+    <h1 class="signature" translate="no">is_date(a)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L22" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L22" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -903,9 +944,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">is_false(arg1)</h1>
+    <h1 class="signature" translate="no">is_false(arg1)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L49" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L49" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -925,9 +966,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">is_nil_(arg1)</h1>
+    <h1 class="signature" translate="no">is_nil_(arg1)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L112" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L112" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -947,9 +988,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">is_not_nil(arg1)</h1>
+    <h1 class="signature" translate="no">is_not_nil(arg1)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L123" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L123" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -969,9 +1010,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">is_true(arg1)</h1>
+    <h1 class="signature" translate="no">is_true(arg1)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L59" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L59" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -991,9 +1032,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">latest(a, b)</h1>
+    <h1 class="signature" translate="no">latest(a, b)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L393" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L394" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1013,9 +1054,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">latest(a, b, b)</h1>
+    <h1 class="signature" translate="no">latest(a, b, b)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L413" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L414" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1035,9 +1076,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">lt(a, b)</h1>
+    <h1 class="signature" translate="no">lt(a, b)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L221" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L221" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1057,9 +1098,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">lte(a, b)</h1>
+    <h1 class="signature" translate="no">lte(a, b)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L242" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L242" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1079,9 +1120,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">minutes_between(a, b)</h1>
+    <h1 class="signature" translate="no">minutes_between(a, b)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L599" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L600" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1101,9 +1142,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">months_between(a, b)</h1>
+    <h1 class="signature" translate="no">months_between(a, b)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L539" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L540" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1123,9 +1164,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">mult(a, b)</h1>
+    <h1 class="signature" translate="no">mult(a, b)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L291" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L291" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1145,9 +1186,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">neq(a, b)</h1>
+    <h1 class="signature" translate="no">neq(a, b)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L148" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L148" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1167,9 +1208,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">not_(arg1)</h1>
+    <h1 class="signature" translate="no">not_(arg1)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L69" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L69" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1189,9 +1230,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">now()</h1>
+    <h1 class="signature" translate="no">now()</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L318" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L319" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1211,9 +1252,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">or_(a, b)</h1>
+    <h1 class="signature" translate="no">or_(a, b)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L95" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L95" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1233,9 +1274,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">seconds_between(a, b)</h1>
+    <h1 class="signature" translate="no">seconds_between(a, b)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L614" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L615" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1255,9 +1296,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">sub(a, b)</h1>
+    <h1 class="signature" translate="no">sub(a, b)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L276" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L276" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1277,9 +1318,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">var(name)</h1>
+    <h1 class="signature" translate="no">var(name)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L37" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L37" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1299,9 +1340,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">weeks_between(a, b)</h1>
+    <h1 class="signature" translate="no">weeks_between(a, b)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L554" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L555" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1321,9 +1362,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">years_between(a, b)</h1>
+    <h1 class="signature" translate="no">years_between(a, b)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor/library/functions.ex#L524" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor/library/functions.ex#L525" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1337,8 +1378,8 @@ Functions
   </section>
 </section>
 
-          </div>
-        </section>
+    </div>
+  </section>
 
       <footer class="footer">
 
@@ -1354,12 +1395,12 @@ Functions
         <p>
           <span class="line">
             Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.25.5) for the
-            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.26.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>.
           </span>
           <span class="line">
             Designed by
-            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire" translate="no">Friedel Ziegelmayer</a>.
           </span>
         </p>
         <p>
@@ -1369,15 +1410,11 @@ Functions
           <button class="line footer-button display-shortcuts-help">
             Display keyboard shortcuts
           </button>
-          <button class="line footer-button night-mode-toggle">
-            Toggle night mode
-          </button>
           <button class="line footer-button display-quick-switch">
             Go to a HexDocs package
           </button>
-          <button class="line footer-button tooltips-toggle">
-            <span class="tooltips-option-disable">Disable tooltips</span>
-            <span class="tooltips-option-enable">Enable tooltips</span>
+          <button class="line footer-button display-settings">
+            Settings
           </button>
         </p>
       </footer>

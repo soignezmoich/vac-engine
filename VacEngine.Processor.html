@@ -4,17 +4,17 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.25.5">
+    <meta name="generator" content="ExDoc v0.26.0">
     <meta name="project" content="Vac Engine v1.0.3">
 
     <title>VacEngine.Processor — Vac Engine v1.0.3</title>
-    <link rel="stylesheet" href="dist/elixir-d1506dba1db7cdc5483e.css" />
+    <link rel="stylesheet" href="dist/elixir-b5076885a795c65e636c.css" />
 
-    <script src="dist/sidebar_items-c8d15bf04c.js"></script>
+    <script src="dist/sidebar_items-a8fe058c8d.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/app-7b632b26f13d5e0d20e1.js"></script>
+    <script async src="dist/app-a404e1e870b77c874f9e.js"></script>
 
 
   </head>
@@ -54,10 +54,10 @@
 
   <div class="sidebar-header">
     <div class="sidebar-projectDetails">
-      <a href="readme.html" class="sidebar-projectName">
+      <a href="readme.html" class="sidebar-projectName" translate="no">
 Vac Engine
       </a>
-      <strong class="sidebar-projectVersion">
+      <strong class="sidebar-projectVersion" translate="no">
         v1.0.3
       </strong>
     </div>
@@ -79,18 +79,20 @@ Vac Engine
   <div class="content-outer">
     <div id="content" class="content-inner">
 
-      <h1>
-VacEngine.Processor <small class="app-vsn">(Vac Engine v1.0.3)</small>
+<h1>
+  <span translate="no">VacEngine.Processor</span> 
+  <small class="app-vsn" translate="no">(Vac Engine v1.0.3)</small>
 
-          <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L1" title="View Source" class="view-source" rel="help">
-            <span class="icon-code" aria-hidden="true"></span>
-            <span class="sr-only">View Source</span>
-          </a>
-
-      </h1>
+    <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L1" title="View Source" class="view-source" rel="help">
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
 
 
-        <section id="moduledoc">
+</h1>
+
+
+  <section id="moduledoc">
 <p>The Processor module is responsible for generating and executing functions
 to compute API output from API input.</p><h2 id="module-processors" class="section-heading">
   <a href="#module-processors" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
@@ -102,14 +104,14 @@ to compute API output from API input.</p><h2 id="module-processors" class="secti
 </h3>
 <p>The role of the processor is to compute the output variables of an api call
 based on the input variables. Such a computation is made using the <a href="#run/2"><code class="inline">run/2</code></a>
-function:</p><pre><code class="makeup elixir"><span class="p" data-group-id="5306860707-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5306860707-2">%{</span><span class="ss">output</span><span class="p">:</span><span class="w"> </span><span class="n">state</span><span class="o">.</span><span class="n">output</span><span class="p">,</span><span class="w"> </span><span class="ss">input</span><span class="p">:</span><span class="w"> </span><span class="n">state</span><span class="o">.</span><span class="n">input</span><span class="p" data-group-id="5306860707-2">}</span><span class="p" data-group-id="5306860707-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Processor</span><span class="o">.</span><span class="n">run</span><span class="p" data-group-id="5306860707-3">(</span><span class="n">processor</span><span class="p">,</span><span class="w"> </span><span class="n">input</span><span class="p" data-group-id="5306860707-3">)</span></code></pre><h3 id="module-build-a-processor" class="section-heading">
+function:</p><pre><code class="makeup elixir"><span class="p" data-group-id="5569110270-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5569110270-2">%{</span><span class="ss">output</span><span class="p">:</span><span class="w"> </span><span class="n">state</span><span class="o">.</span><span class="n">output</span><span class="p">,</span><span class="w"> </span><span class="ss">input</span><span class="p">:</span><span class="w"> </span><span class="n">state</span><span class="o">.</span><span class="n">input</span><span class="p" data-group-id="5569110270-2">}</span><span class="p" data-group-id="5569110270-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Processor</span><span class="o">.</span><span class="n">run</span><span class="p" data-group-id="5569110270-3">(</span><span class="n">processor</span><span class="p">,</span><span class="w"> </span><span class="n">input</span><span class="p" data-group-id="5569110270-3">)</span></code></pre><h3 id="module-build-a-processor" class="section-heading">
   <a href="#module-build-a-processor" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Build a processor
 </h3>
 <p>A processor is an in memory function, compiled from a description
 called &quot;Blueprint&quot;. The procedure to obtain a blueprint is described
 in the &quot;Blueprint edition&quot; and &quot;Blueprint export/import&quot; sections below.</p><p>The compilation from a blueprint to a processor is made using the
-<code class="inline">Processor.compile_blueprint/1</code> function:</p><pre><code class="makeup elixir"><span class="p" data-group-id="2037032114-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">processor</span><span class="p" data-group-id="2037032114-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Processor</span><span class="o">.</span><span class="n">compile_blueprint</span><span class="p" data-group-id="2037032114-2">(</span><span class="n">blueprint</span><span class="p" data-group-id="2037032114-2">)</span></code></pre><h2 id="module-blueprint" class="section-heading">
+<code class="inline">Processor.compile_blueprint/1</code> function:</p><pre><code class="makeup elixir"><span class="p" data-group-id="2019022877-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">processor</span><span class="p" data-group-id="2019022877-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Processor</span><span class="o">.</span><span class="n">compile_blueprint</span><span class="p" data-group-id="2019022877-2">(</span><span class="n">blueprint</span><span class="p" data-group-id="2019022877-2">)</span></code></pre><h2 id="module-blueprint" class="section-heading">
   <a href="#module-blueprint" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Blueprint
 </h2>
@@ -120,8 +122,8 @@ It has the following composition:</p><pre><code class="makeup elixir"><span clas
     </span><span class="mi">0</span><span class="o">..</span><span class="n">n</span><span class="w">           </span><span class="mi">0</span><span class="o">..</span><span class="n">n</span><span class="w">
       </span><span class="o">|</span><span class="w">             </span><span class="o">|</span><span class="w">
 </span><span class="nc">Variables</span><span class="w">         </span><span class="nc">Deductions</span><span class="w">
-</span><span class="p" data-group-id="1813463433-1">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">output</span><span class="w">      </span><span class="o">|</span><span class="w">
-</span><span class="n">intermediate</span><span class="p" data-group-id="1813463433-1">)</span><span class="w">      </span><span class="mi">0</span><span class="o">..</span><span class="n">n</span><span class="w">
+</span><span class="p" data-group-id="0261404839-1">(</span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">output</span><span class="w">      </span><span class="o">|</span><span class="w">
+</span><span class="n">intermediate</span><span class="p" data-group-id="0261404839-1">)</span><span class="w">      </span><span class="mi">0</span><span class="o">..</span><span class="n">n</span><span class="w">
                     </span><span class="o">|</span><span class="w">
                 </span><span class="bp">_</span><span class="w"> </span><span class="nc">Branches</span><span class="w"> </span><span class="bp">_</span><span class="w">
                </span><span class="o">|</span><span class="w">            </span><span class="o">|</span><span class="w">
@@ -167,253 +169,397 @@ and deductions.</p><h2 id="module-schemas" class="section-heading">
 </h2>
 <p>Below, the ecto schemas available in the Processor module.</p><h4>Assignment</h4><p>A variable assignment in the branch of a bluprint deduction.</p><h4>AstType</h4><p>Ecto type for AST serialization to the database.</p><p>Allows to store tuples as JSON.</p><h4>BindingElement</h4><p>An expression binding element.</p><h4>Binding</h4><p>An expression binding.</p><h4>Blueprint</h4><p>A blueprint describing a full processor.</p><h4>Branch</h4><p>A deduction branch.</p><h4>Column</h4><p>A deduction column (a structuration feature that has no effect when the
 processor runs on an input.)</p><h4>Condition</h4><p>A condition in a branch.</p><h4>Deduction</h4><p>A blueprint deduction.</p><h4>Expression</h4><p>Expressions can be found in conditions, assignments or variable default values.</p><h4>ListType</h4><p>Ecto type to allow storing a list in a json field.</p><h4>Variable</h4><p>A blueprint variable.</p>
-        </section>
+  </section>
 
 
-        <section id="summary" class="details-list">
-          <h1 class="section-heading">
-            <a class="hover-link" href="#summary">
-              <span class="icon-link" aria-hidden="true"></span>
-              <span class="sr-only">Link to this section</span>
-            </a>
-            Summary
-          </h1>
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <span class="icon-link" aria-hidden="true"></span>
+        <span class="sr-only">Link to this section</span>
+      </a>
+      Summary
+    </h1>
 
   <div class="summary-functions summary">
     <h2>
       <a href="#functions">Functions</a>
     </h2>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#change_blueprint/2">change_blueprint(blueprint, attrs \\ %{})</a>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#change_blueprint/2" translate="no">change_blueprint(blueprint, attrs \\ %{})</a>
 
-    <div class="summary-synopsis"><p>Cast attributes into a changeset
+        </div>
+
+          <div class="summary-synopsis"><p>Cast attributes into a changeset
 Only root attributes are supported (no variables or deductions)</p></div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#compile_blueprint/1">compile_blueprint(blueprint)</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#change_variable/2" translate="no">change_variable(var, attrs)</a>
 
-    <div class="summary-synopsis"><p>Compile blueprint into processor</p></div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#create_blueprint/2">create_blueprint(workspace, attrs)</a>
+          <div class="summary-synopsis"><p>Change variable with attributes (no children, used for form validation)</p></div>
 
-  </div>
+      </div>
 
-    <div class="summary-synopsis"><p>Create a blueprint with the given attributes
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#compile_blueprint/1" translate="no">compile_blueprint(blueprint)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Compile blueprint into processor</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#create_blueprint/2" translate="no">create_blueprint(workspace, attrs)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Create a blueprint with the given attributes
 TODO describe attributes</p></div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#create_variable/2">create_variable(parent, attrs)</a>
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#create_branch/2" translate="no">create_branch(deduction, attrs \\ %{})</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>See <code class="inline">VacEngine.Processor.Deductions.create_branch/2</code>.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#create_column/3" translate="no">create_column(blueprint, deduction, attrs)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>See <code class="inline">VacEngine.Processor.Deductions.create_column/3</code>.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#create_deduction/2" translate="no">create_deduction(blueprint, attrs \\ %{})</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>See <code class="inline">VacEngine.Processor.Deductions.create_deduction/2</code>.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#create_variable/2" translate="no">create_variable(parent, attrs)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Create variable with attributes</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#delete_blueprint/1" translate="no">delete_blueprint(blueprint)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Delete blueprint (will error if used)</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#delete_branch/1" translate="no">delete_branch(branch)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>See <code class="inline">VacEngine.Processor.Deductions.delete_branch/1</code>.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#delete_cell/2" translate="no">delete_cell(branch, column)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>See <code class="inline">VacEngine.Processor.Deductions.delete_cell/2</code>.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#delete_column/1" translate="no">delete_column(column)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>See <code class="inline">VacEngine.Processor.Deductions.delete_column/1</code>.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#delete_deduction/1" translate="no">delete_deduction(deduction)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>See <code class="inline">VacEngine.Processor.Deductions.delete_deduction/1</code>.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#delete_variable/1" translate="no">delete_variable(var)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Delete variable (will error if variable is in use)</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#filter_accessible_blueprints/2" translate="no">filter_accessible_blueprints(query, role)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Filter accessible blueprints with role</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#filter_blueprints_by_workspace/2" translate="no">filter_blueprints_by_workspace(query, workspace)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Apply a workspace scope to a blueprint query</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#flush_processor/1" translate="no">flush_processor(processor)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Flush compiled processor</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#get_blueprint!/2" translate="no">get_blueprint!(blueprint_id, queries \\ &amp;(&amp;1))</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Get a blueprint with id, raise if not found.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#list_blueprints/1" translate="no">list_blueprints(queries \\ &amp;(&amp;1))</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>List blueprint</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#list_compiled_blueprint_modules/0" translate="no">list_compiled_blueprint_modules()</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#load_blueprint_active_publications/1" translate="no">load_blueprint_active_publications(query)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Load active publications</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#load_blueprint_full_deductions/1" translate="no">load_blueprint_full_deductions(query)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Load deductions and arrange them, load_blueprint_variables MUST be called first</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#load_blueprint_inactive_publications/1" translate="no">load_blueprint_inactive_publications(query)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Load inactive publications</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#load_blueprint_publications/1" translate="no">load_blueprint_publications(query)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Load all publications</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#load_blueprint_variables/1" translate="no">load_blueprint_variables(query)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Load variables and index them</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#move_variable/2" translate="no">move_variable(var, new_parent)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Move variable to new parent</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#run/3" translate="no">run(processor, input, env \\ %{})</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Run processor with given input</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#serialize_blueprint/1" translate="no">serialize_blueprint(blueprint)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Convert to map for serialization</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#update_blueprint/2" translate="no">update_blueprint(blueprint, attrs)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Update a blueprint with attributes</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#update_blueprint_from_file/2" translate="no">update_blueprint_from_file(blueprint, path)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Load a blueprint from a file.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#update_branch/2" translate="no">update_branch(branch, attrs)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>See <code class="inline">VacEngine.Processor.Deductions.update_branch/2</code>.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#update_cell/4" translate="no">update_cell(ast, blueprint, branch, column)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>See <code class="inline">VacEngine.Processor.Deductions.update_cell/4</code>.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#update_column/2" translate="no">update_column(column, attrs)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>See <code class="inline">VacEngine.Processor.Deductions.update_column/2</code>.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#update_deduction/2" translate="no">update_deduction(deduction, attrs)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>See <code class="inline">VacEngine.Processor.Deductions.update_deduction/2</code>.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#update_variable/2" translate="no">update_variable(var, attrs)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Update variable with attributes</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#variable_used?/1" translate="no">variable_used?(var)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Check if variable is used (expensive, will hit DB)</p></div>
+
+      </div>
 
   </div>
 
-    <div class="summary-synopsis"><p>Create variable with attributes</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#delete_blueprint/1">delete_blueprint(blueprint)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Delete blueprint (will error if used)</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#delete_variable/1">delete_variable(var)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Delete variable (will error if variable is in use)</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#filter_blueprints_by_query/2">filter_blueprints_by_query(query, search)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Apply search query to a blueprint query</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#filter_blueprints_by_workspace/2">filter_blueprints_by_workspace(query, workspace)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Apply a workspace scope to a blueprint query</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#flush_processor/1">flush_processor(processor)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Flush compiled processor</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#get_blueprint!/2">get_blueprint!(blueprint_id, queries \\ &amp;(&amp;1))</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Get a blueprint with id, raise if not found.</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#limit_blueprints/2">limit_blueprints(query, limit)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Limit results</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#list_blueprints/1">list_blueprints(queries \\ &amp;(&amp;1))</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>List blueprint</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#list_compiled_blueprint_modules/0">list_compiled_blueprint_modules()</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#load_blueprint_active_publications/1">load_blueprint_active_publications(query)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Load active publications</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#load_blueprint_full_deductions/1">load_blueprint_full_deductions(query)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Load deductions and arrange them, load_blueprint_variables MUST be called first</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#load_blueprint_inactive_publications/1">load_blueprint_inactive_publications(query)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Load inactive publications</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#load_blueprint_publications/1">load_blueprint_publications(query)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Load all publications</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#load_blueprint_variables/1">load_blueprint_variables(query)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Load variables and index them</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#move_variable/2">move_variable(var, new_parent)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Move variable to new parent</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#run/3">run(processor, input, env \\ %{})</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Run processor with given input</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#serialize_blueprint/1">serialize_blueprint(blueprint)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Convert to map for serialization</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#update_blueprint/2">update_blueprint(blueprint, attrs)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Update a blueprint with attributes</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#update_blueprint_from_file/2">update_blueprint_from_file(blueprint, path)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Load a blueprint from a file.</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#update_variable/2">update_variable(var, attrs)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Update variable with attributes</p></div>
-
-</div>
-
-  </div>
-
-        </section>
-
-
-        <section id="functions" class="details-list">
-          <h1 class="section-heading">
-            <a class="hover-link" href="#functions">
-              <span class="icon-link" aria-hidden="true"></span>
-              <span class="sr-only">Link to this section</span>
-            </a>
+  </section>
+
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <span class="icon-link" aria-hidden="true"></span>
+        <span class="sr-only">Link to this section</span>
+      </a>
 Functions
-          </h1>
-          <div class="functions-list">
+    </h1>
+    <div class="functions-list">
 <section class="detail" id="change_blueprint/2">
 
     <span id="change_blueprint/1"></span>
@@ -423,9 +569,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">change_blueprint(blueprint, attrs \\ %{})</h1>
+    <h1 class="signature" translate="no">change_blueprint(blueprint, attrs \\ %{})</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L238" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L233" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -439,6 +585,28 @@ Functions
 Only root attributes are supported (no variables or deductions)</p>
   </section>
 </section>
+<section class="detail" id="change_variable/2">
+
+  <div class="detail-header">
+    <a href="#change_variable/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">change_variable(var, attrs)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L248" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Change variable with attributes (no children, used for form validation)</p>
+  </section>
+</section>
 <section class="detail" id="compile_blueprint/1">
 
   <div class="detail-header">
@@ -446,9 +614,9 @@ Only root attributes are supported (no variables or deductions)</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">compile_blueprint(blueprint)</h1>
+    <h1 class="signature" translate="no">compile_blueprint(blueprint)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L282" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L301" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -468,9 +636,9 @@ Only root attributes are supported (no variables or deductions)</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">create_blueprint(workspace, attrs)</h1>
+    <h1 class="signature" translate="no">create_blueprint(workspace, attrs)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L227" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L222" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -484,6 +652,76 @@ Only root attributes are supported (no variables or deductions)</p>
 TODO describe attributes</p>
   </section>
 </section>
+<section class="detail" id="create_branch/2">
+
+    <span id="create_branch/1"></span>
+
+  <div class="detail-header">
+    <a href="#create_branch/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">create_branch(deduction, attrs \\ %{})</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L287" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>See <code class="inline">VacEngine.Processor.Deductions.create_branch/2</code>.</p>
+  </section>
+</section>
+<section class="detail" id="create_column/3">
+
+  <div class="detail-header">
+    <a href="#create_column/3" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">create_column(blueprint, deduction, attrs)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L290" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>See <code class="inline">VacEngine.Processor.Deductions.create_column/3</code>.</p>
+  </section>
+</section>
+<section class="detail" id="create_deduction/2">
+
+    <span id="create_deduction/1"></span>
+
+  <div class="detail-header">
+    <a href="#create_deduction/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">create_deduction(blueprint, attrs \\ %{})</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L284" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>See <code class="inline">VacEngine.Processor.Deductions.create_deduction/2</code>.</p>
+  </section>
+</section>
 <section class="detail" id="create_variable/2">
 
   <div class="detail-header">
@@ -491,9 +729,9 @@ TODO describe attributes</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">create_variable(parent, attrs)</h1>
+    <h1 class="signature" translate="no">create_variable(parent, attrs)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L248" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L243" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -513,9 +751,9 @@ TODO describe attributes</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">delete_blueprint(blueprint)</h1>
+    <h1 class="signature" translate="no">delete_blueprint(blueprint)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L232" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L227" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -528,6 +766,94 @@ TODO describe attributes</p>
 <p>Delete blueprint (will error if used)</p>
   </section>
 </section>
+<section class="detail" id="delete_branch/1">
+
+  <div class="detail-header">
+    <a href="#delete_branch/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">delete_branch(branch)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L288" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>See <code class="inline">VacEngine.Processor.Deductions.delete_branch/1</code>.</p>
+  </section>
+</section>
+<section class="detail" id="delete_cell/2">
+
+  <div class="detail-header">
+    <a href="#delete_cell/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">delete_cell(branch, column)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L294" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>See <code class="inline">VacEngine.Processor.Deductions.delete_cell/2</code>.</p>
+  </section>
+</section>
+<section class="detail" id="delete_column/1">
+
+  <div class="detail-header">
+    <a href="#delete_column/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">delete_column(column)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L292" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>See <code class="inline">VacEngine.Processor.Deductions.delete_column/1</code>.</p>
+  </section>
+</section>
+<section class="detail" id="delete_deduction/1">
+
+  <div class="detail-header">
+    <a href="#delete_deduction/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">delete_deduction(deduction)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L285" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>See <code class="inline">VacEngine.Processor.Deductions.delete_deduction/1</code>.</p>
+  </section>
+</section>
 <section class="detail" id="delete_variable/1">
 
   <div class="detail-header">
@@ -535,9 +861,9 @@ TODO describe attributes</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">delete_variable(var)</h1>
+    <h1 class="signature" translate="no">delete_variable(var)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L258" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L258" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -550,16 +876,16 @@ TODO describe attributes</p>
 <p>Delete variable (will error if variable is in use)</p>
   </section>
 </section>
-<section class="detail" id="filter_blueprints_by_query/2">
+<section class="detail" id="filter_accessible_blueprints/2">
 
   <div class="detail-header">
-    <a href="#filter_blueprints_by_query/2" class="detail-link" title="Link to this function">
+    <a href="#filter_accessible_blueprints/2" class="detail-link" title="Link to this function">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">filter_blueprints_by_query(query, search)</h1>
+    <h1 class="signature" translate="no">filter_accessible_blueprints(query, role)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L191" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L191" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -569,7 +895,7 @@ TODO describe attributes</p>
 
   <section class="docstring">
 
-<p>Apply search query to a blueprint query</p>
+<p>Filter accessible blueprints with role</p>
   </section>
 </section>
 <section class="detail" id="filter_blueprints_by_workspace/2">
@@ -579,9 +905,9 @@ TODO describe attributes</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">filter_blueprints_by_workspace(query, workspace)</h1>
+    <h1 class="signature" translate="no">filter_blueprints_by_workspace(query, workspace)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L186" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L186" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -601,9 +927,9 @@ TODO describe attributes</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">flush_processor(processor)</h1>
+    <h1 class="signature" translate="no">flush_processor(processor)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L317" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L336" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -625,9 +951,9 @@ TODO describe attributes</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">get_blueprint!(blueprint_id, queries \\ &amp;(&amp;1))</h1>
+    <h1 class="signature" translate="no">get_blueprint!(blueprint_id, queries \\ &amp;(&amp;1))</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L181" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L181" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -640,28 +966,6 @@ TODO describe attributes</p>
 <p>Get a blueprint with id, raise if not found.</p>
   </section>
 </section>
-<section class="detail" id="limit_blueprints/2">
-
-  <div class="detail-header">
-    <a href="#limit_blueprints/2" class="detail-link" title="Link to this function">
-      <span class="icon-link" aria-hidden="true"></span>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature">limit_blueprints(query, limit)</h1>
-
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L196" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-<p>Limit results</p>
-  </section>
-</section>
 <section class="detail" id="list_blueprints/1">
 
     <span id="list_blueprints/0"></span>
@@ -671,9 +975,9 @@ TODO describe attributes</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">list_blueprints(queries \\ &amp;(&amp;1))</h1>
+    <h1 class="signature" translate="no">list_blueprints(queries \\ &amp;(&amp;1))</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L176" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L176" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -693,9 +997,9 @@ TODO describe attributes</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">list_compiled_blueprint_modules()</h1>
+    <h1 class="signature" translate="no">list_compiled_blueprint_modules()</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L322" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L341" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -715,9 +1019,9 @@ TODO describe attributes</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">load_blueprint_active_publications(query)</h1>
+    <h1 class="signature" translate="no">load_blueprint_active_publications(query)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L211" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L206" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -737,9 +1041,9 @@ TODO describe attributes</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">load_blueprint_full_deductions(query)</h1>
+    <h1 class="signature" translate="no">load_blueprint_full_deductions(query)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L206" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L201" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -759,9 +1063,9 @@ TODO describe attributes</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">load_blueprint_inactive_publications(query)</h1>
+    <h1 class="signature" translate="no">load_blueprint_inactive_publications(query)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L216" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L211" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -781,9 +1085,9 @@ TODO describe attributes</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">load_blueprint_publications(query)</h1>
+    <h1 class="signature" translate="no">load_blueprint_publications(query)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L221" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L216" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -803,9 +1107,9 @@ TODO describe attributes</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">load_blueprint_variables(query)</h1>
+    <h1 class="signature" translate="no">load_blueprint_variables(query)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L201" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L196" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -825,9 +1129,9 @@ TODO describe attributes</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">move_variable(var, new_parent)</h1>
+    <h1 class="signature" translate="no">move_variable(var, new_parent)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L263" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L263" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -849,9 +1153,9 @@ TODO describe attributes</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">run(processor, input, env \\ %{})</h1>
+    <h1 class="signature" translate="no">run(processor, input, env \\ %{})</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L302" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L321" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -871,9 +1175,9 @@ TODO describe attributes</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">serialize_blueprint(blueprint)</h1>
+    <h1 class="signature" translate="no">serialize_blueprint(blueprint)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L268" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L273" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -893,9 +1197,9 @@ TODO describe attributes</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">update_blueprint(blueprint, attrs)</h1>
+    <h1 class="signature" translate="no">update_blueprint(blueprint, attrs)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L243" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L238" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -915,9 +1219,9 @@ TODO describe attributes</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">update_blueprint_from_file(blueprint, path)</h1>
+    <h1 class="signature" translate="no">update_blueprint_from_file(blueprint, path)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L275" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L280" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -930,6 +1234,94 @@ TODO describe attributes</p>
 <p>Load a blueprint from a file.</p><p>Used for file upload as phoenix write into temp file</p>
   </section>
 </section>
+<section class="detail" id="update_branch/2">
+
+  <div class="detail-header">
+    <a href="#update_branch/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">update_branch(branch, attrs)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L289" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>See <code class="inline">VacEngine.Processor.Deductions.update_branch/2</code>.</p>
+  </section>
+</section>
+<section class="detail" id="update_cell/4">
+
+  <div class="detail-header">
+    <a href="#update_cell/4" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">update_cell(ast, blueprint, branch, column)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L293" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>See <code class="inline">VacEngine.Processor.Deductions.update_cell/4</code>.</p>
+  </section>
+</section>
+<section class="detail" id="update_column/2">
+
+  <div class="detail-header">
+    <a href="#update_column/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">update_column(column, attrs)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L291" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>See <code class="inline">VacEngine.Processor.Deductions.update_column/2</code>.</p>
+  </section>
+</section>
+<section class="detail" id="update_deduction/2">
+
+  <div class="detail-header">
+    <a href="#update_deduction/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">update_deduction(deduction, attrs)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L286" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>See <code class="inline">VacEngine.Processor.Deductions.update_deduction/2</code>.</p>
+  </section>
+</section>
 <section class="detail" id="update_variable/2">
 
   <div class="detail-header">
@@ -937,9 +1329,9 @@ TODO describe attributes</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">update_variable(var, attrs)</h1>
+    <h1 class="signature" translate="no">update_variable(var, attrs)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine/processor.ex#L253" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L253" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -952,9 +1344,31 @@ TODO describe attributes</p>
 <p>Update variable with attributes</p>
   </section>
 </section>
+<section class="detail" id="variable_used?/1">
 
-          </div>
-        </section>
+  <div class="detail-header">
+    <a href="#variable_used?/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">variable_used?(var)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/processor.ex#L268" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Check if variable is used (expensive, will hit DB)</p>
+  </section>
+</section>
+
+    </div>
+  </section>
 
       <footer class="footer">
 
@@ -970,12 +1384,12 @@ TODO describe attributes</p>
         <p>
           <span class="line">
             Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.25.5) for the
-            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.26.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>.
           </span>
           <span class="line">
             Designed by
-            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire" translate="no">Friedel Ziegelmayer</a>.
           </span>
         </p>
         <p>
@@ -985,15 +1399,11 @@ TODO describe attributes</p>
           <button class="line footer-button display-shortcuts-help">
             Display keyboard shortcuts
           </button>
-          <button class="line footer-button night-mode-toggle">
-            Toggle night mode
-          </button>
           <button class="line footer-button display-quick-switch">
             Go to a HexDocs package
           </button>
-          <button class="line footer-button tooltips-toggle">
-            <span class="tooltips-option-disable">Disable tooltips</span>
-            <span class="tooltips-option-enable">Enable tooltips</span>
+          <button class="line footer-button display-settings">
+            Settings
           </button>
         </p>
       </footer>

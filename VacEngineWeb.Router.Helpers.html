@@ -4,17 +4,17 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.25.5">
+    <meta name="generator" content="ExDoc v0.26.0">
     <meta name="project" content="Vac Engine v1.0.3">
 
     <title>VacEngineWeb.Router.Helpers — Vac Engine v1.0.3</title>
-    <link rel="stylesheet" href="dist/elixir-d1506dba1db7cdc5483e.css" />
+    <link rel="stylesheet" href="dist/elixir-b5076885a795c65e636c.css" />
 
-    <script src="dist/sidebar_items-c8d15bf04c.js"></script>
+    <script src="dist/sidebar_items-a8fe058c8d.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/app-7b632b26f13d5e0d20e1.js"></script>
+    <script async src="dist/app-a404e1e870b77c874f9e.js"></script>
 
 
   </head>
@@ -54,10 +54,10 @@
 
   <div class="sidebar-header">
     <div class="sidebar-projectDetails">
-      <a href="readme.html" class="sidebar-projectName">
+      <a href="readme.html" class="sidebar-projectName" translate="no">
 Vac Engine
       </a>
-      <strong class="sidebar-projectVersion">
+      <strong class="sidebar-projectVersion" translate="no">
         v1.0.3
       </strong>
     </div>
@@ -79,543 +79,646 @@ Vac Engine
   <div class="content-outer">
     <div id="content" class="content-inner">
 
-      <h1>
-VacEngineWeb.Router.Helpers <small class="app-vsn">(Vac Engine v1.0.3)</small>
+<h1>
+  <span translate="no">VacEngineWeb.Router.Helpers</span> 
+  <small class="app-vsn" translate="no">(Vac Engine v1.0.3)</small>
 
-          <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" title="View Source" class="view-source" rel="help">
-            <span class="icon-code" aria-hidden="true"></span>
-            <span class="sr-only">View Source</span>
-          </a>
-
-      </h1>
+    <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" title="View Source" class="view-source" rel="help">
+      <span class="icon-code" aria-hidden="true"></span>
+      <span class="sr-only">View Source</span>
+    </a>
 
 
-        <section id="moduledoc">
+</h1>
+
+
+  <section id="moduledoc">
 <p>Module with named helpers generated from VacEngineWeb.Router.</p>
-        </section>
+  </section>
 
 
-        <section id="summary" class="details-list">
-          <h1 class="section-heading">
-            <a class="hover-link" href="#summary">
-              <span class="icon-link" aria-hidden="true"></span>
-              <span class="sr-only">Link to this section</span>
-            </a>
-            Summary
-          </h1>
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <span class="icon-link" aria-hidden="true"></span>
+        <span class="sr-only">Link to this section</span>
+      </a>
+      Summary
+    </h1>
 
   <div class="summary-functions summary">
     <h2>
       <a href="#functions">Functions</a>
     </h2>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#api_key_path/2">api_key_path(conn_or_endpoint, action)</a>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#api_key_path/2" translate="no">api_key_path(conn_or_endpoint, action)</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#api_key_path/3">api_key_path(conn_or_endpoint, action, params)</a>
+        </div>
 
-  </div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#api_key_path/4">api_key_path(conn_or_endpoint, action, role_id, params)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#api_key_path/3" translate="no">api_key_path(conn_or_endpoint, action, params)</a>
 
-  </div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#api_key_url/2">api_key_url(conn_or_endpoint, action)</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#api_key_path/4" translate="no">api_key_path(conn_or_endpoint, action, role_id, params)</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#api_key_url/3">api_key_url(conn_or_endpoint, action, params)</a>
+        </div>
 
-  </div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#api_key_url/4">api_key_url(conn_or_endpoint, action, role_id, params)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#api_key_url/2" translate="no">api_key_url(conn_or_endpoint, action)</a>
 
-  </div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#api_pub_path/3">api_pub_path(conn_or_endpoint, action, portal_id)</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#api_key_url/3" translate="no">api_key_url(conn_or_endpoint, action, params)</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#api_pub_path/4">api_pub_path(conn_or_endpoint, action, portal_id, params)</a>
+        </div>
 
-  </div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#api_pub_url/3">api_pub_url(conn_or_endpoint, action, portal_id)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#api_key_url/4" translate="no">api_key_url(conn_or_endpoint, action, role_id, params)</a>
 
-  </div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#api_pub_url/4">api_pub_url(conn_or_endpoint, action, portal_id, params)</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#api_pub_path/3" translate="no">api_pub_path(conn_or_endpoint, action, portal_id)</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#live_dashboard_path/2">live_dashboard_path(conn_or_endpoint, action)</a>
+        </div>
 
-  </div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#live_dashboard_path/3">live_dashboard_path(conn_or_endpoint, action, params)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#api_pub_path/4" translate="no">api_pub_path(conn_or_endpoint, action, portal_id, params)</a>
 
-  </div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#live_dashboard_path/4">live_dashboard_path(conn_or_endpoint, action, page, params)</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#api_pub_url/3" translate="no">api_pub_url(conn_or_endpoint, action, portal_id)</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#live_dashboard_path/5">live_dashboard_path(conn_or_endpoint, action, node, page, params)</a>
+        </div>
 
-  </div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#live_dashboard_url/2">live_dashboard_url(conn_or_endpoint, action)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#api_pub_url/4" translate="no">api_pub_url(conn_or_endpoint, action, portal_id, params)</a>
 
-  </div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#live_dashboard_url/3">live_dashboard_url(conn_or_endpoint, action, params)</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#export_path/3" translate="no">export_path(conn_or_endpoint, action, blueprint_id)</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#live_dashboard_url/4">live_dashboard_url(conn_or_endpoint, action, page, params)</a>
+        </div>
 
-  </div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#live_dashboard_url/5">live_dashboard_url(conn_or_endpoint, action, node, page, params)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#export_path/4" translate="no">export_path(conn_or_endpoint, action, blueprint_id, params)</a>
 
-  </div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#login_path/2">login_path(conn_or_endpoint, action)</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#export_url/3" translate="no">export_url(conn_or_endpoint, action, blueprint_id)</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#login_path/3">login_path(conn_or_endpoint, action, params)</a>
+        </div>
 
-  </div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#login_path/4">login_path(conn_or_endpoint, action, token, params)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#export_url/4" translate="no">export_url(conn_or_endpoint, action, blueprint_id, params)</a>
 
-  </div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#login_url/2">login_url(conn_or_endpoint, action)</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#live_dashboard_path/2" translate="no">live_dashboard_path(conn_or_endpoint, action)</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#login_url/3">login_url(conn_or_endpoint, action, params)</a>
+        </div>
 
-  </div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#login_url/4">login_url(conn_or_endpoint, action, token, params)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#live_dashboard_path/3" translate="no">live_dashboard_path(conn_or_endpoint, action, params)</a>
 
-  </div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#logout_path/2">logout_path(conn_or_endpoint, action)</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#live_dashboard_path/4" translate="no">live_dashboard_path(conn_or_endpoint, action, page, params)</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#logout_path/3">logout_path(conn_or_endpoint, action, params)</a>
+        </div>
 
-  </div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#logout_url/2">logout_url(conn_or_endpoint, action)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#live_dashboard_path/5" translate="no">live_dashboard_path(conn_or_endpoint, action, node, page, params)</a>
 
-  </div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#logout_url/3">logout_url(conn_or_endpoint, action, params)</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#live_dashboard_url/2" translate="no">live_dashboard_url(conn_or_endpoint, action)</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#nav_path/2">nav_path(conn_or_endpoint, action)</a>
+        </div>
 
-  </div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#nav_path/3">nav_path(conn_or_endpoint, action, params)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#live_dashboard_url/3" translate="no">live_dashboard_url(conn_or_endpoint, action, params)</a>
 
-  </div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#nav_url/2">nav_url(conn_or_endpoint, action)</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#live_dashboard_url/4" translate="no">live_dashboard_url(conn_or_endpoint, action, page, params)</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#nav_url/3">nav_url(conn_or_endpoint, action, params)</a>
+        </div>
 
-  </div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#path/2">path(data, path)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#live_dashboard_url/5" translate="no">live_dashboard_url(conn_or_endpoint, action, node, page, params)</a>
 
-  </div>
+        </div>
 
-    <div class="summary-synopsis"><p>Generates the path information including any necessary prefix.</p></div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#static_integrity/2">static_integrity(endpoint, path)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#login_path/2" translate="no">login_path(conn_or_endpoint, action)</a>
 
-  </div>
+        </div>
 
-    <div class="summary-synopsis"><p>Generates an integrity hash to a static asset given its file path.</p></div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#static_path/2">static_path(conn, path)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#login_path/3" translate="no">login_path(conn_or_endpoint, action, params)</a>
 
-  </div>
+        </div>
 
-    <div class="summary-synopsis"><p>Generates path to a static asset given its file path.</p></div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#static_url/2">static_url(conn, path)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#login_path/4" translate="no">login_path(conn_or_endpoint, action, token, params)</a>
 
-  </div>
+        </div>
 
-    <div class="summary-synopsis"><p>Generates url to a static asset given its file path.</p></div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#url/1">url(data)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#login_url/2" translate="no">login_url(conn_or_endpoint, action)</a>
 
-  </div>
+        </div>
 
-    <div class="summary-synopsis"><p>Generates the connection/endpoint base URL without any path information.</p></div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#user_path/2">user_path(conn_or_endpoint, action)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#login_url/3" translate="no">login_url(conn_or_endpoint, action, params)</a>
 
-  </div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#user_path/3">user_path(conn_or_endpoint, action, params)</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#login_url/4" translate="no">login_url(conn_or_endpoint, action, token, params)</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#user_path/4">user_path(conn_or_endpoint, action, user_id, params)</a>
+        </div>
 
-  </div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#user_url/2">user_url(conn_or_endpoint, action)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#logout_path/2" translate="no">logout_path(conn_or_endpoint, action)</a>
 
-  </div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#user_url/3">user_url(conn_or_endpoint, action, params)</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#logout_path/3" translate="no">logout_path(conn_or_endpoint, action, params)</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#user_url/4">user_url(conn_or_endpoint, action, user_id, params)</a>
+        </div>
 
-  </div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#welcome_path/2">welcome_path(conn_or_endpoint, action)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#logout_url/2" translate="no">logout_url(conn_or_endpoint, action)</a>
 
-  </div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#welcome_path/3">welcome_path(conn_or_endpoint, action, params)</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#logout_url/3" translate="no">logout_url(conn_or_endpoint, action, params)</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#welcome_url/2">welcome_url(conn_or_endpoint, action)</a>
+        </div>
 
-  </div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#welcome_url/3">welcome_url(conn_or_endpoint, action, params)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#nav_path/2" translate="no">nav_path(conn_or_endpoint, action)</a>
 
-  </div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#workspace_blueprint_path/3">workspace_blueprint_path(conn_or_endpoint, action, workspace_id)</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#nav_path/3" translate="no">nav_path(conn_or_endpoint, action, params)</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#workspace_blueprint_path/4">workspace_blueprint_path(conn_or_endpoint, action, workspace_id, params)</a>
+        </div>
 
-  </div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#workspace_blueprint_path/5">workspace_blueprint_path(conn_or_endpoint, action, workspace_id, blueprint_id, params)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#nav_url/2" translate="no">nav_url(conn_or_endpoint, action)</a>
 
-  </div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#workspace_blueprint_url/3">workspace_blueprint_url(conn_or_endpoint, action, workspace_id)</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#nav_url/3" translate="no">nav_url(conn_or_endpoint, action, params)</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#workspace_blueprint_url/4">workspace_blueprint_url(conn_or_endpoint, action, workspace_id, params)</a>
+        </div>
 
-  </div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#workspace_blueprint_url/5">workspace_blueprint_url(conn_or_endpoint, action, workspace_id, blueprint_id, params)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#path/2" translate="no">path(data, path)</a>
 
-  </div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#workspace_dashboard_path/3">workspace_dashboard_path(conn_or_endpoint, action, workspace_id)</a>
+          <div class="summary-synopsis"><p>Generates the path information including any necessary prefix.</p></div>
 
-  </div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#workspace_dashboard_path/4">workspace_dashboard_path(conn_or_endpoint, action, workspace_id, params)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#static_integrity/2" translate="no">static_integrity(endpoint, path)</a>
 
-  </div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#workspace_dashboard_url/3">workspace_dashboard_url(conn_or_endpoint, action, workspace_id)</a>
+          <div class="summary-synopsis"><p>Generates an integrity hash to a static asset given its file path.</p></div>
 
-  </div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#workspace_dashboard_url/4">workspace_dashboard_url(conn_or_endpoint, action, workspace_id, params)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#static_path/2" translate="no">static_path(conn, path)</a>
 
-  </div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#workspace_path/2">workspace_path(conn_or_endpoint, action)</a>
+          <div class="summary-synopsis"><p>Generates path to a static asset given its file path.</p></div>
 
-  </div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#workspace_path/3">workspace_path(conn_or_endpoint, action, params)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#static_url/2" translate="no">static_url(conn, path)</a>
 
-  </div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#workspace_path/4">workspace_path(conn_or_endpoint, action, workspace_id, params)</a>
+          <div class="summary-synopsis"><p>Generates url to a static asset given its file path.</p></div>
 
-  </div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#workspace_portal_path/3">workspace_portal_path(conn_or_endpoint, action, workspace_id)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#url/1" translate="no">url(data)</a>
 
-  </div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#workspace_portal_path/4">workspace_portal_path(conn_or_endpoint, action, workspace_id, params)</a>
+          <div class="summary-synopsis"><p>Generates the connection/endpoint base URL without any path information.</p></div>
 
-  </div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#workspace_portal_path/5">workspace_portal_path(conn_or_endpoint, action, workspace_id, portal_id, params)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#user_path/2" translate="no">user_path(conn_or_endpoint, action)</a>
 
-  </div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#workspace_portal_url/3">workspace_portal_url(conn_or_endpoint, action, workspace_id)</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#user_path/3" translate="no">user_path(conn_or_endpoint, action, params)</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#workspace_portal_url/4">workspace_portal_url(conn_or_endpoint, action, workspace_id, params)</a>
+        </div>
 
-  </div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#workspace_portal_url/5">workspace_portal_url(conn_or_endpoint, action, workspace_id, portal_id, params)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#user_path/4" translate="no">user_path(conn_or_endpoint, action, user_id, params)</a>
 
-  </div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#workspace_url/2">workspace_url(conn_or_endpoint, action)</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#user_url/2" translate="no">user_url(conn_or_endpoint, action)</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#workspace_url/3">workspace_url(conn_or_endpoint, action, params)</a>
+        </div>
 
-  </div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#workspace_url/4">workspace_url(conn_or_endpoint, action, workspace_id, params)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#user_url/3" translate="no">user_url(conn_or_endpoint, action, params)</a>
 
-  </div>
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#user_url/4" translate="no">user_url(conn_or_endpoint, action, user_id, params)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#welcome_path/2" translate="no">welcome_path(conn_or_endpoint, action)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#welcome_path/3" translate="no">welcome_path(conn_or_endpoint, action, params)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#welcome_url/2" translate="no">welcome_url(conn_or_endpoint, action)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#welcome_url/3" translate="no">welcome_url(conn_or_endpoint, action, params)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#workspace_blueprint_path/3" translate="no">workspace_blueprint_path(conn_or_endpoint, action, workspace_id)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#workspace_blueprint_path/4" translate="no">workspace_blueprint_path(conn_or_endpoint, action, workspace_id, params)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#workspace_blueprint_path/5" translate="no">workspace_blueprint_path(conn_or_endpoint, action, workspace_id, blueprint_id, params)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#workspace_blueprint_url/3" translate="no">workspace_blueprint_url(conn_or_endpoint, action, workspace_id)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#workspace_blueprint_url/4" translate="no">workspace_blueprint_url(conn_or_endpoint, action, workspace_id, params)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#workspace_blueprint_url/5" translate="no">workspace_blueprint_url(conn_or_endpoint, action, workspace_id, blueprint_id, params)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#workspace_dashboard_path/3" translate="no">workspace_dashboard_path(conn_or_endpoint, action, workspace_id)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#workspace_dashboard_path/4" translate="no">workspace_dashboard_path(conn_or_endpoint, action, workspace_id, params)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#workspace_dashboard_url/3" translate="no">workspace_dashboard_url(conn_or_endpoint, action, workspace_id)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#workspace_dashboard_url/4" translate="no">workspace_dashboard_url(conn_or_endpoint, action, workspace_id, params)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#workspace_path/2" translate="no">workspace_path(conn_or_endpoint, action)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#workspace_path/3" translate="no">workspace_path(conn_or_endpoint, action, params)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#workspace_path/4" translate="no">workspace_path(conn_or_endpoint, action, workspace_id, params)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#workspace_portal_path/3" translate="no">workspace_portal_path(conn_or_endpoint, action, workspace_id)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#workspace_portal_path/4" translate="no">workspace_portal_path(conn_or_endpoint, action, workspace_id, params)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#workspace_portal_path/5" translate="no">workspace_portal_path(conn_or_endpoint, action, workspace_id, portal_id, params)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#workspace_portal_url/3" translate="no">workspace_portal_url(conn_or_endpoint, action, workspace_id)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#workspace_portal_url/4" translate="no">workspace_portal_url(conn_or_endpoint, action, workspace_id, params)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#workspace_portal_url/5" translate="no">workspace_portal_url(conn_or_endpoint, action, workspace_id, portal_id, params)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#workspace_url/2" translate="no">workspace_url(conn_or_endpoint, action)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#workspace_url/3" translate="no">workspace_url(conn_or_endpoint, action, params)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#workspace_url/4" translate="no">workspace_url(conn_or_endpoint, action, workspace_id, params)</a>
+
+        </div>
 
-</div>
+      </div>
 
   </div>
 
-        </section>
+  </section>
 
 
-        <section id="functions" class="details-list">
-          <h1 class="section-heading">
-            <a class="hover-link" href="#functions">
-              <span class="icon-link" aria-hidden="true"></span>
-              <span class="sr-only">Link to this section</span>
-            </a>
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <span class="icon-link" aria-hidden="true"></span>
+        <span class="sr-only">Link to this section</span>
+      </a>
 Functions
-          </h1>
-          <div class="functions-list">
+    </h1>
+    <div class="functions-list">
 <section class="detail" id="api_key_path/2">
 
   <div class="detail-header">
@@ -623,9 +726,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">api_key_path(conn_or_endpoint, action)</h1>
+    <h1 class="signature" translate="no">api_key_path(conn_or_endpoint, action)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -645,9 +748,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">api_key_path(conn_or_endpoint, action, params)</h1>
+    <h1 class="signature" translate="no">api_key_path(conn_or_endpoint, action, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -667,9 +770,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">api_key_path(conn_or_endpoint, action, role_id, params)</h1>
+    <h1 class="signature" translate="no">api_key_path(conn_or_endpoint, action, role_id, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -689,9 +792,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">api_key_url(conn_or_endpoint, action)</h1>
+    <h1 class="signature" translate="no">api_key_url(conn_or_endpoint, action)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -711,9 +814,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">api_key_url(conn_or_endpoint, action, params)</h1>
+    <h1 class="signature" translate="no">api_key_url(conn_or_endpoint, action, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -733,9 +836,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">api_key_url(conn_or_endpoint, action, role_id, params)</h1>
+    <h1 class="signature" translate="no">api_key_url(conn_or_endpoint, action, role_id, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -755,9 +858,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">api_pub_path(conn_or_endpoint, action, portal_id)</h1>
+    <h1 class="signature" translate="no">api_pub_path(conn_or_endpoint, action, portal_id)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -777,9 +880,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">api_pub_path(conn_or_endpoint, action, portal_id, params)</h1>
+    <h1 class="signature" translate="no">api_pub_path(conn_or_endpoint, action, portal_id, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -799,9 +902,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">api_pub_url(conn_or_endpoint, action, portal_id)</h1>
+    <h1 class="signature" translate="no">api_pub_url(conn_or_endpoint, action, portal_id)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -821,9 +924,97 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">api_pub_url(conn_or_endpoint, action, portal_id, params)</h1>
+    <h1 class="signature" translate="no">api_pub_url(conn_or_endpoint, action, portal_id, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+
+  </section>
+</section>
+<section class="detail" id="export_path/3">
+
+  <div class="detail-header">
+    <a href="#export_path/3" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">export_path(conn_or_endpoint, action, blueprint_id)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+
+  </section>
+</section>
+<section class="detail" id="export_path/4">
+
+  <div class="detail-header">
+    <a href="#export_path/4" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">export_path(conn_or_endpoint, action, blueprint_id, params)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+
+  </section>
+</section>
+<section class="detail" id="export_url/3">
+
+  <div class="detail-header">
+    <a href="#export_url/3" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">export_url(conn_or_endpoint, action, blueprint_id)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+
+  </section>
+</section>
+<section class="detail" id="export_url/4">
+
+  <div class="detail-header">
+    <a href="#export_url/4" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">export_url(conn_or_endpoint, action, blueprint_id, params)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -843,9 +1034,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">live_dashboard_path(conn_or_endpoint, action)</h1>
+    <h1 class="signature" translate="no">live_dashboard_path(conn_or_endpoint, action)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -865,9 +1056,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">live_dashboard_path(conn_or_endpoint, action, params)</h1>
+    <h1 class="signature" translate="no">live_dashboard_path(conn_or_endpoint, action, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -887,9 +1078,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">live_dashboard_path(conn_or_endpoint, action, page, params)</h1>
+    <h1 class="signature" translate="no">live_dashboard_path(conn_or_endpoint, action, page, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -909,9 +1100,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">live_dashboard_path(conn_or_endpoint, action, node, page, params)</h1>
+    <h1 class="signature" translate="no">live_dashboard_path(conn_or_endpoint, action, node, page, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -931,9 +1122,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">live_dashboard_url(conn_or_endpoint, action)</h1>
+    <h1 class="signature" translate="no">live_dashboard_url(conn_or_endpoint, action)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -953,9 +1144,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">live_dashboard_url(conn_or_endpoint, action, params)</h1>
+    <h1 class="signature" translate="no">live_dashboard_url(conn_or_endpoint, action, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -975,9 +1166,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">live_dashboard_url(conn_or_endpoint, action, page, params)</h1>
+    <h1 class="signature" translate="no">live_dashboard_url(conn_or_endpoint, action, page, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -997,9 +1188,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">live_dashboard_url(conn_or_endpoint, action, node, page, params)</h1>
+    <h1 class="signature" translate="no">live_dashboard_url(conn_or_endpoint, action, node, page, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1019,9 +1210,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">login_path(conn_or_endpoint, action)</h1>
+    <h1 class="signature" translate="no">login_path(conn_or_endpoint, action)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1041,9 +1232,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">login_path(conn_or_endpoint, action, params)</h1>
+    <h1 class="signature" translate="no">login_path(conn_or_endpoint, action, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1063,9 +1254,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">login_path(conn_or_endpoint, action, token, params)</h1>
+    <h1 class="signature" translate="no">login_path(conn_or_endpoint, action, token, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1085,9 +1276,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">login_url(conn_or_endpoint, action)</h1>
+    <h1 class="signature" translate="no">login_url(conn_or_endpoint, action)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1107,9 +1298,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">login_url(conn_or_endpoint, action, params)</h1>
+    <h1 class="signature" translate="no">login_url(conn_or_endpoint, action, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1129,9 +1320,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">login_url(conn_or_endpoint, action, token, params)</h1>
+    <h1 class="signature" translate="no">login_url(conn_or_endpoint, action, token, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1151,9 +1342,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">logout_path(conn_or_endpoint, action)</h1>
+    <h1 class="signature" translate="no">logout_path(conn_or_endpoint, action)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1173,9 +1364,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">logout_path(conn_or_endpoint, action, params)</h1>
+    <h1 class="signature" translate="no">logout_path(conn_or_endpoint, action, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1195,9 +1386,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">logout_url(conn_or_endpoint, action)</h1>
+    <h1 class="signature" translate="no">logout_url(conn_or_endpoint, action)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1217,9 +1408,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">logout_url(conn_or_endpoint, action, params)</h1>
+    <h1 class="signature" translate="no">logout_url(conn_or_endpoint, action, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1239,9 +1430,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">nav_path(conn_or_endpoint, action)</h1>
+    <h1 class="signature" translate="no">nav_path(conn_or_endpoint, action)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1261,9 +1452,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">nav_path(conn_or_endpoint, action, params)</h1>
+    <h1 class="signature" translate="no">nav_path(conn_or_endpoint, action, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1283,9 +1474,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">nav_url(conn_or_endpoint, action)</h1>
+    <h1 class="signature" translate="no">nav_url(conn_or_endpoint, action)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1305,9 +1496,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">nav_url(conn_or_endpoint, action, params)</h1>
+    <h1 class="signature" translate="no">nav_url(conn_or_endpoint, action, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1327,9 +1518,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">path(data, path)</h1>
+    <h1 class="signature" translate="no">path(data, path)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1349,9 +1540,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">static_integrity(endpoint, path)</h1>
+    <h1 class="signature" translate="no">static_integrity(endpoint, path)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1371,9 +1562,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">static_path(conn, path)</h1>
+    <h1 class="signature" translate="no">static_path(conn, path)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1393,9 +1584,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">static_url(conn, path)</h1>
+    <h1 class="signature" translate="no">static_url(conn, path)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1415,9 +1606,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">url(data)</h1>
+    <h1 class="signature" translate="no">url(data)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1437,9 +1628,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">user_path(conn_or_endpoint, action)</h1>
+    <h1 class="signature" translate="no">user_path(conn_or_endpoint, action)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1459,9 +1650,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">user_path(conn_or_endpoint, action, params)</h1>
+    <h1 class="signature" translate="no">user_path(conn_or_endpoint, action, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1481,9 +1672,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">user_path(conn_or_endpoint, action, user_id, params)</h1>
+    <h1 class="signature" translate="no">user_path(conn_or_endpoint, action, user_id, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1503,9 +1694,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">user_url(conn_or_endpoint, action)</h1>
+    <h1 class="signature" translate="no">user_url(conn_or_endpoint, action)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1525,9 +1716,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">user_url(conn_or_endpoint, action, params)</h1>
+    <h1 class="signature" translate="no">user_url(conn_or_endpoint, action, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1547,9 +1738,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">user_url(conn_or_endpoint, action, user_id, params)</h1>
+    <h1 class="signature" translate="no">user_url(conn_or_endpoint, action, user_id, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1569,9 +1760,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">welcome_path(conn_or_endpoint, action)</h1>
+    <h1 class="signature" translate="no">welcome_path(conn_or_endpoint, action)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1591,9 +1782,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">welcome_path(conn_or_endpoint, action, params)</h1>
+    <h1 class="signature" translate="no">welcome_path(conn_or_endpoint, action, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1613,9 +1804,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">welcome_url(conn_or_endpoint, action)</h1>
+    <h1 class="signature" translate="no">welcome_url(conn_or_endpoint, action)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1635,9 +1826,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">welcome_url(conn_or_endpoint, action, params)</h1>
+    <h1 class="signature" translate="no">welcome_url(conn_or_endpoint, action, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1657,9 +1848,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">workspace_blueprint_path(conn_or_endpoint, action, workspace_id)</h1>
+    <h1 class="signature" translate="no">workspace_blueprint_path(conn_or_endpoint, action, workspace_id)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1679,9 +1870,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">workspace_blueprint_path(conn_or_endpoint, action, workspace_id, params)</h1>
+    <h1 class="signature" translate="no">workspace_blueprint_path(conn_or_endpoint, action, workspace_id, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1701,9 +1892,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">workspace_blueprint_path(conn_or_endpoint, action, workspace_id, blueprint_id, params)</h1>
+    <h1 class="signature" translate="no">workspace_blueprint_path(conn_or_endpoint, action, workspace_id, blueprint_id, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1723,9 +1914,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">workspace_blueprint_url(conn_or_endpoint, action, workspace_id)</h1>
+    <h1 class="signature" translate="no">workspace_blueprint_url(conn_or_endpoint, action, workspace_id)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1745,9 +1936,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">workspace_blueprint_url(conn_or_endpoint, action, workspace_id, params)</h1>
+    <h1 class="signature" translate="no">workspace_blueprint_url(conn_or_endpoint, action, workspace_id, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1767,9 +1958,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">workspace_blueprint_url(conn_or_endpoint, action, workspace_id, blueprint_id, params)</h1>
+    <h1 class="signature" translate="no">workspace_blueprint_url(conn_or_endpoint, action, workspace_id, blueprint_id, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1789,9 +1980,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">workspace_dashboard_path(conn_or_endpoint, action, workspace_id)</h1>
+    <h1 class="signature" translate="no">workspace_dashboard_path(conn_or_endpoint, action, workspace_id)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1811,9 +2002,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">workspace_dashboard_path(conn_or_endpoint, action, workspace_id, params)</h1>
+    <h1 class="signature" translate="no">workspace_dashboard_path(conn_or_endpoint, action, workspace_id, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1833,9 +2024,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">workspace_dashboard_url(conn_or_endpoint, action, workspace_id)</h1>
+    <h1 class="signature" translate="no">workspace_dashboard_url(conn_or_endpoint, action, workspace_id)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1855,9 +2046,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">workspace_dashboard_url(conn_or_endpoint, action, workspace_id, params)</h1>
+    <h1 class="signature" translate="no">workspace_dashboard_url(conn_or_endpoint, action, workspace_id, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1877,9 +2068,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">workspace_path(conn_or_endpoint, action)</h1>
+    <h1 class="signature" translate="no">workspace_path(conn_or_endpoint, action)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1899,9 +2090,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">workspace_path(conn_or_endpoint, action, params)</h1>
+    <h1 class="signature" translate="no">workspace_path(conn_or_endpoint, action, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1921,9 +2112,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">workspace_path(conn_or_endpoint, action, workspace_id, params)</h1>
+    <h1 class="signature" translate="no">workspace_path(conn_or_endpoint, action, workspace_id, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1943,9 +2134,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">workspace_portal_path(conn_or_endpoint, action, workspace_id)</h1>
+    <h1 class="signature" translate="no">workspace_portal_path(conn_or_endpoint, action, workspace_id)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1965,9 +2156,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">workspace_portal_path(conn_or_endpoint, action, workspace_id, params)</h1>
+    <h1 class="signature" translate="no">workspace_portal_path(conn_or_endpoint, action, workspace_id, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1987,9 +2178,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">workspace_portal_path(conn_or_endpoint, action, workspace_id, portal_id, params)</h1>
+    <h1 class="signature" translate="no">workspace_portal_path(conn_or_endpoint, action, workspace_id, portal_id, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -2009,9 +2200,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">workspace_portal_url(conn_or_endpoint, action, workspace_id)</h1>
+    <h1 class="signature" translate="no">workspace_portal_url(conn_or_endpoint, action, workspace_id)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -2031,9 +2222,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">workspace_portal_url(conn_or_endpoint, action, workspace_id, params)</h1>
+    <h1 class="signature" translate="no">workspace_portal_url(conn_or_endpoint, action, workspace_id, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -2053,9 +2244,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">workspace_portal_url(conn_or_endpoint, action, workspace_id, portal_id, params)</h1>
+    <h1 class="signature" translate="no">workspace_portal_url(conn_or_endpoint, action, workspace_id, portal_id, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -2075,9 +2266,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">workspace_url(conn_or_endpoint, action)</h1>
+    <h1 class="signature" translate="no">workspace_url(conn_or_endpoint, action)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -2097,9 +2288,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">workspace_url(conn_or_endpoint, action, params)</h1>
+    <h1 class="signature" translate="no">workspace_url(conn_or_endpoint, action, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -2119,9 +2310,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">workspace_url(conn_or_endpoint, action, workspace_id, params)</h1>
+    <h1 class="signature" translate="no">workspace_url(conn_or_endpoint, action, workspace_id, params)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/master/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/router.ex#L1" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -2135,8 +2326,8 @@ Functions
   </section>
 </section>
 
-          </div>
-        </section>
+    </div>
+  </section>
 
       <footer class="footer">
 
@@ -2152,12 +2343,12 @@ Functions
         <p>
           <span class="line">
             Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.25.5) for the
-            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.26.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>.
           </span>
           <span class="line">
             Designed by
-            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire" translate="no">Friedel Ziegelmayer</a>.
           </span>
         </p>
         <p>
@@ -2167,15 +2358,11 @@ Functions
           <button class="line footer-button display-shortcuts-help">
             Display keyboard shortcuts
           </button>
-          <button class="line footer-button night-mode-toggle">
-            Toggle night mode
-          </button>
           <button class="line footer-button display-quick-switch">
             Go to a HexDocs package
           </button>
-          <button class="line footer-button tooltips-toggle">
-            <span class="tooltips-option-disable">Disable tooltips</span>
-            <span class="tooltips-option-enable">Enable tooltips</span>
+          <button class="line footer-button display-settings">
+            Settings
           </button>
         </p>
       </footer>
