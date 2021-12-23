@@ -13,7 +13,7 @@ defmodule VacEngine.EditorLive.CellComponentTest do
   @cell %Condition{expression: %{ast: {:var, [], [["var", "name"]]}}}
   @branch %Branch{conditions: [@cell], assignments: []}
 
-  @expected_type "variable"
+  @expected_type :variable
 
   test "'build_renderable' should make variable type" do
     renderable =
@@ -29,7 +29,7 @@ defmodule VacEngine.EditorLive.CellComponentTest do
 
   @cell %Condition{expression: %{ast: {:gt, [], []}}}
 
-  @expected_type "operator"
+  @expected_type :function
 
   test "'build_renderable' should make operator type" do
     renderable =
@@ -45,7 +45,7 @@ defmodule VacEngine.EditorLive.CellComponentTest do
 
   @cell %Condition{expression: %{ast: true}}
 
-  @expected_type "const"
+  @expected_type :constant
 
   test "'build_renderable' should make const type when ast is boolean" do
     renderable =
@@ -61,7 +61,7 @@ defmodule VacEngine.EditorLive.CellComponentTest do
 
   @cell %Condition{expression: %{ast: "bla"}}
 
-  @expected_type "const"
+  @expected_type :constant
 
   test "'build_renderable' should make const type when ast is string" do
     renderable =
@@ -77,7 +77,7 @@ defmodule VacEngine.EditorLive.CellComponentTest do
 
   @cell %Condition{expression: %{ast: 121}}
 
-  @expected_type "const"
+  @expected_type :constant
 
   test "'build_renderable' should make const type when ast is number" do
     renderable =
@@ -93,7 +93,7 @@ defmodule VacEngine.EditorLive.CellComponentTest do
 
   @cell nil
 
-  @expected_type "nil"
+  @expected_type nil
 
   test "'build_renderable' should make nil type" do
     renderable =
@@ -127,7 +127,7 @@ defmodule VacEngine.EditorLive.CellComponentTest do
 
   @cell %Condition{expression: %{ast: {:gt, [], []}}}
 
-  @expected_value :gt
+  @expected_value "gt()"
 
   test "'build_renderable' should make operator value" do
     renderable =
@@ -159,7 +159,7 @@ defmodule VacEngine.EditorLive.CellComponentTest do
 
   @cell %Condition{expression: %{ast: "bla"}}
 
-  @expected_value "\"bla\""
+  @expected_value "bla"
 
   test "'build_renderable' should make const value when ast is string" do
     renderable =
@@ -203,42 +203,6 @@ defmodule VacEngine.EditorLive.CellComponentTest do
       )
 
     assert renderable |> Map.get(:value) == @expected_value
-  end
-
-  # Args property
-
-  @cell %Condition{expression: %{ast: {:gt, [], [{:var, [], [["bla"]]}, 10]}}}
-
-  # @expected_value 10
-
-  test "'build_renderable' should make args when cell is condition" do
-    renderable =
-      Cell.build_renderable(
-        @branch,
-        @column,
-        @cell,
-        nil
-      )
-
-    assert renderable |> Map.get(:args) == ["10"]
-  end
-
-  @cell %Assignment{expression: %{ast: {:gt, [], [{:var, [], [["bla"]]}, 10]}}}
-  @column %Column{type: :assignment, id: 0}
-  @branch %Branch{conditions: [], assignments: [@cell], position: 1}
-
-  # @expected_value 10
-
-  test "'build_renderable' should make args when cell is assignment" do
-    renderable =
-      Cell.build_renderable(
-        @branch,
-        @column,
-        @cell,
-        nil
-      )
-
-    assert renderable |> Map.get(:args) == ["@bla", "10"]
   end
 
   # Cell style property

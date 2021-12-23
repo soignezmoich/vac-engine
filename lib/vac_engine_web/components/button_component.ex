@@ -12,6 +12,7 @@ defmodule VacEngineWeb.ButtonComponent do
     <button class={"relative " <> @class}
          {@attrs}
          id={Map.get(assigns, :id)}
+         type={Map.get(assigns, :type)}
          phx-target={Map.get(assigns, :target)}
          phx-hook={if Map.has_key?(assigns, :id) do "confirmClick" end}
          phx-click={@click} >

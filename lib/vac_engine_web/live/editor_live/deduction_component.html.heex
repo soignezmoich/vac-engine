@@ -1,9 +1,9 @@
 <div id={"deduction.#{@deduction.id}"}
-     class={klass("select-none my-1 border-2 min-w-min", [
+     class={klass("select-none mb-2 border-l-4 min-w-min shadow-md", [
      {"border-red-500", @selected?},
      {"border-transparent", !@selected?}])}>
 
-  <table class="min-w-full">
+  <table >
     <.live_component
       module={DeductionHeaderComponent}
       id={"deduction.#{@deduction.id}.header"}

@@ -1,0 +1,66 @@
+<div class="border-2 border-blue-600 p-1 flex flex-col bg-blue-50">
+  <.form let={f} for={@changeset}
+     id={@form_id}
+     class="flex flex-col"
+     phx-target={@myself}
+     phx-change="validate">
+    <%= select f, :composed_type, @composed_types,
+          id: @composed_types_hash,
+          class: "form-fld text-sm mb-2",
+          style: "background-color: white" %>
+
+    <%= case form_value(f, :type) do %>
+    <% "constant" -> %>
+       <%= text_input f, :constant,
+             class: "form-fld w-full text-sm",
+             style: "background-color: white" %>
+       <%= case field_error(f, :constant) do %>
+       <% nil -> %>
+          <span class="text-green-600 text-xs italic mt-1">
+            Parsed as: <%= form_value(f, :constant_string) %>
+          </span>
+       <% e -> %>
+          <span class="text-red-600 text-xs italic mt-1">
+            Error: <%= e %>
+          </span>
+       <% end %>
+    <% "variable" -> %>
+
+      <%= case @variables do %>
+      <% [_|_] -> %>
+       <%= select f, :variable, @variables,
+             id: @variables_hash,
+             class: "form-fld text-sm",
+             style: "background-color: white" %>
+      <% _ -> %>
+        <div class="text-red-600 text-xs italic mb-1 text-center">
+          No <%= form_value(f, :return_type) %> variable found.
+        </div>
+      <% end %>
+
+    <% "function" -> %>
+       <%= select f, :function, @functions,
+             id: @functions_hash,
+             class: "form-fld text-sm mb-2",
+             style: "background-color: white" %>
+
+    <% end %>
+  </.form>
+
+  <%= for arg <- @arguments do %>
+     <div class="mt-1">
+       <.live_component
+         module={ExpressionNodeEditorComponent}
+         id={"#{@id}.#{arg.index}"}
+         form_id={"#{@form_id}.#{arg.index}"}
+         parent_id={@id}
+         level={@level + 1}
+         argument_index={arg.index}
+         variable_path_index={@variable_path_index}
+         return_types={arg.return_types}
+         ast={arg.ast}
+         />
+     </div>
+  <% end %>
+
+</div>

@@ -2,6 +2,7 @@ defmodule VacEngineWeb.EditorLive.DeductionCellComponent do
   use VacEngineWeb, :live_component
   import VacEngine.PipeHelpers
   import Elixir.Integer
+  alias VacEngine.Processor.Ast
 
   alias VacEngineWeb.EditorLive.DeductionListComponent
   alias VacEngineWeb.EditorLive.DeductionInspectorComponent
@@ -33,13 +34,20 @@ defmodule VacEngineWeb.EditorLive.DeductionCellComponent do
   def handle_event(
         "select",
         _,
-        %{assigns: %{deduction: deduction, column: column, branch: branch}} =
-          socket
+        %{
+          assigns: %{
+            deduction: deduction,
+            column: column,
+            branch: branch,
+            cell: cell
+          }
+        } = socket
       ) do
     selection = %{
       column: column,
       branch: branch,
-      deduction: deduction
+      deduction: deduction,
+      cell: cell
     }
 
     send_update(DeductionListComponent,
@@ -61,29 +69,16 @@ defmodule VacEngineWeb.EditorLive.DeductionCellComponent do
         cell,
         selection
       ) do
-    {type, value, args} =
+    is_condition = column.type == :condition
+
+    {type, ast, value} =
       case cell do
-        %{expression: %{ast: {:var, _signature, [elems]}}}
-        when is_list(elems) ->
-          {"variable", "@#{elems |> Enum.join(".")}", []}
-
-        %{expression: %{ast: {op, _signature, args}}} when is_list(args) ->
-          {"operator", op, args}
-
-        %{expression: %{ast: const}} when is_boolean(const) ->
-          {"const", inspect(const), []}
-
-        %{expression: %{ast: const}} when is_binary(const) ->
-          {"const", inspect(const), []}
-
-        %{expression: %{ast: const}} when is_number(const) ->
-          {"const", inspect(const), []}
+        %{expression: %{ast: ast}} ->
+          {Ast.node_type(ast), ast, Ast.describe(ast)}
 
         nil ->
-          {"nil", "-", []}
+          {nil, nil, "-"}
       end
-
-    is_condition = column.type == :condition
 
     selected =
       case selection do
@@ -94,30 +89,14 @@ defmodule VacEngineWeb.EditorLive.DeductionCellComponent do
           false
       end
 
-    args =
-      args
-      |> Enum.map(fn
-        {:var, _signature, [elems]} when is_list(elems) ->
-          "@#{elems |> Enum.join(".")}"
-
-        const ->
-          inspect(const)
-      end)
-
-    args =
-      case is_condition do
-        true -> args |> Enum.drop(1)
-        false -> args
-      end
-
     bg_color =
-      case {is_condition, value, selected} do
+      case {is_condition, ast, selected} do
         {_, _, true} -> "bg-pink-600 text-white"
-        {true, :is_true, _} -> "bg-green-200 font-semibold"
-        {true, :is_false, _} -> "bg-red-200"
-        {true, "-", _} -> "bg-cream-200"
+        {true, {:is_true, _, _}, _} -> "bg-green-200 font-semibold"
+        {true, {:is_false, _, _}, _} -> "bg-red-200"
+        {true, nil, _} -> "bg-cream-200"
         {true, _, _} -> "bg-yellow-200"
-        {_, "true", _} -> "bg-green-200 font-semibold"
+        {_, true, _} -> "bg-green-200 font-semibold"
         {false, _, _} -> "bg-blue-200"
       end
 
@@ -145,7 +124,6 @@ defmodule VacEngineWeb.EditorLive.DeductionCellComponent do
       column: column,
       type: type,
       value: value,
-      args: args,
       cell_style: cell_style,
       description: description,
       selected: selected

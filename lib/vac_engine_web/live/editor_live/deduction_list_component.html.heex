@@ -1,4 +1,4 @@
-<div id="deduction_list">
+<div id="deduction_list" class="pr-4 text-xs flex flex-col min-w-min items-start">
   <%= for deduction <- @deductions do %>
     <.live_component
          id={"deduction.#{deduction.id}"}

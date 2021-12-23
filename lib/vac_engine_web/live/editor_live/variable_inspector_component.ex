@@ -354,7 +354,7 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
          attrs \\ %{}
        ) do
     changeset =
-      %{changeset | errors: []}
+      %{changeset | errors: [], valid?: true}
       |> Processor.change_variable(attrs)
 
     assign(socket, changeset: changeset)

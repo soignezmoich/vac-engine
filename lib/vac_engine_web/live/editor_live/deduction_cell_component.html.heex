@@ -1,7 +1,7 @@
 <td class={@cell_style}
   phx-click="select"
   phx-target={@myself}>
-  <%= @value %><%= if (@type == "operator") do %>(<%= @args |> Enum.join(", ") %>)<% end %>
+  <%= @value %>
   &nbsp;
   <%= @description %>
 </td>

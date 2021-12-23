@@ -4,7 +4,13 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
   import VacEngine.PipeHelpers
   alias Ecto.Changeset
   alias VacEngine.Processor
+  alias VacEngine.Processor.Assignment
+  alias VacEngine.Processor.Condition
+  alias VacEngine.Processor.Branch
+  alias VacEngine.Processor.Column
+  alias VacEngine.Processor.Expression
   alias VacEngineWeb.EditorLive.DeductionListComponent
+  alias VacEngineWeb.EditorLive.ExpressionEditorComponent
   alias VacEngine.EnumHelpers
 
   @impl true
@@ -426,16 +432,18 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
     {
       deduction,
       column,
-      branch
+      branch,
+      _cell
     } =
       if is_map(selection) and not is_nil(blueprint) do
         {
           Map.get(selection, :deduction),
           Map.get(selection, :column),
-          Map.get(selection, :branch)
+          Map.get(selection, :branch),
+          Map.get(selection, :cell)
         }
       else
-        {nil, nil, nil}
+        {nil, nil, nil, nil}
       end
 
     deduction =
@@ -459,7 +467,20 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
         nil
       end
 
-    selection = %{deduction: deduction, branch: branch, column: column}
+    cell =
+      if not is_nil(branch) and not is_nil(column) do
+        EnumHelpers.find_by(branch.assignments, :column_id, column.id) ||
+          EnumHelpers.find_by(branch.conditions, :column_id, column.id)
+      else
+        nil
+      end
+
+    selection = %{
+      deduction: deduction,
+      branch: branch,
+      column: column,
+      cell: cell
+    }
 
     deduction_idx =
       case deduction do
@@ -513,8 +534,24 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
           {false, false, false}
       end
 
+    inspector =
+      case selection do
+        %{branch: %Branch{id: _}, column: %Column{id: _}} -> :edit_cell
+        _ -> :none
+      end
+
+    expression =
+      case selection do
+        %{cell: %Condition{} = c} -> c.expression
+        %{cell: %Assignment{} = a} -> a.expression
+        _ -> %Expression{}
+      end
+
     assign(socket,
-      inspector: nil,
+      expression: expression,
+      column: column,
+      branch: branch,
+      inspector: inspector,
       selection: selection,
       can_add_deduction?: true,
       can_move_up_deduction?: deduction_idx && deduction_idx > 0,

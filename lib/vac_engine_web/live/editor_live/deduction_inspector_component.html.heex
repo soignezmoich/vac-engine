@@ -1,5 +1,5 @@
 <div id="deduction_inspector">
-    <div class="w-full border-pink-600 border-r-4 border-black bg-white filter drop-shadow-lg p-3">
+    <div class="w-full border-pink-600 border-r-4 border-black bg-white filter shadow-md p-3">
       <div class="font-bold mb-2 border-b border-black">
         Deduction actions
       </div>
@@ -88,20 +88,21 @@
         </button>
       </div>
     </div>
-    <div class="w-full divide-black bg-white filter drop-shadow-lg p-3 mt-4">
+    <div class="w-full divide-black bg-white filter shadow-md p-3 mt-4">
       <%= case @inspector do %>
       <% :new_deduction -> %>
-      <.form
-        let={f}
-        for={@changeset}
-        as={:deduction}
-        id="deduction_form"
-        phx-throttle="100"
-        phx-submit="add_deduction"
-        phx-target={@myself}
-        class="flex flex-col w-full">
-          <div class="font-bold mb-2">New deduction</div>
-          <%= label(f, :variable, "Variable", class: "text-sm mb-1") %>
+        <.form
+          let={f}
+          for={@changeset}
+          as={:deduction}
+          id="deduction_form"
+          phx-throttle="100"
+          phx-submit="add_deduction"
+          phx-target={@myself}
+          class="flex flex-col w-full divide-black">
+          <div class="font-bold">New deduction</div>
+          <hr>
+          <%= label(f, :variable, "Variable", class: "text-sm mb-1 mt-2") %>
           <%= select(f, :variable, @variables, class: "form-fld text-sm mb-2") %>
           <%= submit("Add", class: "btn-default mb-2") %>
           <button phx-click="cancel"
@@ -112,17 +113,18 @@
           </button>
         </.form>
       <% :new_column -> %>
-      <.form
-        let={f}
-        for={@changeset}
-        as={:column}
-        id="column_form"
-        phx-throttle="100"
-        phx-submit="add_column"
-        phx-target={@myself}
-        class="flex flex-col w-full">
-          <div class="font-bold mb-2">New column</div>
-          <%= label(f, :type, "Type", class: "text-sm mb-1") %>
+        <.form
+          let={f}
+          for={@changeset}
+          as={:column}
+          id="column_form"
+          phx-throttle="100"
+          phx-submit="add_column"
+          phx-target={@myself}
+          class="flex flex-col w-full divide-black">
+          <div class="font-bold">New column</div>
+          <hr>
+          <%= label(f, :type, "Type", class: "text-sm mb-1 mt-2") %>
           <%= select(f, :type, [:condition, :assignment], class: "form-fld text-sm mb-2") %>
           <%= label(f, :variable, "Variable", class: "text-sm mb-1") %>
           <%= select(f, :variable, @variables, class: "form-fld text-sm mb-2") %>
@@ -134,7 +136,16 @@
             Cancel
           </button>
         </.form>
+      <% :edit_cell -> %>
+        <.live_component
+          id="expression_editor"
+          module={ExpressionEditorComponent}
+          blueprint={@blueprint}
+          column={@column}
+          branch={@branch}
+          expression={@expression} />
       <% _ -> %>
+        <div class="text-sm text-center ">Nothing to inspect</div>
       <% end %>
     </div>
 </div>
