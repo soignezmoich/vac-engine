@@ -15,4 +15,15 @@ defmodule VacEngine do
   ### Pub
   The system allowing the publication of processors through portals.
   """
+
+  @build_date Timex.format!(Timex.now(), "%d.%m.%Y", :strftime)
+  @version System.cmd("git", ["describe", "--always", "--tags"]) |> elem(0)
+
+  def build_date do
+    @build_date
+  end
+
+  def version do
+    @version
+  end
 end
