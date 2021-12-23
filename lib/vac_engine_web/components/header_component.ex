@@ -106,6 +106,7 @@ defmodule VacEngineWeb.HeaderComponent do
         <%= case @workspaces do %>
         <% [_a, _b | _] -> %>
           <div class="border-l border-gray-50 flex justify-center items-center px-1 relative"
+                id="workspace-dropdown-menu"
                 data-dropdown="workspace-dropdown">
             <.icon name="hero/chevron-double-down" width="18px" />
             <div id="workspace-dropdown"
