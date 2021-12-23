@@ -108,7 +108,11 @@ defmodule VacEngine.Processor.Library.Functions do
   @label "Is nil"
   @short "NIL"
   @rename :is_nil
-  @signature {[:any], :boolean}
+  @signature {[:date], :boolean}
+  @signature {[:datetime], :boolean}
+  @signature {[:integer], :boolean}
+  @signature {[:number], :boolean}
+  @signature {[:string], :boolean}
   def is_nil_(nil), do: true
   def is_nil_(_), do: false
 
@@ -119,7 +123,11 @@ defmodule VacEngine.Processor.Library.Functions do
   """
   @label "Is not nil"
   @short "NOT NIL"
-  @signature {[:any], :boolean}
+  @signature {[:date], :boolean}
+  @signature {[:datetime], :boolean}
+  @signature {[:integer], :boolean}
+  @signature {[:number], :boolean}
+  @signature {[:string], :boolean}
   def is_not_nil(nil), do: false
   def is_not_nil(_), do: true
 
