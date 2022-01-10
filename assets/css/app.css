@@ -1,9 +1,6 @@
-
-@import "tailwindcss/base";
-
-@import "tailwindcss/components";
-
-@import "tailwindcss/utilities";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 textarea, input, select, button {
   border-radius: 0;
@@ -82,13 +79,13 @@ svg * {
     bg-blue-50 border-blue-600 text-black;
 
   &:focus:not([disabled]) {
-    @apply outline-blue border-blue-400;
+    @apply outline-blue-600 outline outline-2 border-blue-400;
   }
   &[disabled] {
     @apply bg-cream-100 border-cream-600;
   }
   &[disabled]:focus {
-    @apply outline-cream;
+    @apply outline-cream-600 outline outline-2;
   }
 }
 
@@ -103,7 +100,7 @@ svg * {
   width: 8em;
 
   &:focus {
-    @apply outline-blue border-blue-400;
+    @apply outline-blue-500 outline-2 border-blue-400;
   }
 }
 
@@ -123,31 +120,6 @@ textarea.form-fld {
   @apply h-32 resize-none;
 }
 
-.listing-table {
-  @apply border-2 py-1 px-2 border-gray-150;
-
-  td, th {
-    @apply px-2 py-1 border border-gray-200;
-  }
-  th {
-    @apply bg-gray-150;
-  }
-  tr:nth-child(2n) {
-    @apply bg-gray-100;
-  }
-  tr:nth-child(2n+1) {
-    @apply bg-gray-50;
-  }
-}
-
-.permissions-table {
-  @apply listing-table;
-
-  td:first-child {
-    @apply font-bold text-right;
-  }
-}
-
 progress::-moz-progress-bar {
   @apply bg-blue-600;
 }
@@ -159,7 +131,6 @@ progress::-webkit-progress-value {
 .disabled {
   border-width: 0 !important;
 }
-
 
 .form-ckb {
   @apply relative border bg-cream-100 w-20 h-8 border-cream-600;

@@ -22,11 +22,11 @@ function genShades (h, s) {
 }
 
 module.exports = {
-  purge: false,
-  future: {
-    removeDeprecatedGapUtilities: true,
-    purgeLayersByDefault: true
-  },
+  content: [
+     '../lib/**/*.{heex,ex,exs}',
+     './js/**/*.{html,js}',
+     './css/**/*.{html,js}',
+   ],
   theme: {
     extend: {
       colors: {
@@ -35,10 +35,6 @@ module.exports = {
         red: genShades(0, 70),
         error: genShades(0, 50),
         blue: genShades(255, 50)
-      },
-      outline: {
-        cream: '2px solid ' + hsluvaToRgba(60, 20, 50, 1),
-        blue: '2px solid ' + hsluvaToRgba(255, 50, 50, 1)
       },
       spacing: {
         72: '18rem',
@@ -54,8 +50,5 @@ module.exports = {
        '2xs': '10rem'
       }
     }
-  },
-  variants: {
-    textColor: ['responsive', 'hover', 'focus', 'disabled']
   }
 }

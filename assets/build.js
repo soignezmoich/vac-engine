@@ -27,7 +27,7 @@ require('esbuild')
               path.join(__dirname, 'assets')
             ]
           }),
-          require('postcss-url'),
+          require('postcss-url')({ url: 'inline' }),
           require('postcss-nested'),
           require('autoprefixer'),
           require('tailwindcss')()

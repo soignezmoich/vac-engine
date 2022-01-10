@@ -29,7 +29,6 @@ css: node_modules
 
 .PHONY: optimize
 optimize: node_modules
-	purgecss -c purgecss.config.js -o ../priv/static/assets/css/
 	csso ../priv/static/assets/css/app.css --output ../priv/static/assets/css/app.css
 
 .PHONY: clean
