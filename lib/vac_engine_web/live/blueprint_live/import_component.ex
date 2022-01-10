@@ -2,6 +2,7 @@ defmodule VacEngineWeb.BlueprintLive.ImportComponent do
   use VacEngineWeb, :live_component
 
   alias VacEngine.Processor
+  alias Ecto.Changeset
 
   @impl true
   def mount(socket) do
@@ -37,6 +38,9 @@ defmodule VacEngineWeb.BlueprintLive.ImportComponent do
 
         {:error, err} when is_binary(err) ->
           {:error, err}
+
+        {:error, %Changeset{} = ch} ->
+          {:error, VacEngine.EctoHelpers.flatten_changeset_errors(ch)}
 
         {:error, _} ->
           {:error, "error while processing blueprint"}
