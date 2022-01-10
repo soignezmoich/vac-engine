@@ -528,6 +528,7 @@ defmodule VacEngine.Processor.Blueprints do
         Jason.decode(json)
         |> case do
           {:ok, data} ->
+            data = Map.put(data, "name", blueprint.name)
             update_blueprint(blueprint, data)
 
           {:error, _} ->
