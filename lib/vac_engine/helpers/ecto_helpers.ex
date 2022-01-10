@@ -5,6 +5,8 @@ defmodule VacEngine.EctoHelpers do
   alias VacEngine.Repo
   import Ecto.Query
   import Ecto.Changeset
+  alias Ecto.Changeset
+  alias VacEngine.Processor.Blueprint
   alias Ecto.Multi
 
   @doc """
@@ -269,5 +271,39 @@ defmodule VacEngine.EctoHelpers do
       true ->
         changeset
     end
+  end
+
+  def flatten_changeset_errors(%Changeset{} = ch) do
+    Changeset.traverse_errors(ch, fn {msg, _opt} ->
+      msg
+    end)
+    |> flatten_messages()
+  end
+
+  defp flatten_messages(map, loc \\ [])
+
+  defp flatten_messages(map, loc) when is_map(map) do
+    Enum.reduce(map, [], fn {key, value}, acc ->
+      [acc | flatten_messages(value, loc ++ [key])]
+    end)
+    |> List.flatten()
+  end
+
+  defp flatten_messages([item], loc) do
+    flatten_messages(item, loc)
+  end
+
+  defp flatten_messages(list, loc) when is_list(list) do
+    list
+    |> Enum.with_index()
+    |> Enum.reduce([], fn {value, idx}, acc ->
+      [acc | flatten_messages(value, loc ++ [idx])]
+    end)
+    |> List.flatten()
+  end
+
+  defp flatten_messages(str, loc) when is_binary(str) do
+    loc = Enum.join(loc, ".")
+    ["#{loc}: #{str}"]
   end
 end
