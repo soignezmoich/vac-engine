@@ -2,9 +2,8 @@ defmodule VacEngineWeb.EditorLive.VariableListComponent do
   use VacEngineWeb, :live_component
 
   import VacEngine.VariableHelpers
-  import Elixir.Integer, only: [is_even: 1]
-  alias VacEngineWeb.EditorLive.VariableComponent
   import VacEngine.PipeHelpers
+  alias VacEngineWeb.EditorLive.VariableSubListComponent
 
   @impl true
   def mount(socket) do
