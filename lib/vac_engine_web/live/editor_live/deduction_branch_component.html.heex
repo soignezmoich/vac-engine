@@ -1,4 +1,4 @@
-<tr class="bg-white">
+<div class="table-row bg-white">
   <%= if @has_cond_cells? do %>
   <%= for {column, cell} <- @cond_cells do %>
       <.live_component
@@ -10,9 +10,9 @@
         column={column}
         selection={@selection} />
     <% end %>
-    <td class="bg-white text-gray-200">
+    <div class="table-cell bg-white text-gray-200">
       <.icon name="hero/arrow-sm-right" width="1.25rem" />
-    </td>
+    </div>
   <% end %>
   <%= for {column, cell} <- @assign_cells do %>
     <.live_component
@@ -24,4 +24,4 @@
       column={column}
       selection={@selection} />
   <% end %>
-</tr>
+</div>

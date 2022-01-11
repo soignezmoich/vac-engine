@@ -91,6 +91,8 @@ defmodule VacEngineWeb.EditorLive.DeductionCellComponent do
 
     bg_color =
       case {is_condition, ast, selected} do
+        {_, {:is_true, _, _}, true} -> "bg-pink-600 text-white font-semibold"
+        {_, true, true} -> "bg-pink-600 text-white font-semibold"
         {_, _, true} -> "bg-pink-600 text-white"
         {true, {:is_true, _, _}, _} -> "bg-green-200 font-semibold"
         {true, {:is_false, _, _}, _} -> "bg-red-200"
@@ -108,7 +110,7 @@ defmodule VacEngineWeb.EditorLive.DeductionCellComponent do
       end
 
     cell_style =
-      "#{bg_color} #{bg_opacity} px-2 py-1 clickable whitespace-nowrap"
+      "#{bg_color} #{bg_opacity} table-cell px-2 py-1 clickable whitespace-nowrap"
 
     description =
       case {is_condition, cell} do

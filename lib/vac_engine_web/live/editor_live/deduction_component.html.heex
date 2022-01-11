@@ -3,14 +3,14 @@
      {"border-red-500", @selected?},
      {"border-transparent", !@selected?}])}>
 
-  <table >
+  <div class="min-w-full table">
     <.live_component
       module={DeductionHeaderComponent}
       id={"deduction.#{@deduction.id}.header"}
       cond_columns={@cond_columns}
       assign_columns={@assign_columns}
       selection={@selection} />
-    <tbody>
+    <div class="table-row-group">
       <%= for branch <- @branches do %>
         <.live_component
           module={DeductionBranchComponent}
@@ -21,7 +21,7 @@
           assign_columns={@assign_columns}
           selection={@selection} />
       <% end %>
-    </tbody>
-  </table>
+    </div>
+  </div>
 
 </div>
