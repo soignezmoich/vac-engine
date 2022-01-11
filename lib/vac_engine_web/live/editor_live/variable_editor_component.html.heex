@@ -1,7 +1,7 @@
 <div class="relative flex-grow" id="variable_editor">
   <div class="absolute inset-0 flex min-h-0">
-    <div class="w-64 mr-2 flex flex-col overflow-y-auto">
-      <div class="flex-shrink-0 mr-2">
+    <div class="flex-shrink-0 w-64 mr-2 flex flex-col overflow-y-auto">
+      <div class="flex-shrink-0 p-4 pr-2">
         <%= if can?(@role, :write, @blueprint) do %>
           <.variable_action_group />
         <% end %>
@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="flex-grow flex flex-col overflow-y-auto">
-      <div class="flex-shrink text-xs">
+      <div class="flex-shrink text-xs p-4 pl-2">
         <.live_component
               module={VariableListComponent}
               id="variable_list"

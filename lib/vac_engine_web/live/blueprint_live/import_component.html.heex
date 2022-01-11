@@ -1,4 +1,4 @@
-<section>
+<div class="p-4">
 <%= if can?(@role, :write, @blueprint) do %>
   <h2 class="font-bold text-xl mb-4">
     Select a json file
@@ -86,4 +86,4 @@
 <% else %>
   <div>Blueprint is read only.</div>
 <% end %>
-</section>
+</div>
