@@ -182,8 +182,7 @@ defmodule VacEngineWeb.HeaderComponent do
       <% end %>
       <%= live_patch @l, to: @a, class: "py-0.5 block" %>
       <%= if Map.get(assigns, :s) do %>
-        <div class="absolute bg-red-500 left-0 right-0 -bottom-px h-px
-        bg-cream-50">
+        <div class="absolute left-0 right-0 -bottom-px h-px bg-cream-50">
         </div>
       <% end %>
     </div>
