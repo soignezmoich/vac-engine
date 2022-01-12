@@ -12,6 +12,7 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
   alias VacEngineWeb.EditorLive.DeductionListComponent
   alias VacEngineWeb.EditorLive.ExpressionEditorComponent
   alias VacEngine.EnumHelpers
+  alias VacEngineWeb.EditorLive.BlueprintStatusComponent
 
   @impl true
   def mount(socket) do

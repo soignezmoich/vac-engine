@@ -293,6 +293,12 @@ defmodule VacEngine.Processor do
   defdelegate update_cell(ast, blueprint, branch, column), to: Deductions
   defdelegate delete_cell(branch, column), to: Deductions
 
+  alias VacEngine.Processor.Advisor
+
+  defdelegate blueprint_stats(blueprint), to: Advisor
+  defdelegate blueprint_issues(blueprint), to: Advisor
+  defdelegate autofix_blueprint(blueprint), to: Advisor
+
   defstruct blueprint: nil, compiled_module: nil, state: nil, info: nil
 
   @doc """
