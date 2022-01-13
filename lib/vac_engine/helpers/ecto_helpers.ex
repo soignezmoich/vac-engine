@@ -6,7 +6,6 @@ defmodule VacEngine.EctoHelpers do
   import Ecto.Query
   import Ecto.Changeset
   alias Ecto.Changeset
-  alias VacEngine.Processor.Blueprint
   alias Ecto.Multi
 
   @doc """

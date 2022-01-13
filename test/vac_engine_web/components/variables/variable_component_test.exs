@@ -134,7 +134,7 @@ defmodule VacEngine.EditorLive.VariableComponentTest do
 
   @variable %Variable{path: ~w(parent1 parent2 name)}
 
-  @expected_indentation "- - - - "
+  @expected_indentation "   └─"
 
   test "'build_renderable' should build proper indentation string" do
     renderable =
