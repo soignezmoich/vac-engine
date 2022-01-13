@@ -3,6 +3,7 @@
      id={@form_id}
      class="flex flex-col"
      phx-target={@myself}
+     phx-submit="save"
      phx-change="validate">
     <%= select f, :composed_type, @composed_types,
           id: @composed_types_hash,

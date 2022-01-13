@@ -57,6 +57,16 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
   end
 
   @impl true
+  def handle_event("save", _, socket) do
+    send_update(ExpressionEditorComponent,
+      id: "expression_editor",
+      action: :save
+    )
+
+    {:noreply, socket}
+  end
+
+  @impl true
   def handle_event(
         "validate",
         %{"expression_node" => params},

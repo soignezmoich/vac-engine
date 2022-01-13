@@ -26,6 +26,12 @@ defmodule VacEngineWeb.EditorLive.ExpressionEditorComponent do
   end
 
   @impl true
+  def update(%{action: :save}, socket) do
+    {:noreply, socket} = handle_event("save", nil, socket)
+    {:ok, socket}
+  end
+
+  @impl true
   def update(assigns, socket) do
     socket
     |> assign(assigns)
