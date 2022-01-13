@@ -41,7 +41,7 @@ defmodule VacEngineWeb.EditorLive.VariableComponent do
       |> Enum.map(fn _ -> "   " end)
       |> then(fn i ->
         if Enum.count(variable.path) > 1 do
-          i ++ ["└─" ]
+          i ++ ["└─"]
         else
           i
         end
@@ -89,7 +89,8 @@ defmodule VacEngineWeb.EditorLive.VariableComponent do
         unselected
       end
 
-    row_class = "p-1 grid grid-cols-[300px_150px_200px_minmax(150px,_1fr)] #{row_class}"
+    row_class =
+      "p-1 grid grid-cols-[300px_150px_200px_minmax(150px,_1fr)] #{row_class}"
 
     %{
       description: variable.description,
