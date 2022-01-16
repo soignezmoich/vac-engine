@@ -39,6 +39,7 @@ require('esbuild')
     bundle: true,
     watch: watch,
     minify: process.env.NODE_ENV == "production",
+    sourcemap: process.env.NODE_ENV == "production" ? false : "both",
     outdir: '../priv/static/assets/',
     outbase: './',
   })
