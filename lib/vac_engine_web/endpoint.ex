@@ -33,7 +33,7 @@ defmodule VacEngineWeb.Endpoint do
   plug(Plug.Static,
     at: "/",
     from: :vac_engine,
-    gzip: false,
+    gzip: true,
     only: ~w(assets fonts icons images favicon.ico
       favicon.svg favicon.png robots.txt
       docs)
