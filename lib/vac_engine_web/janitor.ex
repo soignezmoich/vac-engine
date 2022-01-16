@@ -6,6 +6,8 @@ defmodule VacEngineWeb.Janitor do
   alias VacEngine.Account
   alias VacEngineWeb.Endpoint
 
+  @timeout Application.compile_env!(:vac_engine, :session_timeout)
+
   def start_link(opts \\ []) do
     GenServer.start_link(__MODULE__, opts, name: __MODULE__)
   end
@@ -15,7 +17,9 @@ defmodule VacEngineWeb.Janitor do
     Logger.metadata(context: "janitor")
     Logger.info("Starting Janitor")
 
-    send(self(), :check_sessions)
+    if @timeout && @timeout > 0 do
+      send(self(), :check_sessions)
+    end
 
     {:ok, %{}}
   end

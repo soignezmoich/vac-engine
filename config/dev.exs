@@ -21,7 +21,7 @@ config :vac_engine, VacEngineWeb.Endpoint,
     make: ["css-watch"]
   ]
 
-config :vac_engine, login_delay: 100
+config :vac_engine, login_delay: 100, session_timeout: false
 
 # ## SSL Support
 #

@@ -16,7 +16,8 @@ config :vac_engine, VacEngineWeb.Endpoint,
 config :logger, level: :info
 
 # To display a loading spinner for a minimal time, and also protect from DoS
-config :vac_engine, login_delay: 2000
+# Session timeout at 1 hour
+config :vac_engine, login_delay: 2000, session_timeout: 3600
 
 case System.get_env("FORCE_SSL") do
   "FORWARDED" ->
