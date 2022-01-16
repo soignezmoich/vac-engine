@@ -13,6 +13,7 @@ defmodule VacEngineWeb.LiveRole do
       socket
       |> assign_new(:role_session, fn ->
         {:ok, session} = Account.fetch_session(token)
+        {:ok, session} = Account.touch_session(session)
         session
       end)
 
