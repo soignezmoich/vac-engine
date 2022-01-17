@@ -8,12 +8,29 @@
   <hr class="mb-2 border-black">
   <.live_component
     module={ExpressionNodeEditorComponent}
+    root_module={DeductionCellInspectorComponent}
+    root_id="cell_inspector"
     id={@form_id}
     form_id={@cell_id}
     variable_path_index={@blueprint.variable_path_index}
     return_types={[@return_type]}
     ast={@ast}
     />
+
+
+  <.form
+    let={f}
+    for={:cell}
+    as={:cell}
+    id="cell_form"
+    phx-throttle="100"
+    phx-submit="update"
+    phx-change="update"
+    phx-target={@myself}
+    class="flex flex-col w-full divide-black pt-2">
+    <%= label_line_tag f, :description, "Description" %>
+    <%= textarea f, :description, value: @description, class: "form-fld !h-16 text-xs" %>
+  </.form>
 
   <%= if @error do %>
     <div class="text-red-600 text-xs my-1 text-center">

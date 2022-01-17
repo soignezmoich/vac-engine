@@ -11,6 +11,7 @@ defmodule VacEngine.Processor.Deductions do
   alias VacEngine.Processor.Branch
   alias VacEngine.Processor.Column
   import VacEngine.EctoHelpers
+  import VacEngine.PipeHelpers
 
   def create_deduction(%Blueprint{} = blueprint, attrs) do
     Deduction.nested_changeset(
@@ -116,8 +117,8 @@ defmodule VacEngine.Processor.Deductions do
     |> transaction(:column)
   end
 
-  def update_cell(ast, blueprint, branch, column) do
-    conditons_query =
+  def update_cell(ast, blueprint, branch, column, attrs) do
+    conditions_query =
       from(c in Condition,
         where: c.column_id == ^column.id and c.branch_id == ^branch.id
       )
@@ -134,11 +135,38 @@ defmodule VacEngine.Processor.Deductions do
       variable_path_index: blueprint.variable_path_index
     }
 
-    item =
+    Multi.new()
+    |> Multi.run(:condition, fn repo, _ ->
+      from(c in conditions_query, limit: 1)
+      |> repo.one()
+      |> ok()
+    end)
+    |> Multi.run(:assignment, fn repo, _ ->
+      from(c in assignments_query, limit: 1)
+      |> repo.one()
+      |> ok()
+    end)
+    |> Multi.delete_all(:delete_conditions, conditions_query)
+    |> Multi.delete_all(:delete_assignments, assignments_query)
+    |> Multi.insert(:insert, fn %{condition: condition, assignment: assignment} ->
+      existing_attrs =
+        cond do
+          condition != nil ->
+            %{description: condition.description}
+
+          assignment != nil ->
+            %{description: assignment.description}
+
+          true ->
+            %{}
+        end
+
       case column.type do
         :condition ->
           %Condition{column_id: column.id, branch_id: branch.id}
           |> Condition.nested_changeset(%{expression: ast}, ctx)
+          |> Condition.changeset(existing_attrs)
+          |> Condition.changeset(attrs)
 
         :assignment ->
           %Assignment{
@@ -149,12 +177,10 @@ defmodule VacEngine.Processor.Deductions do
             %{expression: ast, target: column.variable},
             ctx
           )
+          |> Assignment.changeset(existing_attrs)
+          |> Assignment.changeset(attrs)
       end
-
-    Multi.new()
-    |> Multi.delete_all(:delete_conditions, conditons_query)
-    |> Multi.delete_all(:delete_assignments, assignments_query)
-    |> Multi.insert(:insert, item)
+    end)
     |> transaction(:insert)
   end
 
@@ -173,5 +199,17 @@ defmodule VacEngine.Processor.Deductions do
     |> Multi.delete_all(:delete_conditions, conditons_query)
     |> Multi.delete_all(:delete_assignments, assignments_query)
     |> transaction(:delete_assignments)
+  end
+
+  def change_branch(branch, attrs) do
+    Branch.changeset(branch, attrs)
+  end
+
+  def change_column(column, attrs) do
+    Column.changeset(column, attrs)
+  end
+
+  def change_deduction(deduction, attrs) do
+    Deduction.changeset(deduction, attrs)
   end
 end

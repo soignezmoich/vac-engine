@@ -17,7 +17,7 @@ defmodule VacEngineWeb.Janitor do
     Logger.metadata(context: "janitor")
     Logger.info("Starting Janitor")
 
-    if @timeout && @timeout > 0 do
+    if @timeout > 0 and is_number(@timeout) do
       send(self(), :check_sessions)
     end
 
@@ -30,7 +30,7 @@ defmodule VacEngineWeb.Janitor do
 
     Account.list_sessions(fn q ->
       q
-      |> Account.filter_inactive_sessions(3600)
+      |> Account.filter_inactive_sessions(@timeout)
     end)
     |> Enum.each(fn s ->
       Account.revoke_session(s)

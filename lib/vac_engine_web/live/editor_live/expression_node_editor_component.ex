@@ -8,7 +8,6 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
   alias VacEngine.Processor.Library
   alias VacEngineWeb.EditorLive.ExpressionNode
   alias VacEngineWeb.EditorLive.ExpressionNodeEditorComponent
-  alias VacEngineWeb.EditorLive.ExpressionEditorComponent
 
   @impl true
   def mount(socket) do
@@ -57,9 +56,15 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
   end
 
   @impl true
-  def handle_event("save", _, socket) do
-    send_update(ExpressionEditorComponent,
-      id: "expression_editor",
+  def handle_event(
+        "save",
+        _,
+        %{
+          assigns: %{root_module: mod, root_id: id}
+        } = socket
+      ) do
+    send_update(mod,
+      id: id,
       action: :save
     )
 
@@ -429,7 +434,9 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
             ast: ast,
             changeset: changeset,
             parent_id: parent_id,
-            argument_index: argument_index
+            argument_index: argument_index,
+            root_module: mod,
+            root_id: id
           }
         } = socket
       ) do
@@ -447,8 +454,8 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
            }}
       )
     else
-      send_update(ExpressionEditorComponent,
-        id: "expression_editor",
+      send_update(mod,
+        id: id,
         action: {:update_ast, ast}
       )
     end

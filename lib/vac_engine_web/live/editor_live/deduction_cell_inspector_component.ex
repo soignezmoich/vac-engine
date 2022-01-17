@@ -1,21 +1,25 @@
-defmodule VacEngineWeb.EditorLive.ExpressionEditorComponent do
+defmodule VacEngineWeb.EditorLive.DeductionCellInspectorComponent do
   use VacEngineWeb, :live_component
 
   import VacEngine.PipeHelpers
   alias VacEngine.Processor
+  alias VacEngine.Processor.Expression
   alias VacEngineWeb.EditorLive.ExpressionNodeEditorComponent
+  alias VacEngineWeb.EditorLive.DeductionCellInspectorComponent
 
   @impl true
   def mount(socket) do
     socket
     |> assign(
       cell_id: nil,
-      expression: nil,
+      cell: nil,
       type: :constant,
       changeset: nil,
       return_type: nil,
       transient_ast: nil,
-      error: nil
+      error: nil,
+      description: nil,
+      exrepssion: nil
     )
     |> ok()
   end
@@ -35,6 +39,7 @@ defmodule VacEngineWeb.EditorLive.ExpressionEditorComponent do
   def update(assigns, socket) do
     socket
     |> assign(assigns)
+    |> extract_cell()
     |> parse_expression()
     |> ok()
   end
@@ -43,6 +48,7 @@ defmodule VacEngineWeb.EditorLive.ExpressionEditorComponent do
   def handle_event("cancel", _, socket) do
     socket
     |> assign(error: nil)
+    |> extract_cell()
     |> bump_form_id()
     |> pair(:noreply)
   end
@@ -67,6 +73,15 @@ defmodule VacEngineWeb.EditorLive.ExpressionEditorComponent do
 
   @impl true
   def handle_event(
+        "update",
+        %{"cell" => %{"description" => description}},
+        socket
+      ) do
+    {:noreply, assign(socket, description: description)}
+  end
+
+  @impl true
+  def handle_event(
         "save",
         _,
         %{
@@ -74,7 +89,8 @@ defmodule VacEngineWeb.EditorLive.ExpressionEditorComponent do
             transient_ast: ast,
             blueprint: blueprint,
             column: column,
-            branch: branch
+            branch: branch,
+            description: description
           }
         } = socket
       ) do
@@ -83,7 +99,9 @@ defmodule VacEngineWeb.EditorLive.ExpressionEditorComponent do
         :error
 
       ast ->
-        Processor.update_cell(ast, blueprint, branch, column)
+        Processor.update_cell(ast, blueprint, branch, column, %{
+          description: description
+        })
     end
     |> case do
       {:ok, _res} ->
@@ -93,6 +111,26 @@ defmodule VacEngineWeb.EditorLive.ExpressionEditorComponent do
       _ ->
         {:noreply, assign(socket, error: "Cannot save changes")}
     end
+  end
+
+  defp extract_cell(
+         %{
+           assigns: %{
+             cell: cell
+           }
+         } = socket
+       ) do
+    {expression, description} =
+      case cell do
+        %{expression: e, description: d} -> {e, d}
+        _ -> {%Expression{}, nil}
+      end
+
+    socket
+    |> assign(
+      description: description,
+      expression: expression
+    )
   end
 
   defp parse_expression(

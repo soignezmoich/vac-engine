@@ -283,14 +283,20 @@ defmodule VacEngine.Processor do
 
   defdelegate create_deduction(blueprint, attrs \\ %{}), to: Deductions
   defdelegate delete_deduction(deduction), to: Deductions
+  defdelegate change_deduction(deduction, attrs \\ %{}), to: Deductions
   defdelegate update_deduction(deduction, attrs), to: Deductions
   defdelegate create_branch(deduction, attrs \\ %{}), to: Deductions
   defdelegate delete_branch(branch), to: Deductions
+  defdelegate change_branch(branch, attrs \\ %{}), to: Deductions
   defdelegate update_branch(branch, attrs), to: Deductions
   defdelegate create_column(blueprint, deduction, attrs), to: Deductions
+  defdelegate change_column(column, attrs \\ %{}), to: Deductions
   defdelegate update_column(column, attrs), to: Deductions
   defdelegate delete_column(column), to: Deductions
-  defdelegate update_cell(ast, blueprint, branch, column), to: Deductions
+
+  defdelegate update_cell(ast, blueprint, branch, column, attrs \\ %{}),
+    to: Deductions
+
   defdelegate delete_cell(branch, column), to: Deductions
 
   alias VacEngine.Processor.Advisor
