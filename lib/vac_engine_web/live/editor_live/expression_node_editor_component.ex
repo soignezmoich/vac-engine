@@ -17,7 +17,10 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
       parent_id: nil,
       level: 0,
       argument_index: nil,
-      pristine: true
+      pristine: true,
+      nil_option: false,
+      delete_option: false,
+      deleted: false
     )
     |> ok()
   end
@@ -101,7 +104,9 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
             changeset: changeset,
             variable_path_index: variable_path_index,
             return_types: types,
-            level: level
+            level: level,
+            delete_option: delete_option,
+            nil_option: nil_option
           }
         } = socket
       ) do
@@ -141,6 +146,25 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
 
         {t, subs}
       end)
+
+    composed_types =
+      if delete_option || nil_option do
+        opts =
+          if delete_option do
+            [{"don't assign", :delete}]
+          else
+            []
+          end ++
+            if nil_option do
+              [{"unset", :set_nil}]
+            else
+              []
+            end
+
+        [{"blanks", opts} | composed_types]
+      else
+        composed_types
+      end
 
     assign(socket,
       composed_types: composed_types,
@@ -362,6 +386,9 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
       ) do
     Changeset.get_field(changeset, :type)
     |> case do
+      nil ->
+        nil
+
       :constant ->
         if changeset.valid? do
           Changeset.get_field(changeset, :constant)
@@ -413,8 +440,15 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
     end)
   end
 
-  def default(%{assigns: %{return_types: types}} = socket) do
-    composed_type = "#{types |> List.first()}.constant"
+  def default(
+        %{assigns: %{return_types: types, deleted: deleted, ast: ast}} = socket
+      ) do
+    composed_type =
+      cond do
+        deleted -> "delete"
+        is_nil(ast) -> "set_nil"
+        true -> "#{types |> List.first()}.constant"
+      end
 
     el = %ExpressionNode{
       composed_type: composed_type
@@ -454,9 +488,14 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
            }}
       )
     else
+      opts = %{
+        set_nil: Changeset.get_field(changeset, :set_nil),
+        delete: Changeset.get_field(changeset, :delete)
+      }
+
       send_update(mod,
         id: id,
-        action: {:update_ast, ast}
+        action: {:update_ast, ast, opts}
       )
     end
 

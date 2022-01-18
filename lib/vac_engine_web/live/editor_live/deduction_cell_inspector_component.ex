@@ -17,6 +17,7 @@ defmodule VacEngineWeb.EditorLive.DeductionCellInspectorComponent do
       changeset: nil,
       return_type: nil,
       transient_ast: nil,
+      transient_ast_opts: nil,
       error: nil,
       description: nil,
       exrepssion: nil
@@ -25,8 +26,9 @@ defmodule VacEngineWeb.EditorLive.DeductionCellInspectorComponent do
   end
 
   @impl true
-  def update(%{action: {:update_ast, ast}}, socket) do
-    {:ok, assign(socket, transient_ast: ast, error: nil)}
+  def update(%{action: {:update_ast, ast, opts}}, socket) do
+    {:ok,
+     assign(socket, transient_ast: ast, transient_ast_opts: opts, error: nil)}
   end
 
   @impl true
@@ -38,6 +40,7 @@ defmodule VacEngineWeb.EditorLive.DeductionCellInspectorComponent do
   @impl true
   def update(assigns, socket) do
     socket
+    |> assign(error: nil)
     |> assign(assigns)
     |> extract_cell()
     |> parse_expression()
@@ -55,24 +58,6 @@ defmodule VacEngineWeb.EditorLive.DeductionCellInspectorComponent do
 
   @impl true
   def handle_event(
-        "delete",
-        _,
-        %{
-          assigns: %{
-            column: column,
-            branch: branch
-          }
-        } = socket
-      ) do
-    {:ok, _} = Processor.delete_cell(branch, column)
-
-    send(self(), :reload_blueprint)
-
-    {:noreply, assign(socket, error: nil)}
-  end
-
-  @impl true
-  def handle_event(
         "update",
         %{"cell" => %{"description" => description}},
         socket
@@ -86,7 +71,27 @@ defmodule VacEngineWeb.EditorLive.DeductionCellInspectorComponent do
         _,
         %{
           assigns: %{
+            column: column,
+            branch: branch,
+            transient_ast_opts: %{delete: true}
+          }
+        } = socket
+      ) do
+    {:ok, _} = Processor.delete_cell(branch, column)
+
+    send(self(), :reload_blueprint)
+
+    {:noreply, assign(socket, error: nil)}
+  end
+
+  @impl true
+  def handle_event(
+        "save",
+        _,
+        %{
+          assigns: %{
             transient_ast: ast,
+            transient_ast_opts: %{set_nil: set_nil},
             blueprint: blueprint,
             column: column,
             branch: branch,
@@ -94,11 +99,11 @@ defmodule VacEngineWeb.EditorLive.DeductionCellInspectorComponent do
           }
         } = socket
       ) do
-    case ast do
-      nil ->
+    cond do
+      is_nil(ast) and not set_nil ->
         :error
 
-      ast ->
+      true ->
         Processor.update_cell(ast, blueprint, branch, column, %{
           description: description
         })
@@ -136,6 +141,7 @@ defmodule VacEngineWeb.EditorLive.DeductionCellInspectorComponent do
   defp parse_expression(
          %{
            assigns: %{
+             cell: cell,
              expression: expression,
              branch: branch,
              column: column,
@@ -164,7 +170,11 @@ defmodule VacEngineWeb.EditorLive.DeductionCellInspectorComponent do
       cell_id: cell_id,
       ast: ast,
       column: column,
-      transient_ast: ast
+      transient_ast: ast,
+      transient_ast_opts: %{
+        delete: is_nil(cell),
+        set_nil: !is_nil(cell) && is_nil(ast)
+      }
     )
     |> bump_form_id()
   end
