@@ -20,14 +20,14 @@ defmodule VacEngine.Simulation.Case do
 
     field(:name, :string)
     field(:description, :string)
-    field(:simulated_time, :naive_datetime)
+    field(:env_now, :utc_datetime)
     field(:runnable, :boolean)
   end
 
   def changeset(data, attrs \\ %{}) do
     data
-    |> cast(attrs, [:workspace_id, :name, :description, :simulated_time])
-    |> validate_required([:workspace_id])
+    |> cast(attrs, [:workspace_id, :name, :description, :simulated_time]) # workspace id dans data
+    |> validate_required([:workspace_id]) # add name
   end
 
 end

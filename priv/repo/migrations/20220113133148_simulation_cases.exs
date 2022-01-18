@@ -16,12 +16,20 @@ defmodule VacEngine.Repo.Migrations.SimulationCases do
         null: false
       )
 
-      add(:simulation_date, :naive_datetime)
+      add(:env_now, :utc_datetime)
     end
 
     create(index(:simulation_settings, [:blueprint_id]))
     create(index(:simulation_settings, [:workspace_id]))
 
+    # enforce same workspace for simulation settings and blueprint
+    execute("
+      ALTER TABLE simulation_settings
+        ADD CONSTRAINT simulation_settings_blueprint_workspace
+        FOREIGN KEY (blueprint_id, workspace_id)
+        REFERENCES blueprints (id, workspace_id)
+        ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
+    ")
 
 
     ### CASES ###
@@ -35,12 +43,12 @@ defmodule VacEngine.Repo.Migrations.SimulationCases do
 
       add(:name, :string, size: 100, null: false)
       add(:description, :string, size: 1000)
-      add(:simulated_time, :naive_datetime) # CHECK best date format?
-      add(:runnable, :boolean)
+      add(:env_now, :utc_datetime)
+      add(:runnable, :boolean, null: false)
     end
 
     create(index(:simulation_cases, [:workspace_id]))
-
+    create(unique_index(:simulation_cases, [:id, :workspace_id]))
 
 
     ### CASE ENTRIES ###
@@ -62,6 +70,14 @@ defmodule VacEngine.Repo.Migrations.SimulationCases do
     create(index(:simulation_input_entries, [:workspace_id]))
     create(unique_index(:simulation_input_entries, [:case_id, :key]))
 
+    # enforce same workspace for input entry and case
+    execute("
+      ALTER TABLE simulation_input_entries
+        ADD CONSTRAINT simulation_input_entries_case_workspace
+        FOREIGN KEY (case_id, workspace_id)
+        REFERENCES simulation_cases (id, workspace_id)
+        ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
+    ")
 
 
     create table(:simulation_output_entries) do
@@ -74,13 +90,21 @@ defmodule VacEngine.Repo.Migrations.SimulationCases do
       )
 
       add(:key, :string, size: 512, null: false)
-      add(:expected, :string, size: 256) # if null, the entry is forbidden
+      add(:expected, :string, size: 512) # if null, the entry is forbidden
     end
 
     create(index(:simulation_output_entries, [:case_id]))
     create(index(:simulation_output_entries, [:workspace_id]))
     create(unique_index(:simulation_output_entries, [:case_id, :key]))
 
+    # enforce same workspace for output entry and case
+    execute("
+      ALTER TABLE simulation_output_entries
+        ADD CONSTRAINT simulation_output_entries_case_workspace
+        FOREIGN KEY (case_id, workspace_id)
+        REFERENCES simulation_cases (id, workspace_id)
+        ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
+    ")
 
 
     ### STACKS ###
@@ -93,12 +117,22 @@ defmodule VacEngine.Repo.Migrations.SimulationCases do
         null: false
       )
 
-      add(:active, :boolean, null: false)
+      add(:active, :boolean, null: false, default: true)
+
     end
 
     create(index(:simulation_stacks, [:blueprint_id]))
     create(index(:simulation_stacks, [:workspace_id]))
+    create(unique_index(:simulation_stacks, [:id, :blueprint_id]))
 
+    # enforce same workspace for stack and blueprint
+    execute("
+      ALTER TABLE simulation_stacks
+        ADD CONSTRAINT simulation_stacks_blueprint_workspace
+        FOREIGN KEY (blueprint_id, workspace_id)
+        REFERENCES blueprints (id, workspace_id)
+        ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
+    ")
 
 
     ### LAYERS ###
@@ -124,6 +158,16 @@ defmodule VacEngine.Repo.Migrations.SimulationCases do
     create(index(:simulation_layers, [:case_id]))
     create(index(:simulation_layers, [:stack_id]))
     create(index(:simulation_layers, [:workspace_id]))
+
+    # enforce same blueprint for layer and stack
+    execute("
+      ALTER TABLE simulation_layers
+        ADD CONSTRAINT simulation_layers_stack_blueprint
+        FOREIGN KEY (stack_id, blueprint_id)
+        REFERENCES simulation_stacks (id, blueprint_id)
+        ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
+    ")
+
   end
 
   def down do

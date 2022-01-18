@@ -12,7 +12,7 @@ defmodule VacEngine.Simulation.Setting do
     belongs_to(:blueprint, Blueprint)
     belongs_to(:workspace, Workspace)
 
-    field(:day_of_simulation, :naive_datetime)
+    field(:env_now, :utc_datetime)
   end
 
 end
