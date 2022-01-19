@@ -1,3 +1,43 @@
-<div>
-  Simulation Editor here for <%= @blueprint.name %>
+<div class="relative flex-grow" id="simulation_editor">
+  <div class="absolute inset-0 flex min-h-0">
+    <div class="w-96 flex-shrink-0 mr-2 flex flex-col overflow-y-auto mt-3">
+      <div class="mx-2">
+        <MenuConfigComponent.render
+          selected_element={@selected_element}
+        />
+        <div class="h-4" />
+        <MenuTemplateListComponent.render
+          templates={@simulation.templates}
+          selected_element={@selected_element}
+        />
+        <div class="h-4" />
+        <MenuCaseListComponent.render
+          cases={@simulation.cases}
+          blueprint={@blueprint}
+          selected_element={@selected_element}
+        />
+      </div>
+    </div>
+    <div class="flex-grow flex flex-col overflow-y-auto">
+      <div class="flex-shrink">
+        <%= case @selected_element do %>
+        <% %{type: "template"} -> %>
+          <TemplateEditorComponent.render
+            template={@selected_element}
+            blueprint={@blueprint}
+          />
+        <% %{type: "case"} -> %>
+          <CaseEditorComponent.render
+            case={@selected_element}
+            blueprint={@blueprint}
+            templates={@simulation.templates}
+          />
+        <% :config -> %>
+          <ConfigEditorComponent.render
+            configuration={@simulation.config}
+          />
+        <% end %>
+      </div>
+    </div>
+  </div>
 </div>
