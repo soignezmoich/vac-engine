@@ -138,7 +138,7 @@ defmodule VacEngine.Repo.Migrations.SimulationCases do
     ### LAYERS ###
 
     create table(:simulation_layers) do
-      add(:blueprint_id, references(:workspaces, on_delete: :delete_all),
+      add(:blueprint_id, references(:blueprints, on_delete: :delete_all),
         null: false
       )
       add(:case_id, references(:simulation_cases, on_delete: :restrict),
@@ -168,9 +168,38 @@ defmodule VacEngine.Repo.Migrations.SimulationCases do
         ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
     ")
 
+
+    ### TEMPLATES ###
+
+    create table(:simulation_templates) do
+      add(:blueprint_id, references(:blueprints, on_delete: :delete_all),
+        null: false
+      )
+      add(:case_id, references(:simulation_cases, on_delete: :restrict),
+        null: false
+      )
+      add(:workspace_id, references(:workspaces, on_delete: :delete_all),
+        null: false
+      )
+    end
+
+    create(index(:simulation_templates, [:blueprint_id]))
+    create(index(:simulation_templates, [:case_id]))
+    create(index(:simulation_templates, [:workspace_id]))
+
+    # enforce same workspace for template and blueprint
+    execute("
+      ALTER TABLE simulation_templates
+        ADD CONSTRAINT simulation_templates_blueprint_workspace
+        FOREIGN KEY (blueprint_id, workspace_id)
+        REFERENCES blueprints (id, workspace_id)
+        ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
+    ")
+
   end
 
   def down do
+    drop(table(:simulation_templates))
     drop(table(:simulation_layers))
     drop(table(:simulation_stacks))
     drop(table(:simulation_output_entries))
