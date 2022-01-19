@@ -1,4 +1,4 @@
-defmodule VacEngine.Simulation.Layer do
+defmodule VacEngine.Simulation.Template do
   @moduledoc false
 
   use Ecto.Schema
@@ -6,12 +6,10 @@ defmodule VacEngine.Simulation.Layer do
   alias VacEngine.Account.Workspace
   alias VacEngine.Processor.Blueprint
   alias VacEngine.Simulation.Case
-  alias VacEngine.Simulation.Stack
 
-  schema "simulation_layers" do
+  schema "simulation_templates" do
     belongs_to(:blueprint, Blueprint)
     belongs_to(:workspace, Workspace)
-    belongs_to(:stack, Stack)
     belongs_to(:case, Case)
   end
 

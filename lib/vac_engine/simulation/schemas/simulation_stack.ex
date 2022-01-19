@@ -8,8 +8,6 @@ defmodule VacEngine.Simulation.Stack do
   alias VacEngine.Simulation.Layer
 
   schema "simulation_stacks" do
-    timestamps(type: :utc_datetime)
-
     belongs_to(:blueprint, Blueprint)
     belongs_to(:workspace, Workspace)
 

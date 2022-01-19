@@ -14,9 +14,9 @@ defmodule VacEngine.Simulation.Case do
 
     belongs_to(:workspace, Workspace)
 
-    has_many(:input_entry, InputEntry)
-    has_many(:output_entry, OutputEntry)
-    has_many(:layer, Layer)
+    has_many(:input_entries, InputEntry)
+    has_many(:output_entries, OutputEntry)
+    has_many(:layers, Layer)
 
     field(:name, :string)
     field(:description, :string)
