@@ -5,15 +5,19 @@ defmodule VacEngineWeb.SimulationLive.CaseInputVariableEditorComponent do
   import VacEngineWeb.SimulationLive.InputComponent
   import VacEngineWeb.IconComponent
 
+  alias VacEngineWeb.SimulationLive.ToggleEntryComponent
+
   def render(assigns) do
-
-    case_value = assigns.case.input
+    case_value =
+      assigns.case.input
       |> get_value(assigns.variable.path)
 
-    template_value = assigns.template.input
+    template_value =
+      assigns.template.input
       |> get_value(assigns.variable.path)
 
-    assigns = assign(assigns, case_value: case_value, template_value: template_value)
+    assigns =
+      assign(assigns, case_value: case_value, template_value: template_value)
 
     ~H"""
     <%= if !is_nil(@case_value) do %>
@@ -33,6 +37,7 @@ defmodule VacEngineWeb.SimulationLive.CaseInputVariableEditorComponent do
       ~H"""
       <tr>
         <td class="pr-3 text-purple-700">
+          <ToggleEntryComponent.render active={false} target_component={"##{@variable.name}"} />
           <span class="text-xs hover:text-purple-400"><.icon name="toggle-off" width="2rem"/></span>
         </td>
         <td>
@@ -51,14 +56,12 @@ defmodule VacEngineWeb.SimulationLive.CaseInputVariableEditorComponent do
       ~H"""
       """
     end
-
   end
-
-
 
   defp render_present_in_case(assigns) do
     ~H"""
     <tr class="bg-purple-100">
+
       <td class="pr-3 text-purple-700">
         <span class="text-xs hover:text-purple-400"><.icon name="toggle-on" width="2rem"/></span>
       </td>
@@ -115,5 +118,4 @@ defmodule VacEngineWeb.SimulationLive.CaseInputVariableEditorComponent do
       """
     end
   end
-
 end

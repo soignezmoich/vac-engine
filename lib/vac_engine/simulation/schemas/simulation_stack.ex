@@ -13,7 +13,7 @@ defmodule VacEngine.Simulation.Stack do
 
     has_many(:layers, Layer)
 
-    field(:active, :boolean) # set to false if you don't want the case stack to be run
+    # set to false if you don't want the case stack to be run
+    field(:active, :boolean)
   end
-
 end

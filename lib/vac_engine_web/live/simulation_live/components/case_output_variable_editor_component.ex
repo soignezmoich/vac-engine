@@ -6,17 +6,20 @@ defmodule VacEngineWeb.SimulationLive.CaseOutputVariableEditorComponent do
   import VacEngineWeb.IconComponent
 
   def render(assigns) do
-
-    expected = Map.get(assigns.case, :expect, %{})
+    expected =
+      Map.get(assigns.case, :expect, %{})
       |> get_value(assigns.variable.path)
 
-    forbidden = Map.get(assigns.case, :forbid, %{})
+    forbidden =
+      Map.get(assigns.case, :forbid, %{})
       |> variable_forbidden?(assigns.variable.path)
 
-    actual = Map.get(assigns.case, :actual, %{})
+    actual =
+      Map.get(assigns.case, :actual, %{})
       |> get_value(assigns.variable.path)
 
-    assigns = assign(assigns, expected: expected, forbidden: forbidden, actual: actual)
+    assigns =
+      assign(assigns, expected: expected, forbidden: forbidden, actual: actual)
 
     ~H"""
     <%= case {@expected, @forbidden} do %>
@@ -142,5 +145,4 @@ defmodule VacEngineWeb.SimulationLive.CaseOutputVariableEditorComponent do
     </tr>
     """
   end
-
 end

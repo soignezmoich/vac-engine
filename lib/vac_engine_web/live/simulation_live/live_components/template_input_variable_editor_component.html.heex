@@ -1,0 +1,47 @@
+<tr id={"input_entry_editor_#{@variable.path}"}>
+  <%= if !is_nil(@input_entry) do %>
+    <td class="pr-3">
+      <ToggleEntryComponent.render active={true} target_component={"#input_entry_editor_#{@variable.path}"} />
+    </td>
+    <td>
+      <%= @variable.path |> Enum.drop(-1) |> Enum.map(&("\u2574" || &1)) %>
+      <span><%= @variable.name %></span>
+    </td>
+    <td class="pl-2">
+      <%= case @variable.type do %>
+      <% :boolean -> %>
+        <.boolean_input value={@value} />
+      <% :number -> %>
+        <.number_input value={@value} />
+      <% :integer -> %>
+        <.integer_input value={@value} />
+      <% :string -> %>
+        <.string_input enum={@variable.enum} value={@value} />
+      <% :date -> %>
+        <.date_input value={@value} />
+      <% :datetime -> %>
+        <.datetime_input value={@value} />
+      <% :map -> %>
+        <div class="inline-block form-fld invisible">
+          placeholder
+        </div>
+      <% end %>
+    </td>
+    <td class="w-full" />
+  <% else %>
+    <td class="pr-3">
+      <ToggleEntryComponent.render active={false} target_component={"#input_entry_editor_#{@variable.path}"} />
+    </td>
+    <td>
+      <%= @variable.path |> Enum.drop(-1) |> Enum.map(&("\u2574" || &1)) %>
+      <%= @variable.name %>
+    </td>
+    <td>
+      <div class="inline-block form-fld invisible">
+        placeholder
+      </div>
+    </td>
+    <td class="w-full" />
+  <% end %>
+</tr>
+

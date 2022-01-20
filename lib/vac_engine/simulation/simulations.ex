@@ -1,5 +1,4 @@
 defmodule VacEngine.Simulation.Simulations do
-
   alias VacEngine.Repo
   alias VacEngine.Simulation.Case
 

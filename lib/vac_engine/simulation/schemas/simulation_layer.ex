@@ -14,5 +14,4 @@ defmodule VacEngine.Simulation.Layer do
     belongs_to(:stack, Stack)
     belongs_to(:case, Case)
   end
-
 end

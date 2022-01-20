@@ -39,5 +39,4 @@ defmodule VacEngineWeb.SimulationLive.InputComponent do
     <input class="form-fld text-sm" placeholder="1990-10-10 14:10:45" value={@value} />
     """
   end
-
 end

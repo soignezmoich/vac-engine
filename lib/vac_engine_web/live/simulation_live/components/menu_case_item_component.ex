@@ -6,15 +6,15 @@ defmodule VacEngineWeb.SimulationLive.MenuCaseItemComponent do
   import VacEngineWeb.IconComponent
 
   def render(assigns) do
-
-    has_mismatch = assigns.blueprint.variables
+    has_mismatch =
+      assigns.blueprint.variables
       |> flatten_variables("output")
       |> case_mismatch?(assigns.case)
 
-
-    assigns = assign(assigns,
-      has_mismatch: has_mismatch,
-    )
+    assigns =
+      assign(assigns,
+        has_mismatch: has_mismatch
+      )
 
     ~H"""
     <div>
@@ -38,5 +38,4 @@ defmodule VacEngineWeb.SimulationLive.MenuCaseItemComponent do
     </div>
     """
   end
-
 end

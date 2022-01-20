@@ -14,5 +14,4 @@ defmodule VacEngine.Simulation.Setting do
 
     field(:env_now, :utc_datetime)
   end
-
 end

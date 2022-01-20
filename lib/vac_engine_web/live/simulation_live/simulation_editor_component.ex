@@ -1,6 +1,9 @@
 defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
   use VacEngineWeb, :live_component
 
+  alias VacEngine.Simulation
+  alias VacEngine.Simulation.Case
+
   alias VacEngineWeb.SimulationLive.CaseEditorComponent
   alias VacEngineWeb.SimulationLive.ConfigEditorComponent
   alias VacEngineWeb.SimulationLive.MenuCaseListComponent
@@ -9,6 +12,8 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
   alias VacEngineWeb.SimulationLive.TemplateEditorComponent
 
   def update(assigns, socket) do
+    templates = Map.get(assigns, :templates) || Simulation.get_templates(assigns.blueprint)
+    IO.puts("UPDATING SimulationEditor")
 
     simulation = %{
       config: %{
@@ -26,10 +31,10 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
             previous_vaccination: %{
               vaccine: "moderna",
               last_dose_date: "2021-02-02",
-              doses_count: 2,
-            },
-          },
-        },
+              doses_count: 2
+            }
+          }
+        }
       ],
       cases: [
         %{
@@ -37,25 +42,25 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
           type: "case",
           template: "booster",
           input: %{
-            birthdate: "2009-12-16",
+            birthdate: "2009-12-16"
           },
           expect: %{
             flags: %{
-              under_12: true,
-            },
+              under_12: true
+            }
           },
           forbid: %{
-            injection_sequence: true,
+            injection_sequence: true
           },
           actual: %{
             flags: %{
-              under_12: true,
+              under_12: true
             },
             delay_cause: "infection",
             injection_sequence: %{
               janssen: %{
                 vaccine: "janssen",
-                delay_max: 10,
+                delay_max: 10
               }
             }
           }
@@ -66,20 +71,20 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
           template: "booster",
           input: %{
             previous_vaccination: %{
-              doses_count: 3,
-            },
+              doses_count: 3
+            }
           },
           expect: %{
             flags: %{
-              no_booster_after_more_than_2_doses: true,
-            },
+              no_booster_after_more_than_2_doses: true
+            }
           },
           forbid: %{
-            injection_sequence: true,
+            injection_sequence: true
           },
           actual: %{
             flags: %{
-              no_booster_after_more_than_2_doses: true,
+              no_booster_after_more_than_2_doses: true
             }
           }
         }
@@ -87,37 +92,58 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
     }
 
 
+    selected_element = get_updated_selected_element(Map.get(assigns, :selected_element), templates, [])
+
     {
       :ok,
       assign(socket,
         blueprint: assigns.blueprint,
-        selected_element: simulation.cases |> Enum.at(0),
-        simulation: simulation,
+        templates: templates,
+        selected_element: selected_element,
+        simulation: simulation
       )
     }
   end
 
 
+  def get_updated_selected_element(old_selected_element, templates, cases) do
+    case old_selected_element do
+      # template
+      %Case{id: id, runnable: false} -> templates |> Enum.find(&(&1.id == id))
+      # none
+      _ -> templates |> List.first()
+    end
+  end
+
   @impl true
   def handle_event("menu_select", params, socket) do
-
     selected_element =
       case params do
         %{"section" => "config"} ->
           :config
+
         %{"section" => "templates", "index" => index} ->
           {idx, _} = Integer.parse(index)
-          socket.assigns.simulation.templates |> Enum.at(idx)
+          socket.assigns.templates |> Enum.at(idx)
+
         %{"section" => "cases", "index" => index} ->
           {idx, _} = Integer.parse(index)
           socket.assigns.simulation.cases |> Enum.at(idx)
       end
 
-
     {:noreply,
      assign(socket, %{
-       selected_element: selected_element,
+       selected_element: selected_element
      })}
   end
 
+  def handle_event("create_template", %{"new_template_name" => name}, socket) do
+    Simulation.create_template(socket.assigns.blueprint, name)
+    templates = Simulation.get_templates(socket.assigns.blueprint)
+
+    {:noreply,
+     assign(socket, %{
+       templates: templates
+     })}
+  end
 end
