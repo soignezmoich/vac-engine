@@ -8,7 +8,7 @@ config :vac_engine, VacEngineWeb.Endpoint,
   http: [port: 4002],
   server: false
 
-config :vac_engine, cache_check_interval: 600_000
+config :vac_engine, cache_check_interval: 600_000, session_timeout: false
 
 # Print only warnings and errors during test
 config :logger, level: :warn
