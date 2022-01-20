@@ -64,11 +64,11 @@ migrate: deps
 
 clean:
 	cd assets && make clean
-	git clean -d -f -x -e ".envrc"
 	rm -fr _build
 	rm -fr deps
 	rm -fr docs
 	rm -fr erl_crash.dump
+	git ls-files --ignored --exclude-standard -o priv |xargs -r rm
 
 
 .PHONY: server
