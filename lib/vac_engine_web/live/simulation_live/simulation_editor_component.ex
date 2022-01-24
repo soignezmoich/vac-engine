@@ -139,12 +139,19 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
   end
 
   def handle_event("create_template", %{"new_template_name" => name}, socket) do
-    Simulation.create_template(socket.assigns.blueprint, name)
+    new_template_case_id = case Simulation.create_template(socket.assigns.blueprint, name) do
+      {:ok, %{case: %Case{id: id}}} -> id
+    end
     templates = Simulation.get_templates(socket.assigns.blueprint)
+
+    selected_element = templates |> Enum.find(&(&1.id == new_template_case_id))
+
+    IO.inspect(selected_element)
 
     {:noreply,
      assign(socket, %{
-       templates: templates
+       templates: templates,
+       selected_element: selected_element
      })}
   end
 end
