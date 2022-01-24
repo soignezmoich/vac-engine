@@ -12,30 +12,31 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
   alias VacEngineWeb.SimulationLive.TemplateEditorComponent
 
   def update(assigns, socket) do
+
     templates = Map.get(assigns, :templates) || Simulation.get_templates(assigns.blueprint)
-    IO.puts("UPDATING SimulationEditor")
+
 
     simulation = %{
       config: %{
         now: "2021-11-15"
       },
-      templates: [
-        %{
-          name: "booster",
-          type: "template",
-          input: %{
-            birthdate: "1991-01-01",
-            high_risk: true,
-            infection_date: nil,
-            rejects_mrna: false,
-            previous_vaccination: %{
-              vaccine: "moderna",
-              last_dose_date: "2021-02-02",
-              doses_count: 2
-            }
-          }
-        }
-      ],
+      # templates: [
+      #   %{
+      #     name: "booster",
+      #     type: "template",
+      #     input: %{
+      #       birthdate: "1991-01-01",
+      #       high_risk: true,
+      #       infection_date: nil,
+      #       rejects_mrna: false,
+      #       previous_vaccination: %{
+      #         vaccine: "moderna",
+      #         last_dose_date: "2021-02-02",
+      #         doses_count: 2
+      #       }
+      #     }
+      #   }
+      # ],
       cases: [
         %{
           name: "flag-under-12",

@@ -32,7 +32,6 @@ defmodule VacEngine.Simulation do
       preload: [:input_entries]
     )
     |> Repo.all()
-    |> IO.inspect()
   end
 
   def create_template(blueprint, name) do
@@ -57,11 +56,11 @@ defmodule VacEngine.Simulation do
   def update_template(template, attrs) do
   end
 
-  def create_input_entry(kase, key) do
+  def create_input_entry(kase, key, value \\ "") do
     %InputEntry{
       case_id: kase.id,
       key: key,
-      value: "",
+      value: value,
       workspace_id: kase.workspace_id
     }
     |> change(%{})

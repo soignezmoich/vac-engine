@@ -4,7 +4,6 @@ defmodule VacEngineWeb.SimulationLive.TemplateEditorComponent do
   alias VacEngineWeb.SimulationLive.TemplateInputEditorComponent
 
   def render(assigns) do
-    IO.puts("RENDERING TemplateEditorComponent")
     ~H"""
       <div class="m-3">
         <div class="text-2xl font-bold mb-4">Template: <%= @template.name %></div>

@@ -1,15 +1,14 @@
 defmodule VacEngineWeb.SimulationLive.TemplateInputVariableEditorComponent do
   use VacEngineWeb, :live_component
 
-  import VacEngineWeb.SimulationLive.InputComponent
+  import Ecto.Changeset
 
   alias VacEngine.Simulation
+  alias VacEngineWeb.SimulationLive.EntryValueFieldComponent
   alias VacEngineWeb.SimulationLive.SimulationEditorComponent
   alias VacEngineWeb.SimulationLive.ToggleEntryComponent
 
   def update(assigns, socket) do
-
-    IO.puts("UPDATIN TemplateInputVariableComponent")
 
     input_entry =
       assigns.template.input_entries
@@ -30,9 +29,13 @@ defmodule VacEngineWeb.SimulationLive.TemplateInputVariableEditorComponent do
     template = socket.assigns.template
     blueprint = socket.assigns.blueprint
 
+
     input_entry = if (active == "true") do
+
+      type = socket.assigns.variable.type
+
       entry_key = socket.assigns.variable.path |> Enum.join(".")
-      {:ok, input_entry} = Simulation.create_input_entry(template, entry_key)
+      {:ok, input_entry} = Simulation.create_input_entry(template, entry_key, default_value(type))
       input_entry
     else
       Simulation.delete_input_entry(socket.assigns.input_entry)
@@ -48,7 +51,17 @@ defmodule VacEngineWeb.SimulationLive.TemplateInputVariableEditorComponent do
     {:noreply, socket}
   end
 
-  def handle_event("update_entry", %{"value" => value}, socket) do
+  defp default_value(type) do
+
+    case type do
+      :boolean -> "false"
+      :string -> ""
+      :date -> "2000-01-01"
+      :datetime -> "2000-01-01T00:00:00"
+      :number -> "0.0"
+      :integer -> "0"
+    end
 
   end
+
 end

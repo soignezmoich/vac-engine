@@ -7,7 +7,7 @@ defmodule VacEngineWeb.SimulationLive.TemplateInputEditorComponent do
 
   def render(assigns) do
     ~H"""
-    <div class="w-full bg-white filter drop-shadow-lg p-3 cursor-default">
+    <div class="w-full bg-white filter drop-shadow-lg p-3 cursor-default overflow-x-auto">
       <div class="text-lg font-bold border-b border-black">Input</div>
       <%= if is_nil(@template) do %>
         <div class="font-bold text-red-600">

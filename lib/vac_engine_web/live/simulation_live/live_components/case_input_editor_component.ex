@@ -13,7 +13,6 @@ defmodule VacEngineWeb.SimulationLive.CaseInputEditorComponent do
   end
 
   def handle_event("set_filter", %{"filter" => new_filter}, socket) do
-    IO.inspect(new_filter)
 
     {:noreply,
      socket

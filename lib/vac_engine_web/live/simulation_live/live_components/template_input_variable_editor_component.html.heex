@@ -9,22 +9,21 @@
     </td>
     <td class="pl-2">
       <%= case @variable.type do %>
-      <% :boolean -> %>
-        <.boolean_input value={@value} />
-      <% :number -> %>
-        <.number_input value={@value} />
-      <% :integer -> %>
-        <.integer_input value={@value} />
-      <% :string -> %>
-        <.string_input enum={@variable.enum} value={@value} />
-      <% :date -> %>
-        <.date_input value={@value} />
-      <% :datetime -> %>
-        <.datetime_input value={@value} />
       <% :map -> %>
         <div class="inline-block form-fld invisible">
           placeholder
         </div>
+     <% type -> %>
+        <.live_component
+        input_entry={@input_entry}
+        module={EntryValueFieldComponent}
+        target_component={"input_entry_editor_#{@variable.path}"}
+        variable_type={type}
+        variable_enum={@variable.enum}
+        template={@template}
+        blueprint={@blueprint}
+        id={"input_entry_value_field_#{@variable.path}"}
+        />
       <% end %>
     </td>
     <td class="w-full" />
