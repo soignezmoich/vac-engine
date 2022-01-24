@@ -18,7 +18,7 @@ defmodule VacEngine.Repo.Migrations.SimulationCases do
       add(:env_now, :utc_datetime)
     end
 
-    create(index(:simulation_settings, [:blueprint_id]))
+    create(unique_index(:simulation_settings, [:blueprint_id]))
     create(index(:simulation_settings, [:workspace_id]))
 
     # enforce same workspace for simulation settings and blueprint
