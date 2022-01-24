@@ -146,8 +146,6 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
 
     selected_element = templates |> Enum.find(&(&1.id == new_template_case_id))
 
-    IO.inspect(selected_element)
-
     {:noreply,
      assign(socket, %{
        templates: templates,
