@@ -27,36 +27,48 @@ defmodule VacEngine.PipeHelpers do
   @doc """
   Tap only if ok tuple
   """
-  def tap_ok({:ok, ok_val} = result, fun) do
+  def tap_ok(result, fun) do
+    then_ok(result, fun)
+    result
+  end
+
+  @doc """
+  Tap only if value match
+  """
+  def tap_on(result, value, fun) do
+    then_on(result, value, fun)
+    value
+  end
+
+  @doc """
+  Then only if ok tuple
+  """
+  def then_ok({:ok, ok_val} = result, fun) do
     fun
     |> Function.info()
     |> Keyword.get(:arity)
     |> case do
       0 -> fun.()
       1 -> fun.(ok_val)
-      _ -> raise "tap_ok function arity can only be 0 or 1"
+      _ -> raise "then_ok function arity can only be 0 or 1"
     end
-
-    result
   end
 
-  def tap_ok(result, _fun), do: result
+  def then_ok(result, _fun), do: result
 
   @doc """
-  Tap only if value match
+  Then only if value match
   """
-  def tap_on(value, value, fun) do
+  def then_on(value, value, fun) do
     fun
     |> Function.info()
     |> Keyword.get(:arity)
     |> case do
       0 -> fun.()
       1 -> fun.(value)
-      _ -> raise "tap_on function arity can only be 0 or 1"
+      _ -> raise "then_on function arity can only be 0 or 1"
     end
-
-    value
   end
 
-  def tap_on(result, _value, _fun), do: result
+  def then_on(result, _value, _fun), do: result
 end
