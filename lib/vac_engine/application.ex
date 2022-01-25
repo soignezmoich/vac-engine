@@ -17,6 +17,8 @@ defmodule VacEngine.Application do
       VacEngineWeb.Endpoint,
       # Start the cache engine for publisher
       VacEngine.Pub.Cache,
+      # Simulation runner
+      VacEngine.Simulation.Runner,
       # Process that run periodic cleaning tasks
       VacEngineWeb.Janitor
     ]
