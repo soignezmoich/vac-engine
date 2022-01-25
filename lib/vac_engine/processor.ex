@@ -181,6 +181,11 @@ defmodule VacEngine.Processor do
   defdelegate get_blueprint!(blueprint_id, queries \\ & &1), to: Blueprints
 
   @doc """
+  Get a blueprint with id, nil if not found.
+  """
+  defdelegate get_blueprint(blueprint_id, queries \\ & &1), to: Blueprints
+
+  @doc """
   Apply a workspace scope to a blueprint query
   """
   defdelegate filter_blueprints_by_workspace(query, workspace), to: Blueprints
@@ -278,6 +283,8 @@ defmodule VacEngine.Processor do
   Used for file upload as phoenix write into temp file
   """
   defdelegate update_blueprint_from_file(blueprint, path), to: Blueprints
+
+  defdelegate blueprint_version(blueprint_or_id), to: Blueprints
 
   alias VacEngine.Processor.Deductions
 
