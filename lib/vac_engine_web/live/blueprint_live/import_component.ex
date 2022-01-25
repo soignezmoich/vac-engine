@@ -3,13 +3,14 @@ defmodule VacEngineWeb.BlueprintLive.ImportComponent do
 
   alias VacEngine.Processor
   alias Ecto.Changeset
+  import VacEngine.PipeHelpers
 
   @impl true
   def mount(socket) do
-    {:ok,
-     socket
-     |> assign(:upload_files, [])
-     |> allow_upload(:json_import, accept: ~w(.json), max_entries: 1)}
+    socket
+    |> assign(:upload_files, [])
+    |> allow_upload(:json_import, accept: ~w(.json), max_entries: 1)
+    |> ok()
   end
 
   @impl true
