@@ -182,12 +182,12 @@ defmodule VacEngine.Pub.Cache do
         Logger.info("Compiling blueprint ##{blueprint_id}")
 
         blueprint_id
-        |> Processor.get_blueprint!(fn query ->
+        |> Processor.get_blueprint(fn query ->
           query
           |> Processor.load_blueprint_variables()
           |> Processor.load_blueprint_full_deductions()
         end)
-        |> Processor.compile_blueprint()
+        |> Processor.compile_blueprint(namespace: "Cache")
         |> case do
           {:ok, proc} ->
             {:ok, put_in(state, [Access.key(:processors), blueprint_id], proc)}
