@@ -12,9 +12,9 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
   alias VacEngineWeb.SimulationLive.TemplateEditorComponent
 
   def update(assigns, socket) do
-
-    templates = Map.get(assigns, :templates) || Simulation.get_templates(assigns.blueprint)
-
+    templates =
+      Map.get(assigns, :templates) ||
+        Simulation.get_templates(assigns.blueprint)
 
     simulation = %{
       config: %{
@@ -92,8 +92,12 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
       ]
     }
 
-
-    selected_element = get_updated_selected_element(Map.get(assigns, :selected_element), templates, [])
+    selected_element =
+      get_updated_selected_element(
+        Map.get(assigns, :selected_element),
+        templates,
+        []
+      )
 
     {
       :ok,
@@ -105,7 +109,6 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
       )
     }
   end
-
 
   def get_updated_selected_element(old_selected_element, templates, cases) do
     case old_selected_element do
@@ -139,9 +142,11 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
   end
 
   def handle_event("create_template", %{"new_template_name" => name}, socket) do
-    new_template_case_id = case Simulation.create_template(socket.assigns.blueprint, name) do
-      {:ok, %{case: %Case{id: id}}} -> id
-    end
+    new_template_case_id =
+      case Simulation.create_template(socket.assigns.blueprint, name) do
+        {:ok, %{case: %Case{id: id}}} -> id
+      end
+
     templates = Simulation.get_templates(socket.assigns.blueprint)
 
     selected_element = templates |> Enum.find(&(&1.id == new_template_case_id))

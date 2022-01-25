@@ -1,5 +1,4 @@
 defmodule VacEngine.Convert do
-
   import VacEngine.PipeHelpers
 
   def parse_string(str, type) do
@@ -34,5 +33,4 @@ defmodule VacEngine.Convert do
   defp format_error(value, _) do
     "invalid value #{value}"
   end
-
 end
