@@ -1,0 +1,11 @@
+<div>
+  <div class="flex flex-col p-4">
+    <%= for s <- @stacks do %>
+      <.live_component
+       module={SimulationEditorTestStackComponent}
+       id={"stack_#{s.id}"}
+       stack={s}
+       />
+    <% end %>
+  </div>
+</div>

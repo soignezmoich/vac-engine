@@ -9,6 +9,7 @@ defmodule VacEngineWeb.BlueprintLive.Edit do
   alias VacEngineWeb.EditorLive.DeductionEditorComponent
   alias VacEngineWeb.EditorLive.VariableEditorComponent
   alias VacEngineWeb.SimulationLive.SimulationEditorComponent
+  alias VacEngineWeb.SimulationLive.SimulationEditorTestComponent
 
   on_mount(VacEngineWeb.LiveRole)
   on_mount(VacEngineWeb.LiveWorkspace)
@@ -48,6 +49,16 @@ defmodule VacEngineWeb.BlueprintLive.Edit do
            socket
          )
      )}
+  end
+
+  @impl true
+  def handle_info({:job_finished, job}, socket) do
+    send_update(VacEngineWeb.SimulationLive.SimulationEditorTestStackComponent,
+      id: "stack_#{job.stack_id}",
+      action: {:job_finished, job}
+    )
+
+    {:noreply, socket}
   end
 
   def get_blueprint!(id, socket) do

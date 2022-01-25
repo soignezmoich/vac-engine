@@ -245,6 +245,12 @@ defmodule VacEngineWeb.HeaderComponent do
         a: workspace_blueprint_path(Endpoint, :simulations, w.id, b.id),
         s: loc == :simulations,
         i: "hero/fast-forward"
+      },
+      %{
+        l: "Simulations test",
+        a: workspace_blueprint_path(Endpoint, :simulations_test, w.id, b.id),
+        s: loc == :simulations_test,
+        i: "hero/fast-forward"
       }
     ]
   end
@@ -291,7 +297,14 @@ defmodule VacEngineWeb.HeaderComponent do
         a: workspace_path(Endpoint, :index),
         s: loc == :workspace
       },
-      %{l: "API Keys", a: api_key_path(Endpoint, :index), s: loc == :api_key}
+      %{l: "API Keys", a: api_key_path(Endpoint, :index), s: loc == :api_key},
+      %{
+        l: "Maintenance",
+        a: maintenance_path(Endpoint, :index),
+        s:
+          loc ==
+            :maintenance
+      }
     ]
   end
 

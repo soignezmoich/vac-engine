@@ -37,6 +37,12 @@
          id="simulation_editor"
          role={@role}
          blueprint={@blueprint} />
+    <% :simulations_test -> %>
+      <.live_component
+         module={SimulationEditorTestComponent}
+         id="simulation_editor_test"
+         role={@role}
+         blueprint={@blueprint} />
     <% end %>
   </div>
 <% end %>
