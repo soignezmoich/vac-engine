@@ -26,8 +26,9 @@ defmodule VacEngine.Simulation.Case do
 
   def changeset(data, attrs \\ %{}) do
     data
-    |> cast(attrs, [:workspace_id, :name, :description, :simulated_time]) # workspace id dans data
-    |> validate_required([:workspace_id]) # add name
+    # workspace id dans data
+    |> cast(attrs, [:workspace_id, :name, :description, :simulated_time])
+    # add name
+    |> validate_required([:workspace_id])
   end
-
 end

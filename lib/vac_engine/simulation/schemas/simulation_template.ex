@@ -12,5 +12,4 @@ defmodule VacEngine.Simulation.Template do
     belongs_to(:workspace, Workspace)
     belongs_to(:case, Case)
   end
-
 end
