@@ -13,5 +13,4 @@ defmodule VacEngineWeb.SimulationLive.ConfigEditorComponent do
       </div>
     """
   end
-
 end

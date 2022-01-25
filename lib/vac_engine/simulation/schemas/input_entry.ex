@@ -3,6 +3,8 @@ defmodule VacEngine.Simulation.InputEntry do
 
   use Ecto.Schema
 
+  import Ecto.Changeset
+
   alias VacEngine.Account.Workspace
   alias VacEngine.Simulation.Case
 
@@ -12,5 +14,11 @@ defmodule VacEngine.Simulation.InputEntry do
 
     field(:key, :string)
     field(:value, :string)
+  end
+
+  def changeset(input_entry, attrs) do
+    input_entry
+    |> cast(attrs, [:value])
+    |> validate_required([:workspace, :case, :key, :value])
   end
 end

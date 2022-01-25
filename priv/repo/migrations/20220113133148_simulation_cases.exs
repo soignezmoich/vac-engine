@@ -2,8 +2,6 @@ defmodule VacEngine.Repo.Migrations.SimulationCases do
   use Ecto.Migration
 
   def up do
-
-
     ### SIMULATION SETTINGS ###
 
     create table(:simulation_settings) do
@@ -12,6 +10,7 @@ defmodule VacEngine.Repo.Migrations.SimulationCases do
       add(:blueprint_id, references(:blueprints, on_delete: :delete_all),
         null: false
       )
+
       add(:workspace_id, references(:workspaces, on_delete: :delete_all),
         null: false
       )
@@ -19,7 +18,7 @@ defmodule VacEngine.Repo.Migrations.SimulationCases do
       add(:env_now, :utc_datetime)
     end
 
-    create(index(:simulation_settings, [:blueprint_id]))
+    create(unique_index(:simulation_settings, [:blueprint_id]))
     create(index(:simulation_settings, [:workspace_id]))
 
     # enforce same workspace for simulation settings and blueprint
@@ -30,7 +29,6 @@ defmodule VacEngine.Repo.Migrations.SimulationCases do
         REFERENCES blueprints (id, workspace_id)
         ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
     ")
-
 
     ### CASES ###
 
@@ -50,14 +48,13 @@ defmodule VacEngine.Repo.Migrations.SimulationCases do
     create(index(:simulation_cases, [:workspace_id]))
     create(unique_index(:simulation_cases, [:id, :workspace_id]))
 
-
     ### CASE ENTRIES ###
 
     create table(:simulation_input_entries) do
-
       add(:case_id, references(:simulation_cases, on_delete: :delete_all),
         null: false
       )
+
       add(:workspace_id, references(:workspaces, on_delete: :delete_all),
         null: false
       )
@@ -79,18 +76,18 @@ defmodule VacEngine.Repo.Migrations.SimulationCases do
         ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
     ")
 
-
     create table(:simulation_output_entries) do
-
       add(:case_id, references(:simulation_cases, on_delete: :delete_all),
         null: false
       )
+
       add(:workspace_id, references(:workspaces, on_delete: :delete_all),
         null: false
       )
 
       add(:key, :string, size: 512, null: false)
-      add(:expected, :string, size: 512) # if null, the entry is forbidden
+      # if null, the entry is forbidden
+      add(:expected, :string, size: 512)
     end
 
     create(index(:simulation_output_entries, [:case_id]))
@@ -106,19 +103,18 @@ defmodule VacEngine.Repo.Migrations.SimulationCases do
         ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
     ")
 
-
     ### STACKS ###
 
     create table(:simulation_stacks) do
       add(:workspace_id, references(:workspaces, on_delete: :delete_all),
         null: false
       )
+
       add(:blueprint_id, references(:blueprints, on_delete: :delete_all),
         null: false
       )
 
       add(:active, :boolean, null: false, default: true)
-
     end
 
     create(index(:simulation_stacks, [:blueprint_id]))
@@ -134,19 +130,21 @@ defmodule VacEngine.Repo.Migrations.SimulationCases do
         ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
     ")
 
-
     ### LAYERS ###
 
     create table(:simulation_layers) do
       add(:blueprint_id, references(:blueprints, on_delete: :delete_all),
         null: false
       )
+
       add(:case_id, references(:simulation_cases, on_delete: :restrict),
         null: false
       )
+
       add(:stack_id, references(:simulation_stacks, on_delete: :delete_all),
         null: false
       )
+
       add(:workspace_id, references(:workspaces, on_delete: :delete_all),
         null: false
       )
@@ -168,16 +166,17 @@ defmodule VacEngine.Repo.Migrations.SimulationCases do
         ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
     ")
 
-
     ### TEMPLATES ###
 
     create table(:simulation_templates) do
       add(:blueprint_id, references(:blueprints, on_delete: :delete_all),
         null: false
       )
+
       add(:case_id, references(:simulation_cases, on_delete: :restrict),
         null: false
       )
+
       add(:workspace_id, references(:workspaces, on_delete: :delete_all),
         null: false
       )
@@ -195,7 +194,6 @@ defmodule VacEngine.Repo.Migrations.SimulationCases do
         REFERENCES blueprints (id, workspace_id)
         ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
     ")
-
   end
 
   def down do

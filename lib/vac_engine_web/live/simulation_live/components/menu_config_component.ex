@@ -22,5 +22,4 @@ defmodule VacEngineWeb.SimulationLive.MenuConfigComponent do
       </div>
     """
   end
-
 end

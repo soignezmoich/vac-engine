@@ -7,7 +7,8 @@
         />
         <div class="h-4" />
         <MenuTemplateListComponent.render
-          templates={@simulation.templates}
+          templates={@templates}
+          blueprint={@blueprint}
           selected_element={@selected_element}
         />
         <div class="h-4" />
@@ -21,7 +22,11 @@
     <div class="flex-grow flex flex-col overflow-y-auto">
       <div class="flex-shrink">
         <%= case @selected_element do %>
-        <% %{type: "template"} -> %>
+        <% :config -> %>
+          <ConfigEditorComponent.render
+            configuration={@simulation.config}
+          />
+        <% %{runnable: false} -> %>
           <TemplateEditorComponent.render
             template={@selected_element}
             blueprint={@blueprint}
@@ -32,10 +37,7 @@
             blueprint={@blueprint}
             templates={@simulation.templates}
           />
-        <% :config -> %>
-          <ConfigEditorComponent.render
-            configuration={@simulation.config}
-          />
+        <% _ -> %>
         <% end %>
       </div>
     </div>

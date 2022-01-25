@@ -23,15 +23,11 @@
         </div>
     <% end %>
     <div class="h-2"/>
-    <table>
-    <tbody>
-        <%= for variable <- @blueprint.variables |> flatten_variables("input") do %>
-        <InputVariableEditor.render
-            variable={variable}
-            template={@template}
-            case={@case}
-            filter={@filter}/>
-        <% end %>
-    </tbody>
-    </table>
+    <%= for variable <- @blueprint.variables |> flatten_variables("input") do %>
+    <InputVariableEditor.render
+        variable={variable}
+        template={@template}
+        case={@case}
+        filter={@filter}/>
+    <% end %>
 </div>

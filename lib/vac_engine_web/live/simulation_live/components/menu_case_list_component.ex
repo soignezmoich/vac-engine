@@ -15,5 +15,4 @@ defmodule VacEngineWeb.SimulationLive.MenuCaseListComponent do
     </div>
     """
   end
-
 end

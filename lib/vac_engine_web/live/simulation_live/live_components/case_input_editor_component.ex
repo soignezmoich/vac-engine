@@ -3,7 +3,8 @@ defmodule VacEngineWeb.SimulationLive.CaseInputEditorComponent do
 
   import VacEngine.VariableHelpers
 
-  alias VacEngineWeb.SimulationLive.CaseInputVariableEditorComponent, as: InputVariableEditor
+  alias VacEngineWeb.SimulationLive.CaseInputVariableEditorComponent,
+    as: InputVariableEditor
 
   def mount(socket) do
     {:ok,
@@ -12,10 +13,9 @@ defmodule VacEngineWeb.SimulationLive.CaseInputEditorComponent do
   end
 
   def handle_event("set_filter", %{"filter" => new_filter}, socket) do
-    IO.inspect(new_filter)
+
     {:noreply,
      socket
      |> assign(filter: new_filter)}
   end
-
 end

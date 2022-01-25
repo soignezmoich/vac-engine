@@ -32,5 +32,4 @@ defmodule VacEngineWeb.SimulationLive.CaseEditorComponent do
   def extract_template(kase, templates) do
     templates |> Enum.find(&(&1.name == kase.template))
   end
-
 end
