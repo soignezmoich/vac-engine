@@ -310,8 +310,10 @@ defmodule VacEngine.Processor do
   @doc """
   Compile blueprint into processor
   """
-  def compile_blueprint(%Blueprint{} = blueprint) do
-    with {:ok, mod} <- Compiler.compile_blueprint(blueprint),
+  def compile_blueprint(blueprint, opts \\ [])
+
+  def compile_blueprint(%Blueprint{} = blueprint, opts) do
+    with {:ok, mod} <- Compiler.compile_blueprint(blueprint, opts),
          {:ok, info} <- Info.describe(blueprint),
          {:ok, state} <- State.new(blueprint.variables) do
       {:ok,
@@ -325,6 +327,14 @@ defmodule VacEngine.Processor do
       {:error, err} ->
         {:error, "cannot compile blueprint: #{err}"}
     end
+  end
+
+  def compile_blueprint(nil, _opts) do
+    {:error, "no blueprint"}
+  end
+
+  def compile_blueprint(_, _opts) do
+    {:error, "invalid blueprint"}
   end
 
   @doc """
@@ -355,7 +365,7 @@ defmodule VacEngine.Processor do
     |> Enum.filter(fn {mod, _} -> "#{mod}" =~ ~r{^Elixir} end)
     |> Enum.map(fn {mod, _} -> Module.split(mod) end)
     |> Enum.filter(fn
-      ["VacEngine", "Processor", "BlueprintCode", _] ->
+      ["VacEngine", "Processor", "BlueprintCode", _ | _] ->
         true
 
       _ ->
