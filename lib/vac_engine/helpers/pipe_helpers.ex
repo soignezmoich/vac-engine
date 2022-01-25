@@ -43,7 +43,7 @@ defmodule VacEngine.PipeHelpers do
   @doc """
   Then only if ok tuple
   """
-  def then_ok({:ok, ok_val} = result, fun) do
+  def then_ok({:ok, ok_val} = _result, fun) do
     fun
     |> Function.info()
     |> Keyword.get(:arity)

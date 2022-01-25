@@ -8,7 +8,6 @@ defmodule VacEngine.Simulation.Runner do
   alias VacEngine.Simulation.Runner
   alias VacEngine.Simulation.Result
   alias VacEngine.Processor
-  alias VacEngine.Repo
   require Logger
 
   defstruct processors: %{}, job_queue: nil
@@ -209,8 +208,6 @@ defmodule VacEngine.Simulation.Runner do
 
             Map.put(acc, k, m)
           end)
-
-        entries = forbid
 
         has_error =
           Enum.reduce(entries, false, fn {_k, e}, has_error ->

@@ -36,25 +36,25 @@ defmodule VacEngineWeb.SimulationLive.CaseOutputVariableEditorComponent do
     """
   end
 
-  defp render_map(assigns) do
-    ~H"""
-    <tr>
-      <td class="pr-3 text-purple-700">
-      </td>
-      <td>
-        <%= @variable.path |> Enum.drop(-1) |> Enum.map(&("\u2574" || &1)) %><%= @variable.name %>
-      </td>
-      <td>
-      </td>
-      <td>
-      <div class="inline-block form-fld invisible">
-        placeholder
-      </div>
-      </td>
-      <td class="w-full" />
-    </tr>
-    """
-  end
+  # defp render_map(assigns) do
+  #   ~H"""
+  #   <tr>
+  #     <td class="pr-3 text-purple-700">
+  #     </td>
+  #     <td>
+  #       <%= @variable.path |> Enum.drop(-1) |> Enum.map(&("\u2574" || &1)) %><%= @variable.name %>
+  #     </td>
+  #     <td>
+  #     </td>
+  #     <td>
+  #     <div class="inline-block form-fld invisible">
+  #       placeholder
+  #     </div>
+  #     </td>
+  #     <td class="w-full" />
+  #   </tr>
+  #   """
+  # end
 
   defp render_absent(assigns) do
     if assigns.filter == "all" do
@@ -64,7 +64,7 @@ defmodule VacEngineWeb.SimulationLive.CaseOutputVariableEditorComponent do
           <span class="text-xs hover:text-purple-400"><.icon name="toggle-off" width="2rem"/></span>
         </td>
         <td>
-          <%= @variable.path |> Enum.drop(-1) |> Enum.map(&("\u2574" || &1)) %><%= @variable.name %>
+          <%= @variable.path |> Enum.drop(-1) |> Enum.map(fn _ -> "\u2574" end) %><%= @variable.name %>
         </td>
         <td>
         </td>
@@ -99,7 +99,7 @@ defmodule VacEngineWeb.SimulationLive.CaseOutputVariableEditorComponent do
         <span class="text-xs hover:text-purple-400"><.icon name="toggle-on" width="2rem"/></span>
       </td>
       <td>
-        <%= @variable.path |> Enum.drop(-1) |> Enum.map(&("\u2574" || &1)) %><%= @variable.name %>
+        <%= @variable.path |> Enum.drop(-1) |> Enum.map(fn _ -> "\u2574" end) %><%= @variable.name %>
       </td>
       <%= if @forbidden do %>
         <td class={"pl-2 text-red-500"}>

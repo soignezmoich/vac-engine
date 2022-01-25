@@ -1,8 +1,6 @@
 defmodule VacEngineWeb.SimulationLive.TemplateInputVariableEditorComponent do
   use VacEngineWeb, :live_component
 
-  import Ecto.Changeset
-
   alias VacEngine.Simulation
   alias VacEngineWeb.SimulationLive.EntryValueFieldComponent
   alias VacEngineWeb.SimulationLive.SimulationEditorComponent
@@ -27,24 +25,21 @@ defmodule VacEngineWeb.SimulationLive.TemplateInputVariableEditorComponent do
     template = socket.assigns.template
     blueprint = socket.assigns.blueprint
 
-    input_entry =
-      if active == "true" do
-        type = socket.assigns.variable.type
+    if active == "true" do
+      type = socket.assigns.variable.type
 
-        entry_key = socket.assigns.variable.path |> Enum.join(".")
+      entry_key = socket.assigns.variable.path |> Enum.join(".")
 
-        {:ok, input_entry} =
-          Simulation.create_input_entry(
-            template,
-            entry_key,
-            default_value(type)
-          )
-
-        input_entry
-      else
-        Simulation.delete_input_entry(socket.assigns.input_entry)
-        nil
-      end
+      {:ok, _input_entry} =
+        Simulation.create_input_entry(
+          template,
+          entry_key,
+          default_value(type)
+        )
+    else
+      Simulation.delete_input_entry(socket.assigns.input_entry)
+      nil
+    end
 
     send_update(SimulationEditorComponent,
       id: "simulation_editor",

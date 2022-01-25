@@ -150,49 +150,48 @@ defmodule VacEngine.Simulation do
         }
         |> Repo.insert!()
 
-      case_stack =
-        s["layers"]
-        |> Enum.reject(&is_nil/1)
-        |> Enum.with_index()
-        |> Enum.map(fn {layer, idx} ->
-          case_id = layer
+      s["layers"]
+      |> Enum.reject(&is_nil/1)
+      |> Enum.with_index()
+      |> Enum.map(fn {layer, idx} ->
+        case_id = layer
 
-          rcase = Map.get(cases, case_id)
+        rcase = Map.get(cases, case_id)
 
-          kase = get_or_insert_case(rcase, workspace_id)
+        kase = get_or_insert_case(rcase, workspace_id)
 
-          env_now =
-            Timex.parse(rcase["env_now"], "{YYYY}-{0M}-{0D}")
-            |> case do
-              {:ok, r} -> Timex.to_datetime(r)
-              _ -> nil
-            end
-
-          if env_now do
-            from(s in Setting,
-              where:
-                s.blueprint_id == ^blueprint_id and
-                  s.workspace_id == ^workspace_id
-            )
-            |> Repo.delete_all()
-
-            %Setting{
-              blueprint_id: blueprint_id,
-              workspace_id: workspace_id,
-              env_now: env_now
-            }
-            |> Repo.insert!()
+        env_now =
+          Timex.parse(rcase["env_now"], "{YYYY}-{0M}-{0D}")
+          |> case do
+            {:ok, r} -> Timex.to_datetime(r)
+            _ -> nil
           end
 
-          %Layer{
+        if env_now do
+          from(s in Setting,
+            where:
+              s.blueprint_id == ^blueprint_id and
+                s.workspace_id == ^workspace_id
+          )
+          |> Repo.delete_all()
+
+          %Setting{
             blueprint_id: blueprint_id,
-            case_id: kase.id,
-            stack_id: stack.id,
             workspace_id: workspace_id,
-            position: idx
+            env_now: env_now
           }
           |> Repo.insert!()
-        end)
+        end
+
+        %Layer{
+          blueprint_id: blueprint_id,
+          case_id: kase.id,
+          stack_id: stack.id,
+          workspace_id: workspace_id,
+          position: idx
+        }
+        |> Repo.insert!()
+      end)
     end)
 
     :ok
@@ -266,7 +265,7 @@ defmodule VacEngine.Simulation do
 
     data["forbid"]
     |> flatten_map()
-    |> Enum.each(fn {k, v} ->
+    |> Enum.each(fn {k, _v} ->
       %OutputEntry{
         case_id: kase.id,
         workspace_id: workspace_id,
@@ -310,7 +309,7 @@ defmodule VacEngine.Simulation do
     |> Repo.transaction()
   end
 
-  def update_template(template, attrs) do
+  def update_template(_template, _attrs) do
   end
 
   def create_input_entry(kase, key, value \\ "") do

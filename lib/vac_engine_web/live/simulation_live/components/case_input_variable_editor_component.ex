@@ -41,7 +41,7 @@ defmodule VacEngineWeb.SimulationLive.CaseInputVariableEditorComponent do
           <span class="text-xs hover:text-purple-400"><.icon name="toggle-off" width="2rem"/></span>
         </td>
         <td>
-          <%= @variable.path |> Enum.drop(-1) |> Enum.map(&("\u2574" || &1)) %>
+          <%= @variable.path |> Enum.drop(-1) |> Enum.map(fn _ -> "\u2574" end) %>
           <%= @variable.name %>
         </td>
         <td>
@@ -66,7 +66,7 @@ defmodule VacEngineWeb.SimulationLive.CaseInputVariableEditorComponent do
         <span class="text-xs hover:text-purple-400"><.icon name="toggle-on" width="2rem"/></span>
       </td>
       <td>
-        <%= @variable.path |> Enum.drop(-1) |> Enum.map(&("\u2574" || &1)) %>
+        <%= @variable.path |> Enum.drop(-1) |> Enum.map(fn _ -> "\u2574" end) %>
         <span><%= @variable.name %></span>
       </td>
       <td class="pl-2">
@@ -102,7 +102,7 @@ defmodule VacEngineWeb.SimulationLive.CaseInputVariableEditorComponent do
           <span class="text-xs hover:text-purple-400"><.icon name="toggle-off" width="2rem"/></span>
         </td>
         <td>
-          <%= @variable.path |> Enum.drop(-1) |> Enum.map(&("\u2574" || &1)) %>
+          <%= @variable.path |> Enum.drop(-1) |> Enum.map(fn _ -> "\u2574" end) %>
           <span><%= @variable.name %></span>
         </td>
         <td class="pl-2">

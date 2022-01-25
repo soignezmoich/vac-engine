@@ -11,6 +11,7 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
   alias VacEngineWeb.SimulationLive.MenuTemplateListComponent
   alias VacEngineWeb.SimulationLive.TemplateEditorComponent
 
+  @impl true
   def update(assigns, socket) do
     templates =
       Map.get(assigns, :templates) ||
@@ -110,7 +111,7 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
     }
   end
 
-  def get_updated_selected_element(old_selected_element, templates, cases) do
+  def get_updated_selected_element(old_selected_element, templates, _cases) do
     case old_selected_element do
       # template
       %Case{id: id, runnable: false} -> templates |> Enum.find(&(&1.id == id))
