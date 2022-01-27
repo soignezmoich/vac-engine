@@ -2,21 +2,30 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
   use VacEngineWeb, :live_component
 
   import VacEngine.PipeHelpers
+  alias VacEngine.EnumHelpers
   alias Ecto.Changeset
   alias VacEngine.Processor
   alias VacEngine.Processor.Assignment
   alias VacEngine.Processor.Condition
   alias VacEngine.Processor.Branch
   alias VacEngine.Processor.Column
-  alias VacEngine.Processor.Expression
+  alias VacEngineWeb.EditorLive.BlueprintStatusComponent
   alias VacEngineWeb.EditorLive.DeductionListComponent
-  alias VacEngineWeb.EditorLive.ExpressionEditorComponent
-  alias VacEngine.EnumHelpers
+  alias VacEngineWeb.EditorLive.DeductionCellInspectorComponent
+  alias VacEngineWeb.EditorLive.DeductionColumnInspectorComponent
+  alias VacEngineWeb.EditorLive.DeductionBranchInspectorComponent
+  alias VacEngineWeb.EditorLive.DeductionTableInspectorComponent
 
   @impl true
   def mount(socket) do
     socket
-    |> assign(blueprint: nil, on_update: nil, changeset: nil, inspector: nil)
+    |> assign(
+      blueprint: nil,
+      on_update: nil,
+      changeset: nil,
+      inspector: nil,
+      tab: :cell
+    )
     |> select(nil)
     |> ok()
   end
@@ -351,6 +360,15 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
     {:noreply, socket |> select(selection)}
   end
 
+  @impl true
+  def handle_event(
+        "change_tab",
+        %{"tab" => tab},
+        socket
+      ) do
+    {:noreply, assign(socket, tab: String.to_existing_atom(tab))}
+  end
+
   defp move_deduction(
          %{assigns: %{blueprint: blueprint, selection: selection}} = socket,
          offset
@@ -540,15 +558,16 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
         _ -> :none
       end
 
-    expression =
+    cell =
       case selection do
-        %{cell: %Condition{} = c} -> c.expression
-        %{cell: %Assignment{} = a} -> a.expression
-        _ -> %Expression{}
+        %{cell: %Condition{} = c} -> c
+        %{cell: %Assignment{} = a} -> a
+        _ -> nil
       end
 
     assign(socket,
-      expression: expression,
+      cell: cell,
+      deduction: deduction,
       column: column,
       branch: branch,
       inspector: inspector,

@@ -181,6 +181,11 @@ defmodule VacEngine.Processor do
   defdelegate get_blueprint!(blueprint_id, queries \\ & &1), to: Blueprints
 
   @doc """
+  Get a blueprint with id, nil if not found.
+  """
+  defdelegate get_blueprint(blueprint_id, queries \\ & &1), to: Blueprints
+
+  @doc """
   Apply a workspace scope to a blueprint query
   """
   defdelegate filter_blueprints_by_workspace(query, workspace), to: Blueprints
@@ -279,27 +284,43 @@ defmodule VacEngine.Processor do
   """
   defdelegate update_blueprint_from_file(blueprint, path), to: Blueprints
 
+  defdelegate blueprint_version(blueprint_or_id), to: Blueprints
+
   alias VacEngine.Processor.Deductions
 
   defdelegate create_deduction(blueprint, attrs \\ %{}), to: Deductions
   defdelegate delete_deduction(deduction), to: Deductions
+  defdelegate change_deduction(deduction, attrs \\ %{}), to: Deductions
   defdelegate update_deduction(deduction, attrs), to: Deductions
   defdelegate create_branch(deduction, attrs \\ %{}), to: Deductions
   defdelegate delete_branch(branch), to: Deductions
+  defdelegate change_branch(branch, attrs \\ %{}), to: Deductions
   defdelegate update_branch(branch, attrs), to: Deductions
   defdelegate create_column(blueprint, deduction, attrs), to: Deductions
+  defdelegate change_column(column, attrs \\ %{}), to: Deductions
   defdelegate update_column(column, attrs), to: Deductions
   defdelegate delete_column(column), to: Deductions
-  defdelegate update_cell(ast, blueprint, branch, column), to: Deductions
+
+  defdelegate update_cell(ast, blueprint, branch, column, attrs \\ %{}),
+    to: Deductions
+
   defdelegate delete_cell(branch, column), to: Deductions
+
+  alias VacEngine.Processor.Advisor
+
+  defdelegate blueprint_stats(blueprint), to: Advisor
+  defdelegate blueprint_issues(blueprint), to: Advisor
+  defdelegate autofix_blueprint(blueprint), to: Advisor
 
   defstruct blueprint: nil, compiled_module: nil, state: nil, info: nil
 
   @doc """
   Compile blueprint into processor
   """
-  def compile_blueprint(%Blueprint{} = blueprint) do
-    with {:ok, mod} <- Compiler.compile_blueprint(blueprint),
+  def compile_blueprint(blueprint, opts \\ [])
+
+  def compile_blueprint(%Blueprint{} = blueprint, opts) do
+    with {:ok, mod} <- Compiler.compile_blueprint(blueprint, opts),
          {:ok, info} <- Info.describe(blueprint),
          {:ok, state} <- State.new(blueprint.variables) do
       {:ok,
@@ -313,6 +334,14 @@ defmodule VacEngine.Processor do
       {:error, err} ->
         {:error, "cannot compile blueprint: #{err}"}
     end
+  end
+
+  def compile_blueprint(nil, _opts) do
+    {:error, "no blueprint"}
+  end
+
+  def compile_blueprint(_, _opts) do
+    {:error, "invalid blueprint"}
   end
 
   @doc """
@@ -343,7 +372,7 @@ defmodule VacEngine.Processor do
     |> Enum.filter(fn {mod, _} -> "#{mod}" =~ ~r{^Elixir} end)
     |> Enum.map(fn {mod, _} -> Module.split(mod) end)
     |> Enum.filter(fn
-      ["VacEngine", "Processor", "BlueprintCode", _] ->
+      ["VacEngine", "Processor", "BlueprintCode", _ | _] ->
         true
 
       _ ->

@@ -35,6 +35,28 @@ defmodule VacEngine.Account.Sessions do
     end
   end
 
+  def list_sessions(queries \\ & &1) do
+    Session
+    |> queries.()
+    |> Repo.all()
+  end
+
+  def filter_inactive_sessions(query, duration_sec) do
+    from(r in query,
+      where:
+        r.last_active_at <
+          fragment(
+            "timezone('UTC', now() - ? * interval '1 seconds')",
+            ^duration_sec
+          ) and
+          is_nil(r.expires_at)
+    )
+  end
+
+  def touch_session(session) do
+    update_session(session, %{"last_active_at" => NaiveDateTime.utc_now()})
+  end
+
   def get_session!(id) do
     Repo.get!(Session, id)
   end

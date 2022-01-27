@@ -36,7 +36,7 @@ defmodule VacEngine.Processor.Column do
   end
 
   @doc false
-  def changeset(data, attrs) do
+  def changeset(data, attrs \\ %{}) do
     data
     |> cast(attrs, [:description, :position])
     |> validate_required([])

@@ -2,17 +2,21 @@
   <div class="absolute inset-0 flex min-h-0">
     <%= if can?(@role, :write, @blueprint) do %>
       <div class="w-64 flex-shrink-0 mr-2 flex flex-col overflow-y-auto">
-        <.live_component
-           id="deduction_inspector"
-           module={DeductionInspectorComponent}
-           blueprint={@blueprint}
-           role={@role} />
+        <div class="flex-shrink-0 p-4 pr-2">
+          <.live_component
+             id="deduction_inspector"
+             module={DeductionInspectorComponent}
+             blueprint={@blueprint}
+             role={@role} />
+        </div>
       </div>
     <% end %>
     <div class="flex-grow flex flex-col overflow-y-auto"
            id="deduction_list_wrapper"
            phx-hook="action">
-      <.live_component id="deduction_list" module={DeductionList} deductions={@blueprint.deductions} />
+      <div class="flex-shrink p-4 pl-2">
+        <.live_component id="deduction_list" module={DeductionList} deductions={@blueprint.deductions} />
+      </div>
     </div>
   </div>
 </div>

@@ -18,8 +18,6 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
       Map.get(assigns, :templates) ||
         Simulation.get_templates(assigns.blueprint)
 
-    IO.puts("UPDATING SIMULATION EDITOR")
-
     stacks =
       Map.get(assigns, :stacks) || Simulation.get_stacks(assigns.blueprint)
 
@@ -119,8 +117,6 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
     )
 
     hash = :crypto.hash(:md5, :erlang.term_to_binary(socket)) |> Base.encode64
-
-    IO.inspect(hash)
 
     {
       :ok, socket

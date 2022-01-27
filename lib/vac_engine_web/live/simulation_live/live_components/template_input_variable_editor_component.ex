@@ -25,24 +25,24 @@ defmodule VacEngineWeb.SimulationLive.TemplateInputVariableEditorComponent do
     template = socket.assigns.template
     blueprint = socket.assigns.blueprint
 
-      if active == "true" do
-        type = socket.assigns.variable.type
-        enum = Map.get(socket.assigns.variable, :enum)
+    if active == "true" do
+      type = socket.assigns.variable.type
+      enum = Map.get(socket.assigns.variable, :enum)
 
-        entry_key = socket.assigns.variable.path |> Enum.join(".")
+      entry_key = socket.assigns.variable.path |> Enum.join(".")
 
-        {:ok, input_entry} =
-          Simulation.create_input_entry(
-            template,
-            entry_key,
-            Simulation.variable_default_value(type, enum)
-          )
+      {:ok, input_entry} =
+        Simulation.create_input_entry(
+          template,
+          entry_key,
+          Simulation.variable_default_value(type, enum)
+        )
 
-        input_entry
-      else
-        Simulation.delete_input_entry(socket.assigns.input_entry)
-        nil
-      end
+      input_entry
+    else
+      Simulation.delete_input_entry(socket.assigns.input_entry)
+      nil
+    end
 
     send_update(SimulationEditorComponent,
       id: "simulation_editor",
@@ -54,5 +54,4 @@ defmodule VacEngineWeb.SimulationLive.TemplateInputVariableEditorComponent do
 
     {:noreply, socket}
   end
-
 end

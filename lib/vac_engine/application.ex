@@ -16,7 +16,11 @@ defmodule VacEngine.Application do
       # Start the Endpoint (http/https)
       VacEngineWeb.Endpoint,
       # Start the cache engine for publisher
-      VacEngine.Pub.Cache
+      VacEngine.Pub.Cache,
+      # Simulation runner
+      VacEngine.Simulation.Runner,
+      # Process that run periodic cleaning tasks
+      VacEngineWeb.Janitor
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

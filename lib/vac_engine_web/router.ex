@@ -46,6 +46,8 @@ defmodule VacEngineWeb.Router do
 
     live("/workspaces/:workspace_id", WorkspaceLive.Edit, :edit, as: :workspace)
 
+    live("/maintenance", MaintenanceLive.Index, :index, as: :maintenance)
+
     get("/export/blueprints/:blueprint_id", ExportController, :blueprint)
 
     scope "/w/:workspace_id", as: :workspace do
@@ -86,6 +88,13 @@ defmodule VacEngineWeb.Router do
         "/blueprints/:blueprint_id/simulations",
         BlueprintLive.Edit,
         :simulations,
+        as: :blueprint
+      )
+
+      live(
+        "/blueprints/:blueprint_id/simulations_test",
+        BlueprintLive.Edit,
+        :simulations_test,
         as: :blueprint
       )
 

@@ -1,0 +1,43 @@
+<div class="w-full select-none shadow-md flex flex-col mb-8">
+  <div class="bg-cream-500 text-white py-1 px-4 flex items-center font-bold
+    justify-center">
+    <div class="mr-1">
+      <.icon name={@icon} width="1.25rem" />
+    </div>
+    <%= @label %>
+  </div>
+
+  <%= case @variables do %>
+    <% [_|_] = vars -> %>
+      <div class="p-1 grid grid-cols-[300px_150px_200px_minmax(150px,_1fr)]
+                  font-bold bg-cream-400 text-sm text-white">
+        <div class="px-1">
+          Name
+        </div>
+        <div class="px-1">
+          Type (*required)
+        </div>
+        <div class="px-1">
+          Enum values
+        </div>
+        <div class="px-1">
+          Description
+        </div>
+      </div>
+      <%= for {variable, index} <- vars |> Enum.with_index() do %>
+        <.live_component
+          id={"variable.#{variable.id}"}
+          module={VariableComponent}
+          variable={variable}
+          even={is_even(index)}
+          mapping="input"
+          selected={selected?(@selected_variable, variable)}
+        />
+      <% end %>
+    <% _ -> %>
+      <div class="p-4 bg-cream-200 text-cream-900 text-center
+      font-bold italic text-base">
+        No input variable.
+      </div>
+  <% end %>
+</div>

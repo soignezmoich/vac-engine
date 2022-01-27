@@ -312,9 +312,24 @@ defmodule VacEngine.Account do
   defdelegate fetch_session(token), to: Sessions
 
   @doc """
+  Set session last activity time to now
+  """
+  defdelegate touch_session(session), to: Sessions
+
+  @doc """
+  List sessions
+  """
+  defdelegate list_sessions(queries \\ & &1), to: Sessions
+
+  @doc """
   Get a session with id, raise if not found.
   """
   defdelegate get_session!(id), to: Sessions
+
+  @doc """
+  Filter inactive since n seconds
+  """
+  defdelegate filter_inactive_sessions(query, duration_sec), to: Sessions
 
   @doc """
   Create a session with attributes

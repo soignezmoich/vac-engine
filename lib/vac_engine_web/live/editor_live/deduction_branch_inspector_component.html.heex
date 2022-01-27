@@ -1,0 +1,28 @@
+<div class="flex flex-col">
+  <div class="flex items-baseline">
+    <div class="font-bold flex-grow">Branch</div>
+  </div>
+  <hr class="mb-2 border-black">
+
+  <.form
+    let={f}
+    for={@changeset}
+    phx-throttle="100"
+    phx-submit="save"
+    phx-change="validate"
+    phx-target={@myself}
+    class="flex flex-col w-full divide-black">
+    <%= label_line_tag f, :description, "Description" %>
+    <%= textarea f, :description, class: "form-fld !h-16 text-xs" %>
+
+    <button class="btn-default my-2" >
+      Save
+    </button>
+    <button phx-click="cancel"
+            phx-target={@myself}
+            type="button"
+            class="btn" >
+      Reset
+    </button>
+  </.form>
+</div>

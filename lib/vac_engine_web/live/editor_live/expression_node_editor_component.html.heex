@@ -3,6 +3,7 @@
      id={@form_id}
      class="flex flex-col"
      phx-target={@myself}
+     phx-submit="save"
      phx-change="validate">
     <%= select f, :composed_type, @composed_types,
           id: @composed_types_hash,
@@ -44,6 +45,7 @@
              class: "form-fld text-sm mb-2",
              style: "background-color: white" %>
 
+    <% _ -> %>
     <% end %>
   </.form>
 
@@ -59,6 +61,8 @@
          variable_path_index={@variable_path_index}
          return_types={arg.return_types}
          ast={arg.ast}
+         root_module={@root_module}
+         root_id={@root_id}
          />
      </div>
   <% end %>

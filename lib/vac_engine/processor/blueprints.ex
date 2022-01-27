@@ -37,6 +37,13 @@ defmodule VacEngine.Processor.Blueprints do
     |> arrange_all()
   end
 
+  def get_blueprint(blueprint_id, queries) do
+    Blueprint
+    |> queries.()
+    |> Repo.get(blueprint_id)
+    |> arrange_all()
+  end
+
   def filter_blueprints_by_workspace(query, workspace) do
     from(b in query, where: b.workspace_id == ^workspace.id)
   end
@@ -328,6 +335,8 @@ defmodule VacEngine.Processor.Blueprints do
     end)
   end
 
+  defp arrange_all(nil), do: nil
+
   defp arrange_all(blueprint) do
     blueprint
     |> arrange_variables()
@@ -528,6 +537,7 @@ defmodule VacEngine.Processor.Blueprints do
         Jason.decode(json)
         |> case do
           {:ok, data} ->
+            data = Map.put(data, "name", blueprint.name)
             update_blueprint(blueprint, data)
 
           {:error, _} ->
@@ -536,6 +546,76 @@ defmodule VacEngine.Processor.Blueprints do
 
       {:error, _} ->
         {:error, "cannot read file"}
+    end
+  end
+
+  def blueprint_version(%Blueprint{id: id}) do
+    blueprint_version(id)
+  end
+
+  def blueprint_version(id) do
+    Multi.new()
+    |> Multi.run(:blueprint, fn repo, _ ->
+      from(b in Blueprint,
+        where: b.id == ^id,
+        order_by: [desc: b.updated_at],
+        limit: 1,
+        select: b.updated_at
+      )
+      |> repo.one()
+      |> case do
+        nil -> {:error, nil}
+        date -> {:ok, Timex.to_unix(date)}
+      end
+    end)
+    |> Multi.run(:deduction, fn repo, _ ->
+      get_latest(id, repo, Deduction)
+    end)
+    |> Multi.run(:branch, fn repo, _ ->
+      get_latest(id, repo, Branch)
+    end)
+    |> Multi.run(:condition, fn repo, _ ->
+      get_latest(id, repo, Condition)
+    end)
+    |> Multi.run(:assignment, fn repo, _ ->
+      get_latest(id, repo, Assignment)
+    end)
+    |> Multi.run(:variable, fn repo, _ ->
+      get_latest(id, repo, Variable)
+    end)
+    |> Repo.transaction()
+    |> case do
+      {:ok,
+       %{
+         assignment: a,
+         blueprint: b,
+         branch: c,
+         condition: d,
+         deduction: e,
+         variable: f
+       }} ->
+        for(i <- [a, b, c, d, e, f], do: <<i::64>>, into: <<>>)
+        |> then(fn a ->
+          :crypto.hash(:md5, a)
+        end)
+        |> :binary.decode_unsigned()
+
+      _ ->
+        nil
+    end
+  end
+
+  defp get_latest(blueprint_id, repo, mod) do
+    from(r in mod,
+      where: r.blueprint_id == ^blueprint_id,
+      order_by: [desc: r.updated_at],
+      limit: 1,
+      select: r.updated_at
+    )
+    |> repo.one()
+    |> case do
+      nil -> {:ok, 0}
+      date -> {:ok, Timex.to_unix(date)}
     end
   end
 end

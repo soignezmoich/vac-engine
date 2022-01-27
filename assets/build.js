@@ -27,7 +27,7 @@ require('esbuild')
               path.join(__dirname, 'assets')
             ]
           }),
-          require('postcss-url'),
+          require('postcss-url')({ url: 'inline' }),
           require('postcss-nested'),
           require('autoprefixer'),
           require('tailwindcss')()
@@ -39,6 +39,7 @@ require('esbuild')
     bundle: true,
     watch: watch,
     minify: process.env.NODE_ENV == "production",
+    sourcemap: process.env.NODE_ENV == "production" ? false : "both",
     outdir: '../priv/static/assets/',
     outbase: './',
   })

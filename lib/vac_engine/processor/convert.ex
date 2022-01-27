@@ -42,7 +42,7 @@ defmodule VacEngine.Processor.Convert do
     |> Enum.find_value(fn fmt ->
       Timex.parse(str, fmt)
       |> case do
-        {:ok, result} -> result
+        {:ok, result} -> result |> Timex.to_naive_datetime()
         _ -> nil
       end
     end)

@@ -4,7 +4,7 @@
     <.text_card title="Loading" text="Loading in progress."/>
     </.flex_center>
   <% not is_nil(@blueprint) -> %>
-  <div class="flex-grow flex flex-col p-4">
+  <div class="flex-grow flex flex-col">
     <%= case @live_action do %>
     <% :summary -> %>
       <.live_component
@@ -35,6 +35,12 @@
       <.live_component
          module={SimulationEditorComponent}
          id="simulation_editor"
+         role={@role}
+         blueprint={@blueprint} />
+    <% :simulations_test -> %>
+      <.live_component
+         module={SimulationEditorTestComponent}
+         id="simulation_editor_test"
          role={@role}
          blueprint={@blueprint} />
     <% end %>

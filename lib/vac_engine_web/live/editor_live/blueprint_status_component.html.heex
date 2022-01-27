@@ -1,0 +1,32 @@
+<div class="w-full divide-black bg-white flex flex-col text-xs shadow-md p-3 mt-4">
+  <div class="font-bold text-base">Blueprint status</div>
+  <hr class="mb-2 border-black">
+  <div class="font-bold mb-1">Variables</div>
+  <div>Input: <%= @stats.variables.input %> </div>
+  <div>Intermediate: <%= @stats.variables.intermediate %> </div>
+  <div>Output: <%= @stats.variables.output %> </div>
+
+  <div class="font-bold mb-1 mt-4">Logic</div>
+  <div>Deduction: <%= @stats.logic.deduction %></div>
+  <div>Branch: <%= @stats.logic.branch %></div>
+  <div>Column: <%= @stats.logic.column %></div>
+  <div>Condition: <%= @stats.logic.condition %></div>
+  <div>Assignment: <%= @stats.logic.assignment %></div>
+
+  <%= case @issues do %>
+  <% [_|_] = issues -> %>
+    <div class="text-red-600 mt-4 mb-2">
+      <%= Enum.count(issues) %> issues detected
+    </div>
+    <%= for i <- issues do %>
+      <div class="text-xs text-red-600"><%= i %></div>
+    <% end %>
+    <button phx-target={@myself}
+            phx-click="fix"
+            class="btn text-xs text-center mt-4">
+      Automatically fix issues
+    </button>
+  <% _ -> %>
+    <div class="text-xs mt-4">No issue</div>
+  <% end %>
+</div>

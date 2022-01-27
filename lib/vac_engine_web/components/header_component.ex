@@ -182,8 +182,7 @@ defmodule VacEngineWeb.HeaderComponent do
       <% end %>
       <%= live_patch @l, to: @a, class: "py-0.5 block" %>
       <%= if Map.get(assigns, :s) do %>
-        <div class="absolute bg-red-500 left-0 right-0 -bottom-px h-px
-        bg-cream-50">
+        <div class="absolute left-0 right-0 -bottom-px h-px bg-cream-50">
         </div>
       <% end %>
     </div>
@@ -246,6 +245,12 @@ defmodule VacEngineWeb.HeaderComponent do
         a: workspace_blueprint_path(Endpoint, :simulations, w.id, b.id),
         s: loc == :simulations,
         i: "hero/fast-forward"
+      },
+      %{
+        l: "Simulations test",
+        a: workspace_blueprint_path(Endpoint, :simulations_test, w.id, b.id),
+        s: loc == :simulations_test,
+        i: "hero/fast-forward"
       }
     ]
   end
@@ -292,7 +297,14 @@ defmodule VacEngineWeb.HeaderComponent do
         a: workspace_path(Endpoint, :index),
         s: loc == :workspace
       },
-      %{l: "API Keys", a: api_key_path(Endpoint, :index), s: loc == :api_key}
+      %{l: "API Keys", a: api_key_path(Endpoint, :index), s: loc == :api_key},
+      %{
+        l: "Maintenance",
+        a: maintenance_path(Endpoint, :index),
+        s:
+          loc ==
+            :maintenance
+      }
     ]
   end
 

@@ -1,31 +1,34 @@
-<thead>
-  <tr>
+<div class="table-row-group">
+  <div class="table-row">
     <%= if @has_conds? do %>
-      <th colspan={@cond_count} class="bg-cream-500 text-white px-4">
-      </th>
-      <th class="bg-white w-5"></th>
+      <%= for _cond_label <- @cond_labels do %>
+        <div class="table-cell bg-cream-500 text-white px-4">
+        </div>
+      <% end %>
+      <div class="table-cell bg-white text-white px-4">
+      </div>
     <% end %>
-    <th colspan={@assign_count} class="whitespace-nowrap bg-blue-500 text-white py-1 px-4">
+    <div class="table-cell whitespace-nowrap bg-blue-500 text-white py-1 px-4">
       <%= @assign_prefix %> →
-    </th>
-  </tr>
-  <tr>
+    </div>
+    <%= for _assign_label <- @assign_labels |> Enum.drop(1) do %>
+      <div class="table-cell bg-blue-500 py-1 px-4">
+      </div>
+    <% end %>
+  </div>
+  <div class="table-row">
     <%= if @has_conds? do %>
       <%= for cond_label <- @cond_labels do %>
-        <th class="bg-cream-400 text-white py-1 px-4">
-          <div class="mx-1">
-            <%= cond_label %>
-          </div>
-        </th>
+        <div class="bg-cream-400 text-white py-1 px-4 table-cell">
+          <%= cond_label %>
+        </div>
       <% end %>
-      <th class="bg-white"></th>
+      <div class="bg-white table-cell"></div>
     <% end %>
     <%= for assign_label <- @assign_labels do %>
-      <th class="bg-blue-400 text-white py-1 px-4">
-        <div class="mx-1">
-          <%= assign_label %>
-        </div>
-      </th>
+      <div class="bg-blue-400 text-white py-1 px-4 table-cell">
+        <%= assign_label %>
+      </div>
     <% end %>
-  </tr>
-</thead>
+  </div>
+</div>

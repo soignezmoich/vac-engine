@@ -129,11 +129,22 @@ defmodule VacEngine.Processor.Compiler do
     {fref, m, [state | args]}
   end
 
-  defp compile_blueprint_ast(ast, blueprint) do
+  defp compile_blueprint_ast(ast, blueprint, opts \\ []) do
+    opts =
+      %{
+        namespace: "Default"
+      }
+      |> Map.merge(Enum.into(opts, %{}))
+
     id = blueprint.id
 
+    namespace = opts[:namespace]
+
+    module_name =
+      :"Elixir.VacEngine.Processor.BlueprintCode.#{namespace}.I#{id}"
+
     quote do
-      defmodule unquote(:"Elixir.VacEngine.Processor.BlueprintCode.I#{id}") do
+      defmodule unquote(module_name) do
         require Logger
 
         def run(state) do
@@ -150,11 +161,13 @@ defmodule VacEngine.Processor.Compiler do
   @doc """
   Compile a blueprint and return AST
   """
-  def compile_blueprint(%Blueprint{deductions: []} = br) do
-    {:ok, nil |> compile_blueprint_ast(br)}
+  def compile_blueprint(br, opts \\ [])
+
+  def compile_blueprint(%Blueprint{deductions: []} = br, opts) do
+    {:ok, nil |> compile_blueprint_ast(br, opts)}
   end
 
-  def compile_blueprint(%Blueprint{} = blueprint) do
+  def compile_blueprint(%Blueprint{} = blueprint, opts) do
     fn_asts =
       blueprint.deductions
       |> Enum.map(&compile_deduction/1)
@@ -178,7 +191,7 @@ defmodule VacEngine.Processor.Compiler do
     ]
 
     ast = {:__block__, [], fn_asts}
-    {:ok, ast |> compile_blueprint_ast(blueprint)}
+    {:ok, ast |> compile_blueprint_ast(blueprint, opts)}
   catch
     {code, msg} ->
       {:error, "#{code}: #{msg}"}

@@ -13,6 +13,8 @@ defmodule VacEngine.Simulation.Stack do
 
     has_many(:layers, Layer)
 
+    has_one(:setting, through: [:blueprint, :simulation_setting])
+
     # set to false if you don't want the case stack to be run
     field(:active, :boolean)
   end

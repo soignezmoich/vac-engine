@@ -1,34 +1,48 @@
-defmodule VacEngineWeb.EditorLive.ExpressionEditorComponent do
+defmodule VacEngineWeb.EditorLive.DeductionCellInspectorComponent do
   use VacEngineWeb, :live_component
 
   import VacEngine.PipeHelpers
   alias VacEngine.Processor
+  alias VacEngine.Processor.Expression
   alias VacEngineWeb.EditorLive.ExpressionNodeEditorComponent
+  alias VacEngineWeb.EditorLive.DeductionCellInspectorComponent
 
   @impl true
   def mount(socket) do
     socket
     |> assign(
       cell_id: nil,
-      expression: nil,
+      cell: nil,
       type: :constant,
       changeset: nil,
       return_type: nil,
       transient_ast: nil,
-      error: nil
+      transient_ast_opts: nil,
+      error: nil,
+      description: nil,
+      exrepssion: nil
     )
     |> ok()
   end
 
   @impl true
-  def update(%{action: {:update_ast, ast}}, socket) do
-    {:ok, assign(socket, transient_ast: ast, error: nil)}
+  def update(%{action: {:update_ast, ast, opts}}, socket) do
+    {:ok,
+     assign(socket, transient_ast: ast, transient_ast_opts: opts, error: nil)}
+  end
+
+  @impl true
+  def update(%{action: :save}, socket) do
+    {:noreply, socket} = handle_event("save", nil, socket)
+    {:ok, socket}
   end
 
   @impl true
   def update(assigns, socket) do
     socket
+    |> assign(error: nil)
     |> assign(assigns)
+    |> extract_cell()
     |> parse_expression()
     |> ok()
   end
@@ -37,18 +51,29 @@ defmodule VacEngineWeb.EditorLive.ExpressionEditorComponent do
   def handle_event("cancel", _, socket) do
     socket
     |> assign(error: nil)
+    |> extract_cell()
     |> bump_form_id()
     |> pair(:noreply)
   end
 
   @impl true
   def handle_event(
-        "delete",
+        "update",
+        %{"cell" => %{"description" => description}},
+        socket
+      ) do
+    {:noreply, assign(socket, description: description)}
+  end
+
+  @impl true
+  def handle_event(
+        "save",
         _,
         %{
           assigns: %{
             column: column,
-            branch: branch
+            branch: branch,
+            transient_ast_opts: %{delete: true}
           }
         } = socket
       ) do
@@ -66,18 +91,22 @@ defmodule VacEngineWeb.EditorLive.ExpressionEditorComponent do
         %{
           assigns: %{
             transient_ast: ast,
+            transient_ast_opts: %{set_nil: set_nil},
             blueprint: blueprint,
             column: column,
-            branch: branch
+            branch: branch,
+            description: description
           }
         } = socket
       ) do
-    case ast do
-      nil ->
+    cond do
+      is_nil(ast) and not set_nil ->
         :error
 
-      ast ->
-        Processor.update_cell(ast, blueprint, branch, column)
+      true ->
+        Processor.update_cell(ast, blueprint, branch, column, %{
+          description: description
+        })
     end
     |> case do
       {:ok, _res} ->
@@ -89,9 +118,30 @@ defmodule VacEngineWeb.EditorLive.ExpressionEditorComponent do
     end
   end
 
+  defp extract_cell(
+         %{
+           assigns: %{
+             cell: cell
+           }
+         } = socket
+       ) do
+    {expression, description} =
+      case cell do
+        %{expression: e, description: d} -> {e, d}
+        _ -> {%Expression{}, nil}
+      end
+
+    socket
+    |> assign(
+      description: description,
+      expression: expression
+    )
+  end
+
   defp parse_expression(
          %{
            assigns: %{
+             cell: cell,
              expression: expression,
              branch: branch,
              column: column,
@@ -120,7 +170,11 @@ defmodule VacEngineWeb.EditorLive.ExpressionEditorComponent do
       cell_id: cell_id,
       ast: ast,
       column: column,
-      transient_ast: ast
+      transient_ast: ast,
+      transient_ast_opts: %{
+        delete: is_nil(cell),
+        set_nil: !is_nil(cell) && is_nil(ast)
+      }
     )
     |> bump_form_id()
   end

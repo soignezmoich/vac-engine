@@ -40,6 +40,12 @@ defmodule VacEngine.Processor.Condition do
   end
 
   @doc false
+  def changeset(data, attrs) do
+    data
+    |> cast(attrs, [:description])
+  end
+
+  @doc false
   def insert_bindings(data, ctx) do
     data
     |> update_in([Access.key(:expression)], fn e ->

@@ -114,6 +114,7 @@ defmodule VacEngineWeb.AuthLive.LoginFormComponent do
     ~H"""
     <%= text_input @f, :email,
           class: "h-8 form-fld
+                 focus:outline focus:outline-2 focus:outline-blue-600
                  #{if has_error?(@f, :email) do "bg-red-150" end}",
           autofocus: true %>
     """
@@ -126,11 +127,13 @@ defmodule VacEngineWeb.AuthLive.LoginFormComponent do
         <%= text_input @f, :password, value: input_value(@f, :password),
             style: "padding-right: 4rem",
             class: "h-8 form-fld
+                    focus:outline focus:outline-2 focus:outline-blue-600
                     #{if has_error?(@f, :password) do "bg-red-150" end}" %>
       <% else %>
         <%= password_input @f, :password, value: input_value(@f, :password),
             style: "padding-right: 4rem",
             class: "h-8 form-fld
+                    focus:outline focus:outline-2 focus:outline-blue-600
                     #{if has_error?(@f, :password) do "bg-red-150" end}" %>
       <% end %>
       <div phx-click="toggle_password"
@@ -156,7 +159,7 @@ defmodule VacEngineWeb.AuthLive.LoginFormComponent do
   def submit_button(assigns) do
     ~H"""
     <%= submit class: "mt-10 h-8 flex items-stretch w-full
-                       font-bold focus:outline-blue" do %>
+                       font-bold focus:outline focus:outline-2 focus:outline-blue-700" do %>
     <span class="loading-hide w-full bg-blue-600 text-gray-100
                  flex justify-center items-center">Login</span>
     <div class="loading-show w-full bg-gray-700 text-gray-100

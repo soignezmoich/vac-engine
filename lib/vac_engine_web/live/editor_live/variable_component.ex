@@ -36,9 +36,16 @@ defmodule VacEngineWeb.EditorLive.VariableComponent do
     indentation =
       variable.path
       # remove variable name
-      |> Enum.drop(-1)
+      |> Enum.drop(-2)
       # turn the variable parents into indentation
-      |> Enum.map(fn _ -> "- - " end)
+      |> Enum.map(fn _ -> "   " end)
+      |> then(fn i ->
+        if Enum.count(variable.path) > 1 do
+          i ++ ["└─"]
+        else
+          i
+        end
+      end)
       |> Enum.join()
 
     required =
@@ -82,7 +89,11 @@ defmodule VacEngineWeb.EditorLive.VariableComponent do
         unselected
       end
 
+    row_class =
+      "p-1 grid grid-cols-[300px_150px_200px_minmax(150px,_1fr)] #{row_class}"
+
     %{
+      description: variable.description,
       name: variable.name,
       type: variable.type,
       indentation: indentation,

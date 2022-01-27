@@ -80,8 +80,16 @@ defmodule VacEngine.Processor.State.Input do
         check_enum(var, value)
         store(value, mapped_data, hits, path, vpath)
 
+      is_binary(value) && Meta.is_type?(type, :integer, in_list) ->
+        value = Convert.parse_integer(value)
+        store(value, mapped_data, hits, path, vpath)
+
       is_number(value) && Meta.is_type?(type, :number, in_list) ->
         check_enum(var, value)
+        store(value, mapped_data, hits, path, vpath)
+
+      is_binary(value) && Meta.is_type?(type, :number, in_list) ->
+        value = Convert.parse_number(value)
         store(value, mapped_data, hits, path, vpath)
 
       is_binary(value) && Meta.is_type?(type, :string, in_list) ->

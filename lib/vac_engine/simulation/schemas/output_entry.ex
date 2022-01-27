@@ -11,7 +11,6 @@ defmodule VacEngine.Simulation.OutputEntry do
     belongs_to(:case, Case)
 
     field(:key, :string)
-    # if null, the output is forbidden # TODO maybe explicit boolean
     field(:expected, :string)
   end
 end
