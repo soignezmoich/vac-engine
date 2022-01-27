@@ -23,20 +23,18 @@
         </div>
     <% end %>
     <div class="h-2"/>
-    <table>
-        <tbody>
-            <%= for variable <- @blueprint.variables |> flatten_variables("input") do %>
-                <.live_component
-                module={CaseInputVariableEditorComponent}
-                id={"entry-editor-#{@case.id}-#{variable.id}"}
-                blueprint={@blueprint}
-                variable={variable}
-                template={@template}
-                case={@case}
-                stack={@stack}
-                action={@action}
-                filter={@filter}/>
-            <% end %>
-        </tbody>
-    </table>
+    <div class="table">
+        <%= for variable <- @blueprint.variables |> flatten_variables("input") do %>
+            <.live_component
+            module={CaseInputVariableEditorComponent}
+            id={"input_entry_editor_#{variable.id}"}
+            blueprint={@blueprint}
+            variable={variable}
+            template={@template}
+            case={@case}
+            stack={@stack}
+            action={@action}
+            filter={@filter}/>
+        <% end %>
+    </div>
 </div>

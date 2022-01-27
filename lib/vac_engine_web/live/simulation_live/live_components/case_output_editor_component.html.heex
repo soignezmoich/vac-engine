@@ -14,16 +14,14 @@
     </div>
 
     <div class="text-lg font-bold h-10 border-b border-black">Output</div>
-        <table>
-            <tbody>
-                <%= for variable <- @blueprint.variables |> flatten_variables("output") do %>
-                <.live_component
-                module={CaseOutputVariableEditorComponent}
-                id={"entry-editor-#{@case.id}-#{variable.id}"}
-                variable={variable}
-                case={@case}
-                filter={@filter} />
+    <div class="table">
+        <%= for variable <- @blueprint.variables |> flatten_variables("output") do %>
+            <.live_component
+            module={CaseOutputVariableEditorComponent}
+            id={"entry-editor-#{@case.id}-#{variable.id}"}
+            variable={variable}
+            case={@case}
+            filter={@filter} />
         <% end %>
-    </tbody>
-    </table>
+    </div>
 </div>

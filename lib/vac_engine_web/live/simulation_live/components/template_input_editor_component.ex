@@ -14,18 +14,16 @@ defmodule VacEngineWeb.SimulationLive.TemplateInputEditorComponent do
         Warning: no matching template.
         </div>
       <% end %>
-      <table>
-        <tbody>
-          <%= for variable <- @blueprint.variables |> flatten_variables("input") do %>
-            <.live_component
-            module={TemplateInputVariableEditorComponent}
-            id={"input_entry_editor_#{variable.path}"}
-            variable={variable}
-            template={@template}
-            blueprint={@blueprint} />
-          <% end %>
-        </tbody>
-      </table>
+      <div class="table">
+        <%= for variable <- @blueprint.variables |> flatten_variables("input") do %>
+          <.live_component
+          module={TemplateInputVariableEditorComponent}
+          id={"input_entry_editor_#{variable.id}"}
+          variable={variable}
+          template={@template}
+          blueprint={@blueprint} />
+        <% end %>
+      </div>
     </div>
     """
   end

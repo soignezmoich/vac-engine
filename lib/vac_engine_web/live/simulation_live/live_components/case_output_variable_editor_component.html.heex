@@ -1,22 +1,22 @@
-<tr class={if @mismatch do "bg-red-200" else "bg-purple-100" end}>
+<div class={"table-row #{if @mismatch do "bg-red-200" else "bg-purple-100" end}"}>
   <%= case {@expected, @forbidden} do %>
     <% {expected, forbidden} when not is_nil(expected) or forbidden -> %>
-      <td class="pr-3 text-purple-700">
+      <div class="table-cell pr-3 text-purple-700">
         <span class="text-xs hover:text-purple-400"><.icon name="toggle-on" width="2rem"/></span>
-      </td>
-      <td>
+      </div>
+      <div class="table-cell">
         <%= @variable.path |> Enum.drop(-1) |> Enum.map(fn _ -> "\u2574" end) %><%= @variable.name %>
-      </td>
+      </div>
       <%= if @forbidden do %>
-        <td class={"pl-2 text-red-500"}>
+        <div class={"table-cell pl-2 text-red-500"}>
           <span class="text-xs hover:text-red-300"><.icon name="hero/ban" width="1.6rem"/></span>
-        </td>
-        <td/>
+        </div>
+        <div/>
       <% else %>
-        <td class={"pl-2 text-gray-300"}>
+        <div class={"table-cell pl-2 text-gray-300"}>
           <span class="text-xs hover:text-red-300"><.icon name="hero/ban" width="1.6rem"/></span>
-        </td>
-        <td class="pl-2">
+        </div>
+        <div class="table-cell pl-2">
           <%= case @variable.type do %>
           <% :boolean -> %>
             <.boolean_input value={@expected} />
@@ -35,9 +35,9 @@
               placeholder
             </div>
           <% end %>
-        </td>
+        </div>
       <% end %>
-      <td class="w-full">
+      <div class="table-cell w-full">
         <%= if is_nil(@actual) do %>
           -
         <% else %>
@@ -47,21 +47,21 @@
             <%= inspect(@actual) %>
           <% end %>
         <% end %>
-      </td>
+      </div>
     <% _ -> %>
-      <td class="pr-3 text-purple-700">
+      <div class="table-cell pr-3 text-purple-700">
         <span class="text-xs hover:text-purple-400"><.icon name="toggle-off" width="2rem"/></span>
-      </td>
-      <td>
+      </div>
+      <div class="table-cell">
         <%= @variable.path |> Enum.drop(-1) |> Enum.map(fn _ -> "\u2574" end) %><%= @variable.name %>
-      </td>
-      <td/>
-      <td>
+      </div>
+      <div class="table-cell"/>
+      <div class="table-cell">
         <div class="inline-block form-fld invisible">
           placeholder
         </div>
-      </td>
-      <td class="w-full">
+      </div>
+      <div class="table-cell w-full">
         <%= if is_nil(@actual) do %>
           -
         <% else %>
@@ -71,6 +71,6 @@
             <%= inspect(@actual) %>
           <% end %>
         <% end %>
-      </td>
+      </div>
   <% end %>
-</tr>
+</div>
