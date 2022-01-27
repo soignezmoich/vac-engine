@@ -99,7 +99,7 @@ defmodule VacEngine.Simulation do
     Repo.delete(output_entry)
   end
 
-  
+
   def update_input_entry(input_entry, value) do
     input_entry
     |> InputEntry.changeset(%{value: value})
@@ -171,9 +171,6 @@ defmodule VacEngine.Simulation do
     case_layer =
       stack.layers
       |> Enum.find(&(&1.position == @case_layer_position))
-
-    IO.puts("GET STACK CASE case_layer=")
-    IO.inspect(case_layer)
 
     case case_layer do
       nil ->
