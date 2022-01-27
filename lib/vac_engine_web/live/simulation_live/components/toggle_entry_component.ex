@@ -4,6 +4,9 @@ defmodule VacEngineWeb.SimulationLive.ToggleEntryComponent do
   import VacEngineWeb.IconComponent
 
   def render(assigns) do
+
+    # IO.inspect(assigns)
+
     ~H"""
     <div class="inline-block align-bottom h-10 pt-2 overflow-y-hidden">
       <%= if (@active) do %>
@@ -14,7 +17,7 @@ defmodule VacEngineWeb.SimulationLive.ToggleEntryComponent do
         class="text-xs text-purple-700 hover:text-purple-400">
           <.icon name={"toggle-on"} width="2rem"/>
         </button>
-        <% else %>
+      <% else %>
         <button
         phx-click={"set_entry"}
         phx-value-active={"true"}

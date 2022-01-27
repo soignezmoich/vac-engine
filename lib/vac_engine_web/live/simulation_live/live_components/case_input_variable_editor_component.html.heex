@@ -1,0 +1,71 @@
+<tr id={"input_entry_editor_#{@variable.path}"} class={"#{@bg_color}"}>
+  <%= if !is_nil(@input_entry) do %>
+    <td>
+      <ToggleEntryComponent.render active={true} target_component={"#input_entry_editor_#{@variable.path}"} />
+    </td>
+    <td>
+      <%= @variable.path |> Enum.drop(-1) |> Enum.map(fn _ -> "\u2574" end) %>
+      <span><%= @variable.name %></span>
+    </td>
+    <td class="pl-2">
+      <%= case @variable.type do %>
+      <% :map -> %>
+        <div class="inline-block form-fld invisible">
+          placeholder
+        </div>
+     <% type -> %>
+        <.live_component
+        module={EntryValueFieldComponent}
+        input_entry={@input_entry}
+        target_component={"input_entry_editor_#{@variable.path}"}
+        variable_type={type}
+        variable_enum={@variable.enum}
+        template={@template}
+        blueprint={@blueprint}
+        id={"input_entry_value_field_#{@variable.path}"}
+        />
+      <% end %>
+    </td>
+    <td class="w-full" />
+  <% else %>
+    <%= if (@filter != "case" && !is_nil(@template_input_entry)) do %>
+      <td class="pr-3">
+        <ToggleEntryComponent.render active={false} target_component={"#input_entry_editor_#{@variable.path}"} />
+      </td>
+      <td>
+        <%= @variable.path |> Enum.drop(-1) |> Enum.map(fn _ -> "\u2574" end) %>
+        <%= @variable.name %>
+      </td>
+      <td class="pl-2">
+        <%= case @variable.type do %>
+        <% :map -> %>
+          <div class="inline-block form-fld invisible">
+            placeholder
+          </div>
+        <% _type -> %>
+          <div class={"m-1 px-2 w-full text-sm"}>
+            <%= @template_input_entry.value %>
+          </div>
+        <% end %>
+      </td>
+      <td class="w-full" />
+    <% else %>
+      <%= if (@filter == "all") do %>
+        <td class="pr-3">
+          <ToggleEntryComponent.render active={false} target_component={"#input_entry_editor_#{@variable.path}"} />
+        </td>
+        <td>
+          <%= @variable.path |> Enum.drop(-1) |> Enum.map(fn _ -> "\u2574" end) %>
+          <%= @variable.name %>
+        </td>
+        <td>
+          <div class="inline-block form-fld invisible">
+            placeholder
+          </div>
+        </td>
+        <td class="w-full" />
+      <% end %>
+    <% end %>
+  <% end %>
+</tr>
+

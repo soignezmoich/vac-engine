@@ -8,13 +8,12 @@
         <div class="h-4" />
         <MenuTemplateListComponent.render
           templates={@templates}
-          blueprint={@blueprint}
           selected_element={@selected_element}
         />
         <div class="h-4" />
         <MenuCaseListComponent.render
           cases={@simulation.cases}
-          blueprint={@blueprint}
+          stacks={@stacks}
           selected_element={@selected_element}
         />
       </div>
@@ -31,15 +30,22 @@
             template={@selected_element}
             blueprint={@blueprint}
           />
-        <% %{type: "case"} -> %>
-          <CaseEditorComponent.render
-            case={@selected_element}
-            blueprint={@blueprint}
-            templates={@simulation.templates}
-          />
-        <% _ -> %>
+        <% %Stack{} = stack -> %>
+          <.live_component
+          module={CaseEditorComponent}
+          id="case-editor-component"
+          stack={@selected_element}
+          blueprint={@blueprint}
+          templates={@templates}
+          action={@action} />
+        <% other -> %>
+          <div class={"ml-5 mt-10"}>
+            <p>No element selected.</p>
+            <div><%= inspect(other)%></div>
+          </div>
         <% end %>
       </div>
+      <div><%= inspect(@action) %></div>
     </div>
   </div>
 </div>

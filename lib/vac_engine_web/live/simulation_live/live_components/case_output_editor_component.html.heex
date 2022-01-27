@@ -17,7 +17,9 @@
         <table>
             <tbody>
                 <%= for variable <- @blueprint.variables |> flatten_variables("output") do %>
-                <OutputVariableEditor.render
+                <.live_component
+                module={CaseOutputVariableEditorComponent}
+                id={"entry-editor-#{@case.id}-#{variable.id}"}
                 variable={variable}
                 case={@case}
                 filter={@filter} />

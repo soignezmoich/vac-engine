@@ -16,7 +16,6 @@ defmodule VacEngine.Simulation.InputEntry do
     field(:value, :string)
   end
 
-
   def changeset(input_entry, attrs) do
     input_entry
     |> cast(attrs, [:value])

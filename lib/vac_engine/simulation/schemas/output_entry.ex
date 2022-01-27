@@ -12,6 +12,6 @@ defmodule VacEngine.Simulation.OutputEntry do
 
     field(:key, :string)
     # if null, the output is forbidden # TODO maybe explicit boolean
-    field(:value, :string)
+    field(:expected, :string)
   end
 end

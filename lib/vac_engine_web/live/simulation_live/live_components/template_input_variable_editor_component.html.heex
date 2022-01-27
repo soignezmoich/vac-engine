@@ -4,7 +4,7 @@
       <ToggleEntryComponent.render active={true} target_component={"#input_entry_editor_#{@variable.path}"} />
     </td>
     <td>
-      <%= @variable.path |> Enum.drop(-1) |> Enum.map(&("\u2574" || &1)) %>
+      <%= @variable.path |> Enum.drop(-1) |> Enum.map(fn _ -> "\u2574" end) %>
       <span><%= @variable.name %></span>
     </td>
     <td class="pl-2">
@@ -15,8 +15,8 @@
         </div>
      <% type -> %>
         <.live_component
-        input_entry={@input_entry}
         module={EntryValueFieldComponent}
+        input_entry={@input_entry}
         target_component={"input_entry_editor_#{@variable.path}"}
         variable_type={type}
         variable_enum={@variable.enum}
@@ -32,7 +32,7 @@
       <ToggleEntryComponent.render active={false} target_component={"#input_entry_editor_#{@variable.path}"} />
     </td>
     <td>
-      <%= @variable.path |> Enum.drop(-1) |> Enum.map(&("\u2574" || &1)) %>
+      <%= @variable.path |> Enum.drop(-1) |> Enum.map(fn _ -> "\u2574" end) %>
       <%= @variable.name %>
     </td>
     <td>

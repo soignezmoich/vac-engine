@@ -1,23 +1,33 @@
 defmodule VacEngineWeb.SimulationLive.MenuCaseItemComponent do
   use Phoenix.Component
 
-  import VacEngine.SimulationHelpers
-  import VacEngine.VariableHelpers
   import VacEngineWeb.IconComponent
 
+  alias VacEngine.Simulation
+
   def render(assigns) do
-    has_mismatch =
-      assigns.blueprint.variables
-      |> flatten_variables("output")
-      |> case_mismatch?(assigns.case)
+    has_mismatch = false
+    # assigns.blueprint.variables
+    # |> flatten_variables("output")
+    # |> case_mismatch?(assigns.case)
+
+    case_name =
+      case Simulation.get_stack_case(assigns.stack) do
+        %{name: name} -> name
+        _ -> "ERROR: missing name"
+      end
 
     assigns =
       assign(assigns,
-        has_mismatch: has_mismatch
+        has_mismatch: has_mismatch,
+        case_name: case_name
       )
 
     ~H"""
     <div>
+      <%= if @selected do %>
+        selected
+      <% end %>
       <%= if @has_mismatch  do %>
         <div class="inline-block align-top text-red-500">
           <.icon name="hero/exclamation-circle" width="1.5rem" />
@@ -33,7 +43,7 @@ defmodule VacEngineWeb.SimulationLive.MenuCaseItemComponent do
         phx-click={"menu_select"}
         phx-target={"#simulation_editor"}
       >
-        <%= @case.name %>
+        <%= @case_name %>
       </div>
     </div>
     """

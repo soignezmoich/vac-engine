@@ -8,12 +8,11 @@ defmodule VacEngineWeb.SimulationLive.EntryValueFieldComponent do
   alias VacEngine.Simulation
   alias VacEngineWeb.SimulationLive.SimulationEditorComponent
 
-
   def update(assigns, socket) do
-
-    changeset = assigns.input_entry
-    |> cast(%{}, [:value])
-    |> Map.put(:action, :update)
+    changeset =
+      assigns.input_entry
+      |> cast(%{}, [:value])
+      |> Map.put(:action, :update)
 
     {
       :ok,
@@ -23,51 +22,41 @@ defmodule VacEngineWeb.SimulationLive.EntryValueFieldComponent do
     }
   end
 
-
-
   def handle_event("validate", params, socket) do
 
-    # IO.puts("====== VARIABLE ======")
-    # IO.inspect(Map.get(socket.assigns, :variable_enum))
-    # IO.puts("====== END OF VARIABLE ======")
-
-    if (dropdown?(socket.assigns.variable_type, socket.assigns.variable_enum)) do
-
+    if dropdown?(socket.assigns.variable_type, socket.assigns.variable_enum) do
       handle_event("submit", params, socket)
     else
-
       variable_type = socket.assigns.variable_type
 
-      changeset = socket.assigns.input_entry
-      |> cast(params["input_entry"], [:value])
-      |> validate_required([:key, :value])
-      |> validate_entry_type(variable_type)
-      |> validate_entry_enum(Map.get(socket.assigns, :variable_enum))
-      |> Map.put(:action, :update)
+      changeset =
+        socket.assigns.input_entry
+        |> cast(params["input_entry"], [:value])
+        |> validate_required([:key, :value])
+        |> validate_entry_type(variable_type)
+        |> validate_entry_enum(Map.get(socket.assigns, :variable_enum))
+        |> Map.put(:action, :update)
 
-      parsed_value = case Convert.parse_string(params["input_entry"]["value"], variable_type) do
-        {:ok, parsed_value} -> parsed_value
-        _ -> nil
-      end
+      parsed_value =
+        case Convert.parse_string(params["input_entry"]["value"], variable_type) do
+          {:ok, parsed_value} -> parsed_value
+          _ -> nil
+        end
 
-      {:noreply, socket |> assign(changeset: changeset, parsed_value: parsed_value)}
+      {:noreply,
+       socket |> assign(changeset: changeset, parsed_value: parsed_value)}
     end
-
   end
 
   def handle_event("submit", %{"input_entry" => input_entry}, socket) do
-
     variable_type = socket.assigns.variable_type
 
     case Convert.parse_string(input_entry["value"], variable_type) do
-
       {:error, _error} ->
-        IO.puts("Error")
         {:noreply, socket}
 
       {:ok, parsed_value} ->
-        IO.puts("Parsed successfully")
-        IO.inspect(parsed_value)
+
         socket.assigns.input_entry
         |> cast(%{"value" => to_string(parsed_value)}, [:value])
         |> validate_required([:key, :value])
@@ -88,21 +77,24 @@ defmodule VacEngineWeb.SimulationLive.EntryValueFieldComponent do
 
         {:noreply, socket |> assign(version: socket.assigns.version + 1)}
     end
-
   end
 
-
   defp validate_entry_type(entry_changeset, variable_type) do
-    validate_change(entry_changeset, :value, "not parsable as #{variable_type}", fn (_field, value) ->
-      case Convert.parse_string(value, variable_type) do
-        {:error, error} -> [{:value, error}]
-        _ -> []
+    validate_change(
+      entry_changeset,
+      :value,
+      "not parsable as #{variable_type}",
+      fn _field, value ->
+        case Convert.parse_string(value, variable_type) do
+          {:error, error} -> [{:value, error}]
+          _ -> []
+        end
       end
-    end)
+    )
   end
 
   defp validate_entry_enum(entry_changeset, variable_enum) do
-    if (variable_enum) do
+    if variable_enum do
       entry_changeset
       |> validate_inclusion(:value, variable_enum, message: "not in enum")
     else
@@ -117,5 +109,4 @@ defmodule VacEngineWeb.SimulationLive.EntryValueFieldComponent do
       _ -> false
     end
   end
-
 end

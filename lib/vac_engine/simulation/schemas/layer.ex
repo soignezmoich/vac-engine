@@ -13,5 +13,7 @@ defmodule VacEngine.Simulation.Layer do
     belongs_to(:workspace, Workspace)
     belongs_to(:stack, Stack)
     belongs_to(:case, Case)
+
+    field(:position, :integer)
   end
 end
