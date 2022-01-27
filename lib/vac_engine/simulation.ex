@@ -100,7 +100,7 @@ defmodule VacEngine.Simulation do
   end
 
 
-  def update_input_entry(input_entry, value) do
+  def update_output_entry(input_entry, value) do
     input_entry
     |> InputEntry.changeset(%{value: value})
     |> Repo.update()
