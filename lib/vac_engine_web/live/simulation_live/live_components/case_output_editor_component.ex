@@ -12,7 +12,6 @@ defmodule VacEngineWeb.SimulationLive.CaseOutputEditorComponent do
   end
 
   def handle_event("set_filter", %{"filter" => new_filter}, socket) do
-
     {:noreply,
      socket
      |> assign(filter: new_filter)}

@@ -23,7 +23,6 @@ defmodule VacEngineWeb.SimulationLive.EntryValueFieldComponent do
   end
 
   def handle_event("validate", params, socket) do
-
     if dropdown?(socket.assigns.variable_type, socket.assigns.variable_enum) do
       handle_event("submit", params, socket)
     else
@@ -56,7 +55,6 @@ defmodule VacEngineWeb.SimulationLive.EntryValueFieldComponent do
         {:noreply, socket}
 
       {:ok, parsed_value} ->
-
         socket.assigns.input_entry
         |> cast(%{"value" => to_string(parsed_value)}, [:value])
         |> validate_required([:key, :value])

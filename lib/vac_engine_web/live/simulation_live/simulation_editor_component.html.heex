@@ -3,49 +3,32 @@
     <div class="w-96 flex-shrink-0 mr-2 flex flex-col overflow-y-auto mt-3">
       <div class="mx-2">
         <MenuConfigComponent.render
-          selected_element={@selected_element}
+          selected_type={@selected_type}
+          selected_id={@selected_id}
         />
         <div class="h-4" />
-        <MenuTemplateListComponent.render
-          templates={@templates}
-          selected_element={@selected_element}
-        />
-        <div class="h-4" />
-        <MenuCaseListComponent.render
-          cases={@simulation.cases}
-          stacks={@stacks}
-          selected_element={@selected_element}
-        />
-      </div>
-    </div>
-    <div class="flex-grow flex flex-col overflow-y-auto">
-      <div class="flex-shrink">
-        <%= case @selected_element do %>
-        <% :config -> %>
-          <ConfigEditorComponent.render
-            configuration={@simulation.config}
-          />
-        <% %{runnable: false} -> %>
-          <TemplateEditorComponent.render
-            template={@selected_element}
-            blueprint={@blueprint}
-          />
-        <% %Stack{} = stack -> %>
-          <.live_component
-          module={CaseEditorComponent}
-          id="case-editor-component"
-          stack={@selected_element}
+        <.live_component
+          module={MenuTemplateListComponent}
+          id={"menu_template_list"}
           blueprint={@blueprint}
-          templates={@templates}
-          action={@action} />
-        <% other -> %>
-          <div class={"ml-5 mt-10"}>
-            <p>No element selected.</p>
-            <div><%= inspect(other)%></div>
-          </div>
-        <% end %>
+          selected_type={@selected_type}
+          selected_id={@selected_id}
+        />
+        <div class="h-4" />
+        <.live_component
+          module={MenuStackListComponent}
+          id={"menu_stacks_list"}
+          blueprint={@blueprint}
+          selected_type={@selected_type}
+          selected_id={@selected_id}
+        />
       </div>
-      <div><%= inspect(@action) %></div>
     </div>
+    <%# <.live_component
+        module={EditionPanelComponent}
+        id={"edition_panel"}
+        content_type={@selection_type}
+        content_id={@selection_id}
+        blueprint={@blueprint} /> %>
   </div>
 </div>

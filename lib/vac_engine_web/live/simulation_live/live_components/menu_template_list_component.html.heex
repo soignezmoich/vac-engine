@@ -1,0 +1,34 @@
+
+<div class="w-full bg-white filter drop-shadow-lg p-3">
+  <div class="font-bold mb-2 border-b border-black">
+    Templates
+  </div>
+  <%= for {template_id, template_name} <- @templates do %>
+    <.live_component
+      module={MenuTemplateItemComponent}
+      id={"menu_template_item_#{template_id}"}
+      template_id={template_id}
+      template_name={template_name}
+      selected={@has_selection && template_id == @selected_id}
+    />
+  <% end %>
+
+  <div class="h-2"/>
+
+  <.form let={f}
+    for={:create_template}
+    phx-throttle="100"
+    phx-submit="create"
+    phx-change="validate"
+    phx-target={@myself}
+  >
+    <%= text_input f, :name,
+      class: "form-fld text-sm",
+      placeholder: "new case" %>
+    <%= submit "create", class: "btn align-top" %>
+    <p class="px-2 py-1 text-red-400 text-sm">
+      <%=@creation_error_message%>
+    </p>
+  </.form>
+</div>
+

@@ -4,7 +4,6 @@ defmodule VacEngineWeb.SimulationLive.ToggleEntryComponent do
   import VacEngineWeb.IconComponent
 
   def render(assigns) do
-
     # IO.inspect(assigns)
 
     ~H"""

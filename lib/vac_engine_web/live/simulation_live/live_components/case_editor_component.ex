@@ -11,11 +11,11 @@ defmodule VacEngineWeb.SimulationLive.CaseEditorComponent do
   alias VacEngineWeb.SimulationLive.SimulationEditorComponent
 
   def update(assigns, socket) do
-
-    data = case assigns.stack.layers |> Enum.find(&(&1.position == 1)) do
-      nil -> %{case_id: nil}
-      layer -> %{case_id: layer.case_id}
-    end
+    data =
+      case assigns.stack.layers |> Enum.find(&(&1.position == 1)) do
+        nil -> %{case_id: nil}
+        layer -> %{case_id: layer.case_id}
+      end
 
     types = %{case_id: :integer}
 
@@ -40,7 +40,7 @@ defmodule VacEngineWeb.SimulationLive.CaseEditorComponent do
       |> assign(
         changeset: changeset,
         case: kase,
-        template: template,
+        template: template
       )
     }
   end
@@ -50,9 +50,9 @@ defmodule VacEngineWeb.SimulationLive.CaseEditorComponent do
   end
 
   def handle_event("set_template", params, socket) do
-
-    {template_id, _} = params["layer"]["case_id"]
-                       |> Integer.parse()
+    {template_id, _} =
+      params["layer"]["case_id"]
+      |> Integer.parse()
 
     Simulation.set_stack_template(socket.assigns.stack, template_id)
 
@@ -66,7 +66,6 @@ defmodule VacEngineWeb.SimulationLive.CaseEditorComponent do
       templates: Simulation.get_templates(blueprint),
       action: "choose-template-#{template_id}"
     )
-
 
     {:noreply, socket}
   end

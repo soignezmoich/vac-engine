@@ -1,0 +1,32 @@
+<div class="w-full bg-white filter drop-shadow-lg p-3">
+  <div class="font-bold mb-2 border-b border-black">
+    Cases
+  </div>
+  <%= for {stack_id, stack_name} <- @stacks do %>
+    <.live_component
+      module={MenuStackItemComponent}
+      id={"menu_stack_item_#{stack_id}"}
+      stack_id={stack_id}
+      stack_name={stack_name}
+      selected={@has_selection && stack_id == @selected_id} />
+  <% end %>
+
+  <div class="h-2"/>
+
+  <.form let={f}
+    for={:create_stack}
+    phx-throttle="100"
+    phx-submit="create"
+    phx-change="validate"
+    phx-target={@myself}
+  >
+    <%= text_input f, :name,
+      class: "form-fld text-sm",
+      placeholder: "new case" %>
+    <%= submit "create", class: "btn align-top" %>
+    <p class="px-2 py-1 text-red-400 text-sm">
+      <%=@creation_error_message%>
+    </p>
+  </.form>
+
+</div>

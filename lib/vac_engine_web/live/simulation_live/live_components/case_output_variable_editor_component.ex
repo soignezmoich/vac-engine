@@ -5,9 +5,6 @@ defmodule VacEngineWeb.SimulationLive.CaseOutputVariableEditorComponent do
   import VacEngineWeb.SimulationLive.InputComponent
   import VacEngineWeb.IconComponent
 
-
-
-
   def update(assigns, socket) do
     expected =
       Map.get(assigns.case, :expect, %{})
@@ -21,17 +18,17 @@ defmodule VacEngineWeb.SimulationLive.CaseOutputVariableEditorComponent do
       Map.get(assigns.case, :actual, %{})
       |> get_value(assigns.variable.path)
 
-    mismatch=check_mismatch?({expected, forbidden, actual})
+    mismatch = check_mismatch?({expected, forbidden, actual})
 
-
-    socket = socket
-             |> assign(assigns)
-             |> assign(
-                  expected: expected,
-                  forbidden: forbidden,
-                  actual: actual,
-                  mismatch: mismatch
-                )
+    socket =
+      socket
+      |> assign(assigns)
+      |> assign(
+        expected: expected,
+        forbidden: forbidden,
+        actual: actual,
+        mismatch: mismatch
+      )
 
     {:ok, socket}
   end

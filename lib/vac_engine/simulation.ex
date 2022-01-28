@@ -297,6 +297,16 @@ defmodule VacEngine.Simulation do
     |> Repo.all()
   end
 
+  def get_template_names(blueprint) do
+    from(t in Template,
+      left_join: c in Case,
+      on: t.case_id == c.id,
+      where: t.blueprint_id == ^blueprint.id,
+      select: {t.id, c.name}
+    )
+    |> Repo.all()
+  end
+
   def create_template(blueprint, name) do
     Multi.new()
     |> Multi.insert(:case, fn _ ->
@@ -306,6 +316,7 @@ defmodule VacEngine.Simulation do
         runnable: false
       }
       |> change(%{})
+      |> check_constraint(:name, name: :simulation_cases_name_format)
       |> unique_constraint([:name, :workspace_id])
     end)
     |> Multi.insert(:template, fn %{case: kase} ->
@@ -356,14 +367,11 @@ defmodule VacEngine.Simulation do
     Repo.delete(output_entry)
   end
 
-
   def update_output_entry(input_entry, value) do
     input_entry
     |> InputEntry.changeset(%{value: value})
     |> Repo.update()
   end
-
-
 
   # ### CASE STACKS ###
 
@@ -371,6 +379,18 @@ defmodule VacEngine.Simulation do
     from(s in Stack,
       where: s.blueprint_id == ^blueprint.id,
       preload: [:layers]
+    )
+    |> Repo.all()
+  end
+
+  def get_stack_names(blueprint) do
+    from(s in Stack,
+      left_join: l in Layer,
+      on: l.stack_id == s.id and l.position == 0,
+      left_join: c in Case,
+      on: l.case_id == c.id,
+      where: s.blueprint_id == ^blueprint.id,
+      select: {s.id, c.name}
     )
     |> Repo.all()
   end
@@ -384,6 +404,8 @@ defmodule VacEngine.Simulation do
         runnable: false
       }
       |> change(%{})
+      |> IO.inspect()
+      |> check_constraint(:name, name: :simulation_cases_name_format)
       |> unique_constraint([:name, :workspace_id])
     end)
     |> Multi.insert(:stack, fn _ ->
@@ -415,7 +437,7 @@ defmodule VacEngine.Simulation do
       nil ->
         nil
 
-        %{case_id: case_id} ->
+      %{case_id: case_id} ->
         from(c in Case,
           where: c.id == ^case_id,
           preload: [:input_entries]
@@ -435,8 +457,8 @@ defmodule VacEngine.Simulation do
 
       %{case_id: case_id} ->
         from(c in Case,
-        where: c.id == ^case_id,
-        preload: [:input_entries, :output_entries]
+          where: c.id == ^case_id,
+          preload: [:input_entries, :output_entries]
         )
         |> Repo.one()
         |> IO.inspect()

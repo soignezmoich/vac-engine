@@ -48,6 +48,14 @@ defmodule VacEngine.Repo.Migrations.SimulationCases do
     create(index(:simulation_cases, [:workspace_id]))
     create(unique_index(:simulation_cases, [:id, :workspace_id]))
 
+    create(
+      constraint(
+        :simulation_cases,
+        "simulation_cases_name_format",
+        check: "name ~ '^[A-Za-z][A-Za-z0-9_-]+$'"
+      )
+    )
+
     ### CASE ENTRIES ###
 
     create table(:simulation_input_entries) do
