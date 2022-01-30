@@ -10,7 +10,8 @@ defmodule VacEngineWeb.SimulationLive.MenuTemplateListComponent do
           blueprint: blueprint,
           id: id,
           selected_id: selected_id,
-          selected_type: selected_type
+          selected_type: selected_type,
+          templates: templates
         },
         socket
       ) do
@@ -19,11 +20,10 @@ defmodule VacEngineWeb.SimulationLive.MenuTemplateListComponent do
      |> assign(
        id: id,
        blueprint: blueprint,
-       templates: Simulation.get_template_names(blueprint),
+       templates: templates,
        selected_id: selected_id,
        has_selection: selected_type == :template,
        creation_error_message: nil
-
      )}
   end
 
@@ -55,5 +55,4 @@ defmodule VacEngineWeb.SimulationLive.MenuTemplateListComponent do
 
     {:noreply, socket}
   end
-
 end

@@ -1,14 +1,14 @@
-defmodule VacEngineWeb.SimulationLive.CaseOutputEditorComponent do
+defmodule VacEngineWeb.SimulationLive.StackInputComponent do
   use VacEngineWeb, :live_component
 
   import VacEngine.VariableHelpers
 
-  alias VacEngineWeb.SimulationLive.CaseOutputVariableEditorComponent
+  alias VacEngineWeb.SimulationLive.CaseInputVariableEditorComponent
 
   def mount(socket) do
     {:ok,
      socket
-     |> assign(filter: "case")}
+     |> assign(filter: "template")}
   end
 
   def handle_event("set_filter", %{"filter" => new_filter}, socket) do

@@ -5,8 +5,10 @@ defmodule VacEngineWeb.SimulationLive.MenuStackItemComponent do
 
   alias VacEngineWeb.SimulationLive.SimulationEditorComponent
 
+  @impl true
   def update(
         %{
+          id: id,
           stack_id: stack_id,
           stack_name: stack_name,
           selected: selected
@@ -16,6 +18,7 @@ defmodule VacEngineWeb.SimulationLive.MenuStackItemComponent do
     {:ok,
      socket
      |> assign(
+       id: id,
        stack_id: stack_id,
        stack_name: stack_name,
        selected: selected,
@@ -23,6 +26,7 @@ defmodule VacEngineWeb.SimulationLive.MenuStackItemComponent do
      )}
   end
 
+  @impl true
   def handle_event("select_item", params, socket) do
     send_update(SimulationEditorComponent,
       id: "simulation_editor",

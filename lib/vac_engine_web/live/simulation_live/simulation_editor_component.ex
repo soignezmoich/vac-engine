@@ -5,8 +5,7 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
   alias VacEngine.Simulation.Case
   alias VacEngine.Simulation.Stack
 
-  alias VacEngineWeb.SimulationLive.EditionPanelComponent
-  alias VacEngineWeb.SimulationLive.CaseEditorComponent
+  alias VacEngineWeb.SimulationLive.StackEditorComponent
   alias VacEngineWeb.SimulationLive.ConfigEditorComponent
   alias VacEngineWeb.SimulationLive.MenuConfigComponent
   alias VacEngineWeb.SimulationLive.MenuStackListComponent
@@ -26,17 +25,20 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
      socket
      |> assign(
        selected_type: new_selected_type,
-       selected_id: new_selected_id
+       selected_id: new_selected_id,
+       templates: Simulation.get_template_names(socket.assigns.blueprint)
      )}
   end
 
   # Only used at page loading or blueprint change
   @impl true
-  def update(%{blueprint: blueprint}, socket) do
+  def update(%{id: id, blueprint: blueprint}, socket) do
     {:ok,
      socket
      |> assign(
+       id: id,
        blueprint: blueprint,
+       templates: Simulation.get_template_names(blueprint),
        selected_type: nil,
        selected_id: nil
      )}

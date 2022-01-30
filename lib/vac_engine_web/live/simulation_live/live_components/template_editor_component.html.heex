@@ -1,0 +1,12 @@
+<div class="m-3">
+  <div class="text-2xl font-bold mb-4">Template: <%= @template.case.name %></div>
+  <div class="grid sm:grid-cols-1 2xl:grid-cols-2 gap-3">
+    <.live_component
+      module={TemplateInputComponent}
+      id={"template_editor_#{@template.id}"}
+      blueprint={@blueprint}
+      template={@template}
+    />
+  </div>
+</div>
+

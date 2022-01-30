@@ -1,4 +1,4 @@
-<div class="w-full bg-white filter drop-shadow-lg p-3 cursor-default">
+<div  class="w-full bg-white filter drop-shadow-lg p-3 cursor-default">
     <div class="float-right">
         <form phx-change="set_filter" phx-target={@myself}>
             Show:
@@ -26,7 +26,7 @@
     <div class="table">
         <%= for variable <- @blueprint.variables |> flatten_variables("input") do %>
             <.live_component
-            module={CaseInputVariableEditorComponent}
+            module={StackInputVariableComponent}
             id={"input_entry_editor_#{variable.id}"}
             blueprint={@blueprint}
             variable={variable}

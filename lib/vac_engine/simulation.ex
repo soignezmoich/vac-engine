@@ -287,6 +287,14 @@ defmodule VacEngine.Simulation do
 
   ### TEMPLATES ###
 
+  def get_template(template_id) do
+    from(t in Template,
+      where: t.id == ^template_id,
+      preload: [case: :input_entries]
+    )
+    |> Repo.one()
+  end
+
   def get_templates(blueprint) do
     from(c in Case,
       join: t in Template,

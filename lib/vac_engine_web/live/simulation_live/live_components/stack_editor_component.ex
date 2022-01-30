@@ -1,4 +1,4 @@
-defmodule VacEngineWeb.SimulationLive.CaseEditorComponent do
+defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
   use VacEngineWeb, :live_component
 
   import Ecto.Changeset
@@ -6,8 +6,8 @@ defmodule VacEngineWeb.SimulationLive.CaseEditorComponent do
   alias VacEngine.Simulation
   alias VacEngine.Simulation.Case
 
-  alias VacEngineWeb.SimulationLive.CaseInputEditorComponent, as: InputEditor
-  alias VacEngineWeb.SimulationLive.CaseOutputEditorComponent, as: OutputEditor
+  alias VacEngineWeb.SimulationLive.StackInputComponent
+  alias VacEngineWeb.SimulationLive.StackOutputComponent
   alias VacEngineWeb.SimulationLive.SimulationEditorComponent
 
   def update(assigns, socket) do

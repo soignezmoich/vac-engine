@@ -1,4 +1,4 @@
-<div id={"input_entry_editor_#{@variable.id}"} class={"table-row #{@bg_color}"}>
+<div  class={"table-row #{@bg_color}"}>
   <%= if !is_nil(@input_entry) do %>
     <div class="table-cell">
       <ToggleEntryComponent.render active={true} target_component={"#input_entry_editor_#{@variable.id}"} />

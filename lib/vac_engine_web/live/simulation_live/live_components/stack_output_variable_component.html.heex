@@ -1,4 +1,4 @@
-<div class={"table-row #{if @mismatch do "bg-red-200" else "bg-purple-100" end}"}>
+<div  class={"table-row #{if @mismatch do "bg-red-200" else "bg-purple-100" end}"}>
   <%= case {@expected, @forbidden} do %>
     <% {expected, forbidden} when not is_nil(expected) or forbidden -> %>
       <div class="table-cell pr-3 text-purple-700">
