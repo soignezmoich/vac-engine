@@ -6,12 +6,15 @@ defmodule VacEngineWeb.SimulationLive.TemplateInputVariableComponent do
   alias VacEngineWeb.SimulationLive.TemplateEditorComponent
   alias VacEngineWeb.SimulationLive.ToggleEntryComponent
 
-  def update(%{
-    id: id,
-    blueprint: blueprint,
-    template: template,
-    variable: variable,
-  }, socket) do
+  def update(
+        %{
+          id: id,
+          blueprint: blueprint,
+          template: template,
+          variable: variable
+        },
+        socket
+      ) do
     input_entry =
       template.case.input_entries
       |> Enum.find(&(&1.key == variable.path |> Enum.join(".")))
@@ -28,9 +31,7 @@ defmodule VacEngineWeb.SimulationLive.TemplateInputVariableComponent do
   end
 
   def handle_event("toggle_entry", %{"active" => active}, socket) do
-    IO.inspect(active)
     template = socket.assigns.template
-    blueprint = socket.assigns.blueprint
 
     if active == "true" do
       type = socket.assigns.variable.type

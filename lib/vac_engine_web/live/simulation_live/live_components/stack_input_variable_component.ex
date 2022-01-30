@@ -18,8 +18,6 @@ defmodule VacEngineWeb.SimulationLive.StackInputVariableComponent do
           |> Enum.find(&(&1.key == assigns.variable.path |> Enum.join(".")))
       end
 
-    # IO.inspect(template_input_entry)
-
     input_entry =
       assigns.case.input_entries
       |> Enum.find(&(&1.key == assigns.variable.path |> Enum.join(".")))
@@ -52,14 +50,10 @@ defmodule VacEngineWeb.SimulationLive.StackInputVariableComponent do
     blueprint = socket.assigns.blueprint
 
     if active == "true" do
-      IO.puts("ACTIVE")
       type = socket.assigns.variable.type
       enum = Map.get(socket.assigns.variable, :enum)
 
       entry_key = socket.assigns.variable.path |> Enum.join(".")
-
-      IO.puts("ENTRY KEY:")
-      IO.inspect(entry_key)
 
       {:ok, _input_entry} =
         Simulation.create_input_entry(
@@ -70,8 +64,6 @@ defmodule VacEngineWeb.SimulationLive.StackInputVariableComponent do
     else
       Simulation.delete_input_entry(socket.assigns.input_entry)
     end
-
-    IO.puts("BEFORE SEND")
 
     send_update(SimulationEditorComponent,
       id: "simulation_editor",

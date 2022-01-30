@@ -17,11 +17,12 @@
         <.live_component
         module={EntryValueFieldComponent}
         input_entry={@input_entry}
-        target_component={"input_variable_editor_#{@variable.id}"}
+        target_component={%{
+          type: TemplateEditorComponent,
+          id: "template_editor_#{@variable.id}"
+        }}
         variable_type={type}
         variable_enum={@variable.enum}
-        template={@template}
-        blueprint={@blueprint}
         id={"input_entry_value_field_#{@input_entry.id}"}
         />
       <% end %>

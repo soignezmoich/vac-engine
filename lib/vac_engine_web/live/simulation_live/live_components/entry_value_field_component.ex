@@ -6,19 +6,34 @@ defmodule VacEngineWeb.SimulationLive.EntryValueFieldComponent do
   alias VacEngine.Convert
   alias VacEngine.Repo
   alias VacEngine.Simulation
-  alias VacEngineWeb.SimulationLive.SimulationEditorComponent
 
-  def update(assigns, socket) do
+  def update(
+        %{
+          id: id,
+          input_entry: input_entry,
+          target_component: %{type: target_type, id: target_id},
+          variable_type: variable_type,
+          variable_enum: variable_enum
+        },
+        socket
+      ) do
     changeset =
-      assigns.input_entry
+      input_entry
       |> cast(%{}, [:value])
       |> Map.put(:action, :update)
 
     {
       :ok,
       socket
-      |> assign(changeset: changeset, parsed_value: nil, version: 0)
-      |> assign(assigns)
+      |> assign(
+        id: id,
+        changeset: changeset,
+        input_entry: input_entry,
+        parsed_value: nil,
+        target_component: %{type: target_type, id: target_id},
+        variable_enum: variable_enum,
+        variable_type: variable_type
+      )
     }
   end
 
@@ -62,18 +77,12 @@ defmodule VacEngineWeb.SimulationLive.EntryValueFieldComponent do
         |> validate_entry_enum(Map.get(socket.assigns, :variable_enum))
         |> Repo.update()
 
-        template = socket.assigns.template
-        blueprint = socket.assigns.blueprint
-
-        send_update(SimulationEditorComponent,
-          id: "simulation_editor",
-          selected_element: template,
-          blueprint: blueprint,
-          templates: Simulation.get_templates(blueprint),
-          action: socket.assigns.input_entry
+        send_update(socket.assigns.target_component.type,
+          id: socket.assigns.target_component.id,
+          action: {:refresh, :rand.uniform()}
         )
 
-        {:noreply, socket |> assign(version: socket.assigns.version + 1)}
+        {:noreply, socket}
     end
   end
 

@@ -412,7 +412,6 @@ defmodule VacEngine.Simulation do
         runnable: false
       }
       |> change(%{})
-      |> IO.inspect()
       |> check_constraint(:name, name: :simulation_cases_name_format)
       |> unique_constraint([:name, :workspace_id])
     end)
@@ -469,7 +468,6 @@ defmodule VacEngine.Simulation do
           preload: [:input_entries, :output_entries]
         )
         |> Repo.one()
-        |> IO.inspect()
     end
   end
 

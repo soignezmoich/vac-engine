@@ -29,7 +29,6 @@ defmodule VacEngineWeb.EditorLive.DeductionBranchInspectorComponent do
         {:noreply, socket}
 
       {:error, changeset} ->
-        IO.inspect(changeset)
         {:noreply, assign(socket, changeset: changeset)}
     end
   end
