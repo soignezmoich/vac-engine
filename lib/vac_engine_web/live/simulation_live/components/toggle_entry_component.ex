@@ -10,7 +10,7 @@ defmodule VacEngineWeb.SimulationLive.ToggleEntryComponent do
     <div class="inline-block align-bottom h-10 pt-2 overflow-y-hidden">
       <%= if (@active) do %>
         <button
-        phx-click={"set_entry"}
+        phx-click={"toggle_entry"}
         phx-value-active={"false"}
         phx-target={@target_component}
         class="text-xs text-purple-700 hover:text-purple-400">
@@ -18,7 +18,7 @@ defmodule VacEngineWeb.SimulationLive.ToggleEntryComponent do
         </button>
       <% else %>
         <button
-        phx-click={"set_entry"}
+        phx-click={"toggle_entry"}
         phx-value-active={"true"}
         phx-target={@target_component}
         class="text-xs text-purple-700 hover:text-purple-400">

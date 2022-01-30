@@ -337,7 +337,7 @@ defmodule VacEngine.Simulation do
     |> Repo.transaction()
   end
 
-  def create_input_entry(kase, key, value \\ "") do
+  def create_input_entry(kase, key, value \\ "-") do
     %InputEntry{
       case_id: kase.id,
       key: key,

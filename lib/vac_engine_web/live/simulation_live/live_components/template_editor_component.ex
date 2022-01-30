@@ -4,6 +4,12 @@ defmodule VacEngineWeb.SimulationLive.TemplateEditorComponent do
   alias VacEngine.Simulation
   alias VacEngineWeb.SimulationLive.TemplateInputComponent
 
+
+  def update(%{action: {:refresh, _token}}, socket) do
+    socket = socket |> assign(template: Simulation.get_template(socket.assigns.template.id))
+    {:ok, socket}
+  end
+
   def update(%{id: id, blueprint: blueprint, template_id: template_id}, socket) do
     socket =
       socket

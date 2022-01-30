@@ -1,7 +1,7 @@
-<div  class="table-row" id={"input_variable_editor_#{@variable.id}"}>
+<div  class="table-row" id={"template_input_variable_#{@variable.id}"}>
   <%= if !is_nil(@input_entry) do %>
     <div class="table-cell pr-3">
-      <ToggleEntryComponent.render active={true} target_component={"#input_variable_editor_#{@variable.id}"} />
+      <ToggleEntryComponent.render active={true} target_component={"#template_input_variable_#{@variable.id}"} />
     </div>
     <div class="table-cell">
       <%= @variable.path |> Enum.drop(-1) |> Enum.map(fn _ -> "\u2574" end) %>
@@ -29,7 +29,7 @@
     <div class="table-cell w-full" />
   <% else %>
     <div class="table-cell pr-3">
-      <ToggleEntryComponent.render active={false} target_component={"#input_entry_editor_#{@variable.path}"} />
+      <ToggleEntryComponent.render active={false} target_component={"#template_input_variable_#{@variable.id}"} />
     </div>
     <div class="table-cell">
       <%= @variable.path |> Enum.drop(-1) |> Enum.map(fn _ -> "\u2574" end) %>

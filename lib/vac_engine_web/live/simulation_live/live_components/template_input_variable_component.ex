@@ -3,7 +3,7 @@ defmodule VacEngineWeb.SimulationLive.TemplateInputVariableComponent do
 
   alias VacEngine.Simulation
   alias VacEngineWeb.SimulationLive.EntryValueFieldComponent
-  alias VacEngineWeb.SimulationLive.SimulationEditorComponent
+  alias VacEngineWeb.SimulationLive.TemplateEditorComponent
   alias VacEngineWeb.SimulationLive.ToggleEntryComponent
 
   def update(%{
@@ -27,7 +27,8 @@ defmodule VacEngineWeb.SimulationLive.TemplateInputVariableComponent do
      )}
   end
 
-  def handle_event("set_entry", %{"active" => active}, socket) do
+  def handle_event("toggle_entry", %{"active" => active}, socket) do
+    IO.inspect(active)
     template = socket.assigns.template
     blueprint = socket.assigns.blueprint
 
@@ -50,11 +51,9 @@ defmodule VacEngineWeb.SimulationLive.TemplateInputVariableComponent do
       nil
     end
 
-    send_update(SimulationEditorComponent,
-      id: "template_editor_#{@template_id}",
-      action: :refresh,
-      blueprint: blueprint,
-      templates: Simulation.get_templates(blueprint)
+    send_update(TemplateEditorComponent,
+      id: "template_editor_#{socket.assigns.template.id}",
+      action: {:refresh, :rand.uniform()}
     )
 
     {:noreply, socket}

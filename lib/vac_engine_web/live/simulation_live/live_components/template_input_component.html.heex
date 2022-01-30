@@ -9,7 +9,7 @@
     <%= for variable <- @blueprint.variables |> flatten_variables("input") do %>
       <.live_component
         module={TemplateInputVariableComponent}
-        id={"input_entry_editor_#{variable.id}"}
+        id={"template_input_variable_#{variable.id}"}
         variable={variable}
         template={@template}
         blueprint={@blueprint}
