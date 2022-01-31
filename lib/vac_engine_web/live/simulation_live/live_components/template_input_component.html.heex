@@ -6,13 +6,12 @@
     </div>
   <% end %>
   <div class="table">
-    <%= for variable <- @blueprint.variables |> flatten_variables("input") do %>
+    <%= for variable <- @input_variables do %>
       <.live_component
         module={TemplateInputVariableComponent}
         id={"template_input_variable_#{variable.id}"}
         variable={variable}
         template={@template}
-        blueprint={@blueprint}
       />
     <% end %>
   </div>

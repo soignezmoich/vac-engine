@@ -1,8 +1,9 @@
 defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
   use VacEngineWeb, :live_component
 
-  alias VacEngine.Simulation
+  import VacEngine.VariableHelpers
 
+  alias VacEngine.Simulation
   alias VacEngineWeb.SimulationLive.StackInputComponent
   alias VacEngineWeb.SimulationLive.StackOutputComponent
 
@@ -28,13 +29,16 @@ defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
   def update(
         %{
           stack_id: stack_id,
-          template_names: template_names
+          template_names: template_names,
+          input_variables: input_variables,
+          output_variables: output_variables,
         },
         socket
       ) do
     stack = Simulation.get_stack(stack_id)
     template_case = stack |> Simulation.get_stack_template_case()
     runnable_case = stack |> Simulation.get_stack_runnable_case()
+
 
     # stack_case = Simulation.get_stack_id_case(stack_id)
 
@@ -75,6 +79,8 @@ defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
      socket
      |> assign(
        stack: stack,
+       input_variables: input_variables,
+       output_variables: output_variables,
        runnable_case: runnable_case,
        template_case: template_case,
        template_names: template_names

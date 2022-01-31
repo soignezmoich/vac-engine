@@ -1,6 +1,8 @@
 defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
   use VacEngineWeb, :live_component
 
+  import VacEngine.VariableHelpers
+
   alias VacEngine.Simulation
   alias VacEngine.Simulation.Case
 
@@ -16,7 +18,7 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
         %{
           action: :set_selection,
           selected_type: new_selected_type,
-          selected_id: new_selected_id
+          selected_id: new_selected_id,
         },
         socket
       ) do
@@ -39,9 +41,11 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
       |> assign(
         id: id,
         blueprint: blueprint,
-        template_names: Simulation.get_template_names(blueprint),
+        input_variables: blueprint.variables |> flatten_variables("input"),
+        output_variables: blueprint.variables |> flatten_variables("output"),
         selected_type: nil,
-        selected_id: nil
+        selected_id: nil,
+        template_names: Simulation.get_template_names(blueprint)
       )
 
     {:ok, socket}

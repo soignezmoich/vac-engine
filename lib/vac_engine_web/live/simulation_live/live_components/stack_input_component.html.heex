@@ -17,24 +17,23 @@
     </div>
 
     <div class="text-lg font-bold border-b h-10 border-black">Input</div>
-    <%= if is_nil(@template) do %>
+    <%= if is_nil(@template_case) do %>
         <div class="font-bold text-red-600">
             Warning: no matching template.
         </div>
     <% end %>
     <div class="h-2"/>
     <div class="table">
-        <%= for variable <- @blueprint.variables |> flatten_variables("input") do %>
+        <%= for variable <- @input_variables do %>
             <.live_component
-            module={StackInputVariableComponent}
-            id={"input_entry_editor_#{variable.id}"}
-            blueprint={@blueprint}
-            variable={variable}
-            template={@template}
-            case={@case}
-            stack={@stack}
-            action={@action}
-            filter={@filter}/>
+                module={StackInputVariableComponent}
+                id={"stack_input_variable_#{variable.id}"}
+                variable={variable}
+                template_case={@template_case}
+                stack={@stack}
+                runnable_case={@runnable_case}
+                filter={@filter}
+            />
         <% end %>
     </div>
 </div>

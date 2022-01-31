@@ -12,12 +12,12 @@ defmodule VacEngineWeb.SimulationLive.TemplateEditorComponent do
     {:ok, socket}
   end
 
-  def update(%{id: id, blueprint: blueprint, template_id: template_id}, socket) do
+  def update(%{id: id, template_id: template_id, input_variables: input_variables}, socket) do
     socket =
       socket
       |> assign(
         id: id,
-        blueprint: blueprint,
+        input_variables: input_variables,
         template: Simulation.get_template(template_id)
       )
 

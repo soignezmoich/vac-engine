@@ -9,7 +9,6 @@ defmodule VacEngineWeb.SimulationLive.TemplateInputVariableComponent do
   def update(
         %{
           id: id,
-          blueprint: blueprint,
           template: template,
           variable: variable
         },
@@ -26,7 +25,6 @@ defmodule VacEngineWeb.SimulationLive.TemplateInputVariableComponent do
         template: template,
         input_entry: input_entry,
         variable: variable,
-        blueprint: blueprint,
         value: "placeholder value"
       )
 

@@ -4,26 +4,41 @@ defmodule VacEngineWeb.SimulationLive.StackInputVariableComponent do
   alias VacEngine.Simulation
   alias VacEngineWeb.SimulationLive.EntryValueFieldComponent
   alias VacEngineWeb.SimulationLive.SimulationEditorComponent
+  alias VacEngineWeb.SimulationLive.StackEditorComponent
   alias VacEngineWeb.SimulationLive.ToggleEntryComponent
 
-  def update(assigns, socket) do
-    template_input_entry =
-      assigns.template
-      |> case do
-        nil ->
+
+# module={StackInputComponent}
+# id={"case_input_#{@stack.id}"}
+# input_variables={@input_variables}
+# runnable_case={@runnable_case}
+# template_case={@template_case}
+# stack={@stack}
+
+  def update(%{
+    id: id,
+    filter: filter,
+    runnable_case: runnable_case,
+    stack: stack,
+    template_case: template_case,
+    variable: variable
+  }, socket) do
+
+    template_input_entry = case template_case do
+      nil ->
           nil
 
-        template ->
-          template.input_entries
-          |> Enum.find(&(&1.key == assigns.variable.path |> Enum.join(".")))
-      end
+      template_case ->
+        template_case.input_entries
+        |> Enum.find(&(&1.key == variable.path |> Enum.join(".")))
+    end
 
-    input_entry =
-      assigns.case.input_entries
-      |> Enum.find(&(&1.key == assigns.variable.path |> Enum.join(".")))
+    runnable_input_entry =
+      runnable_case.input_entries
+      |> Enum.find(&(&1.key == variable.path |> Enum.join(".")))
 
     bg_color =
-      case {input_entry, template_input_entry} do
+      case {runnable_input_entry, template_input_entry} do
         {nil, nil} -> ""
         {nil, _} -> "bg-purple-50"
         _ -> "bg-purple-100"
@@ -32,19 +47,55 @@ defmodule VacEngineWeb.SimulationLive.StackInputVariableComponent do
     socket =
       socket
       |> assign(
-        template: assigns.template,
-        input_entry: input_entry,
+        id: id,
+        filter: filter,
+        runnable_case: runnable_case,
+        runnable_input_entry: runnable_input_entry,
+        stack: stack,
+        template_case: template_case,
         template_input_entry: template_input_entry,
-        variable: assigns.variable,
-        blueprint: assigns.blueprint,
-        stack: assigns.stack,
-        filter: assigns.filter,
+        variable: variable,
         bg_color: bg_color,
-        case: assigns.case,
-        value: "placeholder value"
       )
 
     {:ok, socket}
+  end
+
+
+  def handle_event("toggle_entry", %{"active" => active}, socket) do
+
+    %{
+      runnable_case: runnable_case,
+      stack: stack,
+      runnable_input_entry: runnable_input_entry,
+      variable: variable
+    } = socket.assigns
+
+    if active == "true" do
+      type = variable.type
+      enum = Map.get(variable, :enum)
+
+      entry_key = variable.path |> Enum.join(".")
+
+      {:ok, input_entry} =
+        Simulation.create_input_entry(
+          runnable_case,
+          entry_key,
+          Simulation.variable_default_value(type, enum)
+        )
+
+      input_entry
+    else
+      Simulation.delete_input_entry(runnable_input_entry)
+      nil
+    end
+
+    send_update(StackEditorComponent,
+      id: "stack_editor_#{stack.id}",
+      action: {:refresh, :rand.uniform()}
+    )
+
+    {:noreply, socket}
   end
 
   def handle_event("set_entry", %{"active" => active}, socket) do

@@ -1,7 +1,7 @@
-<div  class={"table-row #{@bg_color}"}>
-  <%= if !is_nil(@input_entry) do %>
+<div class={"table-row #{@bg_color}"} id={@id}>
+  <%= if !is_nil(@runnable_input_entry) do %>
     <div class="table-cell">
-      <ToggleEntryComponent.render active={true} target_component={"#input_entry_editor_#{@variable.id}"} />
+      <ToggleEntryComponent.render active={true} target_component={"#stack_input_variable_#{@variable.id}"} />
     </div>
     <div class="table-cell">
       <%= @variable.path |> Enum.drop(-1) |> Enum.map(fn _ -> "\u2574" end) %>
@@ -14,23 +14,23 @@
           placeholder
         </div>
      <% type -> %>
-        <.live_component
+        <%# <.live_component
         module={EntryValueFieldComponent}
-        input_entry={@input_entry}
+        input_entry={@runnable_input_entry}
         target_component={"input_entry_editor_#{@variable.id}"}
         variable_type={type}
         variable_enum={@variable.enum}
         template={@template}
         blueprint={@blueprint}
         id={"input_entry_value_field_#{@input_entry.id}"}
-        />
+        /> %>
       <% end %>
     </div>
     <div class="table-cell w-full" />
   <% else %>
     <%= if (@filter != "case" && !is_nil(@template_input_entry)) do %>
       <div class="table-cell pr-3">
-        <ToggleEntryComponent.render active={false} target_component={"#input_entry_editor_#{@variable.path}"} />
+        <ToggleEntryComponent.render active={false} target_component={"#stack_input_variable_#{@variable.id}"} />
       </div>
       <div class="table-cell">
         <%= @variable.path |> Enum.drop(-1) |> Enum.map(fn _ -> "\u2574" end) %>
@@ -52,7 +52,7 @@
     <% else %>
       <%= if (@filter == "all") do %>
         <div class="table-cell pr-3">
-          <ToggleEntryComponent.render active={false} target_component={"#input_entry_editor_#{@variable.path}"} />
+          <ToggleEntryComponent.render active={false} target_component={"#stack_input_variable_#{@variable.id}"} />
         </div>
         <div class="table-cell">
           <%= @variable.path |> Enum.drop(-1) |> Enum.map(fn _ -> "\u2574" end) %>

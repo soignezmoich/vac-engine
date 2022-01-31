@@ -10,33 +10,23 @@
     template_names={@template_names}
   />
 
-  <%# <.form
-  id={"template-picker-#{@stack.id}"}
-  let={f}
-  for={@changeset}
-  phx-target={@myself}
-  as="layer"
-  phx-change="set_template">
-    <div class="font-bold">Template</div> %>
-    <%# <%= select f, :case_id, [{"<None>", nil} | @templates |> Enum.map(&({&1.name, &1.id}))], class: "form-fld text-sm w-48" %>
-  <%# </.form>
   <div class="h-4"/>
   <div class="grid sm:grid-cols-1 2xl:grid-cols-2 gap-3">
     <.live_component
-      id="case_input"
       module={StackInputComponent}
-      blueprint={@blueprint}
-      case={@case}
-      template={@template}
+      id={"stack_input_#{@stack.id}"}
+      input_variables={@input_variables}
+      runnable_case={@runnable_case}
+      template_case={@template_case}
       stack={@stack}
-      action={@action}
     />
-    <.live_component
+    <%# <.live_component
       id="case_output"
       module={StackOutputComponent}
       blueprint={@blueprint}
       case={@case}
       stack={@stack}
-      action={@action} />
-  </div> %>
+      action={@action}
+    /> %>
+  </div>
 </div>

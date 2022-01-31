@@ -4,6 +4,7 @@ defmodule VacEngineWeb.SimulationLive.ToggleEntryComponent do
   import VacEngineWeb.IconComponent
 
   def render(assigns) do
+
     ~H"""
     <div class="inline-block align-bottom h-10 pt-2 overflow-y-hidden">
       <%= if (@active) do %>

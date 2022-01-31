@@ -31,23 +31,26 @@
       <div class="flex-shrink">
         <%= case @selected_type do %>
         <% :config -> %>
-          <%# <ConfigEditorComponent.render
-            configuration={@simulation.config}
-          /> %>
+          <.live_component
+            module={ConfigEditorComponent}
+            id={"config_editor"}
+            blueprint={@blueprint}
+          />
         <% :template -> %>
           <.live_component
             module={TemplateEditorComponent}
             id={"template_editor_#{@selected_id}"}
-            blueprint={@blueprint}
+            input_variables={@input_variables}
             template_id={@selected_id}
           />
         <% :stack -> %>
           <.live_component
             module={StackEditorComponent}
             id={"stack_editor_#{@selected_id}"}
-            blueprint={@blueprint}
+            input_variables={@input_variables}
+            output_variables={@output_variables}
             stack_id={@selected_id}
-             template_names={@template_names}
+            template_names={@template_names}
           />
         <% _ -> %>
           <div class={"ml-5 mt-10"}>
