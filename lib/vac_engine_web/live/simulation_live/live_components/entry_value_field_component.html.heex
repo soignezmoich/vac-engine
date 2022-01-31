@@ -6,14 +6,13 @@
   phx-target={@myself}
   phx-change="validate"
   phx-submit="submit">
-    <% variable_enum = @variable_enum %>
     <%= case @variable_type do %>
 
       <% :boolean -> %>
         <%# BOOLEAN (-> select) %>
         <%= select f, :value, ["true", "false"], class: "form-fld text-sm w-48" %>   
 
-      <% :string when not is_nil(variable_enum) -> %>
+      <% :string when not is_nil(@variable_enum) -> %>
         <%# ENUM STRING (-> select) %>
         <%= select f, :value, @variable_enum, class: "form-fld text-sm w-48" %> 
                
