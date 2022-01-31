@@ -64,6 +64,7 @@ migrate: deps
 
 clean:
 	cd assets && make clean
+	rm -fr .elixir_ls
 	rm -fr _build
 	rm -fr deps
 	rm -fr docs
