@@ -2,7 +2,9 @@
   <div class="absolute inset-0 flex min-h-0">
     <div class="w-96 flex-shrink-0 mr-2 flex flex-col overflow-y-auto mt-3">
       <div class="mx-2">
-        <MenuConfigComponent.render
+        <.live_component
+          module={MenuConfigComponent}
+          id={"menu_config"}
           selected_type={@selected_type}
           selected_id={@selected_id}
         />

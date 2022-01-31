@@ -3,7 +3,6 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
 
   alias VacEngine.Simulation
   alias VacEngine.Simulation.Case
-  alias VacEngine.Simulation.Stack
 
   alias VacEngineWeb.SimulationLive.StackEditorComponent
   alias VacEngineWeb.SimulationLive.ConfigEditorComponent
