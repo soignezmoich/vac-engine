@@ -3,7 +3,7 @@
   <div class="font-bold mb-2 border-b border-black">
     Templates
   </div>
-  <%= for {template_id, template_name} <- @templates do %>
+  <%= for {template_id, template_name} <- @template_names do %>
     <.live_component
       module={MenuTemplateItemComponent}
       id={"menu_template_item_#{template_id}"}

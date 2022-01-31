@@ -1,72 +1,83 @@
 defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
   use VacEngineWeb, :live_component
 
-  import Ecto.Changeset
-
   alias VacEngine.Simulation
-  alias VacEngine.Simulation.Case
 
   alias VacEngineWeb.SimulationLive.StackInputComponent
   alias VacEngineWeb.SimulationLive.StackOutputComponent
-  alias VacEngineWeb.SimulationLive.SimulationEditorComponent
 
-  def update(assigns, socket) do
-    data =
-      case assigns.stack.layers |> Enum.find(&(&1.position == 1)) do
-        nil -> %{case_id: nil}
-        layer -> %{case_id: layer.case_id}
-      end
+  def update(
+    %{action: {:refresh, _token}},
+    %{assigns: %{stack: stack}} = socket) do
 
-    types = %{case_id: :integer}
+    stack = Simulation.get_stack(stack.id)
+    template_case = stack |> Simulation.get_stack_template_case()
+    runnable_case = stack |> Simulation.get_stack_runnable_case()
 
-    changeset = {data, types} |> cast(%{}, Map.keys(types))
-
-    kase =
-      case Simulation.get_stack_case(assigns.stack) do
-        %Case{} = kase -> kase
-        _ -> nil
-      end
-
-    template =
-      case Simulation.get_stack_template_case(assigns.stack) do
-        %Case{} = template -> template
-        _ -> nil
-      end
-
-    {
-      :ok,
+    socket =
       socket
-      |> assign(assigns)
       |> assign(
-        changeset: changeset,
-        case: kase,
-        template: template
+        stack: stack,
+        runnable_case: runnable_case,
+        template_case: template_case,
       )
-    }
+
+    {:ok, socket}
   end
 
-  def extract_template(kase, templates) do
-    templates |> Enum.find(&(&1.name == kase.template))
-  end
+  def update(
+        %{
+          stack_id: stack_id,
+          template_names: template_names
+        },
+        socket
+      ) do
+    stack = Simulation.get_stack(stack_id)
+    template_case = stack |> Simulation.get_stack_template_case()
+    runnable_case = stack |> Simulation.get_stack_runnable_case()
 
-  def handle_event("set_template", params, socket) do
-    {template_id, _} =
-      params["layer"]["case_id"]
-      |> Integer.parse()
+    # stack_case = Simulation.get_stack_id_case(stack_id)
 
-    Simulation.set_stack_template(socket.assigns.stack, template_id)
+    # data =
+    #   case assigns.stack.layers |> Enum.find(&(&1.position == 1)) do
+    #     nil -> %{case_id: nil}
+    #     layer -> %{case_id: layer.case_id}
+    #   end
 
-    stack = socket.assigns.stack
-    blueprint = socket.assigns.blueprint
+    # types = %{case_id: :integer}
 
-    send_update(SimulationEditorComponent,
-      id: "simulation_editor",
-      selected_element: stack,
-      blueprint: blueprint,
-      templates: Simulation.get_templates(blueprint),
-      action: "choose-template-#{template_id}"
-    )
+    # changeset = {data, types} |> cast(%{}, Map.keys(types))
 
-    {:noreply, socket}
+    # kase =
+    #   case Simulation.get_stack_case(assigns.stack) do
+    #     %Case{} = kase -> kase
+    #     _ -> nil
+    #   end
+
+    # template =
+    #   case Simulation.get_stack_template_case(assigns.stack) do
+    #     %Case{} = template -> template
+    #     _ -> nil
+    #   end
+
+    # {
+    #   :ok,
+    #   socket
+    #   |> assign(assigns)
+    #   |> assign(
+    #     changeset: changeset,
+    #     case: kase,
+    #     template: template
+    #   )
+    # }
+
+    {:ok,
+     socket
+     |> assign(
+       stack: stack,
+       runnable_case: runnable_case,
+       template_case: template_case,
+       template_names: template_names
+     )}
   end
 end

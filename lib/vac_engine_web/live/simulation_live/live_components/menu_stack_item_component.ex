@@ -27,7 +27,7 @@ defmodule VacEngineWeb.SimulationLive.MenuStackItemComponent do
   end
 
   @impl true
-  def handle_event("select_item", params, socket) do
+  def handle_event("select_item", _params, socket) do
     send_update(SimulationEditorComponent,
       id: "simulation_editor",
       action: :set_selection,

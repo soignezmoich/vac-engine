@@ -13,7 +13,7 @@
           blueprint={@blueprint}
           selected_type={@selected_type}
           selected_id={@selected_id}
-          templates={@templates}
+           template_names={@template_names}
         />
         <div class="h-4" />
         <.live_component
@@ -40,12 +40,13 @@
             template_id={@selected_id}
           />
         <% :stack -> %>
-          <%# <.live_component
-          module={StackEditorComponent}
-          id={"stack_editor_#{@selected_id}"}
-          blueprint={@blueprint}
-          stack_id={@selected_id}
-          templates={@templates} /> %>
+          <.live_component
+            module={StackEditorComponent}
+            id={"stack_editor_#{@selected_id}"}
+            blueprint={@blueprint}
+            stack_id={@selected_id}
+             template_names={@template_names}
+          />
         <% _ -> %>
           <div class={"ml-5 mt-10"}>
             <p>No element selected.</p>

@@ -11,7 +11,7 @@ defmodule VacEngineWeb.SimulationLive.MenuTemplateListComponent do
           id: id,
           selected_id: selected_id,
           selected_type: selected_type,
-          templates: templates
+          template_names: template_names
         },
         socket
       ) do
@@ -20,7 +20,7 @@ defmodule VacEngineWeb.SimulationLive.MenuTemplateListComponent do
      |> assign(
        id: id,
        blueprint: blueprint,
-       templates: templates,
+       template_names: template_names,
        selected_id: selected_id,
        has_selection: selected_type == :template,
        creation_error_message: nil

@@ -282,7 +282,7 @@ defmodule VacEngine.Simulation do
     kase
   end
 
-  @case_layer_position 0
+  @runnable_layer_position 0
   @template_layer_position 1
 
   ### TEMPLATES ###
@@ -383,6 +383,14 @@ defmodule VacEngine.Simulation do
 
   # ### CASE STACKS ###
 
+  def get_stack(stack_id) do
+    from(s in Stack,
+      where: s.id == ^stack_id,
+      preload: [layers: [case: :input_entries]]
+    )
+    |> Repo.one()
+  end
+
   def get_stacks(blueprint) do
     from(s in Stack,
       where: s.blueprint_id == ^blueprint.id,
@@ -433,43 +441,70 @@ defmodule VacEngine.Simulation do
     |> Repo.transaction()
   end
 
-  ### TWO LAYERS STACK GETTERS ###
+  ### TWO-LAYERS STACKS ###
 
-  def get_stack_template_case(stack) do
-    template_layer =
-      stack.layers
-      |> Enum.find(&(&1.position == @template_layer_position))
-
-    case template_layer do
-      nil ->
-        nil
-
-      %{case_id: case_id} ->
-        from(c in Case,
-          where: c.id == ^case_id,
-          preload: [:input_entries]
-        )
-        |> Repo.one()
+  def get_stack_template_case(%Stack{} = stack) do
+    stack.layers
+    |> Enum.find(&(&1.position == @template_layer_position))
+    |> case do
+      nil -> nil
+      layer -> layer |> Map.get(:case)
     end
   end
 
-  def get_stack_case(stack) do
-    case_layer =
-      stack.layers
-      |> Enum.find(&(&1.position == @case_layer_position))
-
-    case case_layer do
-      nil ->
-        nil
-
-      %{case_id: case_id} ->
-        from(c in Case,
-          where: c.id == ^case_id,
-          preload: [:input_entries, :output_entries]
-        )
-        |> Repo.one()
-    end
+  def get_stack_runnable_case(%Stack{} = stack) do
+    stack.layers
+    |> Enum.find(&(&1.position == @runnable_layer_position))
+    |> Map.get(:case)
   end
+
+  # def get_stack_id_template_case(stack_id) do
+  #   Repo.get(Stack, stack_id)
+  #   |> Repo.preload(:layers)
+  #   |> get_stack_template_case()
+  # end
+
+  # def get_stack_template_case(stack) do
+  #   template_layer =
+  #     stack.layers
+  #     |> Enum.find(&(&1.position == @template_layer_position))
+
+  #   case template_layer do
+  #     nil ->
+  #       nil
+
+  #     %{case_id: case_id} ->
+  #       from(c in Case,
+  #         where: c.id == ^case_id,
+  #         preload: [:input_entries]
+  #       )
+  #       |> Repo.one()
+  #   end
+  # end
+
+  # def get_stack_id_case(stack_id) do
+  #   Repo.get(Stack, stack_id)
+  #   |> Repo.preload(:layers)
+  #   |> get_stack_case()
+  # end
+
+  # def get_stack_case(stack) do
+  #   case_layer =
+  #     stack.layers
+  #     |> Enum.find(&(&1.position == @runnable_layer_position))
+
+  #   case case_layer do
+  #     nil ->
+  #       nil
+
+  #     %{case_id: case_id} ->
+  #       from(c in Case,
+  #         where: c.id == ^case_id,
+  #         preload: [:input_entries, :output_entries]
+  #       )
+  #       |> Repo.one()
+  #   end
+  # end
 
   def set_stack_template(stack, template_id) do
     # delete previous layer relation first
@@ -505,6 +540,13 @@ defmodule VacEngine.Simulation do
     end
 
     # create a new layer with the chosen template
+  end
+
+  def delete_stack_template(stack) do
+    layer = stack.layers
+      |> Enum.find(&(&1.position == @template_layer_position))
+
+    Repo.delete(layer)
   end
 
   def variable_default_value(type, enum) do

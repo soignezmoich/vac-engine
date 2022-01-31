@@ -38,7 +38,7 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
      |> assign(
        id: id,
        blueprint: blueprint,
-       templates: Simulation.get_template_names(blueprint),
+       template_names: Simulation.get_template_names(blueprint),
        selected_type: nil,
        selected_id: nil
      )}
@@ -65,7 +65,7 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
   #   socket =
   #     assign(socket,
   #       blueprint: assigns.blueprint,
-  #       templates: templates,
+  #        template_names: template_names,
   #       stacks: stacks,
   #       selected_element: selected_element,
   #       action: action
@@ -121,23 +121,23 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
      })}
   end
 
-  @impl true
-  def handle_event("create_template", %{"new_template_name" => name}, socket) do
-    new_template_case_id =
-      case Simulation.create_template(socket.assigns.blueprint, name) do
-        {:ok, %{case: %Case{id: id}}} -> id
-      end
+  # @impl true
+  # def handle_event("create_template", %{"new_template_name" => name}, socket) do
+  #   new_template_case_id =
+  #     case Simulation.create_template(socket.assigns.blueprint, name) do
+  #       {:ok, %{case: %Case{id: id}}} -> id
+  #     end
 
-    templates = Simulation.get_templates(socket.assigns.blueprint)
+  #   # template_names = Simulation.get_templates(socket.assigns.blueprint)
 
-    selected_element = templates |> Enum.find(&(&1.id == new_template_case_id))
+  #   # selected_element = templates |> Enum.find(&(&1.id == new_template_case_id))
 
-    {:noreply,
-     assign(socket, %{
-       templates: templates,
-       selected_element: selected_element
-     })}
-  end
+  #   {:noreply,
+  #    assign(socket, %{
+  #       template_names: template_names,
+  #      selected_element: selected_element
+  #    })}
+  # end
 
   @impl true
   def handle_event("create_stack", %{"new_case_name" => name}, socket) do
