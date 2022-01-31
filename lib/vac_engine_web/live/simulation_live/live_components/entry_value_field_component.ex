@@ -5,7 +5,6 @@ defmodule VacEngineWeb.SimulationLive.EntryValueFieldComponent do
 
   alias VacEngine.Convert
   alias VacEngine.Repo
-  alias VacEngine.Simulation
 
   def update(
         %{
