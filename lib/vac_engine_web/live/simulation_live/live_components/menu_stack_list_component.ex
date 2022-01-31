@@ -14,16 +14,18 @@ defmodule VacEngineWeb.SimulationLive.MenuStackListComponent do
         },
         socket
       ) do
-    {:ok,
-     socket
-     |> assign(
-       id: id,
-       blueprint: blueprint,
-       stacks: Simulation.get_stack_names(blueprint),
-       selected_id: selected_id,
-       has_selection: selected_type == :stack,
-       creation_error_message: nil
-     )}
+    socket =
+      socket
+      |> assign(
+        id: id,
+        blueprint: blueprint,
+        stacks: Simulation.get_stack_names(blueprint),
+        selected_id: selected_id,
+        has_selection: selected_type == :stack,
+        creation_error_message: nil
+      )
+
+    {:ok, socket}
   end
 
   def handle_event("validate", _params, socket) do

@@ -19,15 +19,18 @@ defmodule VacEngineWeb.SimulationLive.TemplateInputVariableComponent do
       template.case.input_entries
       |> Enum.find(&(&1.key == variable.path |> Enum.join(".")))
 
-    {:ok,
-     assign(socket,
-       id: id,
-       template: template,
-       input_entry: input_entry,
-       variable: variable,
-       blueprint: blueprint,
-       value: "placeholder value"
-     )}
+    socket =
+      socket
+      |> assign(
+        id: id,
+        template: template,
+        input_entry: input_entry,
+        variable: variable,
+        blueprint: blueprint,
+        value: "placeholder value"
+      )
+
+    {:ok, socket}
   end
 
   def handle_event("toggle_entry", %{"active" => active}, socket) do

@@ -21,27 +21,31 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
         },
         socket
       ) do
-    {:ok,
-     socket
-     |> assign(
-       selected_type: new_selected_type,
-       selected_id: new_selected_id,
-       templates: Simulation.get_template_names(socket.assigns.blueprint)
-     )}
+    socket =
+      socket
+      |> assign(
+        selected_type: new_selected_type,
+        selected_id: new_selected_id,
+        templates: Simulation.get_template_names(socket.assigns.blueprint)
+      )
+
+    {:ok, socket}
   end
 
   # Only used at page loading or blueprint change
   @impl true
   def update(%{id: id, blueprint: blueprint}, socket) do
-    {:ok,
-     socket
-     |> assign(
-       id: id,
-       blueprint: blueprint,
-       template_names: Simulation.get_template_names(blueprint),
-       selected_type: nil,
-       selected_id: nil
-     )}
+    socket =
+      socket
+      |> assign(
+        id: id,
+        blueprint: blueprint,
+        template_names: Simulation.get_template_names(blueprint),
+        selected_type: nil,
+        selected_id: nil
+      )
+
+    {:ok, socket}
   end
 
   # @impl true
@@ -114,11 +118,14 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
           socket.assigns.stacks |> Enum.at(idx)
       end
 
-    {:noreply,
-     assign(socket, %{
-       selected_element: selected_element,
-       action: %{type: :refresh, token: :rand.uniform()}
-     })}
+    socket =
+      socket
+      |> assign(
+        selected_element: selected_element,
+        action: %{type: :refresh, token: :rand.uniform()}
+      )
+
+    {:noreply, socket}
   end
 
   # @impl true
@@ -150,10 +157,13 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
 
     selected_element = stacks |> Enum.find(&(&1.id == new_stack_id))
 
-    {:noreply,
-     assign(socket, %{
-       stacks: stacks,
-       selected_element: selected_element
-     })}
+    socket =
+      socket
+      |> assign(
+        stacks: stacks,
+        selected_element: selected_element
+      )
+
+    {:noreply, socket}
   end
 end

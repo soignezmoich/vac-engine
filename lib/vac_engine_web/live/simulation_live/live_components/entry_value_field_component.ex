@@ -21,8 +21,7 @@ defmodule VacEngineWeb.SimulationLive.EntryValueFieldComponent do
       |> cast(%{}, [:value])
       |> Map.put(:action, :update)
 
-    {
-      :ok,
+    socket =
       socket
       |> assign(
         id: id,
@@ -33,7 +32,8 @@ defmodule VacEngineWeb.SimulationLive.EntryValueFieldComponent do
         variable_enum: variable_enum,
         variable_type: variable_type
       )
-    }
+
+    {:ok, socket}
   end
 
   def handle_event("validate", params, socket) do

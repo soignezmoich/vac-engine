@@ -15,11 +15,11 @@ defmodule StackTemplatePickerComponent do
         },
         socket
       ) do
-
-    template_case_id = case template_case do
-      nil -> nil
-      template_case -> template_case.id
-    end
+    template_case_id =
+      case template_case do
+        nil -> nil
+        template_case -> template_case.id
+      end
 
     types = %{case_id: :integer}
 
@@ -27,14 +27,16 @@ defmodule StackTemplatePickerComponent do
       {%{case_id: template_case_id}, types}
       |> cast(%{}, Map.keys(types))
 
-    {:ok,
-     socket
-     |> assign(
-       stack: stack,
-       changeset: changeset,
-       target_component: target_component,
-       template_names: template_names
-     )}
+    socket =
+      socket
+      |> assign(
+        stack: stack,
+        changeset: changeset,
+        target_component: target_component,
+        template_names: template_names
+      )
+
+    {:ok, socket}
   end
 
   def handle_event(
@@ -46,11 +48,11 @@ defmodule StackTemplatePickerComponent do
       "" ->
         IO.puts("none")
         stack |> Simulation.delete_stack_template()
+
       template_id_string ->
         {template_id, _binary} = template_id_string |> Integer.parse()
         Simulation.set_stack_template(stack, template_id)
     end
-
 
     send_update(StackEditorComponent,
       id: target_component,

@@ -15,15 +15,17 @@ defmodule VacEngineWeb.SimulationLive.MenuStackItemComponent do
         },
         socket
       ) do
-    {:ok,
-     socket
-     |> assign(
-       id: id,
-       stack_id: stack_id,
-       stack_name: stack_name,
-       selected: selected,
-       has_mismatch: false
-     )}
+    socket =
+      socket
+      |> assign(
+        id: id,
+        stack_id: stack_id,
+        stack_name: stack_name,
+        selected: selected,
+        has_mismatch: false
+      )
+
+    {:ok, socket}
   end
 
   @impl true

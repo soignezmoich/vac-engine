@@ -17,7 +17,7 @@
     <div class="table">
         <%= for variable <- @blueprint.variables |> flatten_variables("output") do %>
             <.live_component
-            module={CaseOutputVariableEditorComponent}
+            module={StackOutputVariableComponent}
             id={"entry-editor-#{@case.id}-#{variable.id}"}
             variable={variable}
             case={@case}

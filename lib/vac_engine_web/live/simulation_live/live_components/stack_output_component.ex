@@ -6,14 +6,14 @@ defmodule VacEngineWeb.SimulationLive.StackOutputComponent do
   alias VacEngineWeb.SimulationLive.StackOutputVariableComponent
 
   def mount(socket) do
-    {:ok,
-     socket
-     |> assign(filter: "case")}
+    socket = socket |> assign(filter: "case")
+
+    {:ok, socket}
   end
 
   def handle_event("set_filter", %{"filter" => new_filter}, socket) do
-    {:noreply,
-     socket
-     |> assign(filter: new_filter)}
+    socket = socket |> assign(filter: new_filter)
+
+    {:noreply, socket}
   end
 end

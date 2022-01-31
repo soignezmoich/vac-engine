@@ -7,9 +7,9 @@ defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
   alias VacEngineWeb.SimulationLive.StackOutputComponent
 
   def update(
-    %{action: {:refresh, _token}},
-    %{assigns: %{stack: stack}} = socket) do
-
+        %{action: {:refresh, _token}},
+        %{assigns: %{stack: stack}} = socket
+      ) do
     stack = Simulation.get_stack(stack.id)
     template_case = stack |> Simulation.get_stack_template_case()
     runnable_case = stack |> Simulation.get_stack_runnable_case()
@@ -19,7 +19,7 @@ defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
       |> assign(
         stack: stack,
         runnable_case: runnable_case,
-        template_case: template_case,
+        template_case: template_case
       )
 
     {:ok, socket}

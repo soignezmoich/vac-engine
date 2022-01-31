@@ -15,16 +15,18 @@ defmodule VacEngineWeb.SimulationLive.MenuTemplateListComponent do
         },
         socket
       ) do
-    {:ok,
-     socket
-     |> assign(
-       id: id,
-       blueprint: blueprint,
-       template_names: template_names,
-       selected_id: selected_id,
-       has_selection: selected_type == :template,
-       creation_error_message: nil
-     )}
+    socket =
+      socket
+      |> assign(
+        id: id,
+        blueprint: blueprint,
+        template_names: template_names,
+        selected_id: selected_id,
+        has_selection: selected_type == :template,
+        creation_error_message: nil
+      )
+
+    {:ok, socket}
   end
 
   def handle_event("validate", _params, socket) do

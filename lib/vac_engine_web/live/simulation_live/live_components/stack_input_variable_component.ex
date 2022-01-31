@@ -29,19 +29,22 @@ defmodule VacEngineWeb.SimulationLive.StackInputVariableComponent do
         _ -> "bg-purple-100"
       end
 
-    {:ok,
-     assign(socket,
-       template: assigns.template,
-       input_entry: input_entry,
-       template_input_entry: template_input_entry,
-       variable: assigns.variable,
-       blueprint: assigns.blueprint,
-       stack: assigns.stack,
-       filter: assigns.filter,
-       bg_color: bg_color,
-       case: assigns.case,
-       value: "placeholder value"
-     )}
+    socket =
+      socket
+      |> assign(
+        template: assigns.template,
+        input_entry: input_entry,
+        template_input_entry: template_input_entry,
+        variable: assigns.variable,
+        blueprint: assigns.blueprint,
+        stack: assigns.stack,
+        filter: assigns.filter,
+        bg_color: bg_color,
+        case: assigns.case,
+        value: "placeholder value"
+      )
+
+    {:ok, socket}
   end
 
   def handle_event("set_entry", %{"active" => active}, socket) do

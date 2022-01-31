@@ -543,7 +543,8 @@ defmodule VacEngine.Simulation do
   end
 
   def delete_stack_template(stack) do
-    layer = stack.layers
+    layer =
+      stack.layers
       |> Enum.find(&(&1.position == @template_layer_position))
 
     Repo.delete(layer)
