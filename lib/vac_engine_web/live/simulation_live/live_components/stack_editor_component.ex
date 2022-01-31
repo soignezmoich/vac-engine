@@ -31,14 +31,13 @@ defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
           stack_id: stack_id,
           template_names: template_names,
           input_variables: input_variables,
-          output_variables: output_variables,
+          output_variables: output_variables
         },
         socket
       ) do
     stack = Simulation.get_stack(stack_id)
     template_case = stack |> Simulation.get_stack_template_case()
     runnable_case = stack |> Simulation.get_stack_runnable_case()
-
 
     # stack_case = Simulation.get_stack_id_case(stack_id)
 

@@ -18,7 +18,7 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
         %{
           action: :set_selection,
           selected_type: new_selected_type,
-          selected_id: new_selected_id,
+          selected_id: new_selected_id
         },
         socket
       ) do

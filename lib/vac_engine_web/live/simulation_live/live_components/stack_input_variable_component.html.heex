@@ -1,71 +1,38 @@
 <div class={"table-row #{@bg_color}"} id={@id}>
-  <%= if !is_nil(@runnable_input_entry) do %>
-    <div class="table-cell">
-      <ToggleEntryComponent.render active={true} target_component={"#stack_input_variable_#{@variable.id}"} />
+  <%= if (@visible) do %>
+    <div class="table-cell px-1 align-middle">
+      <ToggleEntryComponent.render active={@active} target_component={"#stack_input_variable_#{@variable.id}"} />
     </div>
-    <div class="table-cell">
+    <div class="table-cell px-1 align-middle">
       <%= @variable.path |> Enum.drop(-1) |> Enum.map(fn _ -> "\u2574" end) %>
-      <span><%= @variable.name %></span>
+      <%= @variable.name %>
     </div>
-    <div class="table-cell pl-2">
-      <%= case @variable.type do %>
-      <% :map -> %>
-        <div class="inline-block form-fld invisible">
-          placeholder
-        </div>
-     <% type -> %>
-        <%# <.live_component
-        module={EntryValueFieldComponent}
-        input_entry={@runnable_input_entry}
-        target_component={"input_entry_editor_#{@variable.id}"}
-        variable_type={type}
-        variable_enum={@variable.enum}
-        template={@template}
-        blueprint={@blueprint}
-        id={"input_entry_value_field_#{@input_entry.id}"}
-        /> %>
+    <div class="table-cell px-1 align-middle">
+      <%= case {@variable.type, @active, @template_input_entry} do %>
+        <% {:map, _, _} -> %>
+          <div class="inline-block form-fld invisible">
+            placeholder
+          </div>
+        <% {_, true, _} -> %>
+          <.live_component
+            module={EntryValueFieldComponent}
+            id={"input_entry_valu_field_#{@runnable_input_entry.id}"}
+            input_entry={@runnable_input_entry}
+            target_component={%{type: StackEditorComponent, id: @id}}
+            variable_type={@variable.type}
+            variable_enum={@variable.enum}
+          />
+        <% {_, false, template_entry} when not is_nil(template_entry) -> %>
+          <div class={"m-1 pl-2 w-full text-sm"}>
+            <%= @template_input_entry.value %>
+          </div>
+        <% _ -> %>
+          <div class="inline-block form-fld invisible">
+            placeholder
+          </div>
       <% end %>
     </div>
     <div class="table-cell w-full" />
-  <% else %>
-    <%= if (@filter != "case" && !is_nil(@template_input_entry)) do %>
-      <div class="table-cell pr-3">
-        <ToggleEntryComponent.render active={false} target_component={"#stack_input_variable_#{@variable.id}"} />
-      </div>
-      <div class="table-cell">
-        <%= @variable.path |> Enum.drop(-1) |> Enum.map(fn _ -> "\u2574" end) %>
-        <%= @variable.name %>
-      </div>
-      <div class="table-cell pl-2">
-        <%= case @variable.type do %>
-        <% :map -> %>
-          <div class="inline-block form-fld invisible">
-            placeholder
-          </div>
-        <% _type -> %>
-          <div class={"m-1 px-2 w-full text-sm"}>
-            <%= @template_input_entry.value %>
-          </div>
-        <% end %>
-      </div>
-      <div class="table-cell w-full" />
-    <% else %>
-      <%= if (@filter == "all") do %>
-        <div class="table-cell pr-3">
-          <ToggleEntryComponent.render active={false} target_component={"#stack_input_variable_#{@variable.id}"} />
-        </div>
-        <div class="table-cell">
-          <%= @variable.path |> Enum.drop(-1) |> Enum.map(fn _ -> "\u2574" end) %>
-          <%= @variable.name %>
-        </div>
-        <div class="table-cell">
-          <div class="inline-block form-fld invisible">
-            placeholder
-          </div>
-        </div>
-        <div class="table-cell w-full" />
-      <% end %>
-    <% end %>
   <% end %>
 </div>
 

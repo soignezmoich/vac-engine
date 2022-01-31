@@ -7,7 +7,6 @@ defmodule VacEngineWeb.SimulationLive.StackInputComponent do
 
   def mount(socket) do
     socket = socket |> assign(filter: "template")
-
     {:ok, socket}
   end
 

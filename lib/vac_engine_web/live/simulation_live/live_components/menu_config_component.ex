@@ -5,7 +5,6 @@ defmodule VacEngineWeb.SimulationLive.MenuConfigComponent do
 
   alias VacEngineWeb.SimulationLive.SimulationEditorComponent
 
-
   def handle_event("select_config", _params, socket) do
     send_update(SimulationEditorComponent,
       id: "simulation_editor",

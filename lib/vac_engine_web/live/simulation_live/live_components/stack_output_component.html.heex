@@ -15,12 +15,13 @@
 
     <div class="text-lg font-bold h-10 border-b border-black">Output</div>
     <div class="table">
-        <%= for variable <- @blueprint.variables |> flatten_variables("output") do %>
+        <%= for variable <- @output_variables do %>
             <.live_component
             module={StackOutputVariableComponent}
-            id={"entry-editor-#{@case.id}-#{variable.id}"}
+            id={"stack_output_variable_#{variable.id}"}
             variable={variable}
-            case={@case}
+            stack={@stack}
+            runnable_case={@runnable_case}
             filter={@filter} />
         <% end %>
     </div>

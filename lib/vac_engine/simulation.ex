@@ -375,9 +375,9 @@ defmodule VacEngine.Simulation do
     Repo.delete(output_entry)
   end
 
-  def update_output_entry(input_entry, value) do
+  def update_output_entry(input_entry, expected) do
     input_entry
-    |> InputEntry.changeset(%{value: value})
+    |> InputEntry.changeset(%{expected: expected})
     |> Repo.update()
   end
 
@@ -386,7 +386,7 @@ defmodule VacEngine.Simulation do
   def get_stack(stack_id) do
     from(s in Stack,
       where: s.id == ^stack_id,
-      preload: [layers: [case: :input_entries]]
+      preload: [layers: [case: [:input_entries, :output_entries]]]
     )
     |> Repo.one()
   end

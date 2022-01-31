@@ -7,31 +7,33 @@ defmodule VacEngineWeb.SimulationLive.StackInputVariableComponent do
   alias VacEngineWeb.SimulationLive.StackEditorComponent
   alias VacEngineWeb.SimulationLive.ToggleEntryComponent
 
+  # module={StackInputComponent}
+  # id={"case_input_#{@stack.id}"}
+  # input_variables={@input_variables}
+  # runnable_case={@runnable_case}
+  # template_case={@template_case}
+  # stack={@stack}
 
-# module={StackInputComponent}
-# id={"case_input_#{@stack.id}"}
-# input_variables={@input_variables}
-# runnable_case={@runnable_case}
-# template_case={@template_case}
-# stack={@stack}
-
-  def update(%{
-    id: id,
-    filter: filter,
-    runnable_case: runnable_case,
-    stack: stack,
-    template_case: template_case,
-    variable: variable
-  }, socket) do
-
-    template_input_entry = case template_case do
-      nil ->
+  def update(
+        %{
+          id: id,
+          filter: filter,
+          runnable_case: runnable_case,
+          stack: stack,
+          template_case: template_case,
+          variable: variable
+        },
+        socket
+      ) do
+    template_input_entry =
+      case template_case do
+        nil ->
           nil
 
-      template_case ->
-        template_case.input_entries
-        |> Enum.find(&(&1.key == variable.path |> Enum.join(".")))
-    end
+        template_case ->
+          template_case.input_entries
+          |> Enum.find(&(&1.key == variable.path |> Enum.join(".")))
+      end
 
     runnable_input_entry =
       runnable_case.input_entries
@@ -44,10 +46,18 @@ defmodule VacEngineWeb.SimulationLive.StackInputVariableComponent do
         _ -> "bg-purple-100"
       end
 
+    active = !is_nil(runnable_input_entry)
+
+    visible =
+      active ||
+        (filter == "template" && !is_nil(template_input_entry)) ||
+        filter == "all"
+
     socket =
       socket
       |> assign(
         id: id,
+        active: active,
         filter: filter,
         runnable_case: runnable_case,
         runnable_input_entry: runnable_input_entry,
@@ -55,15 +65,14 @@ defmodule VacEngineWeb.SimulationLive.StackInputVariableComponent do
         template_case: template_case,
         template_input_entry: template_input_entry,
         variable: variable,
-        bg_color: bg_color,
+        visible: visible,
+        bg_color: bg_color
       )
 
     {:ok, socket}
   end
 
-
   def handle_event("toggle_entry", %{"active" => active}, socket) do
-
     %{
       runnable_case: runnable_case,
       stack: stack,

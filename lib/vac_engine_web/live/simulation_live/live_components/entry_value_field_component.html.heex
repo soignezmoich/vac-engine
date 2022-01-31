@@ -1,4 +1,4 @@
-<div  class="w-max pt-2">
+<div  class="w-max">
   <.form
   id={"#{@id}"}
   let={f}
@@ -6,20 +6,24 @@
   phx-target={@myself}
   phx-change="validate"
   phx-submit="submit">
-    <% variable_enum = @variable_enum %>
-    <%= case @variable_type do %>
+    <%= case {@variable_type, @variable_enum} do %>
 
-      <% :boolean -> %>
+      <% {:boolean, _} -> %>
         <%# BOOLEAN (-> select) %>
         <%= select f, :value, ["true", "false"], class: "form-fld text-sm w-48" %>   
 
-      <% :string when not is_nil(variable_enum) -> %>
+      <% {:string, nil} -> %>
+        <%# OTHER (text input) %>
+        <%= text_input f, :value, class: "form-fld inline-block text-sm w-48" %>
+
+      <% {:string, _} -> %>
         <%# ENUM STRING (-> select) %>
         <%= select f, :value, @variable_enum, class: "form-fld text-sm w-48" %> 
                
       <% _ -> %>
         <%# OTHER (text input) %>
         <%= text_input f, :value, class: "form-fld inline-block text-sm w-48" %>
+
     <% end %>
 
     

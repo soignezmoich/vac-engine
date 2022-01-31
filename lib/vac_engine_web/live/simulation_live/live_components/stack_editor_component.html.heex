@@ -20,13 +20,12 @@
       template_case={@template_case}
       stack={@stack}
     />
-    <%# <.live_component
-      id="case_output"
+    <.live_component
       module={StackOutputComponent}
-      blueprint={@blueprint}
-      case={@case}
+      id="case_output"
+      output_variables={@output_variables}
+      runnable_case={@runnable_case}
       stack={@stack}
-      action={@action}
-    /> %>
+    />
   </div>
 </div>
