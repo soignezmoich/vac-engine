@@ -569,7 +569,7 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
       end)
 
     tab =
-      if is_nil(Map.get(socket.assigns, :column)) && cell do
+      if is_nil(Map.get(socket.assigns, :column)) && column && branch do
         :cell
       else
         tab
