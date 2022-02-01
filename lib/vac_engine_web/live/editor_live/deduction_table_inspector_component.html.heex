@@ -15,13 +15,13 @@
     <%= label_line_tag f, :description, "Description" %>
     <%= textarea f, :description, class: "form-fld !h-16 text-xs" %>
 
-    <button class="btn-default my-2" >
+    <button class="btn-default text-xs my-2" >
       Save
     </button>
     <button phx-click="cancel"
             phx-target={@myself}
             type="button"
-            class="btn" >
+            class="btn text-xs" >
       Reset
     </button>
   </.form>

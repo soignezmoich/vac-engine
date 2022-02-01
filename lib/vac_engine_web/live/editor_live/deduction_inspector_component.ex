@@ -24,7 +24,8 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
       on_update: nil,
       changeset: nil,
       inspector: nil,
-      tab: :cell
+      tab: :deduction,
+      tabs_enabled: []
     )
     |> select(nil)
     |> ok()
@@ -62,7 +63,13 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
       |> Enum.sort()
 
     socket
-    |> assign(changeset: changeset, inspector: :new_deduction, variables: vars)
+    |> assign(
+      changeset: changeset,
+      inspector: :new_deduction,
+      variables: vars,
+      tab: :deduction,
+      tabs_enabled: [:deduction]
+    )
     |> pair(:noreply)
   end
 
@@ -439,6 +446,7 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
 
   def select(socket, selection \\ :reselect) do
     blueprint = socket.assigns.blueprint
+    tab = socket.assigns.tab
 
     {selection, reselect} =
       if selection == :reselect do
@@ -565,7 +573,38 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
         _ -> nil
       end
 
+    tabs_enabled =
+      %{
+        deduction: true,
+        cell: branch && column,
+        branch: branch,
+        column: column
+      }
+      |> Enum.reduce([], fn
+        {_, nil}, acc ->
+          acc
+
+        {k, _v}, acc ->
+          [k | acc]
+      end)
+
+    tab =
+      if is_nil(Map.get(socket.assigns, :column)) && cell do
+        :cell
+      else
+        tab
+      end
+
+    tab =
+      if Enum.member?(tabs_enabled, tab) do
+        tab
+      else
+        :deduction
+      end
+
     assign(socket,
+      tab: tab,
+      tabs_enabled: tabs_enabled,
       cell: cell,
       deduction: deduction,
       column: column,

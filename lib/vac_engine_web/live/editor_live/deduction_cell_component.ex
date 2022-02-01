@@ -36,6 +36,29 @@ defmodule VacEngineWeb.EditorLive.DeductionCellComponent do
         _,
         %{
           assigns: %{
+            selected: true
+          }
+        } = socket
+      ) do
+    send_update(DeductionListComponent,
+      id: "deduction_list",
+      action: {:select, nil}
+    )
+
+    send_update(DeductionInspectorComponent,
+      id: "deduction_inspector",
+      action: {:select, nil}
+    )
+
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event(
+        "select",
+        _,
+        %{
+          assigns: %{
             deduction: deduction,
             column: column,
             branch: branch,

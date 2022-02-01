@@ -1,228 +1,235 @@
 <div id="deduction_inspector">
-    <div class="w-full bg-white shadow-md p-3">
-      <div class="font-bold mb-2 border-b border-black">
-        Deduction actions
-      </div>
-      <div class="grid grid-cols-4 my-1 gap-1.5 w-full">
-        <button class="btn btn-default flex justify-center items-center"
-                disabled={!@can_add_deduction?}
-                phx-click="new_deduction"
-                phx-target={@myself}>
-          <.icon name="hero/plus" width="16px" />
-        </button>
-        <button class="btn btn-default flex justify-center items-center"
-                disabled={!@can_move_up_deduction?}
-                phx-click="move_deduction_up"
-                phx-target={@myself}>
-          <.icon name="hero/arrow-up" width="16px" />
-        </button>
-        <button class="btn btn-default flex justify-center items-center"
-                disabled={!@can_move_down_deduction?}
-                phx-click="move_deduction_down"
-                phx-target={@myself}>
-          <.icon name="hero/arrow-down" width="16px" />
-        </button>
-        <button class="btn btn-default flex justify-center items-center"
-                disabled={!@can_delete_deduction?}
-                phx-click="delete_deduction"
-                phx-target={@myself}>
-          <.icon name="hero/trash" width="16px" />
-        </button>
-      </div>
-      <div class="font-bold mb-2 border-b border-black">
-        Branch actions
-      </div>
-      <div class="grid grid-cols-4 my-1 gap-1.5 w-full">
-        <button class="btn btn-default flex justify-center items-center"
-                disabled={!@can_add_branch?}
-                phx-click="add_branch"
-                phx-target={@myself}>
-          <.icon name="hero/plus" width="16px" />
-        </button>
-        <button class="btn btn-default flex justify-center items-center"
-                disabled={!@can_move_up_branch?}
-                phx-click="move_branch_up"
-                phx-target={@myself}>
-          <.icon name="hero/arrow-up" width="16px" />
-        </button>
-        <button class="btn btn-default flex justify-center items-center"
-                disabled={!@can_move_down_branch?}
-                phx-click="move_branch_down"
-                phx-target={@myself}>
-          <.icon name="hero/arrow-down" width="16px" />
-        </button>
-        <button class="btn btn-default flex justify-center items-center"
-                disabled={!@can_delete_branch?}
-                phx-click="delete_branch"
-                phx-target={@myself}>
-          <.icon name="hero/trash" width="16px" />
-        </button>
-      </div>
-      <div class="font-bold mb-2 border-b border-black">
-        Column actions
-      </div>
-      <div class="grid grid-cols-4 my-1 gap-1.5 w-full">
-        <button class="btn btn-default flex justify-center items-center"
-                disabled={!@can_add_column?}
-                phx-click="new_column"
-                phx-target={@myself}>
-          <.icon name="hero/plus" width="16px" />
-        </button>
-        <button class="btn btn-default flex justify-center items-center"
-                disabled={!@can_move_left_column?}
-                phx-click="move_column_left"
-                phx-target={@myself}>
-          <.icon name="hero/arrow-left" width="16px" />
-        </button>
-        <button class="btn btn-default flex justify-center items-center"
-                disabled={!@can_move_right_column?}
-                phx-click="move_column_right"
-                phx-target={@myself}>
-          <.icon name="hero/arrow-right" width="16px" />
-        </button>
-        <button class="btn btn-default flex justify-center items-center"
-                disabled={!@can_delete_column?}
-                phx-click="delete_column"
-                phx-target={@myself}>
-          <.icon name="hero/trash" width="16px" />
-        </button>
-      </div>
+  <div class="w-full bg-white text-xs shadow-md">
+    <div class="grid grid-cols-4 items-center border-b border-black">
+      <button class={ klass("text-xs flex flex-col items-center disabled:bg-cream-50 disabled:text-cream-200", [
+              {"bg-cream-200 text-cream-900", @tab == :cell},
+              {"bg-cream-600 text-cream-100", @tab != :cell}
+              ])}
+              disabled={!Enum.member?(@tabs_enabled, :cell)}
+              phx-click="change_tab"
+              phx-target={@myself}
+              phx-value-tab="cell"
+              >
+        <div class="h-[20px] flex items-center"><.icon name="hero/view-grid" width="18px" /></div>
+        Cell
+      </button>
+      <button class={ klass("text-xs flex flex-col items-center disabled:bg-cream-50 disabled:text-cream-200", [
+              {"bg-cream-200 text-cream-900", @tab == :branch},
+              {"bg-cream-600 text-cream-100", @tab != :branch}
+              ])}
+              disabled={!Enum.member?(@tabs_enabled, :branch)}
+              phx-click="change_tab"
+              phx-target={@myself}
+              phx-value-tab="branch"
+              >
+        <div class="h-[20px] flex items-center"><.icon name="hero/view-list" width="18px" /></div>
+        Branch
+      </button>
+      <button class={ klass("text-xs flex flex-col items-center disabled:bg-cream-50 disabled:text-cream-200", [
+              {"bg-cream-200 text-cream-900", @tab == :column},
+              {"bg-cream-600 text-cream-100", @tab != :column}
+              ])}
+              disabled={!Enum.member?(@tabs_enabled, :column)}
+              phx-click="change_tab"
+              phx-target={@myself}
+              phx-value-tab="column"
+              >
+        <div class="h-[20px] flex items-center"><.icon name="hero/view-boards" width="18px" /></div>
+        Column
+      </button>
+      <button class={ klass("text-xs flex flex-col items-center disabled:bg-cream-50 disabled:text-cream-200", [
+              {"bg-cream-200 text-cream-900", @tab == :deduction},
+              {"bg-cream-600 text-cream-100", @tab != :deduction}
+              ])}
+              disabled={!Enum.member?(@tabs_enabled, :deduction)}
+              phx-click="change_tab"
+              phx-target={@myself}
+              phx-value-tab="deduction"
+              >
+        <div class="h-[20px] flex items-center"><.icon name="hero/table" width="20px" /></div>
+        <div style="transform: scale(0.75, 1)" >Deduction</div>
+      </button>
     </div>
-    <div class="w-full divide-black bg-white filter shadow-md mt-4">
-      <%= case @inspector do %>
-      <% :new_deduction -> %>
-        <.form
-          let={f}
-          for={@changeset}
-          as={:deduction}
-          id="deduction_form"
-          phx-throttle="100"
-          phx-submit="add_deduction"
-          phx-target={@myself}
-          class="flex flex-col w-full divide-black p-3">
-          <div class="font-bold">New deduction</div>
-          <hr>
-          <%= label(f, :variable, "Variable", class: "text-sm mb-1 mt-2") %>
-          <%= select(f, :variable, @variables, class: "form-fld text-sm mb-2") %>
-          <%= submit("Add", class: "btn-default mb-2") %>
-          <button phx-click="cancel"
-                  phx-target={@myself}
-                  class="btn"
-                  type="button">
-            Cancel
-          </button>
-        </.form>
-      <% :new_column -> %>
-        <.form
-          let={f}
-          for={@changeset}
-          as={:column}
-          id="column_form"
-          phx-throttle="100"
-          phx-submit="add_column"
-          phx-target={@myself}
-          class="flex flex-col w-full divide-black p-3">
-          <div class="font-bold">New column</div>
-          <hr>
-          <%= label(f, :type, "Type", class: "text-sm mb-1 mt-2") %>
-          <%= select(f, :type, [:condition, :assignment], class: "form-fld text-sm mb-2") %>
-          <%= label(f, :variable, "Variable", class: "text-sm mb-1") %>
-          <%= select(f, :variable, @variables, class: "form-fld text-sm mb-2") %>
-          <%= submit("Add", class: "btn-default mb-2") %>
-          <button phx-click="cancel"
-                  phx-target={@myself}
-                  class="btn"
-                  type="button">
-            Cancel
-          </button>
-        </.form>
-      <% :edit_cell -> %>
-        <div class="grid grid-cols-4 items-center border-b border-black">
-          <button class={ klass("text-xs flex flex-col items-center", [
-                  {"bg-cream-200 text-cream-900", @tab == :cell},
-                  {"bg-cream-600 text-cream-100", @tab != :cell}
-                  ])}
-                  phx-click="change_tab"
-                  phx-target={@myself}
-                  phx-value-tab="cell"
-                  >
-            <div class="h-[20px] flex items-center"><.icon name="hero/view-grid" width="18px" /></div>
-            Cell
-          </button>
-          <button class={ klass("text-xs flex flex-col items-center", [
-                  {"bg-cream-200 text-cream-900", @tab == :branch},
-                  {"bg-cream-600 text-cream-100", @tab != :branch}
-                  ])}
-                  phx-click="change_tab"
-                  phx-target={@myself}
-                  phx-value-tab="branch"
-                  >
-            <div class="h-[20px] flex items-center"><.icon name="hero/view-list" width="18px" /></div>
-            Branch
-          </button>
-          <button class={ klass("text-xs flex flex-col items-center", [
-                  {"bg-cream-200 text-cream-900", @tab == :column},
-                  {"bg-cream-600 text-cream-100", @tab != :column}
-                  ])}
-                  phx-click="change_tab"
-                  phx-target={@myself}
-                  phx-value-tab="column"
-                  >
-            <div class="h-[20px] flex items-center"><.icon name="hero/view-boards" width="18px" /></div>
-            Column
-          </button>
-          <button class={ klass("text-xs flex flex-col items-center", [
-                  {"bg-cream-200 text-cream-900", @tab == :deduction},
-                  {"bg-cream-600 text-cream-100", @tab != :deduction}
-                  ])}
-                  phx-click="change_tab"
-                  phx-target={@myself}
-                  phx-value-tab="deduction"
-                  >
-            <div class="h-[20px] flex items-center"><.icon name="hero/table" width="20px" /></div>
-            <div style="transform: scale(0.75, 1)" >Deduction</div>
+    <%= case @inspector do %>
+    <% :new_deduction -> %>
+      <.form
+        let={f}
+        for={@changeset}
+        as={:deduction}
+        id="deduction_form"
+        phx-throttle="100"
+        phx-submit="add_deduction"
+        phx-target={@myself}
+        class="flex flex-col w-full p-3">
+        <div class="font-bold">New deduction</div>
+        <hr class="mb-2 border-black">
+        <%= label(f, :variable, "Variable", class: "text-xs mb-1 mt-2") %>
+        <%= select(f, :variable, @variables, class: "form-fld-sm text-sm mb-4") %>
+        <%= submit("Add", class: "btn-default text-xs mb-2") %>
+        <button phx-click="cancel"
+                phx-target={@myself}
+                class="btn text-xs"
+                type="button">
+          Cancel
+        </button>
+      </.form>
+    <% :new_column -> %>
+      <.form
+        let={f}
+        for={@changeset}
+        as={:column}
+        id="column_form"
+        phx-throttle="100"
+        phx-submit="add_column"
+        phx-target={@myself}
+        class="flex flex-col w-full p-3">
+        <div class="font-bold">New column</div>
+        <hr class="mb-2 border-black">
+        <%= label(f, :type, "Type", class: "text-xs mb-1 mt-2") %>
+        <%= select(f, :type, [:condition, :assignment], class: "form-fld-sm text-xs mb-2") %>
+        <%= label(f, :variable, "Variable", class: "text-xs mb-1") %>
+        <%= select(f, :variable, @variables, class: "form-fld-sm text-xs mb-4") %>
+        <%= submit("Add", class: "btn-default text-xs mb-2") %>
+        <button phx-click="cancel"
+                phx-target={@myself}
+                class="btn text-xs"
+                type="button">
+          Cancel
+        </button>
+      </.form>
+    <% :edit_cell -> %>
+      <div class="p-3">
+        <%= case @tab do %>
+        <% :cell -> %>
+          <.live_component
+            id="cell_inspector"
+            module={DeductionCellInspectorComponent}
+            blueprint={@blueprint}
+            column={@column}
+            branch={@branch}
+            cell={@cell} />
+        <% :branch -> %>
+          <div class="grid grid-cols-4 mb-2 gap-1.5 w-full h-6">
+            <button class="btn btn-default !p-0 flex justify-center items-center"
+                    disabled={!@can_add_branch?}
+                    phx-click="add_branch"
+                    phx-target={@myself}>
+              <.icon name="hero/plus" width="18px" />
+            </button>
+            <button class="btn btn-default !p-0 flex justify-center items-center"
+                    disabled={!@can_move_up_branch?}
+                    phx-click="move_branch_up"
+                    phx-target={@myself}>
+              <.icon name="hero/arrow-up" width="18px" />
+            </button>
+            <button class="btn btn-default !p-0 flex justify-center items-center"
+                    disabled={!@can_move_down_branch?}
+                    phx-click="move_branch_down"
+                    phx-target={@myself}>
+              <.icon name="hero/arrow-down" width="18px" />
+            </button>
+            <button class="btn btn-default !p-0 flex justify-center items-center"
+                    disabled={!@can_delete_branch?}
+                    phx-click="delete_branch"
+                    phx-target={@myself}>
+              <.icon name="hero/trash" width="18px" />
+            </button>
+          </div>
+          <.live_component
+            id="branch_inspector"
+            module={DeductionBranchInspectorComponent}
+            blueprint={@blueprint}
+            branch={@branch}
+            />
+        <% :column -> %>
+          <div class="grid grid-cols-4 mb-2 gap-1.5 w-full h-6">
+            <button class="btn btn-default !p-0 flex justify-center items-center"
+                    disabled={!@can_add_column?}
+                    phx-click="new_column"
+                    phx-target={@myself}>
+              <.icon name="hero/plus" width="18px" />
+            </button>
+            <button class="btn btn-default !p-0 flex justify-center items-center"
+                    disabled={!@can_move_left_column?}
+                    phx-click="move_column_left"
+                    phx-target={@myself}>
+              <.icon name="hero/arrow-left" width="18px" />
+            </button>
+            <button class="btn btn-default !p-0 flex justify-center items-center"
+                    disabled={!@can_move_right_column?}
+                    phx-click="move_column_right"
+                    phx-target={@myself}>
+              <.icon name="hero/arrow-right" width="18px" />
+            </button>
+            <button class="btn btn-default !p-0 flex justify-center items-center"
+                    disabled={!@can_delete_column?}
+                    phx-click="delete_column"
+                    phx-target={@myself}>
+              <.icon name="hero/trash" width="18px" />
+            </button>
+          </div>
+          <.live_component
+            id="column_inspector"
+            module={DeductionColumnInspectorComponent}
+            blueprint={@blueprint}
+            column={@column}
+            />
+        <% :deduction -> %>
+          <div class="grid grid-cols-4 mb-2 gap-1.5 w-full h-6">
+            <button class="btn btn-default !p-0 flex justify-center items-center"
+                    disabled={!@can_add_deduction?}
+                    phx-click="new_deduction"
+                    phx-target={@myself}>
+              <.icon name="hero/plus" width="18px" />
+            </button>
+            <button class="btn btn-default !p-0 flex justify-center items-center"
+                    disabled={!@can_move_up_deduction?}
+                    phx-click="move_deduction_up"
+                    phx-target={@myself}>
+              <.icon name="hero/arrow-up" width="18px" />
+            </button>
+            <button class="btn btn-default !p-0 flex justify-center items-center"
+                    disabled={!@can_move_down_deduction?}
+                    phx-click="move_deduction_down"
+                    phx-target={@myself}>
+              <.icon name="hero/arrow-down" width="18px" />
+            </button>
+            <button class="btn btn-default !p-0 flex justify-center items-center"
+                    disabled={!@can_delete_deduction?}
+                    phx-click="delete_deduction"
+                    phx-target={@myself}>
+              <.icon name="hero/trash" width="18px" />
+            </button>
+          </div>
+          <.live_component
+            id="deduction_table_inspector"
+            module={DeductionTableInspectorComponent}
+            blueprint={@blueprint}
+            deduction={@deduction}
+            />
+        <% end %>
+      </div>
+    <% _ -> %>
+      <div class="flex flex-col p-3">
+        <div class="grid grid-cols-4 mb-2 gap-1.5 w-full h-6">
+          <button class="btn btn-default !p-0 flex justify-center items-center"
+                  disabled={!@can_add_deduction?}
+                  phx-click="new_deduction"
+                  phx-target={@myself}>
+            <.icon name="hero/plus" width="18px" />
           </button>
         </div>
-        <div class="p-3">
-          <%= case @tab do %>
-          <% :cell -> %>
-            <.live_component
-              id="cell_inspector"
-              module={DeductionCellInspectorComponent}
-              blueprint={@blueprint}
-              column={@column}
-              branch={@branch}
-              cell={@cell} />
-          <% :branch -> %>
-            <.live_component
-              id="branch_inspector"
-              module={DeductionBranchInspectorComponent}
-              blueprint={@blueprint}
-              branch={@branch}
-              />
-          <% :column -> %>
-            <.live_component
-              id="column_inspector"
-              module={DeductionColumnInspectorComponent}
-              blueprint={@blueprint}
-              column={@column}
-              />
-          <% :deduction -> %>
-            <.live_component
-              id="deduction_table_inspector"
-              module={DeductionTableInspectorComponent}
-              blueprint={@blueprint}
-              deduction={@deduction}
-              />
-          <% end %>
-        </div>
-      <% _ -> %>
-        <div class="text-sm text-center p-3">Nothing to inspect</div>
-      <% end %>
-    </div>
+        <div class="font-bold flex-grow italic">Nothing selected</div>
+      </div>
+
+    <% end %>
+
+  </div>
+  <div class="w-full bg-white text-xs shadow-md p-3 mt-4">
     <.live_component
       id="blueprint_status"
       module={BlueprintStatusComponent}
       blueprint={@blueprint}
     />
+  </div>
 </div>
