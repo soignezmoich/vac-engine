@@ -3,6 +3,8 @@ defmodule VacEngineWeb.SimulationLive.MenuStackItemComponent do
 
   import VacEngineWeb.IconComponent
 
+  alias VacEngine.Simulation
+  alias VacEngineWeb.SimulationLive.MenuStackListComponent
   alias VacEngineWeb.SimulationLive.SimulationEditorComponent
 
   @impl true
@@ -35,6 +37,27 @@ defmodule VacEngineWeb.SimulationLive.MenuStackItemComponent do
       action: :set_selection,
       selected_type: :stack,
       selected_id: socket.assigns.stack_id
+    )
+
+    {:noreply, socket}
+  end
+
+  def handle_event("delete_stack", _params, socket) do
+    %{stack_id: stack_id} = socket.assigns
+
+    Simulation.delete_stack(stack_id)
+
+    send_update(MenuStackListComponent,
+      id: "menu_stack_list",
+      action: :refresh_after_delete_stack,
+      stack_id: stack_id
+    )
+
+    send_update(SimulationEditorComponent,
+      id: "simulation_editor",
+      action: :set_selection,
+      selected_type: nil,
+      selected_id: nil
     )
 
     {:noreply, socket}

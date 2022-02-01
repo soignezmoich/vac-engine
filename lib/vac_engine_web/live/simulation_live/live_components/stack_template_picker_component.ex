@@ -27,6 +27,8 @@ defmodule StackTemplatePickerComponent do
       {%{case_id: template_case_id}, types}
       |> cast(%{}, Map.keys(types))
 
+    IO.inspect(changeset)
+
     socket =
       socket
       |> assign(
@@ -48,9 +50,9 @@ defmodule StackTemplatePickerComponent do
       "" ->
         stack |> Simulation.delete_stack_template()
 
-      template_id_string ->
-        {template_id, _binary} = template_id_string |> Integer.parse()
-        Simulation.set_stack_template(stack, template_id)
+      template_case_id_string ->
+        {template_case_id, _binary} = template_id_string |> Integer.parse()
+        Simulation.set_stack_template(stack, template_case_id)
     end
 
     send_update(StackEditorComponent,

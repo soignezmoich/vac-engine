@@ -34,6 +34,7 @@ defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
         socket
       ) do
     stack = Simulation.get_stack(stack_id)
+
     template_case = stack |> Simulation.get_stack_template_case()
     runnable_case = stack |> Simulation.get_stack_runnable_case()
 

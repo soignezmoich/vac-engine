@@ -42,7 +42,7 @@ defmodule VacEngineWeb.SimulationLive.TemplateInputVariableComponent do
 
       {:ok, input_entry} =
         Simulation.create_input_entry(
-          template,
+          template.case,
           entry_key,
           Simulation.variable_default_value(type, enum)
         )

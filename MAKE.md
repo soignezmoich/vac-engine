@@ -15,7 +15,7 @@
 
 ## Building
 
-- `clean`           clean the project
+- `clean`           clean the project (required to update deps)
 - `release`         build a release
 
 ## Testing

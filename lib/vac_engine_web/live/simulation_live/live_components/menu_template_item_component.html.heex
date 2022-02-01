@@ -1,7 +1,19 @@
-<div class={"link flex#{if @selected do " bg-blue-50" end}"}
-  phx-click={"select_item"}
-  phx-target={@myself}
-  class={""}
->
-  <%= @template_name %>
+<div  class={"#{if @selected do " bg-blue-50" end} pb-1 border-b border-gray-100"}>
+  <div
+    phx-click="delete_template"
+    phx-target={@myself}
+    class="inline-block mt-1 -mb-1 text-blue-600 cursor-pointer hover:text-red-400"
+  >
+    <.icon name="hero/x-circle" width="18px" />
+  </div>
+  <div class={"inline-block w-4/5 link"}
+    phx-click={"select_item"}
+    phx-target={@myself}
+    class={""}
+  >
+    <%= @template_name %>
+  </div>
+  <%= if !is_nil(@error_message) do %>
+    <div class={"text-red-400 text-sm"}><%= @error_message %></div>
+  <% end %>
 </div>

@@ -3,12 +3,12 @@
   <div class="font-bold mb-2 border-b border-black">
     Templates
   </div>
-  <%= for {template_id, template_name} <- @template_names do %>
+  <%= for {template_id, case_name, _case_id} <- @template_names do %>
     <.live_component
       module={MenuTemplateItemComponent}
       id={"menu_template_item_#{template_id}"}
       template_id={template_id}
-      template_name={template_name}
+      template_name={case_name}
       selected={@has_selection && template_id == @selected_id}
     />
   <% end %>

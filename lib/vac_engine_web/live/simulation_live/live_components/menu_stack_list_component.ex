@@ -7,6 +7,22 @@ defmodule VacEngineWeb.SimulationLive.MenuStackListComponent do
 
   def update(
         %{
+          action: :refresh_after_delete_stack,
+          stack_id: _stack_id
+        },
+        socket
+      ) do
+    %{blueprint: blueprint} = socket.assigns
+
+    socket =
+      socket
+      |> assign(stacks: Simulation.get_stack_names(blueprint))
+
+    {:ok, socket}
+  end
+
+  def update(
+        %{
           blueprint: blueprint,
           id: id,
           selected_id: selected_id,

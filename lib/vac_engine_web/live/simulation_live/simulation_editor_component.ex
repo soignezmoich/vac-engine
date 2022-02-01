@@ -13,6 +13,27 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
   alias VacEngineWeb.SimulationLive.MenuTemplateListComponent
   alias VacEngineWeb.SimulationLive.TemplateEditorComponent
 
+  # id: "simulation_editor",
+  # action: :refres_after_delete_template,
+  # template_id: template_id,
+
+  def update(
+        %{
+          action: :refresh_after_delete_template,
+          template_id: _template_id
+        },
+        socket
+      ) do
+    update(
+      %{
+        action: :set_selection,
+        selected_type: nil,
+        selected_id: nil
+      },
+      socket
+    )
+  end
+
   @impl true
   def update(
         %{
@@ -22,12 +43,14 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
         },
         socket
       ) do
+    %{blueprint: blueprint} = socket.assigns
+
     socket =
       socket
       |> assign(
         selected_type: new_selected_type,
         selected_id: new_selected_id,
-        templates: Simulation.get_template_names(socket.assigns.blueprint)
+        template_names: Simulation.get_template_names(blueprint)
       )
 
     {:ok, socket}

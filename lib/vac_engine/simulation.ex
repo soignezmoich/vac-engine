@@ -20,18 +20,14 @@ defmodule VacEngine.Simulation do
   import Ecto.Query
   import Ecto.Changeset
   alias VacEngine.Pub.Portal
-  alias VacEngine.Simulation.Runner
   alias VacEngine.Simulation.Case
   alias VacEngine.Simulation.InputEntry
   alias VacEngine.Simulation.Layer
   alias VacEngine.Simulation.OutputEntry
+  alias VacEngine.Simulation.Runner
   alias VacEngine.Simulation.Stack
   alias VacEngine.Simulation.Template
-  alias VacEngine.Simulation.Stack
-  alias VacEngine.Simulation.Layer
   alias VacEngine.Simulation.Setting
-  alias VacEngine.Simulation.InputEntry
-  alias VacEngine.Simulation.OutputEntry
 
   def queue_job(job) do
     Runner.queue(job)
@@ -310,7 +306,7 @@ defmodule VacEngine.Simulation do
       left_join: c in Case,
       on: t.case_id == c.id,
       where: t.blueprint_id == ^blueprint.id,
-      select: {t.id, c.name}
+      select: {t.id, c.name, c.id}
     )
     |> Repo.all()
   end
@@ -336,6 +332,29 @@ defmodule VacEngine.Simulation do
     end)
     |> Repo.transaction()
   end
+
+  def delete_template(template_id) do
+    template = Repo.get(Template, template_id)
+
+    IO.inspect(template)
+
+    related_blueprint_layers =
+      from(l in Layer,
+        join: c in Case,
+        on: c.id == l.case_id,
+        where: l.blueprint_id == ^template.blueprint_id,
+        where: c.id == ^template.case_id
+      )
+      |> Repo.all()
+
+    if Enum.empty?(related_blueprint_layers) do
+      Repo.delete(template)
+    else
+      {:error, "Can't delete template: currently in use."}
+    end
+  end
+
+  ### INPUT ENTRIES ###
 
   def create_input_entry(kase, key, value \\ "-") do
     %InputEntry{
@@ -381,7 +400,12 @@ defmodule VacEngine.Simulation do
     |> Repo.update()
   end
 
-  # ### CASE STACKS ###
+  ### CASE STACKS ###
+
+  def delete_stack(stack_id) do
+    stack = Repo.get(Stack, stack_id)
+    Repo.delete(stack)
+  end
 
   def get_stack(stack_id) do
     from(s in Stack,
@@ -506,7 +530,7 @@ defmodule VacEngine.Simulation do
   #   end
   # end
 
-  def set_stack_template(stack, template_id) do
+  def set_stack_template(stack, template_case_id) do
     # delete previous layer relation first
     layer =
       stack.layers
@@ -517,7 +541,7 @@ defmodule VacEngine.Simulation do
         %Layer{
           workspace_id: stack.workspace_id,
           blueprint_id: stack.blueprint_id,
-          case_id: template_id,
+          case_id: template_case_id,
           stack_id: stack.id,
           position: 1
         }
@@ -531,7 +555,7 @@ defmodule VacEngine.Simulation do
           %Layer{
             workspace_id: stack.workspace_id,
             blueprint_id: stack.blueprint_id,
-            case_id: template_id,
+            case_id: template_case_id,
             stack_id: stack.id,
             position: 1
           }
