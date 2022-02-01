@@ -8,31 +8,50 @@
       <%= @variable.name %>
     </div>
     <div class="table-cell px-1 align-middle">
-      <%= case {@variable.type, @active} do %>
-        <% {:map, _} -> %>
+      <%= if @active do %>
+        <ToggleForbiddenComponent.render forbidden={@forbidden} target_component={"#stack_output_variable_#{@variable.id}"} />
+      <% end %>
+    </div>
+    <div class="table-cell px-1 align-middle">
+      <%= case {@variable.type, @active, @forbidden} do %>
+        <% {:map, _, _} -> %>
           <div class="inline-block form-fld invisible">
             placeholder
           </div>
-        <% {_, true} -> %>
-          expected_field
-          <%# <.live_component
-            module={EntryValueFieldComponent}
+        <% {_, true, false} -> %>
+          <.live_component
+            module={ExpectedFieldComponent}
             id={"output_entry_value_field_#{@runnable_output_entry.id}"}
-            entry={@runnable_output_entry}
-            target_component={%{type: StackEditorComponent, id: @id}}
+            output_entry={@runnable_output_entry}
+            target_component={%{
+              type: StackEditorComponent,
+              id: "stack_editor_#{@stack.id}"
+            }}
             variable_type={@variable.type}
             variable_enum={@variable.enum}
-          /> %>
+          />
         <% _ -> %>
           <div class="inline-block form-fld invisible">
             placeholder
           </div>
       <% end %>
     </div>
-    <div class={"table-cell px-1 align-middle"}>
-      <ToggleForbiddenComponent.render forbidden={@forbidden} target_component={"#stack_output_variable_#{@variable.id}"} />
+    <div class="table-cell px-1 align-middle">
+      <%= @actual %>
     </div>
-    <div class="table-cell w-full" />
+    <div class="table-cell px-1 align-middle">
+      <%= if @active do %>
+        <%= if @mismatch do %>
+          <div class="inline-block align-top text-red-500">
+            <.icon name="hero/exclamation-circle" width="1.5rem" />
+          </div>
+        <% else %>
+          <div class="inline-block align-top text-green-600">
+            <.icon name="hero/check-circle" width="1.5rem" />
+          </div>
+        <% end %>
+      <% end %>
+    </div>
   <% end %>
 </div>
 

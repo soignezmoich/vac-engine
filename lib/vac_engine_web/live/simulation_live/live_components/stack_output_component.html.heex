@@ -13,8 +13,18 @@
         </form>
     </div>
 
-    <div class="text-lg font-bold h-10 border-b border-black">Output</div>
-    <div class="table">
+    <div class="text-lg font-bold h-10 mb-5">
+        Output
+    </div>
+    <div class="table w-full">
+        <div class="table-row text-sm font-bold">
+            <div class="table-cell px-1 border-b border-black"></div>
+            <div class="table-cell px-1 border-b border-black">variable</div>
+            <div class="table-cell px-1 border-b border-black">forbidden</div>
+            <div class="table-cell px-1 border-b border-black">expected</div>
+            <div class="table-cell px-1 border-b border-black">actual</div>
+            <div class="table-cell px-1 border-b border-black">mismatch</div>
+        </div>
         <%= for variable <- @output_variables do %>
             <.live_component
             module={StackOutputVariableComponent}

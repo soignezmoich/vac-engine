@@ -375,9 +375,9 @@ defmodule VacEngine.Simulation do
     Repo.delete(output_entry)
   end
 
-  def update_output_entry(input_entry, expected) do
-    input_entry
-    |> InputEntry.changeset(%{expected: expected})
+  def update_output_entry(output_entry, expected) do
+    output_entry
+    |> cast(%{expected: expected}, [:expected])
     |> Repo.update()
   end
 
@@ -553,12 +553,13 @@ defmodule VacEngine.Simulation do
   def variable_default_value(type, enum) do
     case {type, enum} do
       {:boolean, _} -> "false"
-      {:string, nil} -> ""
+      {:string, nil} -> "<enter value>"
       {:string, enum} -> enum |> List.first() || ""
       {:date, _} -> "2000-01-01"
       {:datetime, _} -> "2000-01-01T00:00:00"
       {:number, _} -> "0.0"
       {:integer, _} -> "0"
+      {:map, _} -> "<non-empty>"
     end
   end
 

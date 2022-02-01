@@ -16,14 +16,21 @@
         </form>
     </div>
 
-    <div class="text-lg font-bold border-b h-10 border-black">Input</div>
+    <div class="text-lg font-bold h-10 mb-3">
+        Input
+    </div>
     <%= if is_nil(@template_case) do %>
         <div class="font-bold text-red-600">
             Warning: no matching template.
         </div>
     <% end %>
     <div class="h-2"/>
-    <div class="table">
+    <div class="table w-full">
+        <div class="table-row text-sm font-bold">
+            <div class="table-cell px-1 border-b border-black"></div>
+            <div class="table-cell px-1 border-b border-black">variable</div>
+            <div class="table-cell px-1 border-b border-black">value</div>
+        </div>
         <%= for variable <- @input_variables do %>
             <.live_component
                 module={StackInputVariableComponent}

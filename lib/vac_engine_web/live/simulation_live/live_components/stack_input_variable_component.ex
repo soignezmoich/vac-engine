@@ -106,36 +106,4 @@ defmodule VacEngineWeb.SimulationLive.StackInputVariableComponent do
 
     {:noreply, socket}
   end
-
-  def handle_event("set_entry", %{"active" => active}, socket) do
-    kase = socket.assigns.case
-    stack = socket.assigns.stack
-    blueprint = socket.assigns.blueprint
-
-    if active == "true" do
-      type = socket.assigns.variable.type
-      enum = Map.get(socket.assigns.variable, :enum)
-
-      entry_key = socket.assigns.variable.path |> Enum.join(".")
-
-      {:ok, _input_entry} =
-        Simulation.create_input_entry(
-          kase,
-          entry_key,
-          Simulation.variable_default_value(type, enum)
-        )
-    else
-      Simulation.delete_input_entry(socket.assigns.input_entry)
-    end
-
-    send_update(SimulationEditorComponent,
-      id: "simulation_editor",
-      selected_element: stack,
-      blueprint: blueprint,
-      stacks: Simulation.get_stacks(blueprint),
-      action: "refresh-#{:rand.uniform()}"
-    )
-
-    {:noreply, socket}
-  end
 end

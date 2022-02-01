@@ -51,60 +51,6 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
     {:ok, socket}
   end
 
-  # @impl true
-  # def update(assigns, socket) do
-  #   templates =
-  #     Map.get(assigns, :templates) ||
-  #       Simulation.get_templates(assigns.blueprint)
-
-  #   stacks =
-  #     Map.get(assigns, :stacks) || Simulation.get_stacks(assigns.blueprint)
-
-  #   selected_element =
-  #     get_updated_selected_element(
-  #       Map.get(assigns, :selected_element),
-  #       templates,
-  #       stacks
-  #     )
-
-  #   action = assigns |> Map.get(:action) || nil
-
-  #   socket =
-  #     assign(socket,
-  #       blueprint: assigns.blueprint,
-  #        template_names: template_names,
-  #       stacks: stacks,
-  #       selected_element: selected_element,
-  #       action: action
-  #     )
-
-  #   hash = :crypto.hash(:md5, :erlang.term_to_binary(socket)) |> Base.encode64()
-
-  #   {
-  #     :ok,
-  #     socket
-  #   }
-  # end
-
-  # def get_updated_selected_element(old_selected_element, templates, stacks) do
-  #   case old_selected_element do
-  #     # template
-  #     %Case{id: id, runnable: false} ->
-  #       IO.puts("TEMPLATE")
-  #       templates |> Enum.find(&(&1.id == id))
-
-  #     # case
-  #     %Stack{id: id} ->
-  #       IO.puts("STACK")
-  #       stacks |> Enum.find(&(&1.id == id))
-
-  #     # none
-  #     _ ->
-  #       IO.puts("NONE")
-  #       stacks |> List.first()
-  #   end
-  # end
-
   @impl true
   def handle_event("menu_select", params, socket) do
     selected_element =
@@ -130,24 +76,6 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
 
     {:noreply, socket}
   end
-
-  # @impl true
-  # def handle_event("create_template", %{"new_template_name" => name}, socket) do
-  #   new_template_case_id =
-  #     case Simulation.create_template(socket.assigns.blueprint, name) do
-  #       {:ok, %{case: %Case{id: id}}} -> id
-  #     end
-
-  #   # template_names = Simulation.get_templates(socket.assigns.blueprint)
-
-  #   # selected_element = templates |> Enum.find(&(&1.id == new_template_case_id))
-
-  #   {:noreply,
-  #    assign(socket, %{
-  #       template_names: template_names,
-  #      selected_element: selected_element
-  #    })}
-  # end
 
   @impl true
   def handle_event("create_stack", %{"new_case_name" => name}, socket) do

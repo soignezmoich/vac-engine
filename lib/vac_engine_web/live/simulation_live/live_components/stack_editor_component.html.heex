@@ -1,4 +1,4 @@
-<div  class="m-3">
+<div class="m-3">
   <div class="text-2xl font-bold mb-4">Case: <%= @runnable_case.name %></div>
   
   <.live_component 
@@ -11,21 +11,25 @@
   />
 
   <div class="h-4"/>
-  <div class="grid sm:grid-cols-1 2xl:grid-cols-2 gap-3">
-    <.live_component
-      module={StackInputComponent}
-      id={"stack_input_#{@stack.id}"}
-      input_variables={@input_variables}
-      runnable_case={@runnable_case}
-      template_case={@template_case}
-      stack={@stack}
-    />
-    <.live_component
-      module={StackOutputComponent}
-      id="case_output"
-      output_variables={@output_variables}
-      runnable_case={@runnable_case}
-      stack={@stack}
-    />
+  <div class="grid grid-cols-12 gap-3">
+    <div class="sm:col-span-12 2xl:col-span-5">
+      <.live_component
+        module={StackInputComponent}
+        id={"stack_input_#{@stack.id}"}
+        input_variables={@input_variables}
+        runnable_case={@runnable_case}
+        template_case={@template_case}
+        stack={@stack}
+      />
+    </div>
+    <div class="sm:col-span-12 2xl:col-span-7">
+      <.live_component
+        module={StackOutputComponent}
+        id="case_output"
+        output_variables={@output_variables}
+        runnable_case={@runnable_case}
+        stack={@stack}
+      />
+    </div>
   </div>
 </div>

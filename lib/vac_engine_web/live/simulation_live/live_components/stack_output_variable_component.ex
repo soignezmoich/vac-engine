@@ -5,11 +5,11 @@ defmodule VacEngineWeb.SimulationLive.StackOutputVariableComponent do
   import VacEngineWeb.SimulationLive.InputComponent
   import VacEngineWeb.IconComponent
 
-
   alias VacEngine.Simulation
   alias VacEngineWeb.SimulationLive.StackEditorComponent
   alias VacEngineWeb.SimulationLive.ToggleEntryComponent
   alias VacEngineWeb.SimulationLive.ToggleForbiddenComponent
+  alias VacEngineWeb.SimulationLive.ExpectedFieldComponent
 
   # def update(assigns, socket) do
   #   expected =
@@ -76,8 +76,6 @@ defmodule VacEngineWeb.SimulationLive.StackOutputVariableComponent do
         _ -> true
       end
 
-    IO.inspect(runnable_output_entry)
-
     bg_color =
       case {mismatch, runnable_output_entry} do
         {true, _} -> "bg-red-100"
@@ -112,12 +110,11 @@ defmodule VacEngineWeb.SimulationLive.StackOutputVariableComponent do
     {:ok, socket}
   end
 
-
   def handle_event("toggle_entry", %{"active" => active}, socket) do
     %{
       runnable_case: runnable_case,
-      stack: stack,
       runnable_output_entry: runnable_output_entry,
+      stack: stack,
       variable: variable
     } = socket.assigns
 
@@ -138,6 +135,30 @@ defmodule VacEngineWeb.SimulationLive.StackOutputVariableComponent do
     else
       Simulation.delete_output_entry(runnable_output_entry)
       nil
+    end
+
+    send_update(StackEditorComponent,
+      id: "stack_editor_#{stack.id}",
+      action: {:refresh, :rand.uniform()}
+    )
+
+    {:noreply, socket}
+  end
+
+  def handle_event("toggle_forbidden", %{"forbidden" => forbidden}, socket) do
+    %{
+      runnable_output_entry: runnable_output_entry,
+      stack: stack,
+      variable: variable
+    } = socket.assigns
+
+    if forbidden == "true" do
+      runnable_output_entry |> Simulation.update_output_entry(nil)
+    else
+      type = variable.type
+      enum = Map.get(variable, :enum)
+      new_value = Simulation.variable_default_value(type, enum)
+      runnable_output_entry |> Simulation.update_output_entry(new_value)
     end
 
     send_update(StackEditorComponent,

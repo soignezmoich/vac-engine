@@ -16,9 +16,12 @@
         <% {_, true, _} -> %>
           <.live_component
             module={EntryValueFieldComponent}
-            id={"input_entry_valu_field_#{@runnable_input_entry.id}"}
+            id={"input_entry_value_field_#{@runnable_input_entry.id}"}
             input_entry={@runnable_input_entry}
-            target_component={%{type: StackEditorComponent, id: @id}}
+            target_component={%{
+              type: StackEditorComponent,
+              id: "stack_editor_#{@stack.id}"
+            }}
             variable_type={@variable.type}
             variable_enum={@variable.enum}
           />
@@ -32,7 +35,6 @@
           </div>
       <% end %>
     </div>
-    <div class="table-cell w-full" />
   <% end %>
 </div>
 

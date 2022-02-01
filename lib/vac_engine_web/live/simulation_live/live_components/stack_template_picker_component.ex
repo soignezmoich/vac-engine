@@ -46,7 +46,6 @@ defmodule StackTemplatePickerComponent do
       ) do
     case template_id_string do
       "" ->
-        IO.puts("none")
         stack |> Simulation.delete_stack_template()
 
       template_id_string ->
