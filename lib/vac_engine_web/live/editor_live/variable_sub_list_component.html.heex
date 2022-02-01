@@ -9,7 +9,7 @@
 
   <%= case @variables do %>
     <% [_|_] = vars -> %>
-      <div class="p-1 grid grid-cols-[300px_150px_200px_minmax(150px,_1fr)]
+      <div class="p-1 grid grid-cols-[300px_150px_200px_minmax(150px,_1fr)_minmax(150px,_1fr)]
                   font-bold bg-cream-400 text-sm text-white">
         <div class="px-1">
           Name
@@ -19,6 +19,9 @@
         </div>
         <div class="px-1">
           Enum values
+        </div>
+        <div class="px-1">
+          Default value
         </div>
         <div class="px-1">
           Description
