@@ -1,8 +1,6 @@
 defmodule VacEngineWeb.SimulationLive.StackInputComponent do
   use VacEngineWeb, :live_component
 
-  import VacEngine.VariableHelpers
-
   alias VacEngineWeb.SimulationLive.StackInputVariableComponent
 
   def mount(socket) do

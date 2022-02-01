@@ -1,8 +1,6 @@
 defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
   use VacEngineWeb, :live_component
 
-  import VacEngine.VariableHelpers
-
   alias VacEngine.Simulation
   alias VacEngineWeb.SimulationLive.StackInputComponent
   alias VacEngineWeb.SimulationLive.StackOutputComponent

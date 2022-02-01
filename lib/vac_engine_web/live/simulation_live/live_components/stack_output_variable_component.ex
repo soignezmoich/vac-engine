@@ -1,8 +1,6 @@
 defmodule VacEngineWeb.SimulationLive.StackOutputVariableComponent do
   use VacEngineWeb, :live_component
 
-  import VacEngine.SimulationHelpers
-  import VacEngineWeb.SimulationLive.InputComponent
   import VacEngineWeb.IconComponent
 
   alias VacEngine.Simulation
@@ -10,34 +8,6 @@ defmodule VacEngineWeb.SimulationLive.StackOutputVariableComponent do
   alias VacEngineWeb.SimulationLive.ToggleEntryComponent
   alias VacEngineWeb.SimulationLive.ToggleForbiddenComponent
   alias VacEngineWeb.SimulationLive.ExpectedFieldComponent
-
-  # def update(assigns, socket) do
-  #   expected =
-  #     Map.get(assigns.case, :expect, %{})
-  #     |> get_value(assigns.variable.path)
-
-  #   forbidden =
-  #     Map.get(assigns.case, :forbid, %{})
-  #     |> variable_forbidden?(assigns.variable.path)
-
-  #   actual =
-  #     Map.get(assigns.case, :actual, %{})
-  #     |> get_value(assigns.variable.path)
-
-  #   mismatch = check_mismatch?({expected, forbidden, actual})
-
-  #   socket =
-  #     socket
-  #     |> assign(assigns)
-  #     |> assign(
-  #       expected: expected,
-  #       forbidden: forbidden,
-  #       actual: actual,
-  #       mismatch: mismatch
-  #     )
-
-  #   {:ok, socket}
-  # end
 
   def update(
         %{
@@ -65,13 +35,13 @@ defmodule VacEngineWeb.SimulationLive.StackOutputVariableComponent do
           end
       end
 
-    actual = "bla"
+    actual = Enum.random([nil, "2000-01-01"])
 
     mismatch =
       case {expected, actual, forbidden} do
-        {_, actual, true} when not is_nil(actual) -> true
-        {_, actual, true} when is_nil(actual) -> false
-        {nil, _, false} -> false
+        {_expected, actual, true} when not is_nil(actual) -> true
+        {_expected, actual, true} when is_nil(actual) -> false
+        {nil, _actual, false} -> false
         {expected, actual, false} when expected == actual -> false
         _ -> true
       end
@@ -93,7 +63,7 @@ defmodule VacEngineWeb.SimulationLive.StackOutputVariableComponent do
       socket
       |> assign(
         active: active,
-        actual: "bla",
+        actual: actual,
         expected: expected,
         forbidden: forbidden,
         id: id,

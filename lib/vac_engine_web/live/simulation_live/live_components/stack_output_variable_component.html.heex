@@ -15,7 +15,7 @@
     <div class="table-cell px-1 align-middle">
       <%= case {@variable.type, @active, @forbidden} do %>
         <% {:map, _, _} -> %>
-          <div class="inline-block form-fld invisible">
+          <div class="inline-block form-fld invisible w-72">
             placeholder
           </div>
         <% {_, true, false} -> %>
@@ -31,12 +31,12 @@
             variable_enum={@variable.enum}
           />
         <% _ -> %>
-          <div class="inline-block form-fld invisible">
+          <div class="inline-block form-fld invisible w-72">
             placeholder
           </div>
       <% end %>
     </div>
-    <div class="table-cell px-1 align-middle">
+    <div class="table-cell px-1 align-middle w-36">
       <%= @actual %>
     </div>
     <div class="table-cell px-1 align-middle">

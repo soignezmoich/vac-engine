@@ -3,16 +3,8 @@ defmodule VacEngineWeb.SimulationLive.StackInputVariableComponent do
 
   alias VacEngine.Simulation
   alias VacEngineWeb.SimulationLive.EntryValueFieldComponent
-  alias VacEngineWeb.SimulationLive.SimulationEditorComponent
   alias VacEngineWeb.SimulationLive.StackEditorComponent
   alias VacEngineWeb.SimulationLive.ToggleEntryComponent
-
-  # module={StackInputComponent}
-  # id={"case_input_#{@stack.id}"}
-  # input_variables={@input_variables}
-  # runnable_case={@runnable_case}
-  # template_case={@template_case}
-  # stack={@stack}
 
   def update(
         %{

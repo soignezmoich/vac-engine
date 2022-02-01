@@ -7,7 +7,7 @@
       <%= @variable.path |> Enum.drop(-1) |> Enum.map(fn _ -> "\u2574" end) %>
       <%= @variable.name %>
     </div>
-    <div class="table-cell px-1 align-middle">
+    <div class="table-cell px-1 align-middle w-72">
       <%= case {@variable.type, @active, @template_input_entry} do %>
         <% {:map, _, _} -> %>
           <div class="inline-block form-fld invisible">
