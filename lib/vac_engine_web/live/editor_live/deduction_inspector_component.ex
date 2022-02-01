@@ -24,7 +24,8 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
       on_update: nil,
       changeset: nil,
       inspector: nil,
-      tab: :cell
+      tab: :deduction,
+      tabs_enabled: []
     )
     |> select(nil)
     |> ok()
@@ -39,6 +40,7 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
   def update(assigns, socket) do
     socket
     |> assign(assigns)
+    |> check_write_permission()
     |> select()
     |> on_update()
     |> ok()
@@ -50,7 +52,6 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
         _,
         %{assigns: %{blueprint: blueprint}} = socket
       ) do
-    can!(socket, :write, blueprint)
     changeset = Changeset.cast({%{}, %{variable: :string}}, %{}, [])
 
     vars =
@@ -62,7 +63,13 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
       |> Enum.sort()
 
     socket
-    |> assign(changeset: changeset, inspector: :new_deduction, variables: vars)
+    |> assign(
+      changeset: changeset,
+      inspector: :new_deduction,
+      variables: vars,
+      tab: :deduction,
+      tabs_enabled: [:deduction]
+    )
     |> pair(:noreply)
   end
 
@@ -72,8 +79,6 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
         %{"deduction" => %{"variable" => variable_path}},
         %{assigns: %{blueprint: blueprint, selection: selection}} = socket
       ) do
-    can!(socket, :write, blueprint)
-
     attrs =
       case selection do
         %{deduction: %{position: idx}} -> %{position: idx + 1}
@@ -109,8 +114,6 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
         _,
         %{assigns: %{blueprint: blueprint, selection: selection}} = socket
       ) do
-    can!(socket, :write, blueprint)
-
     %{deduction: deduction} = selection
 
     {:ok, _deduction} = Processor.delete_deduction(deduction)
@@ -157,8 +160,6 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
         _,
         %{assigns: %{blueprint: blueprint, selection: selection}} = socket
       ) do
-    can!(socket, :write, blueprint)
-
     {deduction, attrs} =
       case selection do
         %{deduction: deduction, branch: %{position: idx}} ->
@@ -188,8 +189,6 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
         _,
         %{assigns: %{blueprint: blueprint, selection: selection}} = socket
       ) do
-    can!(socket, :write, blueprint)
-
     %{deduction: deduction, branch: branch} = selection
 
     if deduction.branches |> Enum.count() < 2 do
@@ -236,8 +235,6 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
         _,
         %{assigns: %{blueprint: blueprint}} = socket
       ) do
-    can!(socket, :write, blueprint)
-
     changeset =
       Changeset.cast({%{}, %{variable: :string, type: :string}}, %{}, [])
 
@@ -260,8 +257,6 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
         %{"column" => %{"variable" => variable_path, "type" => type}},
         %{assigns: %{blueprint: blueprint, selection: selection}} = socket
       ) do
-    can!(socket, :write, blueprint)
-
     {deduction, position} =
       case selection do
         %{deduction: deduction, column: %{position: idx}} ->
@@ -297,8 +292,6 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
         _,
         %{assigns: %{blueprint: blueprint, selection: selection}} = socket
       ) do
-    can!(socket, :write, blueprint)
-
     %{deduction: deduction, column: column} = selection
 
     assignment_count =
@@ -373,8 +366,6 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
          %{assigns: %{blueprint: blueprint, selection: selection}} = socket,
          offset
        ) do
-    can!(socket, :write, blueprint)
-
     %{deduction: deduction} = selection
     new_pos = deduction.position + offset
 
@@ -391,8 +382,6 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
          %{assigns: %{blueprint: blueprint, selection: selection}} = socket,
          offset
        ) do
-    can!(socket, :write, blueprint)
-
     %{branch: %{position: idx} = branch} = selection
     new_pos = idx + offset
 
@@ -408,8 +397,6 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
          %{assigns: %{blueprint: blueprint, selection: selection}} = socket,
          offset
        ) do
-    can!(socket, :write, blueprint)
-
     %{column: %{position: idx} = column} = selection
     new_pos = idx + offset
 
@@ -439,6 +426,7 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
 
   def select(socket, selection \\ :reselect) do
     blueprint = socket.assigns.blueprint
+    tab = socket.assigns.tab
 
     {selection, reselect} =
       if selection == :reselect do
@@ -565,7 +553,38 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
         _ -> nil
       end
 
+    tabs_enabled =
+      %{
+        deduction: true,
+        cell: branch && column,
+        branch: branch,
+        column: column
+      }
+      |> Enum.reduce([], fn
+        {_, nil}, acc ->
+          acc
+
+        {k, _v}, acc ->
+          [k | acc]
+      end)
+
+    tab =
+      if is_nil(Map.get(socket.assigns, :column)) && column && branch do
+        :cell
+      else
+        tab
+      end
+
+    tab =
+      if Enum.member?(tabs_enabled, tab) do
+        tab
+      else
+        :deduction
+      end
+
     assign(socket,
+      tab: tab,
+      tabs_enabled: tabs_enabled,
       cell: cell,
       deduction: deduction,
       column: column,
@@ -585,5 +604,10 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
       can_move_right_column?: can_move_right_column,
       can_delete_column?: can_delete_column
     )
+  end
+
+  defp check_write_permission(%{assigns: %{blueprint: blueprint}} = socket) do
+    can!(socket, :write, blueprint)
+    socket
   end
 end

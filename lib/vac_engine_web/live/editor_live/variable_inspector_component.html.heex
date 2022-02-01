@@ -22,19 +22,16 @@
     <%= label(f, :name, "Name", class: "text-sm mt-4 mb-1") %>
     <%= text_input f, :name,
           class: "form-fld w-full text-sm",
-          autofocus: true,
-          disabled: !@can_write %>
+          autofocus: true %>
     <%= label(f, :description, "Description", class: "text-sm mt-4 mb-1") %>
     <%= textarea f, :description,
           class: "form-fld w-full text-sm",
-          style: "height: 5em",
-          disabled: !@can_write %>
+          style: "height: 5em" %>
     <%= label(f, :parent_id, "Container", class: "text-sm mt-4 mb-1") %>
     <%= select(f, :parent_id, @containers, class: "form-fld text-sm",
-        prompt: "-- root --",
-        disabled: !@can_write) %>
+        prompt: "-- root --") %>
     <%= label(f, :type, "Type", class: "text-sm mt-4 mb-1") %>
-    <%= select(f, :type, @types, class: "form-fld text-sm", disabled: !@can_write || @used?) %>
+    <%= select(f, :type, @types, class: "form-fld text-sm", disabled:  @used?) %>
     <%= if @used? do %>
       <div class="text-xs">Type cannot be changed when variable is used</div>
     <% end %>
@@ -53,7 +50,6 @@
             <%= v %>
             <button class="btn-sm ml-2"
                     type="button"
-                    disabled={!@can_write}
                     phx-target={@myself}
                     phx-click="remove_enum"
                     phx-value-idx={idx}>
@@ -66,11 +62,9 @@
       <div class="flex">
         <%= text_input :enum, :new, class: "form-fld text-sm w-full mr-2",
               value: @enum_new,
-              placeholder: "add value",
-              disabled: !@can_write %>
+              placeholder: "add value" %>
               <button class="btn-sm flex-shrink-0"
                       type="button"
-                      disabled={!@can_write}
                       phx-target={@myself}
                       phx-click="add_enum">
           <.icon name="hero/plus" width="18px" />
@@ -83,36 +77,33 @@
       <div class="flex items-center mt-4">
         <%= label(f, :mapping, "Required?", class: "text-sm flex-grow") %>
         <%= checkbox f, :mapping, class: "form-ckb",
-            checked_value: "in_required", unchecked_value: "in_optional",
-            disabled: !@can_write %>
+            checked_value: "in_required", unchecked_value: "in_optional" %>
       </div>
     <% end %>
 
-    <%= if @can_write do %>
-      <%= cond do %>
-        <% changeset.changes == %{} && changeset.errors == [] -> %>
-          <div class="text-green-600 italic mt-4 text-center">Saved</div>
-        <% changeset.errors != [] -> %>
-          <%= for {fld, err} <- changeset.errors do %>
-            <div class="text-red-600 mt-4">
-              <span class="capitalize"><%= fld %></span>
-              <%= translate_error(err)%>
-            </div>
-          <% end %>
-          <button class="btn mt-4" type="button" phx-click="cancel" phx-target={@myself}>Cancel</button>
-        <% true -> %>
-        <div class="grid grid-cols-2 gap-1.5 mt-4">
-          <button class="btn" type="button" phx-click="cancel" phx-target={@myself}>Cancel</button>
-          <button class="btn btn-default" type="submit">Save</button>
-        </div>
-      <% end %>
-      <%= cond do %>
-      <% @used? -> %>
-        <div class="text-xs mt-4">This variable is used and cannot be deleted.</div>
-      <% @variable.id != nil -> %>
-        <button class="btn mt-4" type="button" phx-click="delete" phx-target={@myself}>Delete</button>
+    <%= cond do %>
+      <% changeset.changes == %{} && changeset.errors == [] -> %>
+        <div class="text-green-600 italic mt-4 text-center">Saved</div>
+      <% changeset.errors != [] -> %>
+        <%= for {fld, err} <- changeset.errors do %>
+          <div class="text-red-600 mt-4">
+            <span class="capitalize"><%= fld %></span>
+            <%= translate_error(err)%>
+          </div>
+        <% end %>
+        <button class="btn mt-4" type="button" phx-click="cancel" phx-target={@myself}>Cancel</button>
       <% true -> %>
-      <% end %>
+      <div class="grid grid-cols-2 gap-1.5 mt-4">
+        <button class="btn" type="button" phx-click="cancel" phx-target={@myself}>Cancel</button>
+        <button class="btn btn-default" type="submit">Save</button>
+      </div>
+    <% end %>
+    <%= cond do %>
+    <% @used? -> %>
+      <div class="text-xs mt-4">This variable is used and cannot be deleted.</div>
+    <% @variable.id != nil -> %>
+      <button class="btn mt-4" type="button" phx-click="delete" phx-target={@myself}>Delete</button>
+    <% true -> %>
     <% end %>
   </.form>
 <% end %>

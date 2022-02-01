@@ -3,6 +3,8 @@ defmodule VacEngineWeb.EditorLive.VariableComponent do
 
   alias VacEngineWeb.EditorLive.VariableInspectorComponent
   alias VacEngineWeb.EditorLive.VariableListComponent
+  alias VacEngine.Processor.Ast
+  alias VacEngine.Processor.Expression
 
   @impl true
   def update(
@@ -90,7 +92,16 @@ defmodule VacEngineWeb.EditorLive.VariableComponent do
       end
 
     row_class =
-      "p-1 grid grid-cols-[300px_150px_200px_minmax(150px,_1fr)] #{row_class}"
+      "p-1 grid grid-cols-[300px_150px_200px_minmax(150px,_1fr)_minmax(150px,_1fr)] #{row_class}"
+
+    default_value =
+      case variable.default do
+        %Expression{ast: ast} when not is_nil(ast) ->
+          Ast.describe(ast)
+
+        _ ->
+          ""
+      end
 
     %{
       description: variable.description,
@@ -100,7 +111,8 @@ defmodule VacEngineWeb.EditorLive.VariableComponent do
       required: required,
       enum: enum,
       row_class: row_class,
-      dot_path: dot_path
+      dot_path: dot_path,
+      default_value: default_value
     }
   end
 end

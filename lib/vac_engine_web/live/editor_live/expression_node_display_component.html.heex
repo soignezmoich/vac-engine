@@ -1,0 +1,29 @@
+<div class={klass("border border-blue-600 p-1 mt-1 font-bold", [
+     {"bg-blue-50", @level == 0},
+     {"bg-blue-100", @level == 1},
+     {"bg-blue-150", @level == 2}
+     ])}>
+
+  <%= case @type do %>
+  <% :constant -> %>
+    <div class="text-xs break-all">
+      <%= @value %>
+    </div>
+  <% :variable -> %>
+    <div class="text-xs break-all">
+      @<%= @name %>
+    </div>
+  <% :function -> %>
+    <div class="text-sm break-all font-bold mb-1">
+      <%= @name %>
+    </div>
+    <%= for a <- @arguments do %>
+      <.live_component
+         module={__MODULE__}
+         id={"#{@id}.#{a.index}"}
+         ast={a.ast}
+         />
+    <% end %>
+  <% end %>
+
+</div>

@@ -91,7 +91,7 @@ defmodule Fixtures.Cases do
   cas(:sig_test) do
     %{
       input: %{age: "hello"},
-      error: "value hello is invalid for age"
+      error: "invalid integer hello"
     }
   end
 

@@ -15,6 +15,11 @@ select {
   padding-right: 1.5rem;
 }
 
+select.form-fld-sm {
+  background-position: right .1rem top 0.1rem;
+  background-size: 1.25rem;
+}
+
 svg * {
   fill: currentColor;
 }
@@ -73,8 +78,12 @@ svg * {
 }
 
 .form-fld {
+  @apply py-1 px-2;
+}
+
+.form-fld, .form-fld-sm {
   @apply
-    px-2 py-1
+    px-1
     border shadow-inner
     bg-blue-50 border-blue-600 text-black;
 
@@ -112,8 +121,16 @@ input.form-fld {
   @apply h-8;
 }
 
+input.form-fld-sm {
+  @apply h-6;
+}
+
 select.form-fld {
   @apply pr-10 h-8;
+}
+
+select.form-fld-sm {
+  @apply pr-10 h-6;
 }
 
 textarea.form-fld {

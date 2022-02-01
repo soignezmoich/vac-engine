@@ -44,7 +44,7 @@ defmodule VacEngine.Processor.Library.Functions do
     Returns true if the boolean is nil
   """
   @label "Check if value is false"
-  @short "FALSE"
+  @short "IS FALSE"
   @signature {[:boolean], :boolean}
   def is_false(false), do: true
   def is_false(nil), do: true
@@ -54,7 +54,7 @@ defmodule VacEngine.Processor.Library.Functions do
     Check if boolean is true
   """
   @label "Check if value is true"
-  @short "TRUE"
+  @short "IS TRUE"
   @signature {[:boolean], :boolean}
   def is_true(true), do: true
   def is_true(_), do: false
@@ -63,7 +63,7 @@ defmodule VacEngine.Processor.Library.Functions do
     Inverse boolean
   """
   @label "Inverse"
-  @short "!"
+  @short "NOT"
   @rename :not
   @signature {[:boolean], :boolean}
   def not_(nil), do: true
@@ -106,7 +106,7 @@ defmodule VacEngine.Processor.Library.Functions do
     Returns false only for nil
   """
   @label "Is nil"
-  @short "NIL"
+  @short "IS NIL"
   @rename :is_nil
   @signature {[:map], :boolean}
   @signature {[:date], :boolean}
@@ -123,7 +123,7 @@ defmodule VacEngine.Processor.Library.Functions do
     Returns true only for nil
   """
   @label "Is not nil"
-  @short "NOT NIL"
+  @short "IS NOT NIL"
   @signature {[:map], :boolean}
   @signature {[:date], :boolean}
   @signature {[:datetime], :boolean}
