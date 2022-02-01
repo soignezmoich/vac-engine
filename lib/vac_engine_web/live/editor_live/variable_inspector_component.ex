@@ -21,7 +21,6 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
      assign(socket,
        types: @types,
        variable: nil,
-       can_write: false,
        blueprint: nil,
        containers: [],
        changeset: nil,
@@ -148,7 +147,6 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
           }
         } = socket
       ) do
-    can!(socket, :write, blueprint)
     attrs = changeset.changes
 
     # TODO move to Processor.Variables
@@ -208,8 +206,6 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
         _,
         %{assigns: %{blueprint: blueprint, variable: variable}} = socket
       ) do
-    can!(socket, :write, blueprint)
-
     Processor.delete_variable(variable)
     |> case do
       {:ok, _var} ->
@@ -293,7 +289,6 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
        when is_nil(v) or is_nil(b) do
     assign(socket,
       variable: nil,
-      can_write: false,
       changeset: nil,
       containers: [],
       used?: false
@@ -320,7 +315,6 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
       )
 
     assign(socket,
-      can_write: can?(socket, :write, blueprint),
       changeset: changeset,
       containers: containers(variable, blueprint.variables),
       used?: Processor.variable_used?(variable)
