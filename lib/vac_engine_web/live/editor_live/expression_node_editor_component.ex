@@ -19,11 +19,11 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
       level: 0,
       argument_index: nil,
       pristine: true,
-      nil_option: false,
-      delete_option: false,
-      force_function: false,
-      force_variable: nil,
-      deleted: false
+      allow_nil?: false,
+      allow_delete?: false,
+      force_function?: false,
+      forced_variable_path: nil,
+      deleted?: false
     )
     |> ok()
   end
@@ -108,10 +108,10 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
             variable_path_index: variable_path_index,
             return_types: types,
             level: level,
-            delete_option: delete_option,
-            force_function: force_function,
-            force_variable: force_variable,
-            nil_option: nil_option
+            allow_delete?: allow_delete?,
+            force_function?: force_function?,
+            forced_variable_path: forced_variable_path,
+            allow_nil?: allow_nil?
           }
         } = socket
       ) do
@@ -129,8 +129,8 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
       |> Enum.sort()
 
     argument_types =
-      if force_variable do
-        {:ok, var} = Map.fetch(variable_path_index, force_variable)
+      if forced_variable_path do
+        {:ok, var} = Map.fetch(variable_path_index, forced_variable_path)
         [var.type]
       else
         []
@@ -154,7 +154,7 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
             n == :function && level > 1
           end)
           |> Enum.reject(fn n ->
-            n != :function && force_function
+            n != :function && force_function?
           end)
           |> Enum.map(fn st ->
             {st, "#{t}.#{st}"}
@@ -164,14 +164,14 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
       end)
 
     composed_types =
-      if delete_option || nil_option do
+      if allow_delete? || allow_nil? do
         opts =
-          if delete_option do
+          if allow_delete? do
             [{"don't assign", :delete}]
           else
             []
           end ++
-            if nil_option do
+            if allow_nil? do
               [{"unset", :set_nil}]
             else
               []
@@ -306,7 +306,7 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
   def update_arguments(
         %{
           assigns: %{
-            force_variable: force_variable,
+            forced_variable_path: forced_variable_path,
             variable_path_index: variable_path_index,
             changeset: changeset,
             functions: functions,
@@ -331,16 +331,16 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
         end
 
       arguments =
-        if force_variable do
+        if forced_variable_path do
           case arguments do
-            [%{ast: {:var, _, [^force_variable]}} | _] ->
+            [%{ast: {:var, _, [^forced_variable_path]}} | _] ->
               arguments
 
             arguments ->
-              {:ok, var} = Map.fetch(variable_path_index, force_variable)
+              {:ok, var} = Map.fetch(variable_path_index, forced_variable_path)
 
               var_arg = %{
-                ast: {:var, [signature: {[:name], var.type}], [force_variable]},
+                ast: {:var, [signature: {[:name], var.type}], [forced_variable_path]},
                 index: 0,
                 return_types: [var.type],
                 type: var.type
@@ -395,7 +395,7 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
           current_arg =
             Map.get(arguments, idx, %{ast: nil})
             |> Map.merge(%{
-              readonly: force_variable && idx == 0,
+              readonly: forced_variable_path && idx == 0,
               return_types: arg_types,
               index: idx
             })
@@ -485,16 +485,16 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
         %{
           assigns: %{
             return_types: types,
-            deleted: deleted,
+            deleted?: deleted?,
             ast: ast,
-            nil_option: nil_option
+            allow_nil?: allow_nil?
           }
         } = socket
       ) do
     composed_type =
       cond do
-        deleted -> "delete"
-        is_nil(ast) && nil_option -> "set_nil"
+        deleted? -> "delete"
+        is_nil(ast) && allow_nil? -> "set_nil"
         true -> "#{types |> List.first()}.constant"
       end
 

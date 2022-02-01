@@ -15,11 +15,11 @@
     variable_path_index={@blueprint.variable_path_index}
     return_types={[@return_type]}
     ast={@ast}
-    delete_option={true}
-    deleted={is_nil(@cell)}
-    nil_option={@column.type == :assignment}
-    force_function={@column.type == :condition}
-    force_variable={@column.type == :condition && @column.variable}
+    allow_delete?={true}
+    deleted?={is_nil(@cell)}
+    allow_nil?={@column.type == :assignment}
+    force_function?={@column.type == :condition}
+    forced_variable_path={@column.type == :condition && @column.variable}
     />
 
 
