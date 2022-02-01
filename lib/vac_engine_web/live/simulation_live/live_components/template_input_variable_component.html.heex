@@ -1,13 +1,15 @@
-<div  class="table-row" id={"template_input_variable_#{@variable.id}"}>
+<div  class={"table-row #{if(!is_nil(@input_entry)) do "bg-purple-100" end}"}
+  id={"template_input_variable_#{@variable.id}"}
+>
+  <div class="table-cell px-1 align-middle">
+    <ToggleEntryComponent.render active={!is_nil(@input_entry)} target_component={"#template_input_variable_#{@variable.id}"} />
+  </div>
+  <div class="table-cell px-1 align-middle">
+    <%= @variable.path |> Enum.drop(-1) |> Enum.map(fn _ -> "\u2574" end) %>
+    <span><%= @variable.name %></span>
+  </div>
   <%= if !is_nil(@input_entry) do %>
-    <div class="table-cell pr-3">
-      <ToggleEntryComponent.render active={true} target_component={"#template_input_variable_#{@variable.id}"} />
-    </div>
-    <div class="table-cell">
-      <%= @variable.path |> Enum.drop(-1) |> Enum.map(fn _ -> "\u2574" end) %>
-      <span><%= @variable.name %></span>
-    </div>
-    <div class="table-cell pl-2">
+    <div class="table-cell px-1 align-middle">
       <%= case @variable.type do %>
       <% :map -> %>
         <div class="inline-block form-fld invisible">
@@ -27,21 +29,11 @@
         />
       <% end %>
     </div>
-    <div class="table-cell w-full" />
   <% else %>
-    <div class="table-cell pr-3">
-      <ToggleEntryComponent.render active={false} target_component={"#template_input_variable_#{@variable.id}"} />
-    </div>
-    <div class="table-cell">
-      <%= @variable.path |> Enum.drop(-1) |> Enum.map(fn _ -> "\u2574" end) %>
-      <%= @variable.name %>
-    </div>
-    <div class="table-cell">
+    <div class="table-cell px-1 align-middle">
       <div class="inline-block form-fld invisible">
         placeholder
       </div>
     </div>
-    <div class="table-cell w-full" />
   <% end %>
 </div>
-

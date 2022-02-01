@@ -482,53 +482,6 @@ defmodule VacEngine.Simulation do
     |> Map.get(:case)
   end
 
-  # def get_stack_id_template_case(stack_id) do
-  #   Repo.get(Stack, stack_id)
-  #   |> Repo.preload(:layers)
-  #   |> get_stack_template_case()
-  # end
-
-  # def get_stack_template_case(stack) do
-  #   template_layer =
-  #     stack.layers
-  #     |> Enum.find(&(&1.position == @template_layer_position))
-
-  #   case template_layer do
-  #     nil ->
-  #       nil
-
-  #     %{case_id: case_id} ->
-  #       from(c in Case,
-  #         where: c.id == ^case_id,
-  #         preload: [:input_entries]
-  #       )
-  #       |> Repo.one()
-  #   end
-  # end
-
-  # def get_stack_id_case(stack_id) do
-  #   Repo.get(Stack, stack_id)
-  #   |> Repo.preload(:layers)
-  #   |> get_stack_case()
-  # end
-
-  # def get_stack_case(stack) do
-  #   case_layer =
-  #     stack.layers
-  #     |> Enum.find(&(&1.position == @runnable_layer_position))
-
-  #   case case_layer do
-  #     nil ->
-  #       nil
-
-  #     %{case_id: case_id} ->
-  #       from(c in Case,
-  #         where: c.id == ^case_id,
-  #         preload: [:input_entries, :output_entries]
-  #       )
-  #       |> Repo.one()
-  #   end
-  # end
 
   def set_stack_template(stack, template_case_id) do
     # delete previous layer relation first
@@ -587,45 +540,4 @@ defmodule VacEngine.Simulation do
     end
   end
 
-  ### CASE EDITION ###
-
-  # def get_cases(workspace_id) do
-
-  # end
-
-  # def get_stacks(workspace_id, blueprint_id) do
-
-  # end
-
-  # def set_simulation_time() do
-
-  # end
-
-  # def get_case!() do
-
-  # end
-
-  # def get_stack() do
-
-  # end
-
-  # def create_input_entry() do
-
-  # end
-
-  # def set_input_entry() do
-
-  # end
-
-  # def create_output_entry() do
-
-  # end
-
-  # def set_output_entry() do
-
-  # end
-
-  # def set_case_time() do
-
-  # end
 end

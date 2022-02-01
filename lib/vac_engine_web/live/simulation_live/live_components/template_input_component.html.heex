@@ -1,11 +1,17 @@
 <div class="w-full bg-white filter drop-shadow-lg p-3 cursor-default overflow-x-auto">
-  <div class="text-lg font-bold border-b border-black">Input</div>
+  <div class="text-lg font-bold mb-3">Input</div>
   <%= if is_nil(@template) do %>
     <div class="font-bold text-red-600">
     Warning: no matching template.
     </div>
   <% end %>
-  <div class="table">
+  <div class="h-2"/>
+  <div class="table w-full">
+    <div class="table-row text-sm font-bold">
+      <div class="table-cell px-1 border-b border-black"></div>
+      <div class="table-cell px-1 border-b border-black">variable</div>
+      <div class="table-cell px-1 border-b border-black">value</div>
+    </div>
     <%= for variable <- @input_variables do %>
       <.live_component
         module={TemplateInputVariableComponent}

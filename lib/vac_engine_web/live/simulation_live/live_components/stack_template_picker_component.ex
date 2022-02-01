@@ -43,15 +43,15 @@ defmodule StackTemplatePickerComponent do
 
   def handle_event(
         "set_template",
-        %{"layer" => %{"case_id" => template_id_string}},
+        %{"layer" => %{"case_id" => template_case_id_string}},
         %{assigns: %{stack: stack, target_component: target_component}} = socket
       ) do
-    case template_id_string do
+    case template_case_id_string do
       "" ->
         stack |> Simulation.delete_stack_template()
 
       template_case_id_string ->
-        {template_case_id, _binary} = template_id_string |> Integer.parse()
+        {template_case_id, _binary} = template_case_id_string |> Integer.parse()
         Simulation.set_stack_template(stack, template_case_id)
     end
 
