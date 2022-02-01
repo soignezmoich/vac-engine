@@ -10,7 +10,7 @@ defmodule VacEngineWeb.EditorLive.VariableActionGroupComponent do
         Variables actions
       </div>
       <hr class="mb-2" />
-      <div class="grid grid-cols-1 gap-1.5">
+      <div class="grid grid-cols-1 gap-1.5 text-sm">
         <button class="btn-default flex items-center justify-center"
                 phx-click="add_input"
                 phx-target="#variable_inspector">
