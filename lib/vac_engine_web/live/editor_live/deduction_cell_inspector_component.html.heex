@@ -18,6 +18,8 @@
     delete_option={true}
     deleted={is_nil(@cell)}
     nil_option={@column.type == :assignment}
+    force_function={@column.type == :condition}
+    force_variable={@column.type == :condition && @column.variable}
     />
 
 

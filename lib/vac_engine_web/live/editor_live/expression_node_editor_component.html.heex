@@ -1,4 +1,8 @@
-<div class="border-2 border-blue-600 p-1 flex flex-col bg-blue-50">
+<div class={klass("border-2 border-blue-600 p-1 flex flex-col mt-1", [
+     {"bg-blue-50", @level == 0},
+     {"bg-blue-100", @level == 1},
+     {"bg-blue-150", @level == 2}
+     ])}>
   <.form let={f} for={@changeset}
      id={@form_id}
      class="flex flex-col"
@@ -7,21 +11,21 @@
      phx-change="validate">
     <%= select f, :composed_type, @composed_types,
           id: @composed_types_hash,
-          class: "form-fld text-sm mb-2",
+          class: "form-fld-sm text-xs mb-1",
           style: "background-color: white" %>
 
     <%= case form_value(f, :type) do %>
     <% "constant" -> %>
        <%= text_input f, :constant,
-             class: "form-fld w-full text-sm",
+             class: "form-fld-sm w-full text-xs",
              style: "background-color: white" %>
        <%= case field_error(f, :constant) do %>
        <% nil -> %>
-          <span class="text-green-600 text-xs italic mt-1">
+          <span class="text-green-600 text-xs italic mt-1 font-bold">
             Parsed as: <%= form_value(f, :constant_string) %>
           </span>
        <% e -> %>
-          <span class="text-red-600 text-xs italic mt-1">
+          <span class="text-red-600 text-xs italic mt-1 font-bold">
             Error: <%= e %>
           </span>
        <% end %>
@@ -31,10 +35,10 @@
       <% [_|_] -> %>
        <%= select f, :variable, @variables,
              id: @variables_hash,
-             class: "form-fld text-sm",
+             class: "form-fld-sm text-xs",
              style: "background-color: white" %>
       <% _ -> %>
-        <div class="text-red-600 text-xs italic mb-1 text-center">
+        <div class="text-red-600 text-xs italic mb-1 text-center font-bold">
           No <%= form_value(f, :return_type) %> variable found.
         </div>
       <% end %>
@@ -42,7 +46,7 @@
     <% "function" -> %>
        <%= select f, :function, @functions,
              id: @functions_hash,
-             class: "form-fld text-sm mb-2",
+             class: "form-fld-sm text-xs",
              style: "background-color: white" %>
 
     <% _ -> %>
@@ -50,7 +54,14 @@
   </.form>
 
   <%= for arg <- @arguments do %>
-     <div class="mt-1">
+     <%= if arg.readonly do %>
+       <.live_component
+         module={ExpressionNodeDisplayComponent}
+         id={"#{@id}.#{arg.index}"}
+         ast={arg.ast}
+         level={@level + 1}
+        />
+     <% else %>
        <.live_component
          module={ExpressionNodeEditorComponent}
          id={"#{@id}.#{arg.index}"}
@@ -64,7 +75,7 @@
          root_module={@root_module}
          root_id={@root_id}
          />
-     </div>
+     <% end %>
   <% end %>
 
 </div>

@@ -8,6 +8,7 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
   alias VacEngine.Processor.Library
   alias VacEngineWeb.EditorLive.ExpressionNode
   alias VacEngineWeb.EditorLive.ExpressionNodeEditorComponent
+  alias VacEngineWeb.EditorLive.ExpressionNodeDisplayComponent
 
   @impl true
   def mount(socket) do
@@ -20,6 +21,8 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
       pristine: true,
       nil_option: false,
       delete_option: false,
+      force_function: false,
+      force_variable: nil,
       deleted: false
     )
     |> ok()
@@ -106,6 +109,8 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
             return_types: types,
             level: level,
             delete_option: delete_option,
+            force_function: force_function,
+            force_variable: force_variable,
             nil_option: nil_option
           }
         } = socket
@@ -123,8 +128,16 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
       end)
       |> Enum.sort()
 
+    argument_types =
+      if force_variable do
+        {:ok, var} = Map.fetch(variable_path_index, force_variable)
+        [var.type]
+      else
+        []
+      end
+
     functions =
-      Library.candidates(%{return: return_type})
+      Library.candidates(%{return: return_type, arguments: argument_types})
       |> Enum.map(fn f ->
         {f.short, f.name_arity}
       end)
@@ -139,6 +152,9 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
           [:constant, :function, :variable]
           |> Enum.reject(fn n ->
             n == :function && level > 1
+          end)
+          |> Enum.reject(fn n ->
+            n != :function && force_function
           end)
           |> Enum.map(fn st ->
             {st, "#{t}.#{st}"}
@@ -290,6 +306,8 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
   def update_arguments(
         %{
           assigns: %{
+            force_variable: force_variable,
+            variable_path_index: variable_path_index,
             changeset: changeset,
             functions: functions,
             arguments: arguments
@@ -310,6 +328,28 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
 
           _ ->
             changeset
+        end
+
+      arguments =
+        if force_variable do
+          case arguments do
+            [%{ast: {:var, _, [^force_variable]}} | _] ->
+              arguments
+
+            arguments ->
+              {:ok, var} = Map.fetch(variable_path_index, force_variable)
+
+              var_arg = %{
+                ast: {:var, [signature: {[:name], var.type}], [force_variable]},
+                index: 0,
+                return_types: [var.type],
+                type: var.type
+              }
+
+              [var_arg | arguments]
+          end
+        else
+          arguments
         end
 
       fname = Changeset.get_field(changeset, :function)
@@ -355,6 +395,7 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
           current_arg =
             Map.get(arguments, idx, %{ast: nil})
             |> Map.merge(%{
+              readonly: force_variable && idx == 0,
               return_types: arg_types,
               index: idx
             })
@@ -441,12 +482,19 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
   end
 
   def default(
-        %{assigns: %{return_types: types, deleted: deleted, ast: ast}} = socket
+        %{
+          assigns: %{
+            return_types: types,
+            deleted: deleted,
+            ast: ast,
+            nil_option: nil_option
+          }
+        } = socket
       ) do
     composed_type =
       cond do
         deleted -> "delete"
-        is_nil(ast) -> "set_nil"
+        is_nil(ast) && nil_option -> "set_nil"
         true -> "#{types |> List.first()}.constant"
       end
 
