@@ -68,7 +68,7 @@ defmodule VacEngine.PermissionTest do
     user1_workspaces = get_ws(user1)
 
     assert user1_workspaces == []
-    assert Enum.count(user1_workspaces) == 0
+    assert Enum.empty?(user1_workspaces)
 
     [ws | _] = workspaces
 
