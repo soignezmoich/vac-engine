@@ -2,16 +2,37 @@
   <div class="text-2xl font-bold mb-4">Configuration</div>
   <div class="h-4" />
   <div>Day of simulation</div>
-    <%# <.form
+    <.form
       let={f}
       for={@changeset}
       id="day_of_simulation"
       phx-throttle="100"
       phx-change="validate"
       phx-submit="submit"
-      class="flex flex-col w-full">
-      text_input f, :simulation_date
-    </.form> %>
-  <.date_input value="2021-11-15" />
+      phx-target={@myself}
+      class="inline-block"
+    >
+      <%= text_input f,
+        :env_now,
+        class: "form-fld inline-block text-sm w-48",
+        value: "#{input_value(f, :env_now)}" |> String.replace("Z", "") |> String.replace("T", " ") %>
+      <%= submit "\u2713",
+      class: "btn-default inline-block#{
+        if !@changeset.valid? || map_size(@changeset.changes) == 0 do " hidden" end
+        }",
+      disabled: !@changeset.valid? %>
+      <%# PARSING INFO %>
+      <%= if not is_nil(@parsed_value)
+      and map_size(@changeset.changes) > 0 do %>
+        <div class="text-sm text-green-600 mt-1">
+          parsed as: <%= "#{@parsed_value}" |> String.replace("T", " ") %>
+        </div>
+      <% end %>
+
+      <%# ERROR MESSAGE %>
+      <div class="text-sm text-red-400 mt-1">
+        <%= field_error(f, :value) %>
+      </div>
+    </.form>
 </div>
 

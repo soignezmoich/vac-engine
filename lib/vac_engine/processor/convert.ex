@@ -69,7 +69,7 @@ defmodule VacEngine.Processor.Convert do
   end
 
   def parse_string(str, _t) when not is_binary(str) do
-    throw({:invalid_type, "#{str} cannot be parsed"})
+    throw({:invalid_type, "#{str} cannot be parsed (not a string)"})
   end
 
   def parse_string(str, :string), do: str
