@@ -5,6 +5,7 @@ defmodule VacEngineWeb.SimulationLive.StackInputVariableComponent do
   alias VacEngineWeb.SimulationLive.EntryValueFieldComponent
   alias VacEngineWeb.SimulationLive.StackEditorComponent
   alias VacEngineWeb.SimulationLive.ToggleEntryComponent
+  alias VacEngineWeb.SimulationLive.VariableFullNameComponent
 
   def update(
         %{
@@ -50,7 +51,6 @@ defmodule VacEngineWeb.SimulationLive.StackInputVariableComponent do
       |> assign(
         id: id,
         active: active,
-        filter: filter,
         runnable_case: runnable_case,
         runnable_input_entry: runnable_input_entry,
         stack: stack,

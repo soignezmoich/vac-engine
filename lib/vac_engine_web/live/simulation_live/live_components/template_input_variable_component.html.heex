@@ -1,39 +1,38 @@
-<div  class={"table-row #{if(!is_nil(@input_entry)) do "bg-purple-100" end}"}
-  id={"template_input_variable_#{@variable.id}"}
->
-  <div class="table-cell px-1 align-middle">
-    <ToggleEntryComponent.render active={!is_nil(@input_entry)} target_component={"#template_input_variable_#{@variable.id}"} />
-  </div>
-  <div class="table-cell px-1 align-middle">
-    <%= @variable.path |> Enum.drop(-1) |> Enum.map(fn _ -> "\u2574" end) %>
-    <span><%= @variable.name %></span>
-  </div>
-  <%= if !is_nil(@input_entry) do %>
+<div id={@id} class={"table-row #{if(!is_nil(@input_entry)) do "bg-purple-100" end}"}>
+  <%= if (@visible) do %>
     <div class="table-cell px-1 align-middle">
-      <%= case @variable.type do %>
-      <% :map -> %>
+      <ToggleEntryComponent.render
+        active={!is_nil(@input_entry)}
+        target_component={"#template_input_variable_#{@variable.id}"}
+      />
+    </div>
+    <div class="table-cell px-1 align-middle">
+      <VariableFullNameComponent.render variable={@variable} />
+    </div>
+    <div class="table-cell px-1 align-middle">
+      <%= if !is_nil(@input_entry) do %>
+        <%= case @variable.type do %>
+        <% :map -> %>
+          <div class="inline-block form-fld invisible">
+            placeholder
+          </div>
+      <% _ -> %>
+          <.live_component
+          module={EntryValueFieldComponent}
+          input_entry={@input_entry}
+          target_component={%{
+            type: TemplateEditorComponent,
+            id: "template_editor_#{@template.id}"
+          }}
+          variable={@variable}
+          id={"input_entry_value_field_#{@input_entry.id}"}
+          />
+        <% end %>
+      <% else %>
         <div class="inline-block form-fld invisible">
           placeholder
         </div>
-     <% type -> %>
-        <.live_component
-        module={EntryValueFieldComponent}
-        input_entry={@input_entry}
-        target_component={%{
-          type: TemplateEditorComponent,
-          id: "template_editor_#{@template.id}"
-        }}
-        variable_type={type}
-        variable_enum={@variable.enum}
-        id={"input_entry_value_field_#{@input_entry.id}"}
-        />
       <% end %>
-    </div>
-  <% else %>
-    <div class="table-cell px-1 align-middle">
-      <div class="inline-block form-fld invisible">
-        placeholder
-      </div>
     </div>
   <% end %>
 </div>

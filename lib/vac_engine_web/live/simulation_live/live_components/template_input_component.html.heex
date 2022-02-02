@@ -1,10 +1,20 @@
 <div class="w-full bg-white filter drop-shadow-lg p-3 cursor-default overflow-x-auto">
+  <div class="float-right">
+    <form phx-change="set_filter" phx-target={@myself}>
+      Show:
+      <select name="filter" id="select_filter" class="form-fld">
+        <option value="all" selected={@filter=="all"}>
+            All
+        </option>
+        <option value="template" selected={@filter=="template"}>
+            Template only
+        </option>
+      </select>
+    </form>
+  </div>
+  
+  
   <div class="text-lg font-bold mb-3">Input</div>
-  <%= if is_nil(@template) do %>
-    <div class="font-bold text-red-600">
-    Warning: no matching template.
-    </div>
-  <% end %>
   <div class="h-2"/>
   <div class="table w-full">
     <div class="table-row text-sm font-bold">
@@ -18,6 +28,7 @@
         id={"template_input_variable_#{variable.id}"}
         variable={variable}
         template={@template}
+        filter={@filter}
       />
     <% end %>
   </div>

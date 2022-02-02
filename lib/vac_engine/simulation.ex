@@ -13,13 +13,16 @@ defmodule VacEngine.Simulation do
   scope. This structure allows to share cases among several blueprints.
   """
 
-  alias VacEngine.Repo
-  alias Ecto.Multi
-  import VacEngine.PipeHelpers
-  import VacEngine.EnumHelpers
-  import Ecto.Query
   import Ecto.Changeset
+  import Ecto.Query
+  import VacEngine.EctoHelpers
+  import VacEngine.EnumHelpers
+  import VacEngine.PipeHelpers
+
+  alias Ecto.Changeset
+  alias Ecto.Multi
   alias VacEngine.Pub.Portal
+  alias VacEngine.Repo
   alias VacEngine.Simulation.Case
   alias VacEngine.Simulation.InputEntry
   alias VacEngine.Simulation.Layer
@@ -28,6 +31,9 @@ defmodule VacEngine.Simulation do
   alias VacEngine.Simulation.Stack
   alias VacEngine.Simulation.Template
   alias VacEngine.Simulation.Setting
+
+  @runnable_layer_position 0
+  @template_layer_position 1
 
   def queue_job(job) do
     Runner.queue(job)
@@ -278,8 +284,44 @@ defmodule VacEngine.Simulation do
     kase
   end
 
-  @runnable_layer_position 0
-  @template_layer_position 1
+  ### SIMULATION SETTINGS ###
+
+  def get_setting(blueprint) do
+    from(s in Setting,
+      where: s.blueprint_id == ^blueprint.id
+    )
+    |> Repo.one()
+  end
+
+  def create_setting(blueprint) do
+    env_now =
+      Timex.parse("2000-01-01", "{YYYY}-{0M}-{0D}")
+      |> case do
+        {:ok, r} -> Timex.to_datetime(r)
+        _ -> nil
+      end
+
+    %Setting{
+      workspace_id: blueprint.workspace_id,
+      blueprint_id: blueprint.id,
+      env_now: env_now
+    }
+    |> change(%{})
+    |> Repo.insert()
+  end
+
+  def update_setting(setting, env_now: env_now) do
+    setting
+    |> cast(%{"env_now" => env_now}, [:env_now])
+    |> validate_setting()
+    |> Repo.update()
+  end
+
+  def validate_setting(%Changeset{} = changeset) do
+    changeset
+    |> validate_required([:env_now])
+    |> validate_type(:env_now, :datetime)
+  end
 
   ### TEMPLATES ###
 
@@ -400,6 +442,13 @@ defmodule VacEngine.Simulation do
     |> Repo.update()
   end
 
+  def validate_input_entry(%Changeset{} = changeset, variable) do
+    changeset
+    |> validate_required([:key, :value])
+    |> validate_type(:value, variable.type)
+    |> validate_in_enum(:value, Map.get(variable, :variable_enum))
+  end
+
   ### CASE STACKS ###
 
   def delete_stack(stack_id) do
@@ -482,7 +531,6 @@ defmodule VacEngine.Simulation do
     |> Map.get(:case)
   end
 
-
   def set_stack_template(stack, template_case_id) do
     # delete previous layer relation first
     layer =
@@ -539,5 +587,4 @@ defmodule VacEngine.Simulation do
       {:map, _} -> "<non-empty>"
     end
   end
-
 end

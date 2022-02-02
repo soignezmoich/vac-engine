@@ -2,11 +2,13 @@ defmodule VacEngine.EctoHelpers do
   @moduledoc """
   Set of utilities to help manipulate data in Ecto Schema.
   """
-  alias VacEngine.Repo
-  import Ecto.Query
   import Ecto.Changeset
+  import Ecto.Query
+
   alias Ecto.Changeset
   alias Ecto.Multi
+  alias VacEngine.Convert
+  alias VacEngine.Repo
 
   @doc """
   Used to get data in attributesm will try atom and string keys.
@@ -269,6 +271,28 @@ defmodule VacEngine.EctoHelpers do
 
       true ->
         changeset
+    end
+  end
+
+  def validate_type(%Changeset{} = ch, field, variable_type) do
+    validate_change(
+      ch,
+      field,
+      "not parsable as #{variable_type}",
+      fn _field, value ->
+        case Convert.parse_string("#{value}", variable_type) do
+          {:error, error} -> [{:env_now, error}]
+          _ -> []
+        end
+      end
+    )
+  end
+
+  def validate_in_enum(%Changeset{} = ch, field, enum) do
+    if enum do
+      ch |> validate_inclusion(field, enum, message: "not in enum")
+    else
+      ch
     end
   end
 

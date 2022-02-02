@@ -1,4 +1,4 @@
-<div  class="w-max">
+<div>
   <.form
   id={"#{@id}"}
   let={f}
@@ -6,7 +6,7 @@
   phx-target={@myself}
   phx-change="validate"
   phx-submit="submit">
-    <%= case {@variable_type, @variable_enum} do %>
+    <%= case {@variable.type, @variable.enum} do %>
 
       <% {:boolean, _} -> %>
         <%# BOOLEAN (-> select) %>
@@ -18,7 +18,7 @@
 
       <% {:string, _} -> %>
         <%# ENUM STRING (-> select) %>
-        <%= select f, :value, @variable_enum, class: "form-fld text-sm w-36" %> 
+        <%= select f, :value, @variable.enum, class: "form-fld text-sm w-36" %> 
                
       <% _ -> %>
         <%# OTHER (text input) %>
@@ -26,28 +26,23 @@
 
     <% end %>
 
-    <div class="w-36 inline-block">
-      <%= submit "\u2713",
-      class: "btn-default inline-block#{
-        if !@changeset.valid? || map_size(@changeset.changes) == 0 do " hidden" end
-        }",
-      disabled: !@changeset.valid? %>
-
-      <%# PARSING INFO %>
+    <div class="text-red-400 w-36 inline-block">
       <%= if not is_nil(@parsed_value)
-      and @variable_type != :string
-      and @variable_type != :boolean
+      and @variable.type not in [:string, :boolean]
       and map_size(@changeset.changes) > 0 do %>
-        <span class="text-sm text-green-400">
-          parsed as: <%= @parsed_value %>
+        <%# VALID INFO %>
+        <%= submit "\u2713",
+        class: "btn-default w-8",
+        disabled: !@changeset.valid? %>
+      <% else %>
+        <%# ERROR MESSAGE %>
+        <span class="ml-1 text-sm">
+          <%= field_error(f, :value) %>
         </span>
       <% end %>
-
-      <%# ERROR MESSAGE %>
-      <span class="text-sm text-red-400">
-        <%= field_error(f, :value) %>
-      </span>
     </div>
+
+
 
   </.form>
 </div>

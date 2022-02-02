@@ -2,6 +2,7 @@ defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
   use VacEngineWeb, :live_component
 
   alias VacEngine.Simulation
+  alias VacEngine.Simulation.Job
   alias VacEngineWeb.SimulationLive.StackInputComponent
   alias VacEngineWeb.SimulationLive.StackOutputComponent
 
@@ -9,6 +10,9 @@ defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
         %{action: {:refresh, _token}},
         %{assigns: %{stack: stack}} = socket
       ) do
+    Job.new(stack)
+    |> Simulation.queue_job()
+
     stack = Simulation.get_stack(stack.id)
     template_case = stack |> Simulation.get_stack_template_case()
     runnable_case = stack |> Simulation.get_stack_runnable_case()
@@ -21,6 +25,14 @@ defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
         template_case: template_case
       )
 
+    {:ok, socket}
+  end
+
+  def update(
+        %{action: {:job_finished, job}},
+        socket
+      ) do
+    IO.inspect(job)
     {:ok, socket}
   end
 

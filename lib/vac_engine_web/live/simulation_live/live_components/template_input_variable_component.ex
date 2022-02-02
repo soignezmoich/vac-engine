@@ -5,10 +5,12 @@ defmodule VacEngineWeb.SimulationLive.TemplateInputVariableComponent do
   alias VacEngineWeb.SimulationLive.EntryValueFieldComponent
   alias VacEngineWeb.SimulationLive.TemplateEditorComponent
   alias VacEngineWeb.SimulationLive.ToggleEntryComponent
+  alias VacEngineWeb.SimulationLive.VariableFullNameComponent
 
   def update(
         %{
           id: id,
+          filter: filter,
           template: template,
           variable: variable
         },
@@ -18,14 +20,19 @@ defmodule VacEngineWeb.SimulationLive.TemplateInputVariableComponent do
       template.case.input_entries
       |> Enum.find(&(&1.key == variable.path |> Enum.join(".")))
 
+    active = !is_nil(input_entry)
+
+    visible = active || filter == "all"
+
     socket =
       socket
       |> assign(
         id: id,
+        active: active,
         template: template,
         input_entry: input_entry,
         variable: variable,
-        value: "placeholder value"
+        visible: visible
       )
 
     {:ok, socket}

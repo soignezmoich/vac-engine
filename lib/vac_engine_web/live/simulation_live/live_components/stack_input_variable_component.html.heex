@@ -1,13 +1,15 @@
-<div class={"table-row #{@bg_color}"} id={@id}>
+<div id={@id} class={"table-row #{@bg_color}"}>
   <%= if (@visible) do %>
     <div class="table-cell px-1 align-middle">
-      <ToggleEntryComponent.render active={@active} target_component={"#stack_input_variable_#{@variable.id}"} />
+      <ToggleEntryComponent.render
+        active={@active}
+        target_component={"#stack_input_variable_#{@variable.id}"}
+      />
     </div>
     <div class="table-cell px-1 align-middle">
-      <%= @variable.path |> Enum.drop(-1) |> Enum.map(fn _ -> "\u2574" end) %>
-      <%= @variable.name %>
+      <VariableFullNameComponent.render variable={@variable} />
     </div>
-    <div class="table-cell px-1 align-middle w-72">
+    <div class="table-cell px-1 align-middle">
       <%= case {@variable.type, @active, @template_input_entry} do %>
         <% {:map, _, _} -> %>
           <div class="inline-block form-fld invisible">
@@ -22,11 +24,10 @@
               type: StackEditorComponent,
               id: "stack_editor_#{@stack.id}"
             }}
-            variable_type={@variable.type}
-            variable_enum={@variable.enum}
+            variable={@variable}
           />
         <% {_, false, template_entry} when not is_nil(template_entry) -> %>
-          <div class={"m-1 pl-2 w-full text-sm"}>
+          <div class={"m-1 pl-2 text-sm"}>
             <%= @template_input_entry.value %>
           </div>
         <% _ -> %>

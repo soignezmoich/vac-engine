@@ -8,6 +8,7 @@ defmodule VacEngineWeb.SimulationLive.StackOutputVariableComponent do
   alias VacEngineWeb.SimulationLive.ToggleEntryComponent
   alias VacEngineWeb.SimulationLive.ToggleForbiddenComponent
   alias VacEngineWeb.SimulationLive.ExpectedFieldComponent
+  alias VacEngineWeb.SimulationLive.VariableFullNameComponent
 
   def update(
         %{
@@ -139,63 +140,3 @@ defmodule VacEngineWeb.SimulationLive.StackOutputVariableComponent do
     {:noreply, socket}
   end
 end
-
-# <%# <div  class={"table-row"}>
-#   <%= case {@expected, @forbidden} do %>
-#     <% {expected, forbidden} when not is_nil(expected) or forbidden -> %>
-#       <div class="table-cell pr-3 text-purple-700">
-#         <span class="text-xs hover:text-purple-400"><.icon name="toggle-on" width="2rem"/></span>
-#       </div>
-#       <div class="table-cell">
-#         <%= @variable.path |> Enum.drop(-1) |> Enum.map(fn _ -> "\u2574" end) %><%= @variable.name %>
-#       </div>
-#       <%= if @forbidden do %>
-#         <div class={"table-cell pl-2 text-red-500"}>
-#           <span class="text-xs hover:text-red-300"><.icon name="hero/ban" width="1.6rem"/></span>
-#         </div>
-#         <div/>
-#       <% else %>
-#         <div class={"table-cell pl-2 text-gray-300"}>
-#           <span class="text-xs hover:text-red-300"><.icon name="hero/ban" width="1.6rem"/></span>
-#         </div>
-#         <div class="table-cell pl-2">
-#           blabla
-#         </div>
-#       <% end %>
-#       <div class="table-cell w-full">
-#         <%= if is_nil(@actual) do %>
-#           -
-#         <% else %>
-#           <%= if @variable.type == :map do %>
-#             <.icon name="hero/sort-descending" width="1.25rem" />
-#           <% else %>
-#             <%= inspect(@actual) %>
-#           <% end %>
-#         <% end %>
-#       </div>
-#     <% _ -> %>
-#       <div class="table-cell pr-3 text-purple-700">
-#         <span class="text-xs hover:text-purple-400"><.icon name="toggle-off" width="2rem"/></span>
-#       </div>
-#       <div class="table-cell">
-#         <%= @variable.path |> Enum.drop(-1) |> Enum.map(fn _ -> "\u2574" end) %><%= @variable.name %>
-#       </div>
-#       <div class="table-cell"/>
-#       <div class="table-cell">
-#         <div class="inline-block form-fld invisible">
-#           placeholder
-#         </div>
-#       </div>
-#       <div class="table-cell w-full">
-#         <%= if is_nil(@actual) do %>
-#           -
-#         <% else %>
-#           <%= if @variable.type == :map do %>
-#             <.icon name="hero/sort-descending" width="1.25rem" />
-#           <% else %>
-#             <%= inspect(@actual) %>
-#           <% end %>
-#         <% end %>
-#       </div>
-#   <% end %>
-# </div> %>

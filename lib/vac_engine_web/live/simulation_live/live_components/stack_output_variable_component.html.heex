@@ -4,8 +4,7 @@
       <ToggleEntryComponent.render active={@active} target_component={"#stack_output_variable_#{@variable.id}"} />
     </div>
     <div class="table-cell px-1 align-middle">
-      <%= @variable.path |> Enum.drop(-1) |> Enum.map(fn _ -> "\u2574" end) %>
-      <%= @variable.name %>
+      <VariableFullNameComponent.render variable={@variable} />
     </div>
     <div class="table-cell px-1 align-middle">
       <%= if @active do %>
