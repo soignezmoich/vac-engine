@@ -22,11 +22,29 @@ defmodule VacEngine.Simulation.Case do
     field(:description, :string)
     field(:env_now, :utc_datetime)
     field(:runnable, :boolean)
+
+    field(:expected_result, Ecto.Enum, values: ~w(ignore success error)a)
+    field(:expected_error, :string)
   end
 
   def changeset(data, attrs \\ %{}) do
     data
     |> cast(attrs, [:name, :description, :env_now])
     |> validate_required([:name, :workspace_id])
+  end
+
+  def nested_changeset(data, attrs, ctx) do
+    data
+    |> cast(attrs, [
+      :name,
+      :description,
+      :env_now,
+      :runnable,
+      :expected_result,
+      :expected_error
+    ])
+    |> change(workspace_id: ctx.workspace_id)
+    |> cast_assoc(:input_entries, with: {InputEntry, :nested_changeset, [ctx]})
+    |> cast_assoc(:output_entries, with: {OutputEntry, :nested_changeset, [ctx]})
   end
 end

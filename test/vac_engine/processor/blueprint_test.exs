@@ -225,7 +225,7 @@ defmodule VacEngine.Processor.BlueprintTest do
     assert {:ok, blueprint} =
              Processor.create_blueprint(workspace, blueprints.simple_test)
 
-    assert 10 == from(e in Expression, select: count(e.id)) |> Repo.one()
+    assert 9 == from(e in Expression, select: count(e.id)) |> Repo.one()
     assert 4 == from(e in Assignment, select: count(e.id)) |> Repo.one()
     assert 3 == from(e in Condition, select: count(e.id)) |> Repo.one()
 
@@ -246,7 +246,7 @@ defmodule VacEngine.Processor.BlueprintTest do
     assert {:ok, _blueprint} =
              Processor.update_blueprint(blueprint, blueprints.simple_test)
 
-    assert 10 == from(e in Expression, select: count(e.id)) |> Repo.one()
+    assert 9 == from(e in Expression, select: count(e.id)) |> Repo.one()
     assert 4 == from(e in Assignment, select: count(e.id)) |> Repo.one()
     assert 3 == from(e in Condition, select: count(e.id)) |> Repo.one()
   end

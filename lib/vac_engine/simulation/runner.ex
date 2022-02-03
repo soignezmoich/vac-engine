@@ -5,6 +5,7 @@ defmodule VacEngine.Simulation.Runner do
   import VacEngine.EnumHelpers
   import VacEngine.PipeHelpers
   alias VacEngine.Simulation
+  alias VacEngine.Simulation.Setting
   alias VacEngine.Simulation.Runner
   alias VacEngine.Simulation.Result
   alias VacEngine.Processor
@@ -144,12 +145,15 @@ defmodule VacEngine.Simulation.Runner do
   end
 
   defp run_stack(stack, proc) do
-    {input, expect, forbid} = flatten_stack(stack)
+    {input, expected, forbid} = merge_stack(stack)
 
     env =
-      case stack.setting.env_now do
-        nil -> %{}
-        d -> %{now: Timex.format!(d, "{ISO:Extended}")}
+      case stack.setting do
+        %Setting{env_now: now} when not is_nil(now) ->
+          %{now: Timex.format!(now, "{ISO:Extended}")}
+
+        _ ->
+          %{}
       end
 
     Logger.disable(self())
@@ -162,14 +166,14 @@ defmodule VacEngine.Simulation.Runner do
       {:ok, state} ->
         flat_output = flatten_map(state.output) |> Map.new()
 
-        expect =
-          flatten_map(expect)
-          |> Enum.reduce(%{}, fn {k, expect}, acc ->
+        expected =
+          expected
+          |> Enum.reduce(%{}, fn {k, expected}, acc ->
             {awe, actual, match} =
               Map.fetch(flat_output, k)
               |> case do
                 {:ok, val} ->
-                  match = to_string(val) == expect
+                  match = to_string(val) == expected
                   {false, val, match}
 
                 _ ->
@@ -178,7 +182,7 @@ defmodule VacEngine.Simulation.Runner do
 
             m =
               Map.get(acc, k, %{})
-              |> Map.put(:expect, expect)
+              |> Map.put(:expected, expected)
               |> Map.put(:absent_while_expected?, awe)
               |> Map.put(:actual, actual)
               |> Map.put(:match?, match)
@@ -187,8 +191,8 @@ defmodule VacEngine.Simulation.Runner do
           end)
 
         forbid =
-          flatten_map(forbid)
-          |> Enum.reduce(expect, fn {k, v}, acc ->
+          forbid
+          |> Enum.reduce(expected, fn {k, v}, acc ->
             pwf = Map.has_key?(flat_output, k)
 
             m =
@@ -205,6 +209,7 @@ defmodule VacEngine.Simulation.Runner do
             m =
               Map.get(acc, k, %{})
               |> Map.put(:variable_id, v.id)
+              |> Map.put(:actual, Map.get(flat_output, k))
 
             Map.put(acc, k, m)
           end)
@@ -229,9 +234,9 @@ defmodule VacEngine.Simulation.Runner do
     end
   end
 
-  defp flatten_stack(stack) do
+  defp merge_stack(stack) do
     stack.layers
-    |> Enum.reduce({%{}, %{}, %{}}, fn layer, {input, expect, forbid} ->
+    |> Enum.reduce({%{}, %{}, %{}}, fn layer, {input, expected, forbid} ->
       l_input =
         layer.case.input_entries
         |> Enum.map(fn e ->
@@ -239,28 +244,28 @@ defmodule VacEngine.Simulation.Runner do
         end)
         |> unflatten_map()
 
-      l_expect =
+      l_expected =
         layer.case.output_entries
         |> Enum.reject(fn e ->
-          is_nil(e.expected)
+          e.forbid
         end)
         |> Enum.map(fn e ->
           {String.split(e.key, "."), e.expected}
         end)
-        |> unflatten_map()
+        |> Map.new()
 
       l_forbid =
         layer.case.output_entries
         |> Enum.filter(fn e ->
-          is_nil(e.expected)
+          e.forbid
         end)
         |> Enum.map(fn e ->
           {String.split(e.key, "."), true}
         end)
-        |> unflatten_map()
+        |> Map.new()
 
-      {sdmerge(input, l_input), sdmerge(expect, l_expect),
-       sdmerge(forbid, l_forbid)}
+      {sdmerge(input, l_input), Map.merge(expected, l_expected),
+       Map.merge(forbid, l_forbid)}
     end)
   end
 end

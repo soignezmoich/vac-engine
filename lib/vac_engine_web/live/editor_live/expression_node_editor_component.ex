@@ -340,7 +340,9 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
               {:ok, var} = Map.fetch(variable_path_index, forced_variable_path)
 
               var_arg = %{
-                ast: {:var, [signature: {[:name], var.type}], [forced_variable_path]},
+                ast:
+                  {:var, [signature: {[:name], var.type}],
+                   [forced_variable_path]},
                 index: 0,
                 return_types: [var.type],
                 type: var.type

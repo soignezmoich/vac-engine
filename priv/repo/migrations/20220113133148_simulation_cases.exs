@@ -32,6 +32,13 @@ defmodule VacEngine.Repo.Migrations.SimulationCases do
 
     ### CASES ###
 
+    execute("CREATE TYPE simulation_case_expected_result AS ENUM
+      (
+        'ignore',
+        'success',
+        'error'
+      )")
+
     create table(:simulation_cases) do
       timestamps()
 
@@ -41,8 +48,17 @@ defmodule VacEngine.Repo.Migrations.SimulationCases do
 
       add(:name, :string, size: 100, null: false)
       add(:description, :string, size: 1000)
+
+      add(:runnable, :boolean, null: false, default: true)
+
       add(:env_now, :utc_datetime)
-      add(:runnable, :boolean, null: false)
+
+      add(:expected_result, :simulation_case_expected_result,
+        null: false,
+        default: "ignore"
+      )
+
+      add(:expected_error, :string, size: 500)
     end
 
     create(index(:simulation_cases, [:workspace_id]))
@@ -86,8 +102,8 @@ defmodule VacEngine.Repo.Migrations.SimulationCases do
       )
 
       add(:key, :string, size: 512, null: false)
-      # if null, the entry is forbidden
       add(:expected, :string, size: 512)
+      add(:forbid, :boolean, null: false, default: false)
     end
 
     create(index(:simulation_output_entries, [:case_id]))
@@ -197,6 +213,7 @@ defmodule VacEngine.Repo.Migrations.SimulationCases do
   end
 
   def down do
+    execute("DROP TYPE simulation_case_expected_result")
     drop(table(:simulation_templates))
     drop(table(:simulation_layers))
     drop(table(:simulation_stacks))
