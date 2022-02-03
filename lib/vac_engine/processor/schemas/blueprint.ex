@@ -32,6 +32,9 @@ defmodule VacEngine.Processor.Blueprint do
 
     field(:variable_path_index, :map, virtual: true)
     field(:variable_id_index, :map, virtual: true)
+    field(:input_variables, :any, virtual: true)
+    field(:intermediate_variables, :any, virtual: true)
+    field(:output_variables, :any, virtual: true)
 
     has_one(:simulation_setting, VacEngine.Simulation.Setting)
   end

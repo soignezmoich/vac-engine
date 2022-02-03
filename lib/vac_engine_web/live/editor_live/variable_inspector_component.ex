@@ -5,7 +5,6 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
   alias VacEngine.Processor
   alias VacEngine.Processor.Meta
   alias VacEngine.Processor.Variable
-  import VacEngine.VariableHelpers
   import VacEngine.PipeHelpers
   alias VacEngine.Repo
   alias Ecto.Multi
@@ -316,7 +315,7 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
 
     assign(socket,
       changeset: changeset,
-      containers: containers(variable, blueprint.variables),
+      containers: containers(variable, blueprint),
       used?: Processor.variable_used?(variable)
     )
   end
@@ -354,12 +353,15 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
     assign(socket, changeset: changeset)
   end
 
-  defp containers(var, vars) do
+  defp containers(var, blueprint) do
     case {Variable.input?(var), Variable.output?(var)} do
-      {true, _} -> get_containers(vars, "input")
-      {false, false} -> get_containers(vars, "intermediate")
-      {_, true} -> get_containers(vars, "output")
+      {true, _} -> blueprint.input_variables
+      {false, false} -> blueprint.intermediate_variables
+      {_, true} -> blueprint.output_variables
     end
+    |> Enum.filter(fn container ->
+      container.type == :map and !List.starts_with?(container.path, var.path)
+    end)
     |> Enum.map(fn c ->
       {c.path |> Enum.join("."), c.id}
     end)
