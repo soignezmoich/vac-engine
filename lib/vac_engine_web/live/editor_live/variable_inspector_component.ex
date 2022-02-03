@@ -203,7 +203,7 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
   def handle_event(
         "delete",
         _,
-        %{assigns: %{blueprint: blueprint, variable: variable}} = socket
+        %{assigns: %{blueprint: _blueprint, variable: variable}} = socket
       ) do
     Processor.delete_variable(variable)
     |> case do
