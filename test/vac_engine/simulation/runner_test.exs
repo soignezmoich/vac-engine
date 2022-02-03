@@ -49,7 +49,10 @@ defmodule VacEngine.Simulation.RunnerTest do
       job = Job.new(stack)
       assert :ok = Simulation.queue_job(job)
       assert_receive {:job_finished, job}, 1000
-      #IO.inspect(job)
+      # TODO check job against expectation
+      # IO.inspect(job)
     end)
+
+    Simulation.Runner.flush()
   end
 end

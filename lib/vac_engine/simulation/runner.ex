@@ -6,6 +6,7 @@ defmodule VacEngine.Simulation.Runner do
   import VacEngine.PipeHelpers
   alias VacEngine.Simulation
   alias VacEngine.Simulation.Setting
+  alias VacEngine.Simulation.Case
   alias VacEngine.Simulation.Runner
   alias VacEngine.Simulation.Result
   alias VacEngine.Processor
@@ -19,6 +20,10 @@ defmodule VacEngine.Simulation.Runner do
 
   def queue(job) do
     GenServer.call(__MODULE__, {:queue, job})
+  end
+
+  def flush() do
+    GenServer.call(__MODULE__, :flush)
   end
 
   @impl true
@@ -35,6 +40,16 @@ defmodule VacEngine.Simulation.Runner do
     Process.send_after(self(), :dequeue, 10)
 
     {:reply, :ok, %{runner | job_queue: queue}}
+  end
+
+  @impl true
+  def handle_call(:flush, _from, runner) do
+    runner.processors
+    |> Enum.each(fn {_, {_ver, proc, _time}} ->
+      Processor.flush_processor(proc)
+    end)
+
+    {:reply, :ok, %{runner | processors: %{}}}
   end
 
   @impl true
@@ -145,16 +160,7 @@ defmodule VacEngine.Simulation.Runner do
   end
 
   defp run_stack(stack, proc) do
-    {input, expected, forbid} = merge_stack(stack)
-
-    env =
-      case stack.setting do
-        %Setting{env_now: now} when not is_nil(now) ->
-          %{now: Timex.format!(now, "{ISO:Extended}")}
-
-        _ ->
-          %{}
-      end
+    {input, expected, forbid, env} = merge_stack(stack)
 
     Logger.disable(self())
 
@@ -235,37 +241,62 @@ defmodule VacEngine.Simulation.Runner do
   end
 
   defp merge_stack(stack) do
+    env =
+      case stack.setting do
+        %Setting{env_now: now} when not is_nil(now) ->
+          %{now: Timex.format!(now, "{ISO:Extended}")}
+
+        _ ->
+          %{}
+      end
+
     stack.layers
-    |> Enum.reduce({%{}, %{}, %{}}, fn layer, {input, expected, forbid} ->
-      l_input =
-        layer.case.input_entries
-        |> Enum.map(fn e ->
-          {String.split(e.key, "."), e.value}
-        end)
-        |> unflatten_map()
+    |> Enum.reduce(
+      {%{}, %{}, %{}, env},
+      fn layer, {input, expected, forbid, env} ->
+        l_input =
+          layer.case.input_entries
+          |> Enum.map(fn e ->
+            {String.split(e.key, "."), e.value}
+          end)
+          |> unflatten_map()
 
-      l_expected =
-        layer.case.output_entries
-        |> Enum.reject(fn e ->
-          e.forbid
-        end)
-        |> Enum.map(fn e ->
-          {String.split(e.key, "."), e.expected}
-        end)
-        |> Map.new()
+        l_expected =
+          layer.case.output_entries
+          |> Enum.reject(fn e ->
+            e.forbid
+          end)
+          |> Enum.map(fn e ->
+            {String.split(e.key, "."), e.expected}
+          end)
+          |> Map.new()
 
-      l_forbid =
-        layer.case.output_entries
-        |> Enum.filter(fn e ->
-          e.forbid
-        end)
-        |> Enum.map(fn e ->
-          {String.split(e.key, "."), true}
-        end)
-        |> Map.new()
+        l_forbid =
+          layer.case.output_entries
+          |> Enum.filter(fn e ->
+            e.forbid
+          end)
+          |> Enum.map(fn e ->
+            {String.split(e.key, "."), true}
+          end)
+          |> Map.new()
 
-      {sdmerge(input, l_input), Map.merge(expected, l_expected),
-       Map.merge(forbid, l_forbid)}
-    end)
+        cenv =
+          case layer.case do
+            %Case{env_now: now} when not is_nil(now) ->
+              %{now: Timex.format!(now, "{ISO:Extended}")}
+
+            _ ->
+              %{}
+          end
+
+        {
+          sdmerge(input, l_input),
+          Map.merge(expected, l_expected),
+          Map.merge(forbid, l_forbid),
+          Map.merge(env, cenv)
+        }
+      end
+    )
   end
 end
