@@ -121,6 +121,7 @@ defmodule VacEngine.Simulation do
 
   def do_import_all_cases(data) do
     Repo.query("delete from simulation_stacks;")
+    Repo.query("delete from simulation_templates;")
     Repo.query("delete from simulation_cases;")
 
     cases =
