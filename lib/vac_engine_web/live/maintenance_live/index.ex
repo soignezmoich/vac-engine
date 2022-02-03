@@ -34,15 +34,15 @@ defmodule VacEngineWeb.MaintenanceLive.Index do
 
     uploaded_files =
       consume_uploaded_entries(socket, :json_import, fn %{path: path}, _entry ->
-        :ok = Simulation.import_all_cases(path)
-        {:ok, path}
-      end)
-      |> Enum.map(fn
-        {:ok, _} = res ->
-          res
+        Simulation.import_all_cases(path)
+        |> case do
+          :ok ->
+            :ok
 
-        {:error, _} ->
-          {:error, "error while processing file"}
+          _ ->
+            {:error, "error while processing file"}
+        end
+        |> ok()
       end)
 
     {:noreply, update(socket, :upload_files, &(&1 ++ uploaded_files))}
