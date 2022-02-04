@@ -20,7 +20,7 @@ defmodule VacEngineWeb.SimulationLive.StackOutputVariableComponent do
         },
         socket
       ) do
-    runnable_output_entry =
+      runnable_output_entry =
       runnable_case.output_entries
       |> Enum.find(&(&1.key == variable.path |> Enum.join(".")))
 
@@ -29,23 +29,10 @@ defmodule VacEngineWeb.SimulationLive.StackOutputVariableComponent do
         nil ->
           {nil, false}
 
-        _existing ->
-          case runnable_output_entry.expected do
-            nil -> {nil, true}
-            expected -> {expected, false}
-          end
+        entry -> {entry.expected, entry.forbid}
       end
 
     actual = Enum.random([nil, "2000-01-01"])
-
-    mismatch =
-      case {expected, actual, forbidden} do
-        {_expected, actual, true} when not is_nil(actual) -> true
-        {_expected, actual, true} when is_nil(actual) -> false
-        {nil, _actual, false} -> false
-        {expected, actual, false} when expected == actual -> false
-        _ -> true
-      end
 
     bg_color =
       case Map.get(variable, :match?) do
@@ -88,16 +75,13 @@ defmodule VacEngineWeb.SimulationLive.StackOutputVariableComponent do
     } = socket.assigns
 
     if active == "true" do
-      type = variable.type
-      enum = Map.get(variable, :enum)
-
       entry_key = variable.path |> Enum.join(".")
 
       {:ok, input_entry} =
-        Simulation.create_output_entry(
+        Simulation.create_blank_output_entry(
           runnable_case,
           entry_key,
-          Simulation.variable_default_value(type, enum)
+          variable
         )
 
       input_entry
@@ -114,21 +98,20 @@ defmodule VacEngineWeb.SimulationLive.StackOutputVariableComponent do
     {:noreply, socket}
   end
 
-  def handle_event("toggle_forbidden", %{"forbidden" => forbidden}, socket) do
+  def handle_event("toggle_forbidden", %{"forbidden" => forbidden_string}, socket) do
     %{
       runnable_output_entry: runnable_output_entry,
       stack: stack,
-      variable: variable
     } = socket.assigns
 
-    if forbidden == "true" do
-      runnable_output_entry |> Simulation.update_output_entry(nil)
-    else
-      type = variable.type
-      enum = Map.get(variable, :enum)
-      new_value = Simulation.variable_default_value(type, enum)
-      runnable_output_entry |> Simulation.update_output_entry(new_value)
+
+    forbidden = case forbidden_string do
+      "true" -> true
+      "false" -> false
+      _ -> throw({:invalid_bool, "can't parse #{forbidden_string} to boolean"})
     end
+
+    runnable_output_entry |> Simulation.toggle_forbidden(forbidden)
 
     send_update(StackEditorComponent,
       id: "stack_editor_#{stack.id}",

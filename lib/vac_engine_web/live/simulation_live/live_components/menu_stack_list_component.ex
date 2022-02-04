@@ -50,7 +50,7 @@ defmodule VacEngineWeb.SimulationLive.MenuStackListComponent do
 
   def handle_event("create", %{"create_stack" => %{"name" => name}}, socket) do
     socket =
-      case Simulation.create_stack(socket.assigns.blueprint, name) do
+      case Simulation.create_blank_stack(socket.assigns.blueprint, name) do
         {:ok, %{stack: new_stack}} ->
           send_update(
             SimulationEditorComponent,

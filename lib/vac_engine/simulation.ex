@@ -364,7 +364,7 @@ defmodule VacEngine.Simulation do
     |> Repo.all()
   end
 
-  def create_template(blueprint, name) do
+  def create_blank_template(blueprint, name) do
     Multi.new()
     |> Multi.insert(:case, fn _ ->
       %Case{
@@ -405,6 +405,7 @@ defmodule VacEngine.Simulation do
     end
   end
 
+
   ### INPUT ENTRIES ###
 
   def create_input_entry(kase, key, value \\ "-") do
@@ -429,7 +430,20 @@ defmodule VacEngine.Simulation do
     |> Repo.update()
   end
 
-  def create_output_entry(kase, key, expected \\ "") do
+  def validate_input_entry(%Changeset{} = changeset, variable) do
+    changeset
+    |> validate_required([:key, :value])
+    |> validate_type(:value, variable.type)
+    |> validate_in_enum(:value, Map.get(variable, :variable_enum))
+  end
+
+
+  ### OUTPUT ENTRIES ###
+
+  def create_blank_output_entry(kase, key, variable) do
+
+    expected = variable_default_value(variable.type, variable.enum)
+
     %OutputEntry{
       case_id: kase.id,
       key: key,
@@ -445,17 +459,16 @@ defmodule VacEngine.Simulation do
     Repo.delete(output_entry)
   end
 
-  def update_output_entry(output_entry, expected) do
-    output_entry
-    |> cast(%{expected: expected}, [:expected])
+  def set_expected(%OutputEntry{} = entry, expected) do
+    entry
+    |> cast(%{expected: expected, forbid: false}, [:expected, :forbid])
     |> Repo.update()
   end
 
-  def validate_input_entry(%Changeset{} = changeset, variable) do
-    changeset
-    |> validate_required([:key, :value])
-    |> validate_type(:value, variable.type)
-    |> validate_in_enum(:value, Map.get(variable, :variable_enum))
+  def toggle_forbidden(%OutputEntry{} = entry, forbidden) do
+    entry
+    |> change(%{forbid: forbidden})
+    |> Repo.update()
   end
 
   ### CASE STACKS ###
@@ -493,7 +506,7 @@ defmodule VacEngine.Simulation do
     |> Repo.all()
   end
 
-  def create_stack(blueprint, name) do
+  def create_blank_stack(blueprint, name) do
     Multi.new()
     |> Multi.insert(:case, fn _ ->
       %Case{
@@ -593,7 +606,7 @@ defmodule VacEngine.Simulation do
       {:datetime, _} -> "2000-01-01T00:00:00"
       {:number, _} -> "0.0"
       {:integer, _} -> "0"
-      {:map, _} -> "<non-empty>"
+      {:map, _} -> "<map>"
     end
   end
 end
