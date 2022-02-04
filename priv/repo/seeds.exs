@@ -25,5 +25,9 @@ VacEngine.Repo.query("delete from portals;")
     {:ok, _perm} = Account.grant_permission(role, :super_admin)
     {:ok, api_token} = Account.create_api_token(role)
 
+    IO.puts("###########################")
+    IO.puts("Created admin account with email/password: #{email} / #{pass}")
+    IO.puts("Created api key: #{api_token.secret}")
+
     user
   end)
