@@ -158,7 +158,7 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
   def handle_event(
         "add_branch",
         _,
-        %{assigns: %{blueprint: blueprint, selection: selection}} = socket
+        %{assigns: %{blueprint: _blueprint, selection: selection}} = socket
       ) do
     {deduction, attrs} =
       case selection do
@@ -187,7 +187,7 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
   def handle_event(
         "delete_branch",
         _,
-        %{assigns: %{blueprint: blueprint, selection: selection}} = socket
+        %{assigns: %{blueprint: _blueprint, selection: selection}} = socket
       ) do
     %{deduction: deduction, branch: branch} = selection
 
@@ -290,7 +290,7 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
   def handle_event(
         "delete_column",
         _,
-        %{assigns: %{blueprint: blueprint, selection: selection}} = socket
+        %{assigns: %{blueprint: _blueprint, selection: selection}} = socket
       ) do
     %{deduction: deduction, column: column} = selection
 
@@ -363,7 +363,7 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
   end
 
   defp move_deduction(
-         %{assigns: %{blueprint: blueprint, selection: selection}} = socket,
+         %{assigns: %{blueprint: _blueprint, selection: selection}} = socket,
          offset
        ) do
     %{deduction: deduction} = selection
@@ -379,7 +379,7 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
   end
 
   defp move_branch(
-         %{assigns: %{blueprint: blueprint, selection: selection}} = socket,
+         %{assigns: %{blueprint: _blueprint, selection: selection}} = socket,
          offset
        ) do
     %{branch: %{position: idx} = branch} = selection
@@ -394,7 +394,7 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
   end
 
   defp move_column(
-         %{assigns: %{blueprint: blueprint, selection: selection}} = socket,
+         %{assigns: %{blueprint: _blueprint, selection: selection}} = socket,
          offset
        ) do
     %{column: %{position: idx} = column} = selection

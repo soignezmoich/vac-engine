@@ -1,7 +1,6 @@
 defmodule VacEngineWeb.EditorLive.VariableListComponent do
   use VacEngineWeb, :live_component
 
-  import VacEngine.VariableHelpers
   import VacEngine.PipeHelpers
   alias VacEngineWeb.EditorLive.VariableSubListComponent
 
@@ -21,20 +20,16 @@ defmodule VacEngineWeb.EditorLive.VariableListComponent do
         socket
       ) do
     socket
-    |> assign(build_renderable(blueprint.variables))
+    |> assign(build_renderable(blueprint))
     |> assign(assigns)
     |> ok()
   end
 
-  def build_renderable(variables) do
-    input = variables |> flatten_variables("input")
-    output = variables |> flatten_variables("output")
-    intermediate = variables |> flatten_variables("intermediate")
-
+  def build_renderable(blueprint) do
     %{
-      input_variables: input,
-      output_variables: output,
-      intermediate_variables: intermediate
+      input_variables: blueprint.input_variables,
+      output_variables: blueprint.output_variables,
+      intermediate_variables: blueprint.intermediate_variables
     }
   end
 end

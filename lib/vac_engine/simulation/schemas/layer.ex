@@ -2,6 +2,7 @@ defmodule VacEngine.Simulation.Layer do
   @moduledoc false
 
   use Ecto.Schema
+  import Ecto.Changeset
 
   alias VacEngine.Account.Workspace
   alias VacEngine.Processor.Blueprint
@@ -15,5 +16,14 @@ defmodule VacEngine.Simulation.Layer do
     belongs_to(:case, Case)
 
     field(:position, :integer)
+  end
+
+  def nested_changeset(data, attrs, ctx) do
+    data
+    |> cast(attrs, [
+      :position
+    ])
+    |> change(workspace_id: ctx.workspace_id, blueprint_id: ctx.blueprint_id)
+    |> cast_assoc(:case, with: {Case, :nested_changeset, [ctx]})
   end
 end

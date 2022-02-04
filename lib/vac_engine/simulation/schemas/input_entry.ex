@@ -2,7 +2,6 @@ defmodule VacEngine.Simulation.InputEntry do
   @moduledoc false
 
   use Ecto.Schema
-
   import Ecto.Changeset
 
   alias VacEngine.Account.Workspace
@@ -20,5 +19,11 @@ defmodule VacEngine.Simulation.InputEntry do
     input_entry
     |> cast(attrs, [:value])
     |> validate_required([:workspace, :case, :key, :value])
+  end
+
+  def nested_changeset(data, attrs, ctx) do
+    data
+    |> cast(attrs, [:key, :value])
+    |> change(workspace_id: ctx.workspace_id)
   end
 end

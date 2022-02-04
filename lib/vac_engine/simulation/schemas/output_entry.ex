@@ -2,6 +2,7 @@ defmodule VacEngine.Simulation.OutputEntry do
   @moduledoc false
 
   use Ecto.Schema
+  import Ecto.Changeset
 
   import Ecto.Changeset
 
@@ -14,6 +15,13 @@ defmodule VacEngine.Simulation.OutputEntry do
 
     field(:key, :string)
     field(:expected, :string)
+    field(:forbid, :boolean)
+  end
+
+  def nested_changeset(data, attrs, ctx) do
+    data
+    |> cast(attrs, [:key, :expected, :forbid])
+    |> change(workspace_id: ctx.workspace_id)
   end
 
   def changeset(output_entry, attrs) do

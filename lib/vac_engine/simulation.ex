@@ -21,6 +21,7 @@ defmodule VacEngine.Simulation do
 
   alias Ecto.Changeset
   alias Ecto.Multi
+  alias VacEngine.Processor.Blueprint
   alias VacEngine.Pub.Portal
   alias VacEngine.Repo
   alias VacEngine.Simulation.Case
@@ -107,6 +108,15 @@ defmodule VacEngine.Simulation do
     from(b in query, preload: :setting)
   end
 
+  def create_stack(%Blueprint{} = blueprint, attrs \\ %{}) do
+    Stack.nested_changeset(
+      %Stack{},
+      attrs,
+      %{blueprint_id: blueprint.id, workspace_id: blueprint.workspace_id}
+    )
+    |> Repo.insert()
+  end
+
   # Temporary code
   # Override all cases
   def import_all_cases(path) do
@@ -127,6 +137,7 @@ defmodule VacEngine.Simulation do
 
   def do_import_all_cases(data) do
     Repo.query("delete from simulation_stacks;")
+    Repo.query("delete from simulation_templates;")
     Repo.query("delete from simulation_cases;")
 
     cases =
@@ -276,7 +287,7 @@ defmodule VacEngine.Simulation do
         case_id: kase.id,
         workspace_id: workspace_id,
         key: Enum.join(k, "."),
-        expected: nil
+        forbid: true
       }
       |> Repo.insert!()
     end)

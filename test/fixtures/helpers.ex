@@ -78,6 +78,93 @@ defmodule Fixtures.Helpers do
     end
   end
 
+  defmodule Simulations do
+    defmacro sim(br, do: block) do
+      name = :crypto.strong_rand_bytes(8) |> Base24.encode24()
+
+      quote do
+        def unquote(:"simulation__#{name}")() do
+          Map.merge(
+            %{stack: unquote(br)},
+            unquote(block)
+          )
+        end
+      end
+    end
+
+    defmacro __using__(_opts) do
+      quote do
+        import Fixtures.Helpers.Simulations
+        Module.register_attribute(__MODULE__, :simulations, accumulate: true)
+
+        def simulations() do
+          __MODULE__.__info__(:functions)
+          |> Enum.reduce(
+            [],
+            fn {func, _}, res ->
+              case to_string(func) do
+                "simulation__" <> name ->
+                  data =
+                    apply(__MODULE__, func, [])
+                    |> update_in([:input], &smap/1)
+
+                  [data | res]
+
+                _ ->
+                  res
+              end
+            end
+          )
+        end
+      end
+    end
+  end
+
+  defmodule SimulationStacks do
+    defmacro stack(key, do: block) do
+      name = :crypto.strong_rand_bytes(8) |> Base24.encode24()
+
+      quote do
+        def unquote(:"simulation_stack__#{name}")() do
+          Map.merge(
+            %{name: unquote(key)},
+            unquote(block)
+          )
+        end
+      end
+    end
+
+    defmacro __using__(_opts) do
+      quote do
+        import Fixtures.Helpers.SimulationStacks
+
+        Module.register_attribute(__MODULE__, :simulation_stacks,
+          accumulate: true
+        )
+
+        def stacks() do
+          __MODULE__.__info__(:functions)
+          |> Enum.reduce(
+            [],
+            fn {func, _}, res ->
+              case to_string(func) do
+                "simulation_stack__" <> name ->
+                  data =
+                    apply(__MODULE__, func, [])
+                    |> update_in([:stack], &smap/1)
+
+                  [data | res]
+
+                _ ->
+                  res
+              end
+            end
+          )
+        end
+      end
+    end
+  end
+
   def smap(map) do
     map
     |> stringify_keys()

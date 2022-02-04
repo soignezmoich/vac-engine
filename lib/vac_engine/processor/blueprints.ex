@@ -361,10 +361,36 @@ defmodule VacEngine.Processor.Blueprints do
       end)
       |> Map.new()
 
-    blueprint
-    |> put_in([Access.key(:variables)], var_tree)
-    |> put_in([Access.key(:variable_path_index)], path_index)
-    |> put_in([Access.key(:variable_id_index)], id_index)
+    {input_variables, output_variables, intermediate_variables} =
+      blueprint.variables
+      |> Enum.reverse()
+      |> Enum.reduce({[], [], []}, fn var, {inp, out, rest} ->
+        var = Map.get(id_index, var.id)
+
+        cond do
+          is_nil(var) ->
+            {inp, out, rest}
+
+          Variable.input?(var) ->
+            {[var | inp], out, rest}
+
+          Variable.output?(var) ->
+            {inp, [var | out], rest}
+
+          true ->
+            {inp, out, [var | rest]}
+        end
+      end)
+
+    %{
+      blueprint
+      | variables: var_tree,
+        variable_path_index: path_index,
+        variable_id_index: id_index,
+        input_variables: input_variables,
+        output_variables: output_variables,
+        intermediate_variables: intermediate_variables
+    }
   end
 
   defp arrange_columns(

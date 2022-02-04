@@ -31,20 +31,21 @@ defmodule VacEngineWeb.BlueprintLive.ImportComponent do
     uploaded_files =
       consume_uploaded_entries(socket, :json_import, fn %{path: path}, _entry ->
         Processor.update_blueprint_from_file(blueprint, path)
-      end)
-      |> Enum.map(fn
-        {:ok, _br} = res ->
-          send(self(), :reload_blueprint)
-          res
+        |> case do
+          {:ok, _br} = res ->
+            send(self(), :reload_blueprint)
+            res
 
-        {:error, err} when is_binary(err) ->
-          {:error, err}
+          {:error, err} when is_binary(err) ->
+            {:error, err}
 
-        {:error, %Changeset{} = ch} ->
-          {:error, VacEngine.EctoHelpers.flatten_changeset_errors(ch)}
+          {:error, %Changeset{} = ch} ->
+            {:error, VacEngine.EctoHelpers.flatten_changeset_errors(ch)}
 
-        {:error, _} ->
-          {:error, "error while processing blueprint"}
+          {:error, _} ->
+            {:error, "error while processing blueprint"}
+        end
+        |> ok()
       end)
 
     {:noreply, update(socket, :upload_files, &(&1 ++ uploaded_files))}

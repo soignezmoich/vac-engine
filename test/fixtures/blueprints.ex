@@ -7,8 +7,7 @@ defmodule Fixtures.Blueprints do
       variables: %{
         aint: %{
           type: :integer,
-          mapping: :in_required,
-          default: quote(do: now())
+          mapping: :in_required
         },
         bint: %{type: :integer, mapping: :inout_required, default: 0},
         cint: %{type: :integer, mapping: :inout_required, default: 0}
@@ -453,6 +452,86 @@ defmodule Fixtures.Blueprints do
                 %{
                   target: :datetime,
                   expression: quote(do: add_days(@datetime, 5))
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  end
+
+  blueprint(:simulation_test) do
+    %{
+      variables: [
+        %{name: :in_boolean, type: :boolean, mapping: :in_optional},
+        %{name: :in_date, type: :date, mapping: :in_optional},
+        %{name: :in_datetime, type: :datetime, mapping: :in_optional},
+        %{name: :in_integer, type: :integer, mapping: :in_optional},
+        %{name: :in_map, type: :map, mapping: :in_optional},
+        %{name: :in_number, type: :number, mapping: :in_optional},
+        %{name: :in_string, type: :string, mapping: :in_optional},
+        %{
+          name: :in_root,
+          type: :map,
+          mapping: :in_optional,
+          children: %{
+            in_boolean_child: %{type: :boolean, mapping: :in_optional},
+            in_map_child: %{
+              type: :map,
+              mapping: :in_optional,
+              children: %{
+                in_boolean_grandchild: %{type: :boolean, mapping: :in_optional}
+              }
+            }
+          }
+        },
+        %{name: :out_boolean, type: :boolean, mapping: :out},
+        %{name: :out_date, type: :date, mapping: :out},
+        %{name: :out_datetime, type: :datetime, mapping: :out},
+        %{name: :out_integer, type: :integer, mapping: :out},
+        %{name: :out_map, type: :map, mapping: :out},
+        %{name: :out_number, type: :number, mapping: :out},
+        %{name: :out_string, type: :string, mapping: :out},
+        %{
+          name: :out_root,
+          type: :map,
+          mapping: :out,
+          children: %{
+            out_boolean_child: %{type: :boolean, mapping: :out},
+            out_map_child: %{
+              type: :map,
+              mapping: :out,
+              children: %{
+                out_boolean_grandchild: %{type: :boolean, mapping: :out}
+              }
+            }
+          }
+        }
+      ],
+      deductions: [
+        %{
+          branches: [
+            %{
+              conditions: [],
+              assignments: [
+                %{target: :out_boolean, expression: quote(do: @in_boolean)},
+                %{target: :out_date, expression: quote(do: @in_date)},
+                %{target: :out_datetime, expression: quote(do: @in_datetime)},
+                %{target: :out_integer, expression: quote(do: @in_integer)},
+                %{target: :out_number, expression: quote(do: @in_number)},
+                %{target: :out_string, expression: quote(do: @in_string)},
+                %{
+                  target: [:out_root, :out_boolean_child],
+                  expression: quote(do: var(["in_root", "in_boolean_child"]))
+                },
+                %{
+                  target: [:out_root, :out_map_child, :out_boolean_grandchild],
+                  expression:
+                    quote(
+                      do:
+                        var(["in_root", "in_map_child", "in_boolean_grandchild"])
+                    )
                 }
               ]
             }

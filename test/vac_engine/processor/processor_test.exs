@@ -3,7 +3,6 @@ defmodule VacEngine.Processor.ProcessorTest do
 
   alias VacEngine.Account
   alias VacEngine.Processor
-  alias VacEngine.Processor
 
   setup_all do
     [
