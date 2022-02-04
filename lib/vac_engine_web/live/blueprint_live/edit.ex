@@ -3,6 +3,7 @@ defmodule VacEngineWeb.BlueprintLive.Edit do
 
   import VacEngineWeb.PermissionHelpers
 
+  alias Phoenix.PubSub
   alias VacEngine.Processor
   alias VacEngineWeb.BlueprintLive.SummaryComponent
   alias VacEngineWeb.BlueprintLive.ImportComponent
@@ -30,8 +31,11 @@ defmodule VacEngineWeb.BlueprintLive.Edit do
 
   @impl true
   def handle_params(_params, _session, socket) do
-    {:noreply,
-     assign(socket, location: [:blueprint, socket.assigns.live_action])}
+    socket
+    |> assign(location: [:blueprint, socket.assigns.live_action])
+    |> update_subscription()
+
+    {:noreply, socket}
   end
 
   @impl true
@@ -74,4 +78,26 @@ defmodule VacEngineWeb.BlueprintLive.Edit do
       Processor.get_blueprint!(id)
     end
   end
+
+  defp update_subscription(socket) do
+    socket
+    |> unsubscribe()
+    |> subscribe()
+  end
+
+  defp unsubscribe(%{assigns: %{subscribed_topic: topic}} = socket) when not is_nil(topic) do
+    PubSub.unsubscribe(:simulation, topic)
+    socket |> assign(subscribed_topic: nil)
+  end
+
+  defp unsubscribe(socket) do socket end
+
+  defp subscribe(%{assigns: %{blueprint: blueprint}} = socket) do
+    topic = "blueprint:#{blueprint.id}"
+    PubSub.subscribe(VacEngine.PubSub, topic)
+    IO.puts("Subscribed to #{topic}")
+    socket |> assign(subscribed_topic: topic)
+  end
+
+  defp subscribe(socket) do socket end
 end

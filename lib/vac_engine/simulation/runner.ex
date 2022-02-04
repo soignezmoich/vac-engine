@@ -2,14 +2,18 @@ defmodule VacEngine.Simulation.Runner do
   @moduledoc false
 
   use GenServer
+
   import VacEngine.EnumHelpers
   import VacEngine.PipeHelpers
+
+  alias Phoenix.PubSub
   alias VacEngine.Simulation
   alias VacEngine.Simulation.Setting
   alias VacEngine.Simulation.Case
   alias VacEngine.Simulation.Runner
   alias VacEngine.Simulation.Result
   alias VacEngine.Processor
+
   require Logger
 
   defstruct processors: %{}, job_queue: nil
@@ -156,7 +160,7 @@ defmodule VacEngine.Simulation.Runner do
   end
 
   defp notify_job(job) do
-    send(job.from, {:job_finished, job})
+    PubSub.broadcast(VacEngine.PubSub, job.publish_on, {:job_finished, job})
   end
 
   defp run_stack(stack, proc) do
