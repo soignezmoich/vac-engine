@@ -389,8 +389,6 @@ defmodule VacEngine.Simulation do
   def delete_template(template_id) do
     template = Repo.get(Template, template_id)
 
-    IO.inspect(template)
-
     related_blueprint_layers =
       from(l in Layer,
         join: c in Case,

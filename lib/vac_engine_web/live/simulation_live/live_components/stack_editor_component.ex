@@ -6,6 +6,12 @@ defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
   alias VacEngineWeb.SimulationLive.StackInputComponent
   alias VacEngineWeb.SimulationLive.StackOutputComponent
 
+  def mount(socket) do
+    socket = socket |> assign(results: nil)
+
+    {:ok, socket}
+  end
+
   def update(
         %{action: {:refresh, _token}},
         %{assigns: %{stack: stack}} = socket
@@ -32,7 +38,7 @@ defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
         %{action: {:job_finished, job}},
         socket
       ) do
-    IO.inspect(job)
+    socket = socket |> assign(results: job.result.entries)
     {:ok, socket}
   end
 

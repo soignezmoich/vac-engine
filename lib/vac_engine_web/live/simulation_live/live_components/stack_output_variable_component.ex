@@ -48,10 +48,10 @@ defmodule VacEngineWeb.SimulationLive.StackOutputVariableComponent do
       end
 
     bg_color =
-      case {mismatch, runnable_output_entry} do
-        {true, _} -> "bg-red-100"
-        {false, nil} -> ""
-        _ -> "bg-purple-100"
+      case Map.get(variable, :match?) do
+        false -> "bg-red-100"
+        true -> "bg-purple-100"
+        _ -> ""
       end
 
     active = !is_nil(runnable_output_entry)
@@ -69,8 +69,6 @@ defmodule VacEngineWeb.SimulationLive.StackOutputVariableComponent do
         forbidden: forbidden,
         id: id,
         bg_color: bg_color,
-        filter: filter,
-        mismatch: mismatch,
         runnable_case: runnable_case,
         runnable_output_entry: runnable_output_entry,
         stack: stack,

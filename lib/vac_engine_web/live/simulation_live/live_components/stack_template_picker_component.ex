@@ -27,8 +27,6 @@ defmodule StackTemplatePickerComponent do
       {%{case_id: template_case_id}, types}
       |> cast(%{}, Map.keys(types))
 
-    IO.inspect(changeset)
-
     socket =
       socket
       |> assign(

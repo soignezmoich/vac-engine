@@ -21,6 +21,7 @@ defmodule VacEngineWeb.SimulationLive.ConfigEditorComponent do
     socket =
       socket
       |> assign(
+        blueprint: blueprint,
         changeset: changeset,
         parsed_value: nil,
         setting: setting
@@ -51,10 +52,10 @@ defmodule VacEngineWeb.SimulationLive.ConfigEditorComponent do
       try do
         case Convert.parse_string(env_now, :datetime) do
           {:ok, parsed_value} -> parsed_value
-          _ -> nil
+          _error -> nil
         end
       rescue
-        _ -> nil
+        _error -> nil
       end
 
     {:noreply,
@@ -78,10 +79,28 @@ defmodule VacEngineWeb.SimulationLive.ConfigEditorComponent do
           setting
           |> Simulation.update_setting(env_now: parsed_value)
 
-          {:noreply, socket}
+          setting =
+            case Simulation.get_setting(socket.assigns.blueprint) do
+              nil -> Simulation.create_setting(socket.assigns.blueprint)
+              setting -> setting
+            end
+
+          changeset =
+            setting
+            |> cast(%{}, [:env_now])
+            |> Map.put(:action, :update)
+
+          {:noreply,
+           socket
+           |> assign(
+             changeset: changeset,
+             parsed_value: parsed_value,
+             setting: setting
+           )}
       end
     rescue
-      _ -> {:error, "not a valid date"}
+      bla ->
+        {:error, "not a valid date"}
     end
   end
 end

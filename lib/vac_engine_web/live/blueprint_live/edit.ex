@@ -53,8 +53,8 @@ defmodule VacEngineWeb.BlueprintLive.Edit do
 
   @impl true
   def handle_info({:job_finished, job}, socket) do
-    send_update(VacEngineWeb.SimulationLive.SimulationEditorTestStackComponent,
-      id: "stack_#{job.stack_id}",
+    send_update(VacEngineWeb.SimulationLive.StackEditorComponent,
+      id: "stack_editor_#{job.stack_id}",
       action: {:job_finished, job}
     )
 
