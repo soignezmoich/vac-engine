@@ -13,7 +13,7 @@
     <%= @stack_name %>
   </div>
   <div class="float-right">
-      <%= if @has_mismatch  do %>
+      <%= if @outcome == :failure  do %>
     <div class="inline-block align-top text-red-500">
       <.icon name="hero/exclamation-circle" width="1.5rem" />
     </div>

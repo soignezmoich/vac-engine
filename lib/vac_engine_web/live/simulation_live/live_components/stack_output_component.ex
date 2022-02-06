@@ -2,6 +2,7 @@ defmodule VacEngineWeb.SimulationLive.StackOutputComponent do
   use VacEngineWeb, :live_component
 
   alias VacEngineWeb.SimulationLive.StackOutputVariableComponent
+  alias VacEngineWeb.SimulationLive.ToggleEntryComponent
 
   def mount(socket) do
     socket = socket |> assign(filter: "case")
@@ -19,27 +20,22 @@ defmodule VacEngineWeb.SimulationLive.StackOutputComponent do
         socket
       ) do
     output_variables =
-      if results do
-        results_by_variable_id =
-          results
-          |> Enum.map(fn {_path_list, result_table} ->
-            {result_table.variable_id,
-             result_table
-             |> Enum.filter(fn {key, _value} -> key in [:output, :match?] end)}
-          end)
-          |> Map.new()
+      output_variables
+      |> Enum.map(fn variable ->
+        Map.fetch(results, variable.path)
+        |> case do
+          :error ->
+            variable
 
-        output_variables
-        |> Enum.map(fn variable ->
-          result = results_by_variable_id[variable.id]
+          {:ok, result} ->
+            variable
+            |> Map.merge(Map.take(result, [:actual, :present_while_forbidden]))
+            |> Map.put(:outcome, get_outcome(result))
+        end
+      end)
 
-          variable
-          |> Map.put(:actual, Keyword.get(result, :output))
-          |> Map.put(:match?, Keyword.get(result, :match?))
-        end)
-      else
-        output_variables
-      end
+    # output_variables
+    # |> Enum.map(fn ov -> {ov.name, Map.get(ov, :actual)} end)
 
     socket =
       socket
@@ -57,4 +53,11 @@ defmodule VacEngineWeb.SimulationLive.StackOutputComponent do
 
     {:noreply, socket}
   end
+
+  defp get_outcome(%{absent_while_expected?: true}), do: :failure
+  defp get_outcome(%{present_while_forbidden?: true}), do: :failure
+  defp get_outcome(%{match?: true}), do: :success
+  defp get_outcome(%{match?: false}), do: :failure
+  defp get_outcome(%{forbid?: true}), do: :success
+  defp get_outcome(_result), do: :not_tested
 end

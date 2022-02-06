@@ -20,7 +20,7 @@ defmodule VacEngineWeb.SimulationLive.StackOutputVariableComponent do
         },
         socket
       ) do
-      runnable_output_entry =
+    runnable_output_entry =
       runnable_case.output_entries
       |> Enum.find(&(&1.key == variable.path |> Enum.join(".")))
 
@@ -29,7 +29,8 @@ defmodule VacEngineWeb.SimulationLive.StackOutputVariableComponent do
         nil ->
           {nil, false}
 
-        entry -> {entry.expected, entry.forbid}
+        entry ->
+          {entry.expected, entry.forbid}
       end
 
     actual = Enum.random([nil, "2000-01-01"])
@@ -98,18 +99,27 @@ defmodule VacEngineWeb.SimulationLive.StackOutputVariableComponent do
     {:noreply, socket}
   end
 
-  def handle_event("toggle_forbidden", %{"forbidden" => forbidden_string}, socket) do
+  def handle_event(
+        "toggle_forbidden",
+        %{"forbidden" => forbidden_string},
+        socket
+      ) do
     %{
       runnable_output_entry: runnable_output_entry,
-      stack: stack,
+      stack: stack
     } = socket.assigns
 
+    forbidden =
+      case forbidden_string do
+        "true" ->
+          true
 
-    forbidden = case forbidden_string do
-      "true" -> true
-      "false" -> false
-      _ -> throw({:invalid_bool, "can't parse #{forbidden_string} to boolean"})
-    end
+        "false" ->
+          false
+
+        _ ->
+          throw({:invalid_bool, "can't parse #{forbidden_string} to boolean"})
+      end
 
     runnable_output_entry |> Simulation.toggle_forbidden(forbidden)
 

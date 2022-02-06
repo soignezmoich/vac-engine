@@ -1,30 +1,50 @@
 <div  class="w-full bg-white filter drop-shadow-lg p-3 cursor-default overflow-x-scroll">
-    <div class="float-right">
-        <form phx-change="set_filter" phx-target={@myself}>
-            Show:
-            <select name="filter" id="select_filter" class="form-fld">
-                <option value="all" selected={@filter=="all"}>
-                    All
-                </option>
-                <option value="case" selected={@filter=="case"}>
-                    Case only
-                </option>
-            </select>
-        </form>
+
+
+    <div class="h-10">
+      <div class="text-lg font-bold inline-block">
+        Output
+      </div>
     </div>
 
-    <div class="text-lg font-bold h-10 mb-5">
-        Output
+
+    <div class="float-right">
+
     </div>
     <div class="table w-full">
-        <div class="table-row text-sm font-bold">
+        <div class="table-row">
+            <div class="table-cell px-1 border-b border-black align-middle">
+                <ToggleEntryComponent.render active={false} target_component={"#stack_output_variable"} />
+            </div>
+            <div class="table-cell px-1 border-b border-black italic align-middle">
+                expect invalid input
+            </div>
             <div class="table-cell px-1 border-b border-black"></div>
+            <div class="table-cell px-1 border-b border-black"></div>
+            <div class="table-cell px-1 border-b border-black"></div>
+            <div class="table-cell px-1 border-b border-black text-right">
+                <form phx-change="set_filter" phx-target={@myself}>
+                    Show:
+                    <select name="filter" id="select_filter" class="form-fld">
+                        <option value="all" selected={@filter=="all"}>
+                            All
+                        </option>
+                        <option value="case" selected={@filter=="case"}>
+                            Case only
+                        </option>
+                    </select>
+                </form>
+            </div>
+        </div>
+        <div class="table-row text-sm font-bold">
+            <div class="table-cell px-1 border-b border-l border-black"></div>
             <div class="table-cell px-1 border-b border-black">variable</div>
             <div class="table-cell px-1 border-b border-black">forbidden</div>
             <div class="table-cell px-1 border-b border-black">expected</div>
             <div class="table-cell px-1 border-b border-black">actual</div>
-            <div class="table-cell px-1 border-b border-black">match?</div>
+            <div class="table-cell px-1 border-b border-r border-black">result</div>
         </div>
+
         <%= for variable <- @output_variables do %>
             <.live_component
             module={StackOutputVariableComponent}

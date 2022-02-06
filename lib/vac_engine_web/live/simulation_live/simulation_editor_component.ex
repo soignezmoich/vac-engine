@@ -64,8 +64,8 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
       |> assign(
         id: id,
         blueprint: blueprint,
-        input_variables: blueprint.variables |> flatten_variables("input"),
-        output_variables: blueprint.variables |> flatten_variables("output"),
+        input_variables: blueprint.input_variables,
+        output_variables: blueprint.output_variables,
         selected_type: nil,
         selected_id: nil,
         template_names: Simulation.get_template_names(blueprint)

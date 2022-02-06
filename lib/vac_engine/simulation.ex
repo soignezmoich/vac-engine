@@ -405,7 +405,6 @@ defmodule VacEngine.Simulation do
     end
   end
 
-
   ### INPUT ENTRIES ###
 
   def create_input_entry(kase, key, value \\ "-") do
@@ -437,11 +436,9 @@ defmodule VacEngine.Simulation do
     |> validate_in_enum(:value, Map.get(variable, :variable_enum))
   end
 
-
   ### OUTPUT ENTRIES ###
 
   def create_blank_output_entry(kase, key, variable) do
-
     expected = variable_default_value(variable.type, variable.enum)
 
     %OutputEntry{

@@ -36,16 +36,12 @@
     </div>
     <div class="table-cell px-1 align-middle">
       <%= if @active do %>
-        <%= case {Map.get(@variable, :match?), @forbidden, Map.get(@variable, :actual)} do %>
-        <% {false, _, _} -> %>
+        <%= case Map.get(@variable, :outcome) do %>
+        <% :failure -> %>
           <div class="inline-block align-top text-red-500">
             <.icon name="hero/exclamation-circle" width="1.5rem" />
           </div>
-        <% {true, _, _} -> %>
-          <div class="inline-block align-top text-green-600">
-            <.icon name="hero/check-circle" width="1.5rem" />
-          </div>
-        <% {nil, true, nil} -> %>
+        <% :success -> %>
           <div class="inline-block align-top text-green-600">
             <.icon name="hero/check-circle" width="1.5rem" />
           </div>

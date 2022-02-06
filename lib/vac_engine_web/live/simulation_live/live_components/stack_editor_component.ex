@@ -7,7 +7,7 @@ defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
   alias VacEngineWeb.SimulationLive.StackOutputComponent
 
   def mount(socket) do
-    socket = socket |> assign(results: nil)
+    socket = socket |> assign(results: %{})
 
     {:ok, socket}
   end

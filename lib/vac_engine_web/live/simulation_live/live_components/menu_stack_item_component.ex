@@ -8,6 +8,13 @@ defmodule VacEngineWeb.SimulationLive.MenuStackItemComponent do
   alias VacEngineWeb.SimulationLive.SimulationEditorComponent
 
   @impl true
+  def mount(socket) do
+    socket = socket |> assign(outcome: :not_tested)
+
+    {:ok, socket}
+  end
+
+  @impl true
   def update(
         %{
           id: id,
@@ -23,9 +30,23 @@ defmodule VacEngineWeb.SimulationLive.MenuStackItemComponent do
         id: id,
         stack_id: stack_id,
         stack_name: stack_name,
-        selected: selected,
-        has_mismatch: false
+        selected: selected
       )
+
+    {:ok, socket}
+  end
+
+  def update(%{action: {:job_finished, job}}, socket) do
+    IO.inspect(job)
+
+    outcome =
+      if job.result.has_error? do
+        :failure
+      else
+        :success
+      end
+
+    socket = socket |> assign(outcome: outcome)
 
     {:ok, socket}
   end

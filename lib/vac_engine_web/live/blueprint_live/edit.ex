@@ -62,6 +62,11 @@ defmodule VacEngineWeb.BlueprintLive.Edit do
       action: {:job_finished, job}
     )
 
+    send_update(VacEngineWeb.SimulationLive.MenuStackItemComponent,
+      id: "menu_stack_item_#{job.stack_id}",
+      action: {:job_finished, job}
+    )
+
     {:noreply, socket}
   end
 
@@ -85,19 +90,24 @@ defmodule VacEngineWeb.BlueprintLive.Edit do
     |> subscribe()
   end
 
-  defp unsubscribe(%{assigns: %{subscribed_topic: topic}} = socket) when not is_nil(topic) do
+  defp unsubscribe(%{assigns: %{subscribed_topic: topic}} = socket)
+       when not is_nil(topic) do
     PubSub.unsubscribe(:simulation, topic)
     socket |> assign(subscribed_topic: nil)
   end
 
-  defp unsubscribe(socket) do socket end
+  defp unsubscribe(socket) do
+    socket
+  end
 
   defp subscribe(%{assigns: %{blueprint: blueprint}} = socket) do
     topic = "blueprint:#{blueprint.id}"
     PubSub.subscribe(VacEngine.PubSub, topic)
-    IO.puts("Subscribed to #{topic}")
+
     socket |> assign(subscribed_topic: topic)
   end
 
-  defp subscribe(socket) do socket end
+  defp subscribe(socket) do
+    socket
+  end
 end
