@@ -79,15 +79,12 @@ defmodule Fixtures.Helpers do
   end
 
   defmodule Simulations do
-    defmacro sim(br, do: block) do
+    defmacro sim(do: block) do
       name = :crypto.strong_rand_bytes(8) |> Base24.encode24()
 
       quote do
         def unquote(:"simulation__#{name}")() do
-          Map.merge(
-            %{stack: unquote(br)},
-            unquote(block)
-          )
+          unquote(block)
         end
       end
     end
@@ -106,52 +103,17 @@ defmodule Fixtures.Helpers do
                 "simulation__" <> name ->
                   data =
                     apply(__MODULE__, func, [])
-                    |> update_in([:input], &smap/1)
+                    |> Map.put(:name, name)
 
-                  [data | res]
-
-                _ ->
-                  res
-              end
-            end
-          )
-        end
-      end
-    end
-  end
-
-  defmodule SimulationStacks do
-    defmacro stack(key, do: block) do
-      name = :crypto.strong_rand_bytes(8) |> Base24.encode24()
-
-      quote do
-        def unquote(:"simulation_stack__#{name}")() do
-          Map.merge(
-            %{name: unquote(key)},
-            unquote(block)
-          )
-        end
-      end
-    end
-
-    defmacro __using__(_opts) do
-      quote do
-        import Fixtures.Helpers.SimulationStacks
-
-        Module.register_attribute(__MODULE__, :simulation_stacks,
-          accumulate: true
-        )
-
-        def stacks() do
-          __MODULE__.__info__(:functions)
-          |> Enum.reduce(
-            [],
-            fn {func, _}, res ->
-              case to_string(func) do
-                "simulation_stack__" <> name ->
-                  data =
-                    apply(__MODULE__, func, [])
-                    |> update_in([:stack], &smap/1)
+                  data = %{
+                    error: Map.get(data, :error),
+                    name: name,
+                    blueprint: data.blueprint,
+                    stack:
+                      Map.get(data, :stack) ||
+                        Fixtures.Helpers.extract_stack(data),
+                    result: Fixtures.Helpers.extract_result(data)
+                  }
 
                   [data | res]
 
@@ -233,4 +195,101 @@ defmodule Fixtures.Helpers do
   end
 
   defp atomify_keys(v), do: v
+
+  def extract_stack(sim) do
+    input_case =
+      case sim do
+        %{input: %{} = input} ->
+          input
+          |> Enum.map(fn {k, v} ->
+            %{key: to_string(k), value: to_string(v)}
+          end)
+          |> then(fn entries ->
+            %{name: "case_#{sim.name}_input", input_entries: entries}
+          end)
+
+        _ ->
+          nil
+      end
+
+    output_case =
+      case sim do
+        %{result: %{} = res} ->
+          res
+          |> Enum.map(fn {k, v} ->
+            case v do
+              %{expected: e} when not is_nil(e) ->
+                %{expected: to_string(e)}
+
+              _ ->
+                %{}
+            end
+            |> Map.merge(%{
+              key: k,
+              forbid: Map.get(v, :forbid)
+            })
+          end)
+          |> then(fn entries ->
+            %{name: "case_#{sim.name}_output", output_entries: entries}
+          end)
+
+        _ ->
+          nil
+      end
+
+    result_case =
+      case sim do
+        %{error: error} ->
+          %{
+            name: "case_#{sim.name}_error",
+            expected_error: error,
+            expected_result: :error
+          }
+
+        _ ->
+          nil
+      end
+
+    layers =
+      [input_case, output_case, result_case]
+      |> Enum.reject(&is_nil/1)
+      |> Enum.map(fn kase ->
+        %{case: kase}
+      end)
+
+    %{
+      active: true,
+      layers: layers
+    }
+    |> smap()
+  end
+
+  def extract_result(sim) do
+    case sim do
+      %{result: %{} = res} ->
+        res
+        |> Enum.map(fn {k, v} ->
+          path =
+            k
+            |> to_string()
+            |> String.split(".")
+
+          v =
+            case v do
+              %{expected: e} when not is_nil(e) ->
+                Map.put(v, :expected, to_string(e))
+
+              _ ->
+                Map.pop(v, :expected)
+                |> elem(1)
+            end
+
+          {path, v}
+        end)
+        |> Map.new()
+
+      _ ->
+        %{}
+    end
+  end
 end

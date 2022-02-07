@@ -10,6 +10,7 @@ defmodule VacEngine.Simulation.Runner do
   alias VacEngine.Simulation
   alias VacEngine.Simulation.Setting
   alias VacEngine.Simulation.Case
+  alias VacEngine.Simulation.Layer
   alias VacEngine.Simulation.Runner
   alias VacEngine.Simulation.Result
   alias VacEngine.Processor
@@ -104,7 +105,7 @@ defmodule VacEngine.Simulation.Runner do
         {run_stack(stack, proc), runner}
 
       {:error, err} ->
-        {%Result{run_error: err, has_error?: true}, runner}
+        {%Result{run_error: err, has_error: true}, runner}
     end
     |> then(fn {res, runner} ->
       %{job | result: res}
@@ -164,7 +165,7 @@ defmodule VacEngine.Simulation.Runner do
   end
 
   defp run_stack(stack, proc) do
-    {input, expected, forbid, env} = merge_stack(stack)
+    {input, expected, forbid, outcome, env} = merge_stack(stack)
 
     Logger.disable(self())
 
@@ -193,9 +194,9 @@ defmodule VacEngine.Simulation.Runner do
             m =
               Map.get(acc, k, %{})
               |> Map.put(:expected, expected)
-              |> Map.put(:absent_while_expected?, awe)
+              |> Map.put(:absent_while_expected, awe)
               |> Map.put(:actual, actual)
-              |> Map.put(:match?, match)
+              |> Map.put(:match, match)
 
             Map.put(acc, k, m)
           end)
@@ -207,8 +208,8 @@ defmodule VacEngine.Simulation.Runner do
 
             m =
               Map.get(acc, k, %{})
-              |> Map.put(:forbid?, v)
-              |> Map.put(:present_while_forbidden?, pwf)
+              |> Map.put(:forbid, v)
+              |> Map.put(:present_while_forbidden, pwf)
 
             Map.put(acc, k, m)
           end)
@@ -225,22 +226,38 @@ defmodule VacEngine.Simulation.Runner do
           end)
 
         has_error =
-          Enum.reduce(entries, false, fn {_k, e}, has_error ->
-            has_error ||
-              match?({:ok, false}, Map.fetch(e, :match?)) ||
-              match?({:ok, true}, Map.fetch(e, :absent_while_expected?)) ||
-              match?({:ok, true}, Map.fetch(e, :present_while_forbidden?))
+          Enum.any?(entries, fn {_k, e} ->
+            match?({:ok, false}, Map.fetch(e, :match)) ||
+              match?({:ok, true}, Map.fetch(e, :absent_while_expected)) ||
+              match?({:ok, true}, Map.fetch(e, :present_while_forbidden))
           end)
 
         %Result{
           input: input,
           output: state.output,
           entries: entries,
-          has_error?: has_error
+          has_error: has_error,
+          expected_result: outcome.expected_result,
+          expected_error: outcome.expected_error,
+          result_match:
+            outcome.expected_result == :success ||
+              not is_nil(outcome.expected_error)
         }
 
       {:error, err} ->
-        %Result{input: input, run_error: err, has_error?: true}
+        match =
+          outcome.expected_result == :error &&
+            (outcome.expected_error == nil ||
+               outcome.expected_error == err)
+
+        %Result{
+          input: input,
+          run_error: err,
+          has_error: !match,
+          expected_result: outcome.expected_result,
+          expected_error: outcome.expected_error,
+          result_match: match
+        }
     end
   end
 
@@ -256,17 +273,17 @@ defmodule VacEngine.Simulation.Runner do
 
     stack.layers
     |> Enum.reduce(
-      {%{}, %{}, %{}, env},
-      fn layer, {input, expected, forbid, env} ->
+      {%{}, %{}, %{}, %{expected_result: :success, expected_error: nil}, env},
+      fn %Layer{case: kase}, {input, expected, forbid, outcome, env} ->
         l_input =
-          layer.case.input_entries
+          kase.input_entries
           |> Enum.map(fn e ->
             {String.split(e.key, "."), e.value}
           end)
           |> unflatten_map()
 
         l_expected =
-          layer.case.output_entries
+          kase.output_entries
           |> Enum.reject(fn e ->
             e.forbid
           end)
@@ -276,7 +293,7 @@ defmodule VacEngine.Simulation.Runner do
           |> Map.new()
 
         l_forbid =
-          layer.case.output_entries
+          kase.output_entries
           |> Enum.filter(fn e ->
             e.forbid
           end)
@@ -286,7 +303,7 @@ defmodule VacEngine.Simulation.Runner do
           |> Map.new()
 
         cenv =
-          case layer.case do
+          case kase do
             %Case{env_now: now} when not is_nil(now) ->
               %{now: Timex.format!(now, "{ISO:Extended}")}
 
@@ -294,10 +311,17 @@ defmodule VacEngine.Simulation.Runner do
               %{}
           end
 
+        outcome =
+          case kase.expected_result do
+            :ignore -> outcome
+            r -> %{expected_result: r, expected_error: kase.expected_error}
+          end
+
         {
           sdmerge(input, l_input),
           Map.merge(expected, l_expected),
           Map.merge(forbid, l_forbid),
+          outcome,
           Map.merge(env, cenv)
         }
       end

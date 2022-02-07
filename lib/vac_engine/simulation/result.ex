@@ -5,5 +5,8 @@ defmodule VacEngine.Simulation.Result do
             input: nil,
             output: nil,
             entries: nil,
-            has_error?: false
+            has_error: false,
+            expected_result: :success,
+            expected_error: nil,
+            result_match: true
 end
