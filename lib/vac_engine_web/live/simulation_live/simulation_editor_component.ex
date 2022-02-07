@@ -59,6 +59,11 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
   # Only used at page loading or blueprint change
   @impl true
   def update(%{id: id, blueprint: blueprint}, socket) do
+
+
+    {selected_type, selected_id} = get_initial_selection(blueprint)
+
+
     socket =
       socket
       |> assign(
@@ -66,8 +71,8 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
         blueprint: blueprint,
         input_variables: blueprint.input_variables,
         output_variables: blueprint.output_variables,
-        selected_type: nil,
-        selected_id: nil,
+        selected_type: selected_type,
+        selected_id: selected_id,
         template_names: Simulation.get_template_names(blueprint)
       )
 
@@ -119,5 +124,13 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
       )
 
     {:noreply, socket}
+  end
+
+  defp get_initial_selection(blueprint) do
+    first_stack = Simulation.get_first_stack(blueprint)
+    case first_stack do
+      nil -> {nil, nil}
+      stack -> {:stack, stack.id}
+    end
   end
 end

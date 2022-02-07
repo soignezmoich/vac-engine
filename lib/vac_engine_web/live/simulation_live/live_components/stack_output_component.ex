@@ -5,7 +5,7 @@ defmodule VacEngineWeb.SimulationLive.StackOutputComponent do
   alias VacEngineWeb.SimulationLive.ToggleEntryComponent
 
   def mount(socket) do
-    socket = socket |> assign(filter: "case")
+    socket = socket |> assign(filter: "all")
 
     {:ok, socket}
   end

@@ -4,7 +4,7 @@ defmodule VacEngineWeb.SimulationLive.StackInputComponent do
   alias VacEngineWeb.SimulationLive.StackInputVariableComponent
 
   def mount(socket) do
-    socket = socket |> assign(filter: "template")
+    socket = socket |> assign(filter: "all")
     {:ok, socket}
   end
 
