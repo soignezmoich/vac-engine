@@ -58,6 +58,19 @@ defmodule VacEngine.Simulation do
     |> Repo.get(case_id)
   end
 
+  def set_expect_run_error(kase, expect_run_error) do
+
+    expected_result = if (expect_run_error) do
+      :error
+    else
+      :ignore
+    end
+
+    kase
+    |> cast(%{expected_result: expected_result}, [:expected_result])
+    |> Repo.update()
+  end
+
   def list_stacks(queries) do
     Stack
     |> queries.()

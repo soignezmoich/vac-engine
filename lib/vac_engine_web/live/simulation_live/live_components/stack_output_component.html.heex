@@ -19,21 +19,13 @@
         </div>
     </div>
 
-
-
-
-    <div class="w-full border border-black">
-        <div class="table-cell px-1 align-middle">
-            <ToggleComponent.render
-                active={Map.get(@runnable_case, :expected_error)}
-                toggle_action={"toggle_expected_error"}
-                target_component={"#stack_output_variable"}
-            />
-        </div>
-        <div class="table-cell px-1 italic align-middle">
-            expect invalid input
-        </div>
-    </div>
+    <.live_component
+        module={ExpectRunErrorComponent}
+        id={"expect_run_error_#{@stack.id}"}
+        causes_error={@causes_error}
+        runnable_case={@runnable_case}
+        stack={@stack}
+    />
 
     <div class="h-5"/>
 

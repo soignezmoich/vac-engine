@@ -2,7 +2,7 @@ defmodule VacEngineWeb.SimulationLive.StackOutputComponent do
   use VacEngineWeb, :live_component
 
   alias VacEngineWeb.SimulationLive.StackOutputVariableComponent
-  alias VacEngineWeb.SimulationLive.ToggleComponent
+  alias VacEngineWeb.SimulationLive.ExpectRunErrorComponent
 
   def mount(socket) do
     socket = socket |> assign(filter: "all")
