@@ -501,6 +501,7 @@ defmodule VacEngine.Simulation do
   def get_first_stack(blueprint) do
     from(s in Stack,
       where: s.blueprint_id == ^blueprint.id,
+      limit: 1,
       preload: [:layers]
     )
     |> Repo.one()

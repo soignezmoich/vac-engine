@@ -84,6 +84,11 @@ defmodule VacEngineWeb.SimulationLive.ConfigEditorComponent do
             |> cast(%{}, [:env_now])
             |> Map.put(:action, :update)
 
+            send_update(VacEngineWeb.SimulationLive.SimulationEditorComponent,
+              id: "simulation_editor",
+              action: :update_all_results
+            )
+
           {:noreply,
            socket
            |> assign(
@@ -92,6 +97,9 @@ defmodule VacEngineWeb.SimulationLive.ConfigEditorComponent do
              setting: setting
            )}
       end
+
+
+
     rescue
       # TODO replace when timex doesn't raise an error anymore when "2000-"
       _error ->

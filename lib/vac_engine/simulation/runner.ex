@@ -42,7 +42,7 @@ defmodule VacEngine.Simulation.Runner do
   def handle_call({:queue, job}, _from, runner) do
     queue = [job | runner.job_queue]
 
-    Process.send_after(self(), :dequeue, 10)
+    Process.send_after(self(), :dequeue, 200)
 
     {:reply, :ok, %{runner | job_queue: queue}}
   end
