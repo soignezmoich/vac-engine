@@ -66,7 +66,6 @@ defmodule VacEngineWeb.SimulationLive.StackOutputVariableComponent do
   end
 
   def handle_event("toggle_entry", %{"active" => active}, socket) do
-
     %{
       runnable_case: runnable_case,
       runnable_output_entry: runnable_output_entry,
