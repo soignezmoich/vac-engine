@@ -1,25 +1,25 @@
-defmodule VacEngineWeb.SimulationLive.ToggleEntryComponent do
+defmodule VacEngineWeb.SimulationLive.ToggleComponent do
   use Phoenix.Component
 
   import VacEngineWeb.IconComponent
 
   def render(assigns) do
     ~H"""
-    <div class="mt-1 -mb-1">
+    <div class="mt-1 -mb-1 text-blue-600">
       <%= if (@active) do %>
         <button
-        phx-click={"toggle_entry"}
+        phx-click={@toggle_action}
         phx-value-active={"false"}
         phx-target={@target_component}
-        class="text-purple-700 hover:text-purple-400">
+        class="hover:opacity-70">
           <.icon name={"toggle-on"} width="30px"/>
         </button>
       <% else %>
         <button
-        phx-click={"toggle_entry"}
+        phx-click={@toggle_action}
         phx-value-active={"true"}
         phx-target={@target_component}
-        class="text-purple-700 hover:text-purple-400">
+        class="hover:opacity-70">
           <.icon name={"toggle-off"} width="30px"/>
         </button>
       <% end %>

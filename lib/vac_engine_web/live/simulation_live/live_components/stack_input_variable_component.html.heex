@@ -1,8 +1,9 @@
 <div id={@id} class={"table-row #{@bg_color}"}>
   <%= if (@visible) do %>
     <div class="table-cell px-1 align-middle">
-      <ToggleEntryComponent.render
+      <ToggleComponent.render
         active={@active}
+        toggle_action={"toggle_entry"}
         target_component={"#stack_input_variable_#{@variable.id}"}
       />
     </div>

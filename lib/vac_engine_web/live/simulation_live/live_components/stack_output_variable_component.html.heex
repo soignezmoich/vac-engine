@@ -1,17 +1,21 @@
 <div class={"table-row #{@bg_color}"} id={@id}>
   <%= if (@visible) do %>
-    <div class="table-cell px-1 align-middle">
-      <ToggleEntryComponent.render active={@active} target_component={"#stack_output_variable_#{@variable.id}"} />
+    <div class="table-cell px-1 align-middle border-b">
+      <ToggleComponent.render
+        active={@active}
+        toggle_action={"toggle_entry"}
+        target_component={"#stack_output_variable_#{@variable.id}"}
+      />
     </div>
-    <div class="table-cell px-1 align-middle">
+    <div class="table-cell px-1 align-middle  border-b">
       <VariableFullNameComponent.render variable={@variable} />
     </div>
-    <div class="table-cell px-1 align-middle">
+    <div class="table-cell px-1 align-middle  border-b">
       <%= if @active do %>
         <ToggleForbiddenComponent.render forbidden={@forbidden} target_component={"#stack_output_variable_#{@variable.id}"} />
       <% end %>
     </div>
-    <div class="table-cell px-1 align-middle">
+    <div class="table-cell px-1 align-middle  border-b">
       <%= case {@variable.type, @active, @forbidden} do %>
         <% {_, true, false} -> %>
           <.live_component
@@ -31,10 +35,10 @@
           </div>
       <% end %>
     </div>
-    <div class="table-cell px-1 align-middle w-36">
+    <div class="table-cell px-1 align-middle w-36  border-b">
       <%= Map.get(@variable, :actual) || "-" %>
     </div>
-    <div class="table-cell px-1 align-middle">
+    <div class="table-cell px-1 align-middle  border-b">
       <%= if @active do %>
         <%= case Map.get(@variable, :outcome) do %>
         <% :failure -> %>

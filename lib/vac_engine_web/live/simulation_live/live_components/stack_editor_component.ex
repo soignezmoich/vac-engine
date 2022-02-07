@@ -7,7 +7,7 @@ defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
   alias VacEngineWeb.SimulationLive.StackOutputComponent
 
   def mount(socket) do
-    socket = socket |> assign(results: %{})
+    socket = socket |> assign(results: %{}, causes_error: false)
 
     {:ok, socket}
   end
@@ -38,7 +38,13 @@ defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
         %{action: {:job_finished, job}},
         socket
       ) do
-    socket = socket |> assign(results: job.result.entries)
+    {causes_error, results} =
+      case job.result do
+        %{run_error: run_error} when not is_nil(run_error) -> {true, %{}}
+        %{entries: entries} -> {false, entries}
+      end
+
+    socket = socket |> assign(causes_error: causes_error, results: results)
     {:ok, socket}
   end
 

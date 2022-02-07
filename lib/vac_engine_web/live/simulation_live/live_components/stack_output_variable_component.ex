@@ -5,7 +5,7 @@ defmodule VacEngineWeb.SimulationLive.StackOutputVariableComponent do
 
   alias VacEngine.Simulation
   alias VacEngineWeb.SimulationLive.StackEditorComponent
-  alias VacEngineWeb.SimulationLive.ToggleEntryComponent
+  alias VacEngineWeb.SimulationLive.ToggleComponent
   alias VacEngineWeb.SimulationLive.ToggleForbiddenComponent
   alias VacEngineWeb.SimulationLive.ExpectedFieldComponent
   alias VacEngineWeb.SimulationLive.VariableFullNameComponent
@@ -33,16 +33,15 @@ defmodule VacEngineWeb.SimulationLive.StackOutputVariableComponent do
           {entry.expected, entry.forbid}
       end
 
-    actual = Enum.random([nil, "2000-01-01"])
+    active = !is_nil(runnable_output_entry)
 
     bg_color =
-      case Map.get(variable, :match?) do
-        false -> "bg-red-100"
-        true -> "bg-purple-100"
+      case {Map.get(variable, :outcome), active} do
+        {:failure, _} -> "bg-red-100"
+        {:success, _} -> "bg-green-100"
+        {_, true} -> "bg-blue-100"
         _ -> ""
       end
-
-    active = !is_nil(runnable_output_entry)
 
     visible =
       active ||
@@ -52,7 +51,6 @@ defmodule VacEngineWeb.SimulationLive.StackOutputVariableComponent do
       socket
       |> assign(
         active: active,
-        actual: actual,
         expected: expected,
         forbidden: forbidden,
         id: id,
@@ -106,7 +104,8 @@ defmodule VacEngineWeb.SimulationLive.StackOutputVariableComponent do
       ) do
     %{
       runnable_output_entry: runnable_output_entry,
-      stack: stack
+      stack: stack,
+      variable: variable
     } = socket.assigns
 
     forbidden =
@@ -121,7 +120,11 @@ defmodule VacEngineWeb.SimulationLive.StackOutputVariableComponent do
           throw({:invalid_bool, "can't parse #{forbidden_string} to boolean"})
       end
 
-    runnable_output_entry |> Simulation.toggle_forbidden(forbidden)
+    if variable.type == :map && !forbidden do
+      Simulation.delete_output_entry(runnable_output_entry)
+    else
+      runnable_output_entry |> Simulation.toggle_forbidden(forbidden)
+    end
 
     send_update(StackEditorComponent,
       id: "stack_editor_#{stack.id}",

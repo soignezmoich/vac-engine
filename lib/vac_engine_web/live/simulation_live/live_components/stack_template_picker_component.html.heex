@@ -9,7 +9,7 @@
         <div class="font-bold">Template</div>
         <%= select f,
             :case_id,
-            [{"<None>", nil} | @template_names |> Enum.map(fn {id, name, case_id} -> {name, case_id} end)],
+            [{"<None>", nil} | @template_names |> Enum.map(fn {_id, name, case_id} -> {name, case_id} end)],
             class: "form-fld text-sm w-48" %>
     </.form>
 </div>

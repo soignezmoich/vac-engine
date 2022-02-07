@@ -4,7 +4,7 @@ defmodule VacEngineWeb.SimulationLive.TemplateInputVariableComponent do
   alias VacEngine.Simulation
   alias VacEngineWeb.SimulationLive.EntryValueFieldComponent
   alias VacEngineWeb.SimulationLive.TemplateEditorComponent
-  alias VacEngineWeb.SimulationLive.ToggleEntryComponent
+  alias VacEngineWeb.SimulationLive.ToggleComponent
   alias VacEngineWeb.SimulationLive.VariableFullNameComponent
 
   def update(

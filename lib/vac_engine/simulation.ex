@@ -440,11 +440,13 @@ defmodule VacEngine.Simulation do
 
   def create_blank_output_entry(kase, key, variable) do
     expected = variable_default_value(variable.type, variable.enum)
+    forbid = variable.type == :map
 
     %OutputEntry{
       case_id: kase.id,
       key: key,
       expected: expected,
+      forbid: forbid,
       workspace_id: kase.workspace_id
     }
     |> change(%{})

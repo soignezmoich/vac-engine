@@ -2,7 +2,7 @@ defmodule VacEngineWeb.SimulationLive.StackOutputComponent do
   use VacEngineWeb, :live_component
 
   alias VacEngineWeb.SimulationLive.StackOutputVariableComponent
-  alias VacEngineWeb.SimulationLive.ToggleEntryComponent
+  alias VacEngineWeb.SimulationLive.ToggleComponent
 
   def mount(socket) do
     socket = socket |> assign(filter: "all")
@@ -12,9 +12,10 @@ defmodule VacEngineWeb.SimulationLive.StackOutputComponent do
 
   def update(
         %{
+          causes_error: causes_error,
           output_variables: output_variables,
-          runnable_case: runnable_case,
           results: results,
+          runnable_case: runnable_case,
           stack: stack
         },
         socket
@@ -34,12 +35,10 @@ defmodule VacEngineWeb.SimulationLive.StackOutputComponent do
         end
       end)
 
-    # output_variables
-    # |> Enum.map(fn ov -> {ov.name, Map.get(ov, :actual)} end)
-
     socket =
       socket
       |> assign(
+        causes_error: causes_error,
         output_variables: output_variables,
         runnable_case: runnable_case,
         stack: stack

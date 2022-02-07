@@ -1,8 +1,6 @@
 defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
   use VacEngineWeb, :live_component
 
-  import VacEngine.VariableHelpers
-
   alias VacEngine.Simulation
   alias VacEngine.Simulation.Case
 
@@ -59,10 +57,7 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
   # Only used at page loading or blueprint change
   @impl true
   def update(%{id: id, blueprint: blueprint}, socket) do
-
-
     {selected_type, selected_id} = get_initial_selection(blueprint)
-
 
     socket =
       socket
@@ -128,6 +123,7 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
 
   defp get_initial_selection(blueprint) do
     first_stack = Simulation.get_first_stack(blueprint)
+
     case first_stack do
       nil -> {nil, nil}
       stack -> {:stack, stack.id}

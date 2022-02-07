@@ -1,48 +1,50 @@
 <div  class="w-full bg-white filter drop-shadow-lg p-3 cursor-default overflow-x-scroll">
 
-
     <div class="h-10">
-      <div class="text-lg font-bold inline-block">
-        Output
-      </div>
-    </div>
-
-
-    <div class="float-right">
-
-    </div>
-    <div class="table w-full">
-        <div class="table-row">
-            <div class="table-cell px-1 border-b border-black align-middle">
-                <ToggleEntryComponent.render active={false} target_component={"#stack_output_variable"} />
-            </div>
-            <div class="table-cell px-1 border-b border-black italic align-middle">
-                expect invalid input
-            </div>
-            <div class="table-cell px-1 border-b border-black"></div>
-            <div class="table-cell px-1 border-b border-black"></div>
-            <div class="table-cell px-1 border-b border-black"></div>
-            <div class="table-cell px-1 border-b border-black text-right">
-                <form phx-change="set_filter" phx-target={@myself}>
-                    Show:
-                    <select name="filter" id="select_filter" class="form-fld">
-                        <option value="all" selected={@filter=="all"}>
-                            All
-                        </option>
-                        <option value="case" selected={@filter=="case"}>
-                            Case only
-                        </option>
-                    </select>
-                </form>
-            </div>
+        <div class="text-lg font-bold inline-block">
+            Output
         </div>
-        <div class="table-row text-sm font-bold">
-            <div class="table-cell px-1 border-b border-l border-black"></div>
-            <div class="table-cell px-1 border-b border-black">variable</div>
-            <div class="table-cell px-1 border-b border-black">forbidden</div>
-            <div class="table-cell px-1 border-b border-black">expected</div>
+        <div class="float-right">
+            <form phx-change="set_filter" class="float-right" phx-target={@myself}>
+                Show:
+                <select name="filter" id="select_filter" class="form-fld">
+                    <option value="all" selected={@filter=="all"}>
+                        All
+                    </option>
+                    <option value="case" selected={@filter=="case"}>
+                        Case only
+                    </option>
+                </select>
+            </form>
+        </div>
+    </div>
+
+
+
+
+    <div class="w-full border border-black">
+        <div class="table-cell px-1 align-middle">
+            <ToggleComponent.render
+                active={Map.get(@runnable_case, :expected_error)}
+                toggle_action={"toggle_expected_error"}
+                target_component={"#stack_output_variable"}
+            />
+        </div>
+        <div class="table-cell px-1 italic align-middle">
+            expect invalid input
+        </div>
+    </div>
+
+    <div class="h-5"/>
+
+    <div class="table w-full border border-black">
+        <div class="table-row text-sm font-bold bg-cream-100">
+            <div class="table-cell px-1 border-b border-black">test</div>
+            <div class="table-cell px-1 border-b border-black py-1">variable name</div>
+            <div class="table-cell px-1 border-b border-black">forbid</div>
+            <div class="table-cell px-1 border-b border-black">expect</div>
             <div class="table-cell px-1 border-b border-black">actual</div>
-            <div class="table-cell px-1 border-b border-r border-black">result</div>
+            <div class="table-cell px-1 border-b border-black w-8">ok?</div>
         </div>
 
         <%= for variable <- @output_variables do %>

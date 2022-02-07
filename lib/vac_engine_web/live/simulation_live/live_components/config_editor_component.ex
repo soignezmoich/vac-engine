@@ -1,4 +1,8 @@
 defmodule VacEngineWeb.SimulationLive.ConfigEditorComponent do
+  @moduledoc """
+
+  """
+
   use VacEngineWeb, :live_component
 
   import Ecto.Changeset
@@ -30,13 +34,7 @@ defmodule VacEngineWeb.SimulationLive.ConfigEditorComponent do
     {:ok, socket}
   end
 
-  @doc """
-  Called when the input changes.
-  Recompute the changeset from the original setting asset to generate
-  validation errors. Additionnally parse the input as a datetime
-  (even if it is done in the validation process) in order to display
-  it to the user. Pass both to the socket they can be displayed in the html.
-  """
+
   def handle_event("validate", %{"setting" => %{"env_now" => env_now}}, socket) do
     %{setting: setting} = socket.assigns
 
@@ -62,11 +60,7 @@ defmodule VacEngineWeb.SimulationLive.ConfigEditorComponent do
      socket |> assign(changeset: changeset, parsed_value: parsed_value)}
   end
 
-  @doc """
-  Called when the user submits changes. Changes are applied only if the
-  parsing of the user input to a date succeeds. Since the submit button is
-  displayed
-  """
+
   def handle_event("submit", %{"setting" => %{"env_now" => env_now}}, socket) do
     %{setting: setting} = socket.assigns
 
@@ -99,7 +93,8 @@ defmodule VacEngineWeb.SimulationLive.ConfigEditorComponent do
            )}
       end
     rescue
-      bla ->
+      # TODO replace when timex doesn't raise an error anymore when "2000-"
+      _error ->
         {:error, "not a valid date"}
     end
   end

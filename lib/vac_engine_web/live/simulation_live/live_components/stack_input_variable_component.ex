@@ -4,7 +4,7 @@ defmodule VacEngineWeb.SimulationLive.StackInputVariableComponent do
   alias VacEngine.Simulation
   alias VacEngineWeb.SimulationLive.EntryValueFieldComponent
   alias VacEngineWeb.SimulationLive.StackEditorComponent
-  alias VacEngineWeb.SimulationLive.ToggleEntryComponent
+  alias VacEngineWeb.SimulationLive.ToggleComponent
   alias VacEngineWeb.SimulationLive.VariableFullNameComponent
 
   def update(
@@ -35,8 +35,8 @@ defmodule VacEngineWeb.SimulationLive.StackInputVariableComponent do
     bg_color =
       case {runnable_input_entry, template_input_entry} do
         {nil, nil} -> ""
-        {nil, _} -> "bg-purple-50"
-        _ -> "bg-purple-100"
+        {nil, _} -> "bg-blue-50"
+        _ -> "bg-blue-100"
       end
 
     active = !is_nil(runnable_input_entry)

@@ -374,7 +374,7 @@ defmodule VacEngine.Processor.Blueprints do
             {[var |> with_dot_path() | inp], out, rest}
 
           Variable.output?(var) ->
-            {inp, [var |> with_dot_path()  | out], rest}
+            {inp, [var |> with_dot_path() | out], rest}
 
           true ->
             {inp, out, [var |> with_dot_path() | rest]}
@@ -386,17 +386,20 @@ defmodule VacEngine.Processor.Blueprints do
       | variables: var_tree,
         variable_path_index: path_index,
         variable_id_index: id_index,
-        input_variables: input_variables |> Enum.sort_by(&(&1.dot_path)),
-        output_variables: output_variables |> Enum.sort_by(&(&1.dot_path)),
-        intermediate_variables: intermediate_variables |> Enum.sort_by(&(&1.dot_path))
+        input_variables: input_variables |> Enum.sort_by(& &1.dot_path),
+        output_variables: output_variables |> Enum.sort_by(& &1.dot_path),
+        intermediate_variables:
+          intermediate_variables |> Enum.sort_by(& &1.dot_path)
     }
   end
 
   defp with_dot_path(variable) do
-    dot_path = case variable.path do
-      nil -> ""
-      list_path when is_list(list_path)-> "#{list_path |> Enum.join(".")}"
-    end
+    dot_path =
+      case variable.path do
+        nil -> ""
+        list_path when is_list(list_path) -> "#{list_path |> Enum.join(".")}"
+      end
+
     variable |> Map.put(:dot_path, dot_path)
   end
 

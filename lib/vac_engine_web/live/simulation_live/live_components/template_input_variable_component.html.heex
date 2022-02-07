@@ -1,8 +1,9 @@
-<div id={@id} class={"table-row #{if(!is_nil(@input_entry)) do "bg-purple-100" end}"}>
+<div id={@id} class={"table-row #{if(!is_nil(@input_entry)) do "bg-blue-50" end}"}>
   <%= if (@visible) do %>
     <div class="table-cell px-1 align-middle">
-      <ToggleEntryComponent.render
+      <ToggleComponent.render
         active={!is_nil(@input_entry)}
+        toggle_action={"toggle_entry"}
         target_component={"#template_input_variable_#{@variable.id}"}
       />
     </div>
