@@ -92,7 +92,7 @@ defmodule VacEngineWeb.BlueprintLive.Edit do
 
   defp unsubscribe(%{assigns: %{subscribed_topic: topic}} = socket)
        when not is_nil(topic) do
-    PubSub.unsubscribe(:simulation, topic)
+    PubSub.unsubscribe(VacEngine.PubSub, topic)
     socket |> assign(subscribed_topic: nil)
   end
 
