@@ -221,7 +221,6 @@ defmodule VacEngine.Repo.Migrations.SimulationCases do
   end
 
   def down do
-    execute("DROP TYPE simulation_case_expected_result")
     drop(table(:simulation_templates))
     drop(table(:simulation_layers))
     drop(table(:simulation_stacks))
@@ -229,5 +228,6 @@ defmodule VacEngine.Repo.Migrations.SimulationCases do
     drop(table(:simulation_input_entries))
     drop(table(:simulation_cases))
     drop(table(:simulation_settings))
+    execute("DROP TYPE simulation_case_expected_result")
   end
 end
