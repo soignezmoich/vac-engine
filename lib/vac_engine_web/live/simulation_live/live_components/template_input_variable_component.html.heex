@@ -1,16 +1,16 @@
 <div id={@id} class={"table-row #{if(!is_nil(@input_entry)) do "bg-blue-50" end}"}>
   <%= if (@visible) do %>
-    <div class="table-cell px-1 align-middle">
+    <div class="table-cell px-1 align-middle border-b">
       <ToggleComponent.render
         active={!is_nil(@input_entry)}
         toggle_action={"toggle_entry"}
         target_component={"#template_input_variable_#{@variable.id}"}
       />
     </div>
-    <div class="table-cell px-1 align-middle">
+    <div class="table-cell px-1 align-middle border-b">
       <VariableFullNameComponent.render variable={@variable} />
     </div>
-    <div class="table-cell px-1 align-middle">
+    <div class="table-cell px-1 align-middle border-b">
       <%= if !is_nil(@input_entry) do %>
         <%= case @variable.type do %>
         <% :map -> %>

@@ -1,28 +1,28 @@
-    <div class={"w-full border border-black #{@bg_color}"}>
-        <div class="inline-block px-1 align-middle">
-            <ToggleComponent.render
-                active={@expect_error}
-                toggle_action={"toggle_expect_error"}
-                target_component={@myself}
-            />
-        </div>
-        <div class="inline-block px-1 italic align-middle">
-            expect run error
-        </div>
-          <div class="float-right p-1 align-middle">
-            <%= case @outcome do %>
-            <% :failure -> %>
-              <div class="inline-block align-top text-red-500">
-                <.icon name="hero/exclamation-circle" width="1.5rem" />
-              </div>
-            <% :success -> %>
-              <div class="inline-block align-top text-green-600">
-                <.icon name="hero/check-circle" width="1.5rem" />
-              </div>
-            <% _ -> %>
-              <div class="inline-block align-top">
-                -&nbsp;&nbsp;
-              </div>
-            <% end %>
-          </div>
-    </div>
+<div class={"w-full border border-black #{@bg_color}"}>
+  <div class="inline-block px-1 align-middle">
+    <ToggleComponent.render
+        active={@expect_error}
+        toggle_action={"toggle_expect_error"}
+        target_component={@myself}
+    />
+  </div>
+  <div class="inline-block px-1 italic align-middle">
+    expect run error
+  </div>
+  <div class="float-right p-1 align-middle">
+    <%= case @outcome do %>
+    <% :failure -> %>
+      <div class="inline-block align-top text-red-500">
+        <.icon name="hero/exclamation-circle" width="1.5rem" />
+      </div>
+    <% :success -> %>
+      <div class="inline-block align-top text-green-600">
+        <.icon name="hero/check-circle" width="1.5rem" />
+      </div>
+    <% _ -> %>
+      <div class="inline-block align-top">
+        -&nbsp;&nbsp;
+      </div>
+    <% end %>
+  </div>
+</div>

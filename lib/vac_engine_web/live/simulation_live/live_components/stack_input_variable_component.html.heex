@@ -1,16 +1,16 @@
 <div id={@id} class={"table-row #{@bg_color}"}>
   <%= if (@visible) do %>
-    <div class="table-cell px-1 align-middle">
+    <div class="table-cell px-1 align-middle border-b">
       <ToggleComponent.render
         active={@active}
         toggle_action={"toggle_entry"}
         target_component={"#stack_input_variable_#{@variable.id}"}
       />
     </div>
-    <div class="table-cell px-1 align-middle">
+    <div class="table-cell px-1 align-middle border-b">
       <VariableFullNameComponent.render variable={@variable} />
     </div>
-    <div class="table-cell px-1 align-middle">
+    <div class="table-cell px-1 align-middle border-b">
       <%= case {@variable.type, @active, @template_input_entry} do %>
         <% {:map, _, _} -> %>
           <div class="inline-block form-fld invisible">
