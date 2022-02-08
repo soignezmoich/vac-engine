@@ -228,7 +228,7 @@ defmodule VacEngine.MixProject do
       {:remote_ip, "~> 1.0"},
 
       # Strong password hashing
-      {:argon2_elixir, "~> 2.0"},
+      {:argon2_elixir, "~> 3.0"},
 
       # Ecto postgresql inet data type support
       {:ecto_network, "~> 1.3.0"},

@@ -11,6 +11,14 @@ defmodule Fixtures.Helpers do
       end
     end
 
+    defmacro vars(name, do: block) do
+      quote do
+        def unquote(:"blueprint_vars__#{name}")() do
+          unquote(block)
+        end
+      end
+    end
+
     defmacro __using__(_opts) do
       quote do
         import Fixtures.Helpers.Blueprints
@@ -24,6 +32,23 @@ defmodule Fixtures.Helpers do
                 "blueprint__" <> name ->
                   name = String.to_existing_atom(name)
                   Map.put(map, name, apply(__MODULE__, func, []) |> smap())
+
+                _ ->
+                  map
+              end
+            end
+          )
+        end
+
+        def blueprint_vars() do
+          __MODULE__.__info__(:functions)
+          |> Enum.reduce(
+            %{},
+            fn {func, _}, map ->
+              case to_string(func) do
+                "blueprint_vars__" <> name ->
+                  name = String.to_existing_atom(name)
+                  Map.put(map, name, apply(__MODULE__, func, []))
 
                 _ ->
                   map

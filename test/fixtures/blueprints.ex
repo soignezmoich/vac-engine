@@ -44,6 +44,21 @@ defmodule Fixtures.Blueprints do
     }
   end
 
+  vars(:simple_test) do
+    %{
+      input: [
+        ~w(aint),
+        ~w(bint),
+        ~w(cint)
+      ],
+      intermediate: [],
+      output: [
+        ~w(bint),
+        ~w(cint)
+      ]
+    }
+  end
+
   blueprint(:sig_test) do
     %{
       variables: %{
@@ -74,6 +89,20 @@ defmodule Fixtures.Blueprints do
             }
           ]
         }
+      ]
+    }
+  end
+
+  vars(:sig_test) do
+    %{
+      input: [
+        ~w(age),
+        ~w(date),
+        ~w(days)
+      ],
+      intermediate: [],
+      output: [
+        ~w(date)
       ]
     }
   end
@@ -233,6 +262,33 @@ defmodule Fixtures.Blueprints do
     }
   end
 
+  vars(:nested_test) do
+    %{
+      input: [
+        ~w(enum_string),
+        ~w(int_list),
+        ~w(obj_list),
+        ~w(obj_list child_int),
+        ~w(obj_list child_object),
+        ~w(obj_list child_object grand_child_int)
+      ],
+      intermediate: [],
+      output: [
+        ~w(dnest),
+        ~w(dnest dnest2),
+        ~w(dnest dnest2 dnest3),
+        ~w(int_list),
+        ~w(map_list),
+        ~w(map_list child_int),
+        ~w(map_list child_object),
+        ~w(map_list child_object grand_child_int),
+        ~w(map_list child_object grand_child_map),
+        ~w(map_list child_object grand_child_map grand_grand_child_ints),
+        ~w(map_list child_string)
+      ]
+    }
+  end
+
   blueprint(:map_test) do
     %{
       variables: %{
@@ -299,6 +355,16 @@ defmodule Fixtures.Blueprints do
     }
   end
 
+  vars(:hash0_test) do
+    %{
+      input: [
+        ~w(aint)
+      ],
+      intermediate: [],
+      output: []
+    }
+  end
+
   blueprint(:hash1_test) do
     %{
       name: :hash1_test,
@@ -306,6 +372,18 @@ defmodule Fixtures.Blueprints do
         %{name: :aint, type: :integer, mapping: :in_required, default: 0},
         %{name: :bint, type: :integer, mapping: :none, default: 0}
       ]
+    }
+  end
+
+  vars(:hash1_test) do
+    %{
+      input: [
+        ~w(aint)
+      ],
+      intermediate: [
+        ~w(bint)
+      ],
+      output: []
     }
   end
 
@@ -318,12 +396,35 @@ defmodule Fixtures.Blueprints do
     }
   end
 
+  vars(:hash2_test) do
+    %{
+      input: [
+        ~w(aint)
+      ],
+      intermediate: [
+        ~w(bint)
+      ],
+      output: []
+    }
+  end
+
   blueprint(:hash3_test) do
     %{
       variables: [
         %{name: :bint, type: :integer, mapping: :in_required, default: 0},
         %{name: :aint, type: :integer, mapping: :in_required, default: 0}
       ]
+    }
+  end
+
+  vars(:hash3_test) do
+    %{
+      input: [
+        ~w(aint),
+        ~w(bint)
+      ],
+      intermediate: [],
+      output: []
     }
   end
 
@@ -352,6 +453,18 @@ defmodule Fixtures.Blueprints do
             }
           ]
         }
+      ]
+    }
+  end
+
+  vars(:nil_test) do
+    %{
+      input: [
+        ~w(a0)
+      ],
+      intermediate: [],
+      output: [
+        ~w(b0)
       ]
     }
   end
@@ -385,10 +498,30 @@ defmodule Fixtures.Blueprints do
     }
   end
 
+  vars(:nil_default_test) do
+    %{
+      input: [
+        ~w(a0)
+      ],
+      intermediate: [],
+      output: [
+        ~w(b0)
+      ]
+    }
+  end
+
   blueprint(:empty_test) do
     %{
       variables: [],
       deductions: []
+    }
+  end
+
+  vars(:empty_test) do
+    %{
+      input: [],
+      intermediate: [],
+      output: []
     }
   end
 
@@ -416,6 +549,20 @@ defmodule Fixtures.Blueprints do
             }
           ]
         }
+      ]
+    }
+  end
+
+  vars(:rename_test) do
+    %{
+      input: [
+        ~w(a0),
+        ~w(b0)
+      ],
+      intermediate: [],
+      output: [
+        ~w(a0),
+        ~w(b0)
       ]
     }
   end
@@ -457,6 +604,21 @@ defmodule Fixtures.Blueprints do
             }
           ]
         }
+      ]
+    }
+  end
+
+  vars(:date_test) do
+    %{
+      input: [
+        ~w(birthdate)
+      ],
+      intermediate: [],
+      output: [
+        ~w(age),
+        ~w(date),
+        ~w(datetime),
+        ~w(now)
       ]
     }
   end
@@ -537,6 +699,38 @@ defmodule Fixtures.Blueprints do
             }
           ]
         }
+      ]
+    }
+  end
+
+  vars(:simulation_test) do
+    %{
+      input: [
+        ~w(in_boolean),
+        ~w(in_date),
+        ~w(in_datetime),
+        ~w(in_integer),
+        ~w(in_map),
+        ~w(in_number),
+        ~w(in_root),
+        ~w(in_root in_boolean_child),
+        ~w(in_root in_map_child),
+        ~w(in_root in_map_child in_boolean_grandchild),
+        ~w(in_string)
+      ],
+      intermediate: [],
+      output: [
+        ~w(out_boolean),
+        ~w(out_date),
+        ~w(out_datetime),
+        ~w(out_integer),
+        ~w(out_map),
+        ~w(out_number),
+        ~w(out_root),
+        ~w(out_root out_boolean_child),
+        ~w(out_root out_map_child),
+        ~w(out_root out_map_child out_boolean_grandchild),
+        ~w(out_string)
       ]
     }
   end
