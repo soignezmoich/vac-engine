@@ -47,6 +47,9 @@
                 to: Routes.workspace_blueprint_path(@socket, :summary, br.workspace_id, br.id),
                 class: "inline-block mb-4 btn"
               ) %>
+          <button class="btn" phx-click="duplicate" phx-value-blueprint_id={br.id}>
+            Duplicate
+          </button>
         </div>
       </div>
     <% end %>

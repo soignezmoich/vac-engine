@@ -190,6 +190,39 @@ defmodule VacEngine.Processor.Blueprints do
     Repo.delete(blueprint)
   end
 
+  def duplicate_blueprint(blueprint_id, workspace)
+      when is_integer(blueprint_id) do
+    try do
+      get_full_blueprint!(blueprint_id)
+      |> serialize_blueprint()
+      |> duplicate_from_serialized!(workspace)
+    catch
+      error -> error
+    end
+  end
+
+  defp get_full_blueprint!(blueprint_id) do
+    get_blueprint!(blueprint_id, fn query ->
+      query
+      |> load_blueprint_variables()
+      |> load_blueprint_full_deductions()
+    end)
+  end
+
+  # TODO add stacks and templates to get_full_blueprint
+  # TODO make a version including cases for export purpose
+
+  defp duplicate_from_serialized!(%{} = serialized_blueprint, workspace) do
+    {:ok, new_blueprint} = create_blueprint(workspace, serialized_blueprint)
+
+    {:ok, renamed_blueprint} =
+      update_blueprint(new_blueprint, %{
+        "name" => "copy of #{serialized_blueprint.name}"
+      })
+
+    renamed_blueprint
+  end
+
   defp multi_update(multi) do
     multi
     |> multi_update_variables
