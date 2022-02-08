@@ -3,7 +3,6 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
 
   alias VacEngine.Simulation
   alias VacEngine.Simulation.Case
-  alias VacEngine.Simulation.Job
 
   alias VacEngineWeb.SimulationLive.StackEditorComponent
   alias VacEngineWeb.SimulationLive.ConfigEditorComponent
@@ -11,10 +10,6 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
   alias VacEngineWeb.SimulationLive.MenuStackListComponent
   alias VacEngineWeb.SimulationLive.MenuTemplateListComponent
   alias VacEngineWeb.SimulationLive.TemplateEditorComponent
-
-  # id: "simulation_editor",
-  # action: :refres_after_delete_template,
-  # template_id: template_id,
 
   def update(
         %{
