@@ -62,40 +62,9 @@ defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
     template_case = stack |> Simulation.get_stack_template_case()
     runnable_case = stack |> Simulation.get_stack_runnable_case()
 
-    # stack_case = Simulation.get_stack_id_case(stack_id)
-
-    # data =
-    #   case assigns.stack.layers |> Enum.find(&(&1.position == 1)) do
-    #     nil -> %{case_id: nil}
-    #     layer -> %{case_id: layer.case_id}
-    #   end
-
-    # types = %{case_id: :integer}
-
-    # changeset = {data, types} |> cast(%{}, Map.keys(types))
-
-    # kase =
-    #   case Simulation.get_stack_case(assigns.stack) do
-    #     %Case{} = kase -> kase
-    #     _ -> nil
-    #   end
-
-    # template =
-    #   case Simulation.get_stack_template_case(assigns.stack) do
-    #     %Case{} = template -> template
-    #     _ -> nil
-    #   end
-
-    # {
-    #   :ok,
-    #   socket
-    #   |> assign(assigns)
-    #   |> assign(
-    #     changeset: changeset,
-    #     case: kase,
-    #     template: template
-    #   )
-    # }
+    stack
+    |> Job.new()
+    |> Simulation.queue_job()
 
     {:ok,
      socket

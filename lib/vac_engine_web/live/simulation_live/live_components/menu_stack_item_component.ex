@@ -4,6 +4,8 @@ defmodule VacEngineWeb.SimulationLive.MenuStackItemComponent do
   import VacEngineWeb.IconComponent
 
   alias VacEngine.Simulation
+  alias VacEngine.Simulation.Job
+  alias VacEngine.Simulation.Stack
   alias VacEngineWeb.SimulationLive.MenuStackListComponent
   alias VacEngineWeb.SimulationLive.SimulationEditorComponent
 
@@ -18,12 +20,18 @@ defmodule VacEngineWeb.SimulationLive.MenuStackItemComponent do
   def update(
         %{
           id: id,
+          blueprint_id: blueprint_id,
           stack_id: stack_id,
           stack_name: stack_name,
           selected: selected
         },
         socket
       ) do
+
+    %Stack{id: stack_id, blueprint_id: blueprint_id}
+    |> Job.new()
+    |> Simulation.queue_job()
+
     socket =
       socket
       |> assign(

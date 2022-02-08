@@ -9,6 +9,7 @@ defmodule VacEngineWeb.SimulationLive.ConfigEditorComponent do
 
   alias VacEngine.Convert
   alias VacEngine.Simulation
+  alias VacEngine.Simulation.Job
 
   def update(%{blueprint: blueprint}, socket) do
     setting =
@@ -60,7 +61,7 @@ defmodule VacEngineWeb.SimulationLive.ConfigEditorComponent do
   end
 
   def handle_event("submit", %{"setting" => %{"env_now" => env_now}}, socket) do
-    %{setting: setting} = socket.assigns
+    %{blueprint: blueprint, setting: setting} = socket.assigns
 
     try do
       case Convert.parse_string(env_now, :datetime) do
@@ -72,8 +73,8 @@ defmodule VacEngineWeb.SimulationLive.ConfigEditorComponent do
           |> Simulation.update_setting(env_now: parsed_value)
 
           setting =
-            case Simulation.get_setting(socket.assigns.blueprint) do
-              nil -> Simulation.create_setting(socket.assigns.blueprint)
+            case Simulation.get_setting(blueprint) do
+              nil -> Simulation.create_setting(blueprint)
               setting -> setting
             end
 
@@ -82,10 +83,7 @@ defmodule VacEngineWeb.SimulationLive.ConfigEditorComponent do
             |> cast(%{}, [:env_now])
             |> Map.put(:action, :update)
 
-          send_update(VacEngineWeb.SimulationLive.SimulationEditorComponent,
-            id: "simulation_editor",
-            action: :update_all_results
-          )
+          start_all_runner_jobs(blueprint)
 
           {:noreply,
            socket
@@ -100,5 +98,13 @@ defmodule VacEngineWeb.SimulationLive.ConfigEditorComponent do
       _error ->
         {:error, "not a valid date"}
     end
+  end
+
+  defp start_all_runner_jobs(blueprint) do
+    stacks = Simulation.get_stacks(blueprint)
+
+    stacks
+    |> Enum.map(&Job.new(&1))
+    |> Enum.map(&Simulation.queue_job(&1))
   end
 end

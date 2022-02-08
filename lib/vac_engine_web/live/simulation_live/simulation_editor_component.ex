@@ -44,14 +44,6 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
       ) do
     %{blueprint: blueprint} = socket.assigns
 
-    if new_selected_type == :stack do
-      stack = Simulation.get_stack(new_selected_id)
-
-      stack
-      |> Job.new()
-      |> Simulation.queue_job()
-    end
-
     socket =
       socket
       |> assign(
@@ -68,8 +60,6 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
   def update(%{id: id, blueprint: blueprint}, socket) do
     {selected_type, selected_id} = get_initial_selection(blueprint)
 
-    start_all_runner_jobs(blueprint)
-
     socket =
       socket
       |> assign(
@@ -83,22 +73,6 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
       )
 
     {:ok, socket}
-  end
-
-  def update(%{action: :update_all_results}, socket) do
-    %{blueprint: blueprint} = socket.assigns
-
-    start_all_runner_jobs(blueprint)
-
-    {:ok, socket}
-  end
-
-  defp start_all_runner_jobs(blueprint) do
-    stacks = Simulation.get_stacks(blueprint)
-
-    stacks
-    |> Enum.map(&Job.new(&1))
-    |> Enum.map(&Simulation.queue_job(&1))
   end
 
   @impl true
