@@ -27,7 +27,6 @@ defmodule VacEngineWeb.SimulationLive.MenuStackItemComponent do
         },
         socket
       ) do
-
     %Stack{id: stack_id, blueprint_id: blueprint_id}
     |> Job.new()
     |> Simulation.queue_job()
