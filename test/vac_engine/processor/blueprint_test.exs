@@ -23,7 +23,10 @@ defmodule VacEngine.Processor.BlueprintTest do
   }
 
   setup_all do
-    [blueprints: Fixtures.Blueprints.blueprints()]
+    [
+      blueprints: Fixtures.Blueprints.blueprints(),
+      blueprint_vars: Fixtures.Blueprints.blueprint_vars()
+    ]
   end
 
   setup do
@@ -271,5 +274,42 @@ defmodule VacEngine.Processor.BlueprintTest do
 
     assert {:error, "invalid_var: invalid call of var/1"} ==
              Compiler.compile_blueprint(br)
+  end
+
+  test "variables order", %{
+    workspace: workspace,
+    blueprint_vars: br_vars,
+    blueprints: blueprints
+  } do
+    br_vars
+    |> Enum.reduce(%{}, fn {name, vars}, brs ->
+      brs =
+        Map.put_new_lazy(brs, name, fn ->
+          assert {:ok, blueprint} =
+                   Processor.create_blueprint(
+                     workspace,
+                     Map.get(
+                       blueprints,
+                       name
+                     )
+                   )
+
+          Processor.get_blueprint!(blueprint.id, fn query ->
+            query
+            |> Processor.load_blueprint_variables()
+          end)
+        end)
+
+      assert {:ok, blueprint} = Map.fetch(brs, name)
+
+      assert Enum.map(blueprint.input_variables, & &1.path) == vars.input
+
+      assert Enum.map(blueprint.intermediate_variables, & &1.path) ==
+               vars.intermediate
+
+      assert Enum.map(blueprint.output_variables, & &1.path) == vars.output
+
+      brs
+    end)
   end
 end
