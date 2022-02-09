@@ -1,6 +1,6 @@
 <div class="relative flex-grow" id="variable_editor">
   <div class="absolute inset-0 flex min-h-0">
-    <%= if can?(@role, :write, @blueprint) do %>
+    <%= if can?(@role, :write, @blueprint) && !@readonly do %>
     <div class="flex-shrink-0 w-64 mr-2 flex flex-col overflow-y-auto">
       <div class="flex-shrink-0 p-4 pr-2">
         <.variable_action_group />
@@ -17,6 +17,7 @@
         <.live_component
               module={VariableListComponent}
               id="variable_list"
+              readonly={@readonly}
               blueprint={@blueprint} />
       </div>
     </div>

@@ -10,10 +10,10 @@ defmodule VacEngineWeb.EditorLive.DeductionCellComponent do
   @impl true
   def update(
         %{
-          column: column,
           branch: branch,
           cell: cell,
-          selection: selection
+          column: column,
+          selection: selection,
         } = assigns,
         socket
       ) do
@@ -36,19 +36,23 @@ defmodule VacEngineWeb.EditorLive.DeductionCellComponent do
         _,
         %{
           assigns: %{
-            selected: true
+            selected: true,
+            readonly: readonly
           }
         } = socket
       ) do
-    send_update(DeductionListComponent,
-      id: "deduction_list",
-      action: {:select, nil}
-    )
 
-    send_update(DeductionInspectorComponent,
-      id: "deduction_inspector",
-      action: {:select, nil}
-    )
+    if (!readonly) do
+      send_update(DeductionListComponent,
+        id: "deduction_list",
+        action: {:select, nil}
+      )
+
+      send_update(DeductionInspectorComponent,
+        id: "deduction_inspector",
+        action: {:select, nil}
+      )
+    end
 
     {:noreply, socket}
   end
@@ -62,7 +66,8 @@ defmodule VacEngineWeb.EditorLive.DeductionCellComponent do
             deduction: deduction,
             column: column,
             branch: branch,
-            cell: cell
+            cell: cell,
+            readonly: readonly
           }
         } = socket
       ) do
@@ -73,15 +78,17 @@ defmodule VacEngineWeb.EditorLive.DeductionCellComponent do
       cell: cell
     }
 
-    send_update(DeductionListComponent,
-      id: "deduction_list",
-      action: {:select, selection}
-    )
+    if (!readonly) do
+      send_update(DeductionListComponent,
+        id: "deduction_list",
+        action: {:select, selection}
+      )
 
-    send_update(DeductionInspectorComponent,
-      id: "deduction_inspector",
-      action: {:select, selection}
-    )
+      send_update(DeductionInspectorComponent,
+        id: "deduction_inspector",
+        action: {:select, selection}
+      )
+    end
 
     {:noreply, socket}
   end

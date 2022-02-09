@@ -6,12 +6,12 @@ defmodule VacEngineWeb.EditorLive.DeductionComponent do
 
   @impl true
   def update(
-        %{deduction: deduction, selection: selection},
+        %{deduction: deduction, selection: selection, readonly: readonly},
         socket
       ) do
     socket
     |> assign(build_renderable(deduction, selection))
-    |> assign(deduction: deduction, selection: selection)
+    |> assign(deduction: deduction, selection: selection, readonly: readonly)
     |> ok()
   end
 

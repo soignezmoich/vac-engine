@@ -7,18 +7,20 @@
     <.live_component
       module={DeductionHeaderComponent}
       id={"deduction.#{@deduction.id}.header"}
-      cond_columns={@cond_columns}
       assign_columns={@assign_columns}
+      cond_columns={@cond_columns}
+      readonly={@readonly}
       selection={@selection} />
     <div class="table-row-group">
       <%= for branch <- @branches do %>
         <.live_component
           module={DeductionBranchComponent}
           id={"branch.#{branch.id}"}
-          branch={branch}
-          deduction={@deduction}
-          cond_columns={@cond_columns}
           assign_columns={@assign_columns}
+          branch={branch}
+          cond_columns={@cond_columns}
+          deduction={@deduction}
+          readonly={@readonly}
           selection={@selection} />
       <% end %>
     </div>

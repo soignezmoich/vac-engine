@@ -5,32 +5,46 @@
     </.flex_center>
   <% not is_nil(@blueprint) -> %>
   <div class="flex-grow flex flex-col">
+    <%= if @readonly do %>
+        <div class="text-center italic mt-2 mb-1 border-t border-b bg-gray-100 p-1 shadow-md">
+          This blueprint cannot be edited since it was already published.
+        </div>
+    <% end %>
     <%= case @live_action do %>
     <% :summary -> %>
       <.live_component
          module={SummaryComponent}
-         can_write={@can_write}
          id="summary"
+         can_write={@can_write}
+         readonly={@readonly}
          role={@role}
          blueprint={@blueprint} />
     <% :variables -> %>
       <.live_component
          module={VariableEditorComponent}
          id="variable_editor"
+         readonly={@readonly}
          role={@role}
          blueprint={@blueprint} />
     <% :deductions -> %>
       <.live_component
          module={DeductionEditorComponent}
          id="deduction_editor"
+         readonly={@readonly}
          role={@role}
          blueprint={@blueprint} />
     <% :import -> %>
-      <.live_component
-         module={ImportComponent}
-         id="import"
-         role={@role}
-         blueprint={@blueprint} />
+      <%= if @readonly do %>
+        <div class="p-4">
+          Cannot import to a readonly (published) blueprint.
+        </div>
+      <% else %>
+        <.live_component
+          module={ImportComponent}
+          id="import"
+          role={@role}
+          blueprint={@blueprint} />
+      <% end %>
     <% :simulations -> %>
       <.live_component
          module={SimulationEditorComponent}

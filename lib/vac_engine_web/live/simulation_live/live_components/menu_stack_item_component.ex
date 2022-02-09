@@ -44,8 +44,6 @@ defmodule VacEngineWeb.SimulationLive.MenuStackItemComponent do
   end
 
   def update(%{action: {:job_finished, job}}, socket) do
-    IO.inspect(job)
-
     outcome =
       if job.result.has_error || !job.result.result_match do
         :failure

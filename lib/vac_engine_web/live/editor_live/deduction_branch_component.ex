@@ -7,10 +7,11 @@ defmodule VacEngineWeb.EditorLive.DeductionBranchComponent do
   @impl true
   def update(
         %{
-          branch: branch,
-          deduction: deduction,
-          cond_columns: cond_columns,
           assign_columns: assign_columns,
+          branch: branch,
+          cond_columns: cond_columns,
+          deduction: deduction,
+          readonly: readonly,
           selection: selection
         },
         socket
@@ -23,7 +24,12 @@ defmodule VacEngineWeb.EditorLive.DeductionBranchComponent do
         assign_columns
       )
     )
-    |> assign(branch: branch, selection: selection, deduction: deduction)
+    |> assign(
+      branch: branch,
+      selection: selection,
+      deduction: deduction,
+      readonly: readonly
+    )
     |> ok()
   end
 

@@ -1,11 +1,11 @@
 <div class="relative flex-grow" id="deduction_editor">
   <div class="absolute inset-0 flex min-h-0">
-    <%= if can?(@role, :write, @blueprint) do %>
+    <%= if can?(@role, :write, @blueprint) && !@readonly do %>
       <div class="w-64 flex-shrink-0 mr-2 flex flex-col overflow-y-auto">
         <div class="flex-shrink-0 p-4 pr-2">
           <.live_component
-             id="deduction_inspector"
              module={DeductionInspectorComponent}
+             id="deduction_inspector"
              blueprint={@blueprint}
              role={@role} />
         </div>
@@ -15,7 +15,12 @@
            id="deduction_list_wrapper"
            phx-hook="action">
       <div class="flex-shrink p-4 pl-2">
-        <.live_component id="deduction_list" module={DeductionList} deductions={@blueprint.deductions} />
+        <.live_component
+          module={DeductionList}
+          id="deduction_list"
+          deductions={@blueprint.deductions}
+          readonly={@readonly}
+        />
       </div>
     </div>
   </div>

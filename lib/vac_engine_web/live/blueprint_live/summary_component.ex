@@ -21,6 +21,7 @@ defmodule VacEngineWeb.BlueprintLive.SummaryComponent do
        changeset: changeset,
        blueprint: assigns.blueprint,
        can_write: assigns.can_write,
+       readonly: assigns.readonly,
        role: assigns.role,
        portal_changeset: portal_changeset
      )}

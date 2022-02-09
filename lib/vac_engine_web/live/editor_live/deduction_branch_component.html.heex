@@ -2,12 +2,13 @@
   <%= if @has_cond_cells? do %>
   <%= for {column, cell} <- @cond_cells do %>
       <.live_component
-        id={"cell.#{@branch.id}.#{column.id}"}
         module={DeductionCellComponent}
-        deduction={@deduction}
+        id={"cell.#{@branch.id}.#{column.id}"}
         branch={@branch}
         cell={cell}
         column={column}
+        deduction={@deduction}
+        readonly={@readonly}
         selection={@selection} />
     <% end %>
     <div class="table-cell bg-white text-gray-200">
@@ -16,12 +17,13 @@
   <% end %>
   <%= for {column, cell} <- @assign_cells do %>
     <.live_component
-      id={"cell.#{@branch.id}.#{column.id}"}
       module={DeductionCellComponent}
-      deduction={@deduction}
+      id={"cell.#{@branch.id}.#{column.id}"}
       branch={@branch}
       cell={cell}
       column={column}
+      deduction={@deduction}
+      readonly={@readonly}
       selection={@selection} />
   <% end %>
 </div>

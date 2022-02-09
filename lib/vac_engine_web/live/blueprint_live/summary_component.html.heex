@@ -21,13 +21,13 @@
     <%= text_input f, :name,
           class: "form-fld mb-4",
           autofocus: true,
-          disabled: !@can_write %>
+          disabled: (!@can_write || @readonly) %>
 
     <%= label_line_tag f, :description, "Description" %>
     <%= textarea f, :description, class: "form-fld mb-4",
-          disabled: !@can_write %>
+          disabled: (!@can_write || @readonly) %>
 
-    <%= if @can_write do %>
+    <%= if @can_write && !@readonly do %>
       <%= submit "Update", class: "btn-default", phx_disable_with: "Update in progress..." %>
     <% end %>
   </.form>
@@ -123,7 +123,7 @@
     <% end %>
 
 
-  <%= if @can_write do %>
+  <%= if @can_write && !@readonly do %>
     <div class="font-bold text-lg mt-8 mb-4">
       Manage blueprint
     </div>

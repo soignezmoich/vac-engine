@@ -225,7 +225,9 @@ defmodule VacEngine.Processor.Blueprints do
 
   def blueprint_readonly?(%Blueprint{publications: []}), do: false
 
-  def blueprint_readonly?(%Blueprint{publications: publications}) when is_list(publications), do: true
+  def blueprint_readonly?(%Blueprint{publications: publications})
+      when is_list(publications),
+      do: true
 
   def blueprint_readonly?(blueprint) do
     from(p in Publication,

@@ -31,10 +31,11 @@
         <.live_component
           id={"variable.#{variable.id}"}
           module={VariableComponent}
-          variable={variable}
           even={is_even(index)}
           mapping="input"
+          readonly={@readonly}
           selected={selected?(@selected_variable, variable)}
+          variable={variable}
         />
       <% end %>
     <% _ -> %>

@@ -3,6 +3,7 @@
     id="input_variables"
     module={VariableSubListComponent}
     variables={@input_variables}
+    readonly={@readonly}
     selected_variable={@selected_variable}
     label="Input Variables"
     icon="input"
@@ -12,6 +13,7 @@
     id="intermediate_variables"
     module={VariableSubListComponent}
     variables={@intermediate_variables}
+    readonly={@readonly}
     selected_variable={@selected_variable}
     label="Intermediate Variables"
     icon="hero/variable"
@@ -21,6 +23,7 @@
     id="output_variables"
     module={VariableSubListComponent}
     variables={@output_variables}
+    readonly={@readonly}
     selected_variable={@selected_variable}
     label="Output Variables"
     icon="hero/logout"

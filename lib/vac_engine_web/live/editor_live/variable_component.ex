@@ -8,28 +8,37 @@ defmodule VacEngineWeb.EditorLive.VariableComponent do
 
   @impl true
   def update(
-        %{variable: variable, selected: selected, even: even},
+        %{
+          variable: variable,
+          selected: selected,
+          even: even,
+          readonly: readonly
+        },
         socket
       ) do
     {
       :ok,
       socket
       |> assign(build_renderable(variable, even, selected))
-      |> assign(variable: variable)
+      |> assign(variable: variable, readonly: readonly)
     }
   end
 
   @impl true
   def handle_event("select", _, socket) do
-    send_update(VariableListComponent,
-      id: "variable_list",
-      action: {:select_variable, socket.assigns.variable}
-    )
+    %{readonly: readonly} = socket.assigns
 
-    send_update(VariableInspectorComponent,
-      id: "variable_inspector",
-      action: {:select_variable, socket.assigns.variable}
-    )
+    if !readonly do
+      send_update(VariableListComponent,
+        id: "variable_list",
+        action: {:select_variable, socket.assigns.variable}
+      )
+
+      send_update(VariableInspectorComponent,
+        id: "variable_inspector",
+        action: {:select_variable, socket.assigns.variable}
+      )
+    end
 
     {:noreply, socket}
   end

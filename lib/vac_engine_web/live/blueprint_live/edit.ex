@@ -25,7 +25,8 @@ defmodule VacEngineWeb.BlueprintLive.Edit do
     {:ok,
      assign(socket,
        blueprint: blueprint,
-       can_write: can?(socket, :write, blueprint)
+       can_write: can?(socket, :write, blueprint),
+       readonly: Processor.blueprint_readonly?(blueprint)
      )}
   end
 

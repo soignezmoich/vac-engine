@@ -15,37 +15,48 @@ defmodule VacEngine.Pub.ReadonlyTest do
   end
 
   test "readonly blueprint not loaded", %{
-    workspace: workspace,
+    workspace: workspace
   } do
-    {:ok, blueprint} = Processor.create_blueprint(workspace, %{"name" => "test_blueprint"})
+    {:ok, blueprint} =
+      Processor.create_blueprint(workspace, %{"name" => "test_blueprint"})
+
     Pub.publish_blueprint(blueprint, %{"name" => "test_portal"})
 
     assert Processor.blueprint_readonly?(blueprint)
   end
 
   test "not readonly blueprint not loaded", %{
-    workspace: workspace,
+    workspace: workspace
   } do
-    {:ok, blueprint} = Processor.create_blueprint(workspace, %{"name" => "test_blueprint"})
+    {:ok, blueprint} =
+      Processor.create_blueprint(workspace, %{"name" => "test_blueprint"})
 
     assert !Processor.blueprint_readonly?(blueprint)
   end
 
   test "readonly blueprint loaded", %{
-    workspace: workspace,
+    workspace: workspace
   } do
-    {:ok, blueprint} = Processor.create_blueprint(workspace, %{"name" => "test_blueprint"})
+    {:ok, blueprint} =
+      Processor.create_blueprint(workspace, %{"name" => "test_blueprint"})
+
     Pub.publish_blueprint(blueprint, %{"name" => "test_portal"})
 
-    assert Processor.blueprint_readonly?(blueprint |> Repo.preload(:publications))
+    assert Processor.blueprint_readonly?(
+             blueprint
+             |> Repo.preload(:publications)
+           )
   end
 
   test "not readonly blueprint loaded", %{
-    workspace: workspace,
+    workspace: workspace
   } do
-    {:ok, blueprint} = Processor.create_blueprint(workspace, %{"name" => "test_blueprint"})
+    {:ok, blueprint} =
+      Processor.create_blueprint(workspace, %{"name" => "test_blueprint"})
 
-    assert !Processor.blueprint_readonly?(blueprint |> Repo.preload(:publications))
+    assert !Processor.blueprint_readonly?(
+             blueprint
+             |> Repo.preload(:publications)
+           )
   end
-
 end
