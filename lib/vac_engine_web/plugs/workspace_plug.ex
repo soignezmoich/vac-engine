@@ -20,7 +20,7 @@ defmodule VacEngineWeb.WorkspacePlug do
 
   def fetch_current_workspace(
         %{
-          assigns: %{role: _role, worksapces: workspaces},
+          assigns: %{role: _role, workspaces: workspaces},
           params: %{"workspace_id" => workspace_id}
         } = conn,
         _
