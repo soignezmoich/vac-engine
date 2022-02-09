@@ -253,6 +253,13 @@ defmodule VacEngine.Processor do
   """
   defdelegate update_blueprint(blueprint, attrs), to: Blueprints
 
+
+  @doc """
+  Check whether a blueprint is readonly
+  """
+  defdelegate blueprint_readonly?(blueprint), to: Blueprints
+
+
   @doc """
   Create variable with attributes
   """

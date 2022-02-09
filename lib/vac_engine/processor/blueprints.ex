@@ -223,6 +223,18 @@ defmodule VacEngine.Processor.Blueprints do
     renamed_blueprint
   end
 
+  def blueprint_readonly?(%Blueprint{publications: []}), do: false
+
+  def blueprint_readonly?(%Blueprint{publications: publications}) when is_list(publications), do: true
+
+  def blueprint_readonly?(blueprint) do
+    from(p in Publication,
+      where: p.blueprint_id == ^blueprint.id,
+      limit: 1
+    )
+    |> Repo.exists?()
+  end
+
   defp multi_update(multi) do
     multi
     |> multi_update_variables
