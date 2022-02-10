@@ -15,75 +15,45 @@ defmodule VacEngineWeb.Header.SubElementComponent do
   })
   when not is_nil(w) and not is_nil(b) do
     [
-    %{
-      l: "Blueprint",
-      a: Routes.workspace_blueprint_path(Endpoint, :summary, w.id, b.id),
-      s: loc == :summary,
-      i: "hero/clipboard-list"
-    },
-    %{
-      l: "Variables",
-      a: Routes.workspace_blueprint_path(Endpoint, :variables, w.id, b.id),
-      s: loc == :variables,
-      i: "hero/variable"
-    },
-    %{
-      l: "Deductions",
-      a: Routes.workspace_blueprint_path(Endpoint, :deductions, w.id, b.id),
-      s: loc == :deductions,
-      i: "hero/chevron-double-right"
-    },
-    # %{
-    #   l: "Import",
-    #   a: workspace_blueprint_path(Endpoint, :import, w.id, b.id),
-    #   s: loc == :import,
-    #   i: "hero/sort-ascending"
-    # },
-    %{
-      l: "Simulations",
-      a: Routes.workspace_blueprint_path(Endpoint, :simulations, w.id, b.id),
-      s: loc == :simulations,
-      i: "hero/fast-forward"
-    }
-    # %{
-    #   l: "Simulations test",
-    #   a: workspace_blueprint_path(Endpoint, :simulations_test, w.id, b.id),
-    #   s: loc == :simulations_test,
-    #   i: "hero/fast-forward"
-    # }
+      %{
+        l: "Overview",
+        a: Routes.workspace_blueprint_path(Endpoint, :summary, w.id, b.id),
+        s: loc == :summary,
+        i: "hero/clipboard-list"
+      },
+      %{
+        l: "Variables",
+        a: Routes.workspace_blueprint_path(Endpoint, :variables, w.id, b.id),
+        s: loc == :variables,
+        i: "hero/variable"
+      },
+      %{
+        l: "Deductions",
+        a: Routes.workspace_blueprint_path(Endpoint, :deductions, w.id, b.id),
+        s: loc == :deductions,
+        i: "hero/chevron-double-right"
+      },
+      %{
+        l: "Simulations",
+        a: Routes.workspace_blueprint_path(Endpoint, :simulations, w.id, b.id),
+        s: loc == :simulations,
+        i: "hero/fast-forward"
+      }
     ]
   end
 
   def sub_elements(%{
       location: [:workspace, :nav | _]
     }) do
-    [
-      # %{l: "Select workspace", a: Routes.nav_path(Endpoint, :index), s: true}
-    ]
+    []
   end
 
   def sub_elements(%{
-      location: [:workspace, loc | _],
+      location: [:workspace, _loc | _],
       workspace: w
     })
     when not is_nil(w) do
-    [
-    # %{
-    #   l: "Dashboard",
-    #   a: workspace_dashboard_path(Endpoint, :index, w.id),
-    #   s: loc == :dashboard
-    # },
-    # %{
-    #   l: "Blueprints",
-    #   a: workspace_blueprint_path(Endpoint, :index, w.id),
-    #   s: loc == :blueprint
-    # },
-    # %{
-    #   l: "Portals",
-    #   a: workspace_portal_path(Endpoint, :index, w.id),
-    #   s: loc == :portal
-    # }
-    ]
+    []
   end
 
   def sub_elements(%{
@@ -111,7 +81,7 @@ defmodule VacEngineWeb.Header.SubElementComponent do
       %{
         l: "Maintenance",
         a: Routes.maintenance_path(Endpoint, :index),
-        i: "hero/shield-check",
+        i: "hero/cog",
         s: loc == :maintenance
       }
     ]

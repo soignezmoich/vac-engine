@@ -23,9 +23,9 @@
     phx-target={@myself}
   >
     <%= text_input f, :name,
-      class: "form-fld text-sm",
+      class: "form-fld text-sm align-middle",
       placeholder: "new case" %>
-    <%= submit "create", class: "btn align-top" %>
+    <%= submit "create", class: "btn align-middle" %>
     <p class="px-2 py-1 text-red-400 text-sm">
       <%=@creation_error_message%>
     </p>

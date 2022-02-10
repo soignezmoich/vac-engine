@@ -31,7 +31,7 @@ defmodule VacEngineWeb.Header.TopElementComponent do
         l: "Blueprints",
         a: Routes.workspace_blueprint_path(Endpoint, :index, w.id),
         s: :blueprint in loc,
-        i: "hero/view-list"
+        i: "hero/menu-alt-1"
       },
       %{
         l: "Portals",
