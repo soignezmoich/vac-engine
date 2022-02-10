@@ -1,11 +1,4 @@
 <div class="w-full max-w-3xl mb-8 p-4">
-  <%= live_redirect("← Back to list",
-        to: Routes.workspace_blueprint_path(@socket, :index, @blueprint.workspace_id),
-        class: "inline-block mb-4 btn"
-      ) %>
-  <h2 class="font-bold text-xl mb-4">
-    Blueprint #<%= @blueprint.id %>: <%= @blueprint.name %>
-  </h2>
 
   <.form
     let={f}

@@ -35,7 +35,7 @@ defmodule VacEngineWeb.Endpoint do
     from: :vac_engine,
     gzip: true,
     only: ~w(assets fonts icons images favicon.ico
-      favicon.svg favicon.png robots.txt
+      favicon.svg favicon.png robots.txt slope.svg
       docs)
   )
 

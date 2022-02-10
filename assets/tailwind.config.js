@@ -16,7 +16,7 @@ function hsluvaToRgba (h, s, l, a) {
 function genShades (h, s) {
   const res = {}
   for (let i = 1; i < 20; i++) {
-    res[50 * i] = hsluv.hsluvToHex([h, s, 100 - 5 * i])
+    res[50 * i] = hsluv.hsluvToHex([h, s, 102 - 5 * i])
   }
   return res
 }

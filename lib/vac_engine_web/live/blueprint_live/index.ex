@@ -6,7 +6,7 @@ defmodule VacEngineWeb.BlueprintLive.Index do
 
   on_mount(VacEngineWeb.LiveRole)
   on_mount(VacEngineWeb.LiveWorkspace)
-  on_mount({VacEngineWeb.LiveLocation, ~w(workspace blueprint index)a})
+  on_mount({VacEngineWeb.LiveLocation, ~w(blueprint index)a})
 
   @impl true
   def mount(

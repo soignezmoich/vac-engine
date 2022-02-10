@@ -13,7 +13,7 @@ defmodule VacEngineWeb.EditorLive.DeductionCellComponent do
           branch: branch,
           cell: cell,
           column: column,
-          selection: selection,
+          selection: selection
         } = assigns,
         socket
       ) do
@@ -41,8 +41,7 @@ defmodule VacEngineWeb.EditorLive.DeductionCellComponent do
           }
         } = socket
       ) do
-
-    if (!readonly) do
+    if !readonly do
       send_update(DeductionListComponent,
         id: "deduction_list",
         action: {:select, nil}
@@ -78,7 +77,7 @@ defmodule VacEngineWeb.EditorLive.DeductionCellComponent do
       cell: cell
     }
 
-    if (!readonly) do
+    if !readonly do
       send_update(DeductionListComponent,
         id: "deduction_list",
         action: {:select, selection}

@@ -3,206 +3,163 @@ defmodule VacEngineWeb.HeaderComponent do
 
   import Routes
   import VacEngineWeb.IconComponent
-
-  alias VacEngineWeb.Endpoint
   import VacEngineWeb.VersionHelpers
+
+  alias VacEngine.Account
+  alias VacEngineWeb.Endpoint
 
   def header(assigns) do
     ~H"""
-    <header class="flex flex-col xl:flex-row relative
-                   bg-blue-700 border-b border-gray-900">
-      <div class="absolute top-0 left-0 py-1 px-3 text-xs text-gray-200">
-        Version: <%= version() %>.
-        Build date: <%= build_date() %>.
-      </div>
-      <nav class="flex mx-2 order-2 xl:order-1">
-        <%= for attrs <- sub_elements(assigns) do %>
-          <.sub_element {attrs} />
-        <% end %>
-      </nav>
-      <div class="xl:flex-grow xl:order-2"></div>
-      <nav class="flex mx-2 order-1 xl:order-3 self-end xl:self-stretch
-                  items-stretch h-16">
-        <.admin_element role={@role} s={at(@location, :admin)} />
-        <.workspace_element
+    <header class="flex flex-col lg:flex-row relative bg-blue-700">
+      <nav class="flex mx-2  xl:self-stretch
+                  items-stretch h-14">
+        <.account_element
           role={@role}
           workspace={@workspace}
-          workspaces={@workspaces}
-          s={at(@location, :workspace)} />
-        <.blueprint_element
+          workspaces={@workspaces} />
+        <.blueprints_element
           role={@role}
           workspace={@workspace}
           blueprint={@blueprint}
-          s={at(@location, :blueprint)} />
-        <%= for attrs <- top_elements(assigns) do %>
-          <.top_element {attrs} />
-        <% end %>
+          selected={at(@location, :blueprint)} />
+        <.portals_element
+          role={@role}
+          workspace={@workspace}
+          selected={at(@location, :portal)} />
+        <div class="flex whitespace-nowrap pl-2 font-bold items-center text-xl text-white italic truncate">
+          <.title {assigns} /> <%= inspect(@location)%>
+        </div>
       </nav>
+
+
+      <%= if length(sub_elements(assigns)) > 0 do %>
+        <div class="hidden lg:flex flex-grow">
+        </div>
+        <div class="text-cream-50 hidden lg:flex">
+          <svg width={"3.5rem"}
+            height={"3.5rem"}
+            viewBox="0 0 200 200">
+            <use href={"/slope.svg#slope"}></use>
+          </svg>
+        </div>
+        <nav class="flex bg-cream-50 min-w-full lg:min-w-fit px-2">
+            <%= for attrs <- sub_elements(assigns) do %>
+              <.sub_element {attrs} />
+            <% end %>
+        </nav>
+      <% else %>
+      <div class="hidden lg:flex flex-grow bg-blue-700 h-14">
+        <div class="absolute top-0 right-0 py-1 px-3 text-xs text-gray-200">
+          Version: <%= version() %>.
+          Build date: <%= build_date() %>.
+        </div>
+      </div>
+    <% end %>
     </header>
     """
   end
 
-  defp blueprint_element(%{role: nil} = assigns) do
+  defp title(%{blueprint: nil} = assigns) do
     ~H""
   end
 
-  defp blueprint_element(%{workspace: nil} = assigns) do
+  defp title(%{blueprint: _blueprint} = assigns) do
     ~H"""
-      <div class="border border-gray-400 my-1 ml-4 flex flex-col justify-center
-                  items-center px-2 font-bold text-gray-300">
-        Editor
-        <div class="italic text-sm font-normal">
-          Pick workspace first
-        </div>
-      </div>
+      &gt; Blueprint #<%= @blueprint.id%>: <%= @blueprint.name %>
     """
   end
 
-  defp blueprint_element(%{role: _role} = assigns) do
+  defp title(assigns) do
     ~H"""
-      <div class={klass("border border-gray-50 my-1 shadow-md flex
-               text-gray-50 ml-4",
-              {"bg-gray-100 bg-opacity-20", Map.get(assigns, :s)})}>
-        <div class="flex flex-col items-center justify-center px-2">
-          <%= cond do %>
-          <% is_nil(@workspace) -> %>
-            <div>Editor</div>
-          <% not is_nil(@blueprint) -> %>
-            <div class="font-bold px-6">Editor</div>
-            <div class="text-sm italic"><%= @blueprint.name %></div>
-          <% true -> %>
-            <%= live_patch "Editor",
-              to: workspace_blueprint_path(Endpoint, :pick, @workspace),
-              class: "font-bold px-6" %>
-          <% end %>
-        </div>
-      </div>
+      "default title"
     """
   end
 
-  defp workspace_element(%{role: nil} = assigns) do
+  defp blueprints_element(%{role: nil} = assigns) do
     ~H""
   end
 
-  defp workspace_element(%{role: _role} = assigns) do
-    ~H"""
-      <div class={klass("border border-gray-50 my-1 shadow-md flex
-               text-gray-50",
-              {"bg-gray-100 bg-opacity-20", Map.get(assigns, :s)})}>
-        <div class="flex flex-col items-center justify-center px-2">
-          <%= if @workspace do %>
-            <%= live_patch "Workspace",
-              to: workspace_dashboard_path(Endpoint, :index, @workspace),
-              class: "font-bold px-6" %>
-            <%= live_patch @workspace.name,
-              to: workspace_dashboard_path(Endpoint, :index, @workspace),
-              class: "text-sm italic" %>
-          <% else %>
-            <%= live_patch "Workspace",
-              to: nav_path(Endpoint, :index),
-              class: "font-bold px-6 flex-grow flex items-center" %>
-          <% end %>
-        </div>
-        <%= case @workspaces do %>
-        <% [_a, _b | _] -> %>
-          <div class="border-l border-gray-50 flex justify-center items-center px-1 relative"
-                id="workspace-dropdown-menu"
-                data-dropdown="workspace-dropdown">
-            <.icon name="hero/chevron-double-down" width="18px" />
-            <div id="workspace-dropdown"
-                 class="absolute top-full right-0 bg-blue-700 z-50 border
-                 mt-px -mr-px m-w-0 min-w-min hidden
-                 border-blue-800 py-2">
-              <%= for w <- Enum.take(@workspaces, 10) do %>
-                <%= live_redirect(tr(w.name, 32),
-                  to: workspace_dashboard_path(Endpoint, :index, w),
-                  class: "font-bold px-6 py-1 whitespace-nowrap flex-grow flex
-                  items-center hover:bg-gray-50 hover:bg-opacity-30") %>
-              <% end %>
-              <%= if Enum.count(@workspaces) > 10 do %>
-                <div class="px-6 text-sm py-4 italic w-64">
-                You have access to more workspaces, the list has been truncated.
-                </div>
-                <%= live_patch "Full list",
-                  to: nav_path(Endpoint, :index),
-                  class: "font-bold px-6 py-1 whitespace-nowrap flex-grow flex
-                  items-center hover:bg-gray-50 hover:bg-opacity-30" %>
-              <% end %>
-            </div>
-          </div>
-        <% _ -> %>
-        <% end %>
-      </div>
-    """
-  end
-
-  defp admin_element(
-         %{role: %{global_permission: %{super_admin: true}}} = assigns
-       ) do
-    ~H"""
-      <div class={klass(
-          "border border-gray-50 my-1 shadow-md mr-4 flex items-stretch",
-          {"bg-gray-100 bg-opacity-20", Map.get(assigns, :s)}
-        )}>
-        <%= live_patch "Admin",
-          to: user_path(Endpoint, :index),
-          class: "block font-bold px-6 text-gray-50 flex items-center" %>
-      </div>
-    """
-  end
-
-  defp admin_element(%{role: _} = assigns) do
+  defp blueprints_element(%{workspace: nil} = assigns) do
     ~H""
   end
 
-  defp top_element(assigns) do
+  defp blueprints_element(%{role: _role} = assigns) do
     ~H"""
-    <div class={klass(
-          "px-4 font-bold text-gray-50 font-lg italic flex
-           items-stretch",
-          {"bg-blue-600", Map.get(assigns, :s)})}>
-      <%= live_patch @l, to: @a, class: "items-center flex" %>
+    <%= live_patch "Blueprints",
+    to: Routes.workspace_blueprint_path(Endpoint, :index, @workspace.id),
+    class: "flex
+    my-1 mx-1 px-6 py-2
+    items-center
+    border rounded
+    shadow-md
+    text-gray-50 bg-blue-800 hover:bg-blue-700 border-blue-500
+    font-bold" %>
+    """
+  end
+
+  defp portals_element(%{role: nil} = assigns) do
+    ~H""
+  end
+
+  defp portals_element(%{workspace: nil} = assigns) do
+    ~H""
+  end
+
+  defp portals_element(%{role: _role} = assigns) do
+    ~H"""
+    <%= live_patch "Portals",
+    to: Routes.workspace_portal_path(Endpoint, :index, @workspace),
+    class: "flex
+    m-1 px-4 py-2
+    items-center
+    border rounded
+    shadow-md
+    text-gray-50 bg-blue-800 hover:bg-blue-700 border-blue-500
+    font-bold" %>
+    """
+  end
+
+  defp account_element(%{role: nil} = assigns) do
+    ~H"""
+    <div class={
+          "px-2 font-bold text-gray-50 font-lg italic flex
+           items-stretch border border-blue-500"}>
+      <%= live_patch "Login", to: login_path(Endpoint, :form), class: "items-center flex" %>
     </div>
     """
   end
+
+  defp account_element(%{role: _role} = assigns) do
+    ~H"""
+    <div class="font-normal flex w-12 h-12 shadow-md item-center justify-center
+      text-sm mx-1 my-1 px-2 pt-1 text-gray-50 rounded-full
+      cursor-pointer bg-blue-800 hover:bg-blue-700 border border-blue-500 pt-0.5">
+      <.icon name="hero/user" width="2rem" />
+    </div>
+    """
+  end
+
 
   defp sub_element(assigns) do
+    bg_color = if assigns.s do
+      "bg-white"
+    else
+      "bg-cream-100 hover:bg-cream-50"
+    end
+
+    assigns = assign(assigns, bg_color: bg_color)
+
     ~H"""
-      <div class={klass(
-        "mx-1 font-bold border-t border-r border-l border-gray-900
-         self-end relative flex items-center px-2 ",
-        [
-          {"bg-cream-50 mt-px", Map.get(assigns, :s)},
-          {"bg-gray-200", !Map.get(assigns, :s)}
-        ]
-      )}>
-
-      <%= if Map.get(assigns, :i) do %>
-        <div class="mr-2"><.icon name={@i} width="24px" /></div>
-      <% end %>
-      <%= live_patch @l, to: @a, class: "py-0.5 block" %>
-      <%= if Map.get(assigns, :s) do %>
-        <div class="absolute left-0 right-0 -bottom-px h-px bg-cream-50">
-        </div>
-      <% end %>
-    </div>
+    <%= live_patch @l,
+    to: @a,
+    class: "flex items-center
+    m-1 px-4
+    border rounded-sm
+    shadow
+    hover:shadow-md
+    text-gray-900 #{@bg_color} border-cream-300
+    " %>
     """
-  end
-
-  defp top_elements(%{role: nil}) do
-    [
-      %{l: "→ Login", a: login_path(Endpoint, :form)}
-    ]
-  end
-
-  defp top_elements(%{role: _role}) do
-    [
-      %{l: "Logout →", a: logout_path(Endpoint, :logout)}
-    ]
-  end
-
-  defp top_elements(_) do
-    []
   end
 
   defp sub_elements(%{role: nil}) do
@@ -210,14 +167,15 @@ defmodule VacEngineWeb.HeaderComponent do
   end
 
   defp sub_elements(%{
-         location: [:blueprint, loc | _],
+         location: [:blueprint, loc | loc2],
          workspace: w,
          blueprint: b
        })
        when not is_nil(w) and not is_nil(b) do
+
     [
       %{
-        l: "Summary",
+        l: "Blueprint",
         a: workspace_blueprint_path(Endpoint, :summary, w.id, b.id),
         s: loc == :summary,
         i: "hero/clipboard-list"
@@ -234,12 +192,12 @@ defmodule VacEngineWeb.HeaderComponent do
         s: loc == :deductions,
         i: "hero/chevron-double-right"
       },
-      %{
-        l: "Import",
-        a: workspace_blueprint_path(Endpoint, :import, w.id, b.id),
-        s: loc == :import,
-        i: "hero/sort-ascending"
-      },
+      # %{
+      #   l: "Import",
+      #   a: workspace_blueprint_path(Endpoint, :import, w.id, b.id),
+      #   s: loc == :import,
+      #   i: "hero/sort-ascending"
+      # },
       %{
         l: "Simulations",
         a: workspace_blueprint_path(Endpoint, :simulations, w.id, b.id),
@@ -269,21 +227,21 @@ defmodule VacEngineWeb.HeaderComponent do
        })
        when not is_nil(w) do
     [
-      %{
-        l: "Dashboard",
-        a: workspace_dashboard_path(Endpoint, :index, w.id),
-        s: loc == :dashboard
-      },
-      %{
-        l: "Blueprints",
-        a: workspace_blueprint_path(Endpoint, :index, w.id),
-        s: loc == :blueprint
-      },
-      %{
-        l: "Portals",
-        a: workspace_portal_path(Endpoint, :index, w.id),
-        s: loc == :portal
-      }
+      # %{
+      #   l: "Dashboard",
+      #   a: workspace_dashboard_path(Endpoint, :index, w.id),
+      #   s: loc == :dashboard
+      # },
+      # %{
+      #   l: "Blueprints",
+      #   a: workspace_blueprint_path(Endpoint, :index, w.id),
+      #   s: loc == :blueprint
+      # },
+      # %{
+      #   l: "Portals",
+      #   a: workspace_portal_path(Endpoint, :index, w.id),
+      #   s: loc == :portal
+      # }
     ]
   end
 

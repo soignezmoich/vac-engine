@@ -14,7 +14,7 @@ defmodule VacEngineWeb.BlueprintLive.Edit do
 
   on_mount(VacEngineWeb.LiveRole)
   on_mount(VacEngineWeb.LiveWorkspace)
-  on_mount({VacEngineWeb.LiveLocation, ~w(blueprint edit)a})
+  on_mount({VacEngineWeb.LiveLocation, ~w(blueprint)a})
 
   @impl true
   def mount(%{"blueprint_id" => blueprint_id}, _session, socket) do
@@ -32,7 +32,7 @@ defmodule VacEngineWeb.BlueprintLive.Edit do
 
   @impl true
   def handle_params(_params, _session, socket) do
-    socket
+    socket = socket
     |> assign(location: [:blueprint, socket.assigns.live_action])
     |> update_subscription()
 

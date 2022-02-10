@@ -8,7 +8,7 @@ defmodule VacEngineWeb.BlueprintLive.New do
 
   on_mount(VacEngineWeb.LiveRole)
   on_mount(VacEngineWeb.LiveWorkspace)
-  on_mount({VacEngineWeb.LiveLocation, ~w(workspace blueprint new)a})
+  on_mount({VacEngineWeb.LiveLocation, ~w(blueprint new)a})
 
   @impl true
   def mount(_params, _session, %{assigns: %{workspace: workspace}} = socket) do
