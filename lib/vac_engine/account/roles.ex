@@ -18,12 +18,14 @@ defmodule VacEngine.Account.Roles do
     Role
     |> queries.()
     |> Repo.all()
+    |> Repo.preload(:user)
   end
 
   def get_role!(id, queries) do
     Role
     |> queries.()
     |> Repo.get!(id)
+    |> Repo.preload(:user)
   end
 
   def load_role_permissions(query) do

@@ -5,7 +5,7 @@ defmodule VacEngineWeb.WelcomeController do
 
   def index(%{assigns: %{workspaces: [w | _]}} = conn, _params) do
     conn
-    |> redirect(to: Routes.workspace_dashboard_path(conn, :index, w.id))
+    |> redirect(to: Routes.workspace_blueprint_path(conn, :index, w.id))
   end
 
   def index(conn, _params) do

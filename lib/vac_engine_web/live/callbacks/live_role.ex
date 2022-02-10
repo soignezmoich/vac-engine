@@ -1,5 +1,6 @@
 defmodule VacEngineWeb.LiveRole do
   import Phoenix.LiveView
+
   alias VacEngine.Account
   alias VacEngine.Query
 
@@ -22,6 +23,7 @@ defmodule VacEngineWeb.LiveRole do
       |> assign_new(:role, fn ->
         socket.assigns.role_session.role
       end)
+
 
     socket =
       socket

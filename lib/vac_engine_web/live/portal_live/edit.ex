@@ -9,7 +9,7 @@ defmodule VacEngineWeb.PortalLive.Edit do
 
   on_mount(VacEngineWeb.LiveRole)
   on_mount(VacEngineWeb.LiveWorkspace)
-  on_mount({VacEngineWeb.LiveLocation, ~w(workspace portal)a})
+  on_mount({VacEngineWeb.LiveLocation, ~w(portal edit)a})
 
   @impl true
   def mount(
