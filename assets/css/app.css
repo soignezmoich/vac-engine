@@ -38,26 +38,29 @@ svg * {
 }
 
 .btn {
-  @apply px-2 py-1 bg-cream-400 text-gray-50 font-bold;
+  @apply px-2 py-1 bg-blue-100 text-blue-700 font-bold text-center rounded-sm border border-blue-700 shadow-sm;
   &:not(:disabled):hover {
-    @apply bg-gray-600;
+    @apply bg-blue-200;
   }
   &[disabled] {
-    @apply bg-cream-200;
+    @apply bg-gray-200 text-gray-500;
   }
 }
 
 .btn-sm {
-  @apply px-2 py-1 bg-cream-400 text-gray-50 text-sm;
+  @apply px-2 py-1 bg-blue-100 text-blue-700 font-bold text-center text-sm rounded-sm border border-blue-700 shadow-sm;
   &:not(:disabled):hover {
-    @apply bg-gray-600;
+    @apply bg-blue-200;
+  }
+  &[disabled] {
+    @apply bg-gray-200 text-gray-500;
   }
 }
 
 .btn-default {
-  @apply px-2 py-1 bg-blue-600 text-gray-50 font-bold;
+  @apply px-2 py-1 bg-blue-600 text-gray-50 text-center font-bold rounded-sm border border-blue-800 shadow-sm m-1;
   &:not(:disabled):hover {
-    @apply bg-gray-600;
+    @apply bg-blue-400;
   }
 }
 
@@ -85,13 +88,14 @@ svg * {
   @apply
     px-1
     border shadow-inner
+    rounded-sm
     bg-blue-50 border-blue-600 text-black;
 
   &:focus:not([disabled]) {
     @apply outline-blue-600 outline outline-2 border-blue-400;
   }
   &[disabled] {
-    @apply bg-cream-100 border-cream-600;
+    @apply bg-gray-50 border-gray-600 text-gray-500;
   }
   &[disabled]:focus {
     @apply outline-cream-600 outline outline-2;
