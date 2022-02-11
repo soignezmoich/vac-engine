@@ -3,6 +3,7 @@ defmodule VacEngineWeb.BlueprintLive.Edit do
 
   import VacEngineWeb.PermissionHelpers
 
+  import VacEngine.PipeHelpers
   alias Phoenix.PubSub
   alias VacEngine.Processor
   alias VacEngineWeb.BlueprintLive.SummaryComponent
@@ -22,11 +23,12 @@ defmodule VacEngineWeb.BlueprintLive.Edit do
 
     can!(socket, :read, blueprint)
 
-    {:ok,
-     assign(socket,
-       blueprint: blueprint,
-       can_write: can?(socket, :write, blueprint)
-     )}
+    socket
+    |> assign(
+      blueprint: blueprint,
+      can_write: can?(socket, :write, blueprint)
+    )
+    |> ok()
   end
 
   @impl true
@@ -34,8 +36,7 @@ defmodule VacEngineWeb.BlueprintLive.Edit do
     socket
     |> assign(location: [:blueprint, socket.assigns.live_action])
     |> update_subscription()
-
-    {:noreply, socket}
+    |> pair(:noreply)
   end
 
   @impl true
@@ -45,14 +46,15 @@ defmodule VacEngineWeb.BlueprintLive.Edit do
 
   @impl true
   def handle_info(:reload_blueprint, socket) do
-    {:noreply,
-     assign(socket,
-       blueprint:
-         get_blueprint!(
-           socket.assigns.blueprint.id,
-           socket
-         )
-     )}
+    socket
+    |> assign(
+      blueprint:
+        get_blueprint!(
+          socket.assigns.blueprint.id,
+          socket
+        )
+    )
+    |> pair(:noreply)
   end
 
   @impl true
