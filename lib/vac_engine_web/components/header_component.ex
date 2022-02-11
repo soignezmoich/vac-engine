@@ -245,12 +245,6 @@ defmodule VacEngineWeb.HeaderComponent do
         a: workspace_blueprint_path(Endpoint, :simulations, w.id, b.id),
         s: loc == :simulations,
         i: "hero/fast-forward"
-      },
-      %{
-        l: "Simulations test",
-        a: workspace_blueprint_path(Endpoint, :simulations_test, w.id, b.id),
-        s: loc == :simulations_test,
-        i: "hero/fast-forward"
       }
     ]
   end
