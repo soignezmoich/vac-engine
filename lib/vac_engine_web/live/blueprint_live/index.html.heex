@@ -1,58 +1,64 @@
-<div class="p-4 w-full max-w-3xl">
+<div class="p-4 w-full">
   <%= if can?(@role, :write_blueprints, @workspace) do %>
     <%= live_redirect("Create blueprint",
           to: Routes.workspace_blueprint_path(@socket, :new, @workspace),
-          class: "mb-4 btn-default inline-block"
+          class: "btn-default inline-block"
         ) %>
   <% end %>
 
+  <div class="my-4 border-b border-2" />
+
   <%= case @blueprints do %>
   <% [_|_] = blueprints -> %>
-    <%= for br <- blueprints do %>
-      <div class="border-b flex py-4 w-full">
-        <div class="flex flex-col flex-grow">
-          <span class="font-bold">#<%= br.id %>: <%= br.name %></span>
-          <span class="flex-grow"><%= br.description %></span>
-          <span class="text-sm">Created <%= format_date(br.inserted_at) %></span>
-          <%= case br.active_publications do %>
-          <% [_|_] = pubs -> %>
-            <div class="flex items-baseline mt-2 flex-wrap text-sm">
-              <div class="mr-2">
-                Published in:
-              </div>
-              <%= for p <- Enum.intersperse(pubs, :sep) do %>
-                <%= if p == :sep do %>
-                  <div style="padding-right:0.3em">,</div>
-                <% else %>
-                  <%= if @can_read_portals do %>
-                    <%= live_redirect(p.portal.name,
-                          to: Routes.workspace_portal_path(@socket, :edit,
-                                p.workspace_id, p.portal_id),
-                          class: "link"
-                        ) %>
+    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+      <%= for br <- blueprints do %>
+        <div>
+        <div class="border flex p-4 w-full h-full bg-white shadow-lg">
+          <div class="flex flex-col flex-grow">
+            <span class="font-bold">#<%= br.id %>: <%= br.name %></span>
+            <span class="flex-grow"><%= br.description %></span>
+            <span class="text-sm">Created <%= format_date(br.inserted_at) %></span>
+            <%= case br.active_publications do %>
+            <% [_|_] = pubs -> %>
+              <div class="flex items-baseline mt-2 flex-wrap text-sm px-2 py-1 mr-3 w-fit bg-blue-100">
+                <div class="mr-2">
+                  Published in:
+                </div>
+                <%= for p <- Enum.intersperse(pubs, :sep) do %>
+                  <%= if p == :sep do %>
+                    <div style="padding-right:0.3em">,</div>
                   <% else %>
-                    <span><%= p.portal.name %></span>
+                    <%= if @can_read_portals do %>
+                      <%= live_redirect(p.portal.name,
+                            to: Routes.workspace_portal_path(@socket, :edit,
+                                  p.workspace_id, p.portal_id),
+                            class: "link font-bold"
+                          ) %>
+                    <% else %>
+                      <span><%= p.portal.name %></span>
+                    <% end %>
                   <% end %>
                 <% end %>
-              <% end %>
-            </div>
-          <% _ -> %>
-            <div class="text-sm mt-2">
-              No active publication
-            </div>
-          <% end %>
+              </div>
+            <% _ -> %>
+              <div class="text-sm mt-2">
+                No active publication
+              </div>
+            <% end %>
+          </div>
+          <div class="flex flex-col flex-shrink-0">
+            <%= live_redirect("Details",
+                  to: Routes.workspace_blueprint_path(@socket, :summary, br.workspace_id, br.id),
+                  class: "inline-block mb-2 btn"
+                ) %>
+            <button class="btn" phx-click="duplicate" phx-value-blueprint_id={br.id}>
+              Duplicate
+            </button>
+          </div>
         </div>
-        <div class="flex flex-col flex-shrink-0">
-          <%= live_redirect("Details",
-                to: Routes.workspace_blueprint_path(@socket, :summary, br.workspace_id, br.id),
-                class: "inline-block mb-4 btn"
-              ) %>
-          <button class="btn" phx-click="duplicate" phx-value-blueprint_id={br.id}>
-            Duplicate
-          </button>
         </div>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   <% _ -> %>
     <p class="font-bold">No blueprint found or you do not have access to any.</p>
   <% end %>

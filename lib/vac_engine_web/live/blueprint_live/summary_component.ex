@@ -2,8 +2,9 @@ defmodule VacEngineWeb.BlueprintLive.SummaryComponent do
   use VacEngineWeb, :live_component
 
   alias VacEngine.Processor
-  alias VacEngine.Pub.Portal
   alias VacEngine.Pub
+  alias VacEngine.Pub.Portal
+  alias VacEngineWeb.BlueprintLive.ImportComponent
 
   @impl true
   def update(assigns, socket) do

@@ -32,9 +32,10 @@ defmodule VacEngineWeb.BlueprintLive.Edit do
 
   @impl true
   def handle_params(_params, _session, socket) do
-    socket = socket
-    |> assign(location: [:blueprint, socket.assigns.live_action])
-    |> update_subscription()
+    socket =
+      socket
+      |> assign(location: [:blueprint, socket.assigns.live_action])
+      |> update_subscription()
 
     {:noreply, socket}
   end

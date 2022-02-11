@@ -1,11 +1,4 @@
 <div class="p-4">
-  <%= live_redirect("← Back to list",
-        to: Routes.workspace_portal_path(@socket, :index, @workspace),
-        class: "mb-4 btn inline-block"
-  ) %>
-  <h1 class="font-bold text-xl mb-4">
-    Portal #<%= @portal.id %>: <%= @portal.name %>
-  </h1>
 
   <h2 class="font-bold text-lg mb-6">Base info</h2>
 

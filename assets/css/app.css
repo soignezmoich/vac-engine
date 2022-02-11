@@ -38,9 +38,9 @@ svg * {
 }
 
 .btn {
-  @apply px-2 py-1 bg-blue-100 text-blue-700 font-bold text-center rounded-sm border border-blue-700 shadow-sm;
+  @apply px-2 py-1 bg-cream-100 text-cream-800 text-center rounded-sm border border-cream-400 shadow;
   &:not(:disabled):hover {
-    @apply bg-blue-200;
+    @apply bg-cream-200;
   }
   &[disabled] {
     @apply bg-gray-200 text-gray-500;
@@ -48,9 +48,9 @@ svg * {
 }
 
 .btn-sm {
-  @apply px-2 py-1 bg-blue-100 text-blue-700 font-bold text-center text-sm rounded-sm border border-blue-700 shadow-sm;
+  @apply px-2 py-1 bg-cream-100 text-cream-800 text-center text-sm rounded-sm border border-cream-400 shadow;
   &:not(:disabled):hover {
-    @apply bg-blue-200;
+    @apply bg-cream-200;
   }
   &[disabled] {
     @apply bg-gray-200 text-gray-500;
@@ -58,9 +58,12 @@ svg * {
 }
 
 .btn-default {
-  @apply px-2 py-1 bg-blue-600 text-gray-50 text-center font-bold rounded-sm border border-blue-800 shadow-sm m-1;
+  @apply px-2 py-1 bg-blue-500 text-blue-800 text-center text-white font-bold rounded-sm border border-blue-600 shadow;
   &:not(:disabled):hover {
     @apply bg-blue-400;
+  }
+  &[disabled] {
+    @apply bg-gray-200 text-gray-500;
   }
 }
 

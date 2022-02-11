@@ -19,10 +19,10 @@ defmodule VacEngineWeb.Header.MenuComponent do
     """
   end
 
-
   defp session_info(%{workspace: nil} = assigns) do
     role = assigns.role |> Repo.preload(:user)
     assigns = assign(assigns, role: role)
+
     ~H"""
     <div class="grid grid-cols-1 border text-xs border-blue-600 p-2">
     <div class="font-bold text-blue-200">User:</div>
@@ -38,6 +38,7 @@ defmodule VacEngineWeb.Header.MenuComponent do
   defp session_info(%{workspace: _workspace} = assigns) do
     role = assigns.role |> Repo.preload(:user)
     assigns = assign(assigns, role: role)
+
     ~H"""
     <div class="grid grid-cols-1 border text-xs border-blue-600 p-2">
     <div class="font-bold text-blue-200">User:</div>
@@ -49,17 +50,16 @@ defmodule VacEngineWeb.Header.MenuComponent do
     """
   end
 
-
   defp menu_entry(assigns) do
-
-    l = if assigns.i do
-      ~H"""
-      <.icon name={assigns.i} width="1.5rem" class="inline" />
-      <div class="inline-block pl-1"><%= @l %></div>
-      """
-    else
-      assigns.l
-    end
+    l =
+      if assigns.i do
+        ~H"""
+        <.icon name={assigns.i} width="1.5rem" class="inline" />
+        <div class="inline-block pl-1"><%= @l %></div>
+        """
+      else
+        assigns.l
+      end
 
     assigns = assign(assigns, l: l)
 
@@ -75,18 +75,17 @@ defmodule VacEngineWeb.Header.MenuComponent do
     """
   end
 
-
   defp menu_entries(%{role: role} = _assigns) do
     default_menu = [
       %{
         l: "Change workspace",
-        a:  Routes.nav_path(Endpoint, :index),
-        i: "hero/switch-horizontal",
+        a: Routes.nav_path(Endpoint, :index),
+        i: "hero/switch-horizontal"
       },
       %{
         l: "Logout",
         a: Routes.logout_path(Endpoint, :logout),
-        i: "hero/logout",
+        i: "hero/logout"
       }
     ]
 
@@ -97,15 +96,13 @@ defmodule VacEngineWeb.Header.MenuComponent do
     []
   end
 
-
-
   defp admin_menu(%{global_permission: %{super_admin: true}}) do
     [
       %{
         l: "Admin settings",
         a: Routes.user_path(Endpoint, :index),
-        i: "hero/cog",
-      },
+        i: "hero/cog"
+      }
     ]
   end
 

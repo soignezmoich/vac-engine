@@ -28,7 +28,6 @@ defmodule VacEngineWeb.HeaderComponent do
     """
   end
 
-
   def top_level(assigns) do
     ~H"""
     <.account_element
@@ -44,7 +43,7 @@ defmodule VacEngineWeb.HeaderComponent do
 
   def sub_level(assigns) do
     ~H"""
-    <div class="text-cream-50 hidden lg:flex">
+    <div class="text-cream-50 hidden lg:flex -mr-1">
       <svg width={"3.5rem"}
         height={"3.5rem"}
         viewBox="0 0 200 200">
@@ -75,5 +74,4 @@ defmodule VacEngineWeb.HeaderComponent do
     </div>
     """
   end
-
 end

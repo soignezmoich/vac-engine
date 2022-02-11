@@ -1,43 +1,67 @@
-<div class="w-full max-w-3xl mb-8 p-4">
+<div class="p-4 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
 
-  <.form
-    let={f}
-    for={@changeset}
-    id="summary_blueprint_form"
-    class="flex flex-col w-96"
-    phx-target={@myself}
-    phx-throttle="100"
-    phx-change="validate"
-    phx-submit="update">
+  <div class="border p-4 w-full h-full bg-white shadow-lg">
+    <h2 class="font-bold text-lg mb-6">Base info</h2>
 
-    <%= label_line_tag f, :name, "Name" %>
-    <%= text_input f, :name,
-          class: "form-fld mb-4",
-          autofocus: true,
-          disabled: (!@can_write || @readonly) %>
+    <.form
+      let={f}
+      for={@changeset}
+      id="summary_blueprint_form"
+      class="flex flex-col w-96"
+      phx-target={@myself}
+      phx-throttle="100"
+      phx-change="validate"
+      phx-submit="update">
 
-    <%= label_line_tag f, :description, "Description" %>
-    <%= textarea f, :description, class: "form-fld mb-4",
-          disabled: (!@can_write || @readonly) %>
+      <%= label_line_tag f, :name, "Name" %>
+      <%= text_input f, :name,
+            class: "form-fld mb-4",
+            autofocus: true,
+            disabled: (!@can_write || @readonly) %>
 
+      <%= label_line_tag f, :description, "Description" %>
+      <%= textarea f, :description, class: "form-fld mb-4",
+            disabled: (!@can_write || @readonly) %>
+
+      <%= if @can_write && !@readonly do %>
+        <%= submit "Update", class: "btn-default", phx_disable_with: "Update in progress..." %>
+      <% end %>
+    </.form>
+  </div>
+
+  
+
+  <div class="border p-4 w-full h-full bg-white shadow-lg">
     <%= if @can_write && !@readonly do %>
-      <%= submit "Update", class: "btn-default", phx_disable_with: "Update in progress..." %>
+      <div class="font-bold text-lg mb-4">
+        Delete blueprint
+      </div>
+      <.button
+        class="btn mr-4"
+        click="delete"
+        label="Delete"
+        target={@myself}
+        id="delete-btn"
+        confirm />
+      <div class="h-8" />
     <% end %>
-  </.form>
 
-  <h2 class="font-bold text-lg mt-8 mb-4">
-    Export
-  </h2>
-  <%= link("Download JSON",
-        to: Routes.export_path(@socket, :blueprint, @blueprint),
-        class: "btn inline-block"
-      ) %>
 
-  <h2 class="font-bold text-lg mt-8 mb-4">
+    <.live_component
+      module={ImportComponent}
+      id="import"
+      role={@role}
+      blueprint={@blueprint}
+      readonly={@readonly}
+    />
+  </div>
+
+  <div class="border p-4 w-full h-full bg-white shadow-lg">
+  
+  <h2 class="font-bold text-lg mb-4">
     Publications
   </h2>
 
-  <%= if @can_write do %>
     <.form
       let={f}
       for={@portal_changeset}
@@ -48,14 +72,13 @@
       phx-submit="publish_new_portal">
 
       <%= label_line_tag f, :name, "New portal name" %>
-      <div class="flex w-full items-baseline">
+      <div>
       <%= text_input f, :name, class: "form-fld mb-4 flex-grow mr-2", autofocus: true %>
       <%= submit "Publish in new portal",
             class: "btn-default",
             phx_disable_with: "Publishing in progress..." %>
       </div>
     </.form>
-  <% end %>
 
     <%= case @blueprint.active_publications do %>
     <% [_|_] = publications -> %>
@@ -64,7 +87,7 @@
       </div>
       <%= for p <- publications do %>
         <%= if is_nil(p.deactivated_at) do %>
-          <div class="border-b flex py-4 w-128">
+          <div class="border-b flex py-4">
             <div class="flex flex-col flex-grow">
               <span class="font-bold">
                 Portal #<%= p.portal_id %>: <%= p.portal.name %>
@@ -114,26 +137,5 @@
       <% end %>
     <% _ -> %>
     <% end %>
-
-
-  <%= if @can_write && !@readonly do %>
-    <div class="font-bold text-lg mt-8 mb-4">
-      Manage blueprint
     </div>
-    <%= case @blueprint.publications do %>
-    <% [_|_] -> %>
-      <div class="italic mt-8 mb-4">
-        Blueprint has publications and cannot be deleted. Delete portals first.
-      </div>
-    <% _ -> %>
-      <.button
-            class="btn mr-4"
-            click="delete"
-            label="Delete"
-            target={@myself}
-            id="delete-btn"
-            confirm />
-    <% end %>
-
-  <% end %>
 </div>

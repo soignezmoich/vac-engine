@@ -7,7 +7,6 @@ defmodule VacEngineWeb.Header.AccountElementComponent do
 
   alias VacEngineWeb.Endpoint
 
-
   def account_element(%{role: nil} = assigns) do
     attrs = %{
       l: "Login",
@@ -23,7 +22,6 @@ defmodule VacEngineWeb.Header.AccountElementComponent do
     """
   end
 
-
   def account_element(%{role: _role} = assigns) do
     ~H"""
     <div class="relative font-normal flex w-12 h-12 shadow-md item-center justify-center
@@ -37,5 +35,4 @@ defmodule VacEngineWeb.Header.AccountElementComponent do
     <.menu {assigns} />
     """
   end
-
 end

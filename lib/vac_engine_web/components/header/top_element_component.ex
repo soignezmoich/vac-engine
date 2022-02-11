@@ -6,15 +6,15 @@ defmodule VacEngineWeb.Header.TopElementComponent do
   # No workspace selected
 
   def top_elements(%{
-    location: [:workspace, :nav]
-  }) do
+        location: [:workspace, :nav]
+      }) do
     []
   end
 
   def top_elements(%{
-    workspace: nil,
-    workspaces: [_|_],
-    }) do
+        workspace: nil,
+        workspaces: [_ | _]
+      }) do
     [
       %{
         l: "Back to workspace",
@@ -38,7 +38,7 @@ defmodule VacEngineWeb.Header.TopElementComponent do
         a: Routes.workspace_portal_path(Endpoint, :index, w.id),
         s: :portal in loc,
         i: "hero/switch-vertical"
-      },
+      }
     ]
   end
 
@@ -47,27 +47,28 @@ defmodule VacEngineWeb.Header.TopElementComponent do
   end
 
   def top_element(assigns) do
+    bg_color =
+      if assigns.s do
+        "bg-blue-600"
+      else
+        "bg-blue-800 hover:bg-blue-700"
+      end
 
-    bg_color = if assigns.s do
-      "bg-blue-600"
-    else
-      "bg-blue-800 hover:bg-blue-700"
-    end
+    l =
+      if assigns.i do
+        ~H"""
+        <.icon name={assigns.i} width="1.5rem" class="inline" />
+        <div class="pl-1"><%= @l %></div>
+        """
+      else
+        assigns.l
+      end
 
-
-    l = if assigns.i do
-      ~H"""
-      <.icon name={assigns.i} width="1.5rem" class="inline" />
-      <div class="pl-1"><%= @l %></div>
-      """
-    else
-      assigns.l
-    end
-
-    assigns = assign(assigns,
-      l: l,
-      bg_color: bg_color
-    )
+    assigns =
+      assign(assigns,
+        l: l,
+        bg_color: bg_color
+      )
 
     ~H"""
     <%= live_patch @l,
@@ -81,6 +82,4 @@ defmodule VacEngineWeb.Header.TopElementComponent do
     font-bold" %>
     """
   end
-
-
 end

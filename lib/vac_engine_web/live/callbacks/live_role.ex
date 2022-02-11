@@ -24,7 +24,6 @@ defmodule VacEngineWeb.LiveRole do
         socket.assigns.role_session.role
       end)
 
-
     socket =
       socket
       |> assign_new(:workspaces, fn ->

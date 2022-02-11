@@ -9,11 +9,11 @@ defmodule VacEngineWeb.Header.SubElementComponent do
   end
 
   def sub_elements(%{
-    location: [:blueprint, loc | _loc_tail],
-    workspace: w,
-    blueprint: b
-  })
-  when not is_nil(w) and not is_nil(b) do
+        location: [:blueprint, loc | _loc_tail],
+        workspace: w,
+        blueprint: b
+      })
+      when not is_nil(w) and not is_nil(b) do
     [
       %{
         l: "Overview",
@@ -43,22 +43,22 @@ defmodule VacEngineWeb.Header.SubElementComponent do
   end
 
   def sub_elements(%{
-      location: [:workspace, :nav | _]
-    }) do
+        location: [:workspace, :nav | _]
+      }) do
     []
   end
 
   def sub_elements(%{
-      location: [:workspace, _loc | _],
-      workspace: w
-    })
-    when not is_nil(w) do
+        location: [:workspace, _loc | _],
+        workspace: w
+      })
+      when not is_nil(w) do
     []
   end
 
   def sub_elements(%{
-      location: [:admin, loc | _]
-    }) do
+        location: [:admin, loc | _]
+      }) do
     [
       %{
         l: "Users",
@@ -90,25 +90,28 @@ defmodule VacEngineWeb.Header.SubElementComponent do
   def sub_elements(_), do: []
 
   def sub_element(assigns) do
-    bg_color = if assigns.s do
-      "bg-white"
-    else
-      "bg-cream-100 hover:bg-cream-50"
-    end
+    bg_color =
+      if assigns.s do
+        "bg-white"
+      else
+        "bg-cream-100 hover:bg-cream-50"
+      end
 
-    l = if assigns.i do
-      ~H"""
-      <.icon name={assigns.i} width="1.5rem" class="inline" />
-      <div class="pl-1"><%= @l %></div>
-      """
-    else
-      assigns.l
-    end
+    l =
+      if assigns.i do
+        ~H"""
+        <.icon name={assigns.i} width="1.5rem" class="inline" />
+        <div class="pl-1"><%= @l %></div>
+        """
+      else
+        assigns.l
+      end
 
-    assigns = assign(assigns,
-      l: l,
-      bg_color: bg_color
-    )
+    assigns =
+      assign(assigns,
+        l: l,
+        bg_color: bg_color
+      )
 
     ~H"""
     <%= live_patch @l,
@@ -122,7 +125,4 @@ defmodule VacEngineWeb.Header.SubElementComponent do
     " %>
     """
   end
-
-
-
 end

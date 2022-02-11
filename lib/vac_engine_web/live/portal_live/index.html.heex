@@ -1,63 +1,70 @@
-<div class="p-4 w-full max-w-3xl">
+<div class="p-4 w-full">
   <%= if can?(@role, :write_portals, @workspace) do %>
     <%= live_redirect("Create portal",
           to: Routes.workspace_portal_path(@socket, :new, @workspace.id),
           class: "inline-block mb-4 btn-default"
         ) %>
   <% end %>
+
+  <div class="my-4 border-b border-2" />
+
   <%= case @portals do %>
   <% [_|_] = portals -> %>
-    <%= for p <- portals do %>
-      <div class="border-b flex py-4 w-full">
-        <div class="flex flex-col flex-grow">
-          <div class="font-bold mb-1">
-            #<%= p.id %>
-            <%= p.name %>
-          </div>
-          <div class="flex">
-            <%= if p.blueprint do %>
-              <span class="text-xs link"
-                    phx-hook="clipboardCopy" id={"p_url_#{p.id}"}>
-                <%= Routes.api_pub_url(@socket, :run, p.id) %>
+    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+      <%= for p <- portals do %>
+        <div>
+        <div class="border flex p-4 w-full h-full bg-white shadow-lg">
+          <div class="flex flex-col flex-grow">
+            <div class="font-bold mb-1">
+              #<%= p.id %>
+              <%= p.name %>
+            </div>
+            <div class="flex">
+              <%= if p.blueprint do %>
+                <span class="text-xs link"
+                      phx-hook="clipboardCopy" id={"p_url_#{p.id}"}>
+                  <%= Routes.api_pub_url(@socket, :run, p.id) %>
+                </span>
+              <% end %>
+            </div>
+            <div class="flex flex-wrap mt-2">
+              <%= if p.blueprint do %>
+                <span class="text-sm mr-2">
+                  <%= live_redirect(
+                        "Blueprint ##{p.blueprint.id}: #{tr(p.blueprint.name, 48)}",
+                        to: Routes.workspace_blueprint_path(@socket, :summary,
+                            p.workspace_id, p.blueprint_id),
+                        class: "link"
+                      ) %>
+                </span>
+              <% end %>
+            </div>
+            <div class="flex flex-wrap mt-2">
+              <%= if p.blueprint do %>
+                <span class="text-sm mr-2">
+                  Last published
+                  <%= format_date(Enum.at(p.publications, 0).activated_at) %>
+                </span>
+              <% else %>
+                <span class="text-sm mr-2">Not published</span>
+              <% end %>
+              <span class="mr-2 self-center text-gray-700">
+                <.icon name="dot" width="6px" />
               </span>
-            <% end %>
+              <span class="text-sm">Created <%= format_date(p.inserted_at) %></span>
+            </div>
           </div>
-          <div class="flex flex-wrap mt-2">
-            <%= if p.blueprint do %>
-              <span class="text-sm mr-2">
-                <%= live_redirect(
-                      "Blueprint ##{p.blueprint.id}: #{tr(p.blueprint.name, 48)}",
-                      to: Routes.workspace_blueprint_path(@socket, :summary,
-                          p.workspace_id, p.blueprint_id),
-                      class: "link"
-                    ) %>
-              </span>
-            <% end %>
-          </div>
-          <div class="flex flex-wrap mt-2">
-            <%= if p.blueprint do %>
-              <span class="text-sm mr-2">
-                Last published
-                <%= format_date(Enum.at(p.publications, 0).activated_at) %>
-              </span>
-            <% else %>
-              <span class="text-sm mr-2">Not published</span>
-            <% end %>
-            <span class="mr-2 self-center text-gray-700">
-              <.icon name="dot" width="6px" />
-            </span>
-            <span class="text-sm">Created <%= format_date(p.inserted_at) %></span>
+          <div class="flex flex-col flex-shrink-0">
+            <%= live_redirect("Details",
+                  to: Routes.workspace_portal_path(@socket, :edit,
+                        @workspace.id, p.id),
+                  class: "btn inline-block"
+                ) %>
           </div>
         </div>
-        <div class="flex flex-col flex-shrink-0">
-          <%= live_redirect("Details",
-                to: Routes.workspace_portal_path(@socket, :edit,
-                      @workspace.id, p.id),
-                class: "btn inline-block"
-              ) %>
         </div>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   <% _ -> %>
     <p class="font-bold">No portal found or you do not have access to any.</p>
   <% end %>

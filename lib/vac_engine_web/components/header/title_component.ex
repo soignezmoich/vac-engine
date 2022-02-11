@@ -1,21 +1,22 @@
 defmodule VacEngineWeb.Header.TitleComponent do
   use VacEngineWeb, :component
 
-
-
-  def title(%{blueprint: nil} = assigns) do
-    ~H""
+  def title(%{portal: portal} = assigns) when not is_nil(portal) do
+    ~H"""
+      #<%= @portal.id%> - <%= @portal.name %>
+    """
   end
 
-  def title(%{blueprint: _blueprint} = assigns) do
+
+  def title(%{blueprint: blueprint} = assigns) when not is_nil(blueprint) do
     ~H"""
       #<%= @blueprint.id%> - <%= @blueprint.name %>
     """
   end
 
+
+
   def title(assigns) do
-    ~H"""
-      "default title"
-    """
+    ~H""
   end
 end
