@@ -1,4 +1,4 @@
-<div  class={"#{if @selected do " bg-blue-50" end} pb-1 border-b border-gray-100"}>
+<div  class={klass("pb-1 border-b border-gray-100 select-none", {"bg-blue-50", @selected})}>
   <div
     phx-click="delete_stack"
     phx-target={@myself}
