@@ -108,7 +108,14 @@ defmodule VacEngine.Simulation.Runner do
         {%Result{run_error: err, has_error: true}, runner}
     end
     |> then(fn {res, runner} ->
-      %{job | result: res}
+      outcome =
+        if res.has_error || !res.result_match do
+          :failure
+        else
+          :success
+        end
+
+      %{job | result: res, outcome: outcome}
       |> notify_job()
 
       runner
@@ -232,6 +239,10 @@ defmodule VacEngine.Simulation.Runner do
               match?({:ok, true}, Map.fetch(e, :present_while_forbidden))
           end)
 
+        result_match =
+          outcome.expected_result == :success ||
+            not is_nil(outcome.expected_error)
+
         %Result{
           input: input,
           output: state.output,
@@ -239,13 +250,11 @@ defmodule VacEngine.Simulation.Runner do
           has_error: has_error,
           expected_result: outcome.expected_result,
           expected_error: outcome.expected_error,
-          result_match:
-            outcome.expected_result == :success ||
-              not is_nil(outcome.expected_error)
+          result_match: result_match
         }
 
       {:error, err} ->
-        match =
+        result_match =
           outcome.expected_result == :error &&
             (outcome.expected_error == nil ||
                outcome.expected_error == err)
@@ -253,10 +262,10 @@ defmodule VacEngine.Simulation.Runner do
         %Result{
           input: input,
           run_error: err,
-          has_error: !match,
+          has_error: !result_match,
           expected_result: outcome.expected_result,
           expected_error: outcome.expected_error,
-          result_match: match
+          result_match: result_match
         }
     end
   end
