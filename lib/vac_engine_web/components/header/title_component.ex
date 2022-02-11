@@ -7,14 +7,11 @@ defmodule VacEngineWeb.Header.TitleComponent do
     """
   end
 
-
   def title(%{blueprint: blueprint} = assigns) when not is_nil(blueprint) do
     ~H"""
       #<%= @blueprint.id%> - <%= @blueprint.name %>
     """
   end
-
-
 
   def title(assigns) do
     ~H""

@@ -190,14 +190,18 @@ defmodule VacEngine.Processor.Blueprints do
     Repo.delete(blueprint)
   end
 
-  def duplicate_blueprint(blueprint_id, workspace)
-      when is_integer(blueprint_id) do
+  def duplicate_blueprint(blueprint_id, workspace) do
     try do
-      get_full_blueprint!(blueprint_id)
-      |> serialize_blueprint()
-      |> duplicate_from_serialized!(workspace)
+      new_blueprint =
+        get_full_blueprint!(blueprint_id)
+        |> serialize_blueprint()
+        |> duplicate_from_serialized!(workspace)
+
+      {:ok, new_blueprint}
+    rescue
+      error -> {:error, error.message}
     catch
-      error -> error
+      error -> {:error, error.message}
     end
   end
 

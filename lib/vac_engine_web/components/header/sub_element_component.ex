@@ -2,7 +2,6 @@ defmodule VacEngineWeb.Header.SubElementComponent do
   use VacEngineWeb, :component
 
   import VacEngineWeb.IconComponent
-  import VacEngineWeb.VersionHelpers
 
   def sub_elements(%{role: nil}) do
     []
