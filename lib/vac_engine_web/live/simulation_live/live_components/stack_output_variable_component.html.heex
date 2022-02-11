@@ -36,7 +36,12 @@
       <% end %>
     </div>
     <div class="table-cell px-1 align-middle w-36  border-b">
-      <%= Map.get(@variable, :actual) || "-" %>
+      <%= case @variable do %>
+      <% %{actual: false} -> %> 
+        false
+      <% variable -> %>
+        <%= Map.get(variable, :actual) || "-" %>
+      <% end %>
     </div>
     <div class="table-cell px-1 align-middle  border-b">
       <%= if @active do %>
