@@ -89,7 +89,6 @@ defmodule VacEngine.MixProject do
         Utilities: [
           VacEngine.EctoHelpers,
           VacEngine.EnumHelpers,
-          VacEngine.VariableHelpers,
           VacEngine.Query,
           VacEngine.Hash,
           VacEngine.Release,
