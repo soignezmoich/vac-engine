@@ -27,8 +27,9 @@ defmodule VacEngineWeb.EditorLive.DeductionCellInspectorComponent do
 
   @impl true
   def update(%{action: {:update_ast, ast, opts}}, socket) do
-    {:ok,
-     assign(socket, transient_ast: ast, transient_ast_opts: opts, error: nil)}
+    socket
+    |> assign(transient_ast: ast, transient_ast_opts: opts, error: nil)
+    |> ok()
   end
 
   @impl true

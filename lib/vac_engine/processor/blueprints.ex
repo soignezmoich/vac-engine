@@ -4,6 +4,7 @@ defmodule VacEngine.Processor.Blueprints do
   import Ecto.Query
   alias Ecto.Multi
   alias Ecto.Changeset
+  alias VacEngine.EctoHelpers
   alias VacEngine.Repo
   alias VacEngine.Processor.Blueprint
   alias VacEngine.Account.Workspace
@@ -12,6 +13,7 @@ defmodule VacEngine.Processor.Blueprints do
   alias VacEngine.Account.BlueprintPermission
   alias VacEngine.Hash
   alias VacEngine.Processor.Variable
+  alias VacEngine.Processor.Variables
   alias VacEngine.Processor.Assignment
   alias VacEngine.Processor.Condition
   alias VacEngine.Processor.BindingElement
@@ -107,7 +109,22 @@ defmodule VacEngine.Processor.Blueprints do
   end
 
   def load_blueprint_variables(query) do
-    from(b in query, preload: [variables: :default])
+    elements_query =
+      from(r in BindingElement,
+        order_by: r.position
+      )
+
+    bindings_query =
+      from(r in Binding,
+        order_by: r.position,
+        preload: [
+          elements: ^elements_query
+        ]
+      )
+
+    from(b in query,
+      preload: [variables: [default: [bindings: ^bindings_query]]]
+    )
   end
 
   def load_blueprint_full_deductions(query) do
@@ -194,6 +211,7 @@ defmodule VacEngine.Processor.Blueprints do
     multi
     |> multi_update_variables
     |> multi_put_variables
+    |> multi_update_variable_defaults
     |> multi_update_deductions
     |> multi_put_deductions
     |> multi_compute_hash
@@ -263,6 +281,65 @@ defmodule VacEngine.Processor.Blueprints do
         |> Blueprint.variables_changeset(attrs, ctx)
       end
     )
+  end
+
+  defp multi_update_variable_defaults(multi) do
+    multi
+    |> Multi.merge(fn %{
+                        variable_path_index: path_index,
+                        attrs: attrs
+                      } = ctx ->
+      attrs = EctoHelpers.accept_array_or_map_for_embed(attrs, :variables)
+      variables = EctoHelpers.get_in_attrs(attrs, :variables, [])
+
+      variables
+      |> gather_defaults()
+      |> Enum.reduce(Multi.new(), fn {path, default}, multi ->
+        Map.fetch(path_index, path)
+        |> case do
+          {:ok, var} ->
+            multi
+            |> Multi.update({:variable_default, var.id}, fn _ctx ->
+              var
+              |> Repo.preload(:default)
+              |> Variable.update_default_changeset(%{default: default}, ctx)
+            end)
+            |> Multi.run({:check_default, var.id}, fn repo, ctx ->
+              {:ok, var} = Map.fetch(ctx, {:variable_default, var.id})
+              Variables.check_default_circular_references(repo, var)
+            end)
+
+          :error ->
+            Multi.error(
+              multi,
+              {:variable_default, path},
+              "cannot set default, variable #{Enum.join(path, ".")} not found"
+            )
+        end
+      end)
+    end)
+  end
+
+  defp gather_defaults(variables, stack \\ []) do
+    variables
+    |> Enum.reduce([], fn var, acc ->
+      name = EctoHelpers.get_in_attrs(var, :name)
+      default = EctoHelpers.get_in_attrs(var, :default)
+      children = EctoHelpers.get_in_attrs(var, :children, [])
+
+      full_name = stack ++ [name]
+
+      acc =
+        if default do
+          acc ++ [{full_name, default}]
+        else
+          acc
+        end
+
+      children_defaults = gather_defaults(children, full_name)
+
+      acc ++ children_defaults
+    end)
   end
 
   defp multi_put_variables(multi) do
@@ -352,14 +429,9 @@ defmodule VacEngine.Processor.Blueprints do
   end
 
   defp arrange_variables(blueprint) do
-    {var_tree, path_index} = index_variables(blueprint.variables)
-
-    id_index =
-      path_index
-      |> Enum.map(fn {_path, var} ->
-        {var.id, var}
-      end)
-      |> Map.new()
+    {var_tree, id_index, path_index} =
+      index_variables(blueprint.variables)
+      |> insert_variable_default_bindings()
 
     {input_variables, output_variables, intermediate_variables} =
       blueprint.variables
@@ -497,6 +569,46 @@ defmodule VacEngine.Processor.Blueprints do
         end)
       end
     )
+  end
+
+  defp insert_variable_default_bindings({var_tree, path_index}) do
+    id_index =
+      path_index
+      |> Enum.map(fn {_path, var} ->
+        {var.id, var}
+      end)
+      |> Map.new()
+
+    insert_variable_default_bindings(var_tree, id_index, %{}, %{})
+  end
+
+  defp insert_variable_default_bindings(
+         var_tree,
+         id_index,
+         new_id_index,
+         new_path_index
+       ) do
+    var_tree
+    |> Enum.reduce({[], new_id_index, new_path_index}, fn var,
+                                                          {new_tree,
+                                                           new_id_index,
+                                                           new_path_index} ->
+      {children_tree, new_id_index, new_path_index} =
+        insert_variable_default_bindings(
+          var.children,
+          id_index,
+          new_id_index,
+          new_path_index
+        )
+
+      var = Variable.insert_bindings(var, %{variable_id_index: id_index})
+      var = %{var | children: children_tree}
+      new_path_index = Map.put(new_path_index, var.path, var)
+      new_id_index = Map.put(new_id_index, var.id, var)
+      new_tree = new_tree ++ [var]
+
+      {new_tree, new_id_index, new_path_index}
+    end)
   end
 
   defp index_variables(variables) do

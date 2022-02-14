@@ -5,10 +5,13 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
   alias VacEngine.Processor
   alias VacEngine.Processor.Meta
   alias VacEngine.Processor.Variable
+  alias VacEngine.Processor.Expression
   import VacEngine.PipeHelpers
   alias VacEngine.Repo
   alias Ecto.Multi
   alias VacEngineWeb.EditorLive.VariableListComponent
+  alias VacEngineWeb.EditorLive.ExpressionNodeEditorComponent
+  alias VacEngineWeb.EditorLive.VariableInspectorComponent
 
   import VacEngineWeb.BlueprintLive.Edit, only: [get_blueprint!: 2]
 
@@ -24,7 +27,10 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
        containers: [],
        changeset: nil,
        enum_new: nil,
-       used?: false
+       used?: false,
+       ast: nil,
+       transient_ast: nil,
+       transient_ast_opts: nil
      )}
   end
 
@@ -33,6 +39,24 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
     socket
     |> assign(variable: var)
     |> set_variable
+    |> ok()
+  end
+
+  @impl true
+  def update(%{action: {:update_ast, _ast, %{set_nil: true} = opts}}, socket) do
+    socket
+    |> assign(transient_ast: nil, ast: nil, transient_ast_opts: opts)
+    |> update_changeset()
+    |> force_changes([:name])
+    |> ok()
+  end
+
+  @impl true
+  def update(%{action: {:update_ast, ast, opts}}, socket) do
+    socket
+    |> assign(transient_ast: ast, transient_ast_opts: opts)
+    |> update_changeset()
+    |> force_changes([:name])
     |> ok()
   end
 
@@ -105,13 +129,16 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
         _,
         %{
           assigns: %{
+            transient_ast: default_ast,
             blueprint: blueprint,
             changeset: changeset,
             variable: %Variable{id: nil}
           }
         } = socket
       ) do
-    attrs = changeset.changes
+    attrs =
+      changeset.changes
+      |> Map.put(:default, default_ast)
 
     case Changeset.get_field(changeset, :parent_id) do
       nil ->
@@ -140,13 +167,16 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
         _,
         %{
           assigns: %{
+            transient_ast: default_ast,
             blueprint: blueprint,
             changeset: changeset,
             variable: variable
           }
         } = socket
       ) do
-    attrs = changeset.changes
+    attrs =
+      changeset.changes
+      |> Map.put(:default, default_ast)
 
     # TODO move to Processor.Variables
     Multi.new()
@@ -174,6 +204,10 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
         socket
         |> update_notify_var(var)
         |> pair(:noreply)
+
+      {:error, _, err, _} when is_binary(err) ->
+        changeset = Changeset.add_error(changeset, :default, err)
+        {:noreply, assign(socket, changeset: changeset)}
 
       {:error, _, changeset, _} ->
         {:noreply, assign(socket, changeset: changeset)}
@@ -287,6 +321,7 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
        )
        when is_nil(v) or is_nil(b) do
     assign(socket,
+      ast: nil,
       variable: nil,
       changeset: nil,
       containers: [],
@@ -313,11 +348,21 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
         %{}
       )
 
-    assign(socket,
+    ast =
+      case variable.default do
+        %Expression{ast: ast} -> ast
+        _ -> nil
+      end
+
+    socket
+    |> assign(
+      form_id: "edit_variable_form_#{variable.id || "new"}",
+      ast: ast,
       changeset: changeset,
       containers: containers(variable, blueprint),
       used?: Processor.variable_used?(variable)
     )
+    |> bump_default_form_id()
   end
 
   defp update_notify_var(%{assigns: %{blueprint: blueprint}} = socket, var) do
@@ -360,10 +405,15 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
       {_, true} -> blueprint.output_variables
     end
     |> Enum.filter(fn container ->
-      container.type == :map and !List.starts_with?(container.path, var.path)
+      container.type == :map and
+        (var.path == nil or !List.starts_with?(container.path, var.path))
     end)
     |> Enum.map(fn c ->
       {c.path |> Enum.join("."), c.id}
     end)
+  end
+
+  defp bump_default_form_id(socket) do
+    assign(socket, default_form_id: "default_#{:os.system_time()}")
   end
 end

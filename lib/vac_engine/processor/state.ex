@@ -109,7 +109,11 @@ defmodule VacEngine.Processor.State do
       get_in(state.heap, gpath)
     rescue
       _e in KeyError ->
-        {:ok, res} = Compiler.eval_ast(var.default, %{state | variables: nil})
+        {_, variables} = Map.pop(state.variables, var.path)
+
+        {:ok, res} =
+          Compiler.eval_ast(var.default, %{state | variables: variables})
+
         res
     end
   end

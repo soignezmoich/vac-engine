@@ -24,6 +24,22 @@ defmodule Fixtures.Helpers do
         import Fixtures.Helpers.Blueprints
 
         def blueprints() do
+          all_blueprints()
+          |> Enum.reject(fn {name, blueprint} ->
+            Map.has_key?(blueprint, "error")
+          end)
+          |> Map.new()
+        end
+
+        def error_blueprints() do
+          all_blueprints()
+          |> Enum.filter(fn {name, blueprint} ->
+            Map.has_key?(blueprint, "error")
+          end)
+          |> Map.new()
+        end
+
+        def all_blueprints() do
           __MODULE__.__info__(:functions)
           |> Enum.reduce(
             %{},
@@ -67,7 +83,7 @@ defmodule Fixtures.Helpers do
       quote do
         def unquote(:"case__#{name}")() do
           Map.merge(
-            %{blueprint: unquote(br)},
+            %{blueprint: unquote(br), input: %{}},
             unquote(block)
           )
         end
