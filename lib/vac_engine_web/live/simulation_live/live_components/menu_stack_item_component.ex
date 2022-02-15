@@ -3,6 +3,7 @@ defmodule VacEngineWeb.SimulationLive.MenuStackItemComponent do
 
   import VacEngineWeb.IconComponent
 
+  import VacEngine.PipeHelpers
   alias VacEngine.Simulation
   alias VacEngine.Simulation.Job
   alias VacEngine.Simulation.Stack
@@ -11,9 +12,7 @@ defmodule VacEngineWeb.SimulationLive.MenuStackItemComponent do
 
   @impl true
   def mount(socket) do
-    socket = socket |> assign(outcome: :not_tested)
-
-    {:ok, socket}
+    socket |> assign(outcome: :not_tested) |> ok()
   end
 
   @impl true
@@ -31,19 +30,17 @@ defmodule VacEngineWeb.SimulationLive.MenuStackItemComponent do
     |> Job.new()
     |> Simulation.queue_job()
 
-    socket =
-      socket
-      |> assign(
-        id: id,
-        stack_id: stack_id,
-        stack_name: stack_name,
-        selected: selected
-      )
-
-    {:ok, socket}
+    socket
+    |> assign(
+      id: id,
+      stack_id: stack_id,
+      stack_name: stack_name,
+      selected: selected
+    )
+    |> ok()
   end
 
-  def update(%{action: {:job_finished, job}}, socket) do
+  def update(%{action: {:job_finished, %Job{} = job}}, socket) do
     outcome =
       if job.result.has_error || !job.result.result_match do
         :failure
@@ -51,9 +48,9 @@ defmodule VacEngineWeb.SimulationLive.MenuStackItemComponent do
         :success
       end
 
-    socket = socket |> assign(outcome: outcome)
-
-    {:ok, socket}
+    socket
+    |> assign(outcome: outcome)
+    |> ok()
   end
 
   @impl true

@@ -44,10 +44,17 @@
       <% end %>
 
     <% "function" -> %>
-       <%= select f, :function, @functions,
-             id: @functions_hash,
-             class: "form-fld-sm text-xs",
-             style: "background-color: white" %>
+      <%= case @functions do %>
+      <% [_|_] -> %>
+        <%= select f, :function, @functions,
+              id: @functions_hash,
+              class: "form-fld-sm text-xs",
+              style: "background-color: white" %>
+      <% _ -> %>
+        <div class="text-center italic text-red-600 text-xs font-bold">
+          No function found
+        </div>
+      <% end %>
 
     <% _ -> %>
     <% end %>

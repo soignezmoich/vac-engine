@@ -27,7 +27,7 @@ defmodule VacEngine.Processor.Variable do
 
     belongs_to(:parent, Variable)
 
-    has_one(:default, Expression)
+    has_one(:default, Expression, on_replace: :delete_if_exists)
 
     field(:type, Ecto.Enum, values: Meta.types())
     field(:mapping, Ecto.Enum, values: Meta.mappings())
@@ -42,7 +42,6 @@ defmodule VacEngine.Processor.Variable do
   def changeset(data, attrs) do
     data
     |> cast(attrs, [
-      :parent_id,
       :enum,
       :name,
       :type,
@@ -58,7 +57,6 @@ defmodule VacEngine.Processor.Variable do
     attrs =
       attrs
       |> EctoHelpers.accept_array_or_map_for_embed(:children)
-      |> EctoHelpers.wrap_in_map(:default, :ast)
 
     data
     |> cast(attrs, [
@@ -70,9 +68,6 @@ defmodule VacEngine.Processor.Variable do
     ])
     |> change(blueprint_id: ctx.blueprint_id, workspace_id: ctx.workspace_id)
     |> cast_assoc(:children, with: {Variable, :create_changeset, [ctx]})
-    |> cast_assoc(:default,
-      with: {Expression, :nested_changeset, [ctx, [nobindings: true]]}
-    )
     |> validate_enum()
     |> validate_required([:name, :type])
     |> validate_container()
@@ -87,6 +82,10 @@ defmodule VacEngine.Processor.Variable do
 
   @doc false
   def update_changeset(data, attrs, ctx) do
+    attrs =
+      attrs
+      |> EctoHelpers.wrap_in_map(:default, :ast)
+
     data
     |> cast(attrs, [
       :enum,
@@ -96,7 +95,7 @@ defmodule VacEngine.Processor.Variable do
       :description
     ])
     |> cast_assoc(:default,
-      with: {Expression, :nested_changeset, [ctx, [nobindings: true]]}
+      with: {Expression, :nested_changeset, [ctx, []]}
     )
     |> validate_enum()
     |> validate_required([:name, :type])
@@ -108,6 +107,19 @@ defmodule VacEngine.Processor.Variable do
     |> unique_constraint(:name, name: :variables_blueprint_id_name_index)
     |> unique_constraint(:name,
       name: :variables_blueprint_id_parent_id_name_index
+    )
+  end
+
+  @doc false
+  def update_default_changeset(data, attrs, ctx) do
+    attrs =
+      attrs
+      |> EctoHelpers.wrap_in_map(:default, :ast)
+
+    data
+    |> cast(attrs, [])
+    |> cast_assoc(:default,
+      with: {Expression, :nested_changeset, [ctx, []]}
     )
   end
 
@@ -366,6 +378,14 @@ defmodule VacEngine.Processor.Variable do
       true ->
         put_change(changeset, :enum, nil)
     end
+  end
+
+  @doc false
+  def insert_bindings(data, ctx) do
+    data
+    |> update_in([Access.key(:default)], fn e ->
+      Expression.insert_bindings(e, ctx)
+    end)
   end
 
   @doc """

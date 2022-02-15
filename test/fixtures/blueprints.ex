@@ -734,4 +734,88 @@ defmodule Fixtures.Blueprints do
       ]
     }
   end
+
+  blueprint(:default0) do
+    %{
+      variables: [
+        %{name: :in1, type: :integer, mapping: :in_optional, default: 5},
+        %{
+          name: :in2,
+          type: :date,
+          mapping: :in_optional,
+          default: quote(do: now())
+        },
+        %{name: :in3, type: :integer, mapping: :in_optional, default: 3},
+        %{
+          name: :in10,
+          type: :map,
+          mapping: :in_optional,
+          children: [
+            %{name: :in11, type: :integer, mapping: :in_optional, default: 8}
+          ]
+        },
+        %{
+          name: :out1,
+          type: :integer,
+          mapping: :out,
+          default: quote(do: add(@in3, @out3))
+        },
+        %{name: :out2, type: :date, mapping: :out},
+        %{
+          name: :out3,
+          type: :integer,
+          mapping: :out,
+          default: quote(do: var([:in10, :in11]))
+        }
+      ],
+      deductions: [
+        %{
+          branches: [
+            %{
+              conditions: [],
+              assignments: [
+                %{target: :out1, expression: quote(do: @out1)},
+                %{target: :out2, expression: quote(do: @in2)},
+                %{target: :out3, expression: quote(do: @out3)}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  end
+
+  blueprint(:default1) do
+    %{
+      error: "variable out1 is causing a circular reference",
+      variables: [
+        %{
+          name: :in1,
+          type: :integer,
+          mapping: :in_optional,
+          default: quote(do: @out1)
+        },
+        %{name: :out1, type: :integer, mapping: :out, default: quote(do: @in1)},
+        %{name: :out2, type: :date, mapping: :out}
+      ],
+      deductions: []
+    }
+  end
+
+  blueprint(:default2) do
+    %{
+      error: "variable out2 is causing a circular reference",
+      variables: [
+        %{
+          name: :in1,
+          type: :integer,
+          mapping: :in_optional,
+          default: quote(do: @out2)
+        },
+        %{name: :out1, type: :integer, mapping: :out, default: quote(do: @in1)},
+        %{name: :out2, type: :date, mapping: :out, default: quote(do: @out1)}
+      ],
+      deductions: []
+    }
+  end
 end

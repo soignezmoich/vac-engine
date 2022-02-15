@@ -75,6 +75,9 @@ defmodule VacEngine.Processor.Expression do
   end
 
   @doc false
+  def insert_bindings(nil, _ctx), do: nil
+
+  @doc false
   def insert_bindings(expression, %{variable_id_index: _index} = ctx) do
     bindings =
       get_in(expression, [

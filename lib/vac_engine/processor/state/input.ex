@@ -43,7 +43,7 @@ defmodule VacEngine.Processor.State.Input do
   end
 
   def map_input(_, _) do
-    {:error, "data to filter must be a map"}
+    {:error, "processor input must be a map"}
   end
 
   defp map_variables(vars, data, mapped_data, parents, hits) do

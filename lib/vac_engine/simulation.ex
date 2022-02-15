@@ -264,7 +264,7 @@ defmodule VacEngine.Simulation do
         workspace_id: workspace_id,
         name: data["name"],
         description: "rid: #{case_id}",
-        runnable: true,
+        runnable: data["runnable"],
         env_now: env_now
       }
       |> Repo.insert!()

@@ -287,11 +287,15 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
         |> Changeset.get_field(:variable)
         |> case do
           nil ->
-            {_, name} =
-              variables
-              |> List.first()
+            variables
+            |> List.first()
+            |> case do
+              {_, name} ->
+                Changeset.put_change(changeset, :variable, name)
 
-            Changeset.put_change(changeset, :variable, name)
+              _ ->
+                changeset
+            end
 
           _ ->
             changeset
@@ -320,11 +324,15 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
         |> Changeset.get_field(:function)
         |> case do
           nil ->
-            {_, name} =
-              functions
-              |> List.first()
+            functions
+            |> List.first()
+            |> case do
+              {_, name} ->
+                Changeset.put_change(changeset, :function, name)
 
-            Changeset.put_change(changeset, :function, name)
+              _ ->
+                changeset
+            end
 
           _ ->
             changeset

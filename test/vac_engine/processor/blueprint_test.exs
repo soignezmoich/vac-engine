@@ -25,6 +25,7 @@ defmodule VacEngine.Processor.BlueprintTest do
   setup_all do
     [
       blueprints: Fixtures.Blueprints.blueprints(),
+      error_blueprints: Fixtures.Blueprints.error_blueprints(),
       blueprint_vars: Fixtures.Blueprints.blueprint_vars()
     ]
   end
@@ -310,6 +311,14 @@ defmodule VacEngine.Processor.BlueprintTest do
       assert Enum.map(blueprint.output_variables, & &1.path) == vars.output
 
       brs
+    end)
+  end
+
+  test "blueprint errors", %{error_blueprints: blueprints, workspace: workspace} do
+    blueprints
+    |> Enum.map(fn {_name, blueprint} ->
+      error = blueprint["error"]
+      assert {:error, ^error} = Processor.create_blueprint(workspace, blueprint)
     end)
   end
 end
