@@ -70,7 +70,7 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
       tab: :deduction,
       tabs_enabled: [:deduction]
     )
-    |> pair(:noreply)
+    |> noreply()
   end
 
   @impl true
@@ -105,7 +105,7 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
       selection: selection,
       on_update: {:scroll_to, ["deduction.#{deduction.id}"]}
     )
-    |> pair(:noreply)
+    |> noreply()
   end
 
   @impl true
@@ -133,7 +133,10 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
       end
 
     send(self(), :reload_blueprint)
-    {:noreply, assign(socket, selection: selection)}
+
+    socket
+    |> assign(selection: selection)
+    |> noreply()
   end
 
   @impl true
@@ -180,7 +183,9 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
 
     send(self(), :reload_blueprint)
 
-    {:noreply, assign(socket, selection: selection)}
+    socket
+    |> assign(selection: selection)
+    |> noreply()
   end
 
   @impl true
@@ -208,7 +213,9 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
 
     send(self(), :reload_blueprint)
 
-    {:noreply, assign(socket, selection: selection)}
+    socket
+    |> assign(selection: selection)
+    |> noreply()
   end
 
   @impl true
@@ -248,7 +255,7 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
 
     socket
     |> assign(changeset: changeset, inspector: :new_column, variables: vars)
-    |> pair(:noreply)
+    |> noreply()
   end
 
   @impl true
@@ -283,7 +290,9 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
 
     send(self(), :reload_blueprint)
 
-    {:noreply, assign(socket, selection: selection)}
+    socket
+    |> assign(selection: selection)
+    |> noreply()
   end
 
   @impl true
@@ -323,7 +332,9 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
 
     send(self(), :reload_blueprint)
 
-    {:noreply, assign(socket, selection: selection)}
+    socket
+    |> assign(selection: selection)
+    |> noreply()
   end
 
   @impl true
@@ -350,7 +361,9 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
         _,
         %{assigns: %{selection: selection}} = socket
       ) do
-    {:noreply, socket |> select(selection)}
+    socket
+    |> select(selection)
+    |> noreply()
   end
 
   @impl true
@@ -359,7 +372,9 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
         %{"tab" => tab},
         socket
       ) do
-    {:noreply, assign(socket, tab: String.to_existing_atom(tab))}
+    socket
+    |> assign(tab: String.to_existing_atom(tab))
+    |> noreply()
   end
 
   defp move_deduction(
@@ -375,7 +390,10 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
     selection = %{selection | deduction: deduction}
 
     send(self(), :reload_blueprint)
-    {:noreply, assign(socket, selection: selection)}
+
+    socket
+    |> assign(selection: selection)
+    |> noreply()
   end
 
   defp move_branch(
@@ -390,7 +408,10 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
     selection = %{selection | branch: branch}
 
     send(self(), :reload_blueprint)
-    {:noreply, assign(socket, selection: selection)}
+
+    socket
+    |> assign(selection: selection)
+    |> noreply()
   end
 
   defp move_column(
@@ -405,7 +426,10 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
     selection = %{selection | column: column}
 
     send(self(), :reload_blueprint)
-    {:noreply, assign(socket, selection: selection)}
+
+    socket
+    |> assign(selection: selection)
+    |> noreply()
   end
 
   defp on_update(%{assigns: %{on_update: {f, args}}} = socket)
@@ -582,7 +606,8 @@ defmodule VacEngineWeb.EditorLive.DeductionInspectorComponent do
         :deduction
       end
 
-    assign(socket,
+    socket
+    |> assign(
       tab: tab,
       tabs_enabled: tabs_enabled,
       cell: cell,

@@ -1,11 +1,14 @@
 defmodule VacEngineWeb.AuthLive.Login do
   use VacEngineWeb, :live_view
 
+  import VacEngine.PipeHelpers
   import VacEngineWeb.AuthLive.LoginFormComponent
+
   alias VacEngine.Account
 
   defmodule LoginForm do
     use Ecto.Schema
+
     import Ecto.Changeset
 
     embedded_schema do
@@ -38,13 +41,14 @@ defmodule VacEngineWeb.AuthLive.Login do
         :loading
       end
 
-    {:ok,
-     assign(socket,
-       changeset: LoginForm.changeset(),
-       next_url: Map.get(session, "login_next_url", "/"),
-       step: step,
-       show_password: false
-     )}
+    socket
+    |> assign(
+      changeset: LoginForm.changeset(),
+      next_url: Map.get(session, "login_next_url", "/"),
+      step: step,
+      show_password: false
+    )
+    |> ok()
   end
 
   @impl true
@@ -62,7 +66,9 @@ defmodule VacEngineWeb.AuthLive.Login do
       attrs
       |> LoginForm.changeset()
 
-    {:noreply, assign(socket, changeset: changeset)}
+    socket
+    |> assign(changeset: changeset)
+    |> noreply()
   end
 
   @impl true
@@ -79,13 +85,17 @@ defmodule VacEngineWeb.AuthLive.Login do
         check_user(data, socket)
 
       {:error, changeset} ->
-        {:noreply, assign(socket, changeset: changeset)}
+        socket
+        |> assign(changeset: changeset)
+        |> noreply()
     end
   end
 
   @impl true
   def handle_event("toggle_password", _, socket) do
-    {:noreply, assign(socket, show_password: !socket.assigns.show_password)}
+    socket
+    |> assign(show_password: !socket.assigns.show_password)
+    |> noreply()
   end
 
   @impl true
@@ -100,12 +110,18 @@ defmodule VacEngineWeb.AuthLive.Login do
       if NimbleTOTP.valid?(secret, code) do
         {:ok, user} = Account.update_user(user, %{totp_secret: secret})
 
-        {:noreply, login_success(user, socket)}
+        socket
+        |> login_success(user)
+        |> noreply()
       else
-        {:noreply, assign(socket, totp_error: true)}
+        socket
+        |> assign(totp_error: true)
+        |> noreply()
       end
     else
-      {:noreply, assign(socket, totp_error: false)}
+      socket
+      |> assign(totp_error: false)
+      |> noreply()
     end
   end
 
@@ -113,14 +129,18 @@ defmodule VacEngineWeb.AuthLive.Login do
   def handle_event(
         "totp_skip",
         _,
-        socket
+        %{assigns: %{user: user}} = socket
       ) do
-    {:noreply, login_success(socket.assigns.user, socket)}
+    socket
+    |> login_success(user)
+    |> noreply()
   end
 
   @impl true
   def handle_info({:redirect_to, url}, socket) do
-    {:noreply, redirect(socket, to: url)}
+    socket
+    |> redirect(to: url)
+    |> noreply()
   end
 
   defp check_user(%{email: email, password: password} = data, socket) do
@@ -130,29 +150,37 @@ defmodule VacEngineWeb.AuthLive.Login do
         {url, secret} = Account.gen_totp(user)
         svg = url |> EQRCode.encode() |> EQRCode.svg(width: 400)
 
-        {:noreply,
-         assign(socket,
-           step: :totp_setup,
-           user: user,
-           totp_svg: svg,
-           totp_error: false,
-           totp_secret: secret
-         )}
+        socket
+        |> assign(
+          step: :totp_setup,
+          user: user,
+          totp_svg: svg,
+          totp_error: false,
+          totp_secret: secret
+        )
+        |> noreply()
 
       {:ok, %{totp_secret: _secret} = user} ->
-        {:noreply,
-         assign(socket, step: :totp_check, user: user, totp_error: false)}
+        socket
+        |> assign(
+          step: :totp_check,
+          user: user,
+          totp_error: false
+        )
+        |> noreply()
 
       _ ->
         {:error, changeset} =
           LoginForm.error_changeset(data)
           |> Ecto.Changeset.apply_action(:insert)
 
-        {:noreply, assign(socket, changeset: changeset)}
+        socket
+        |> assign(changeset: changeset)
+        |> noreply()
     end
   end
 
-  defp login_success(user, socket) do
+  defp login_success(socket, user) do
     token =
       Phoenix.Token.sign(
         VacEngineWeb.Endpoint,
@@ -168,6 +196,6 @@ defmodule VacEngineWeb.AuthLive.Login do
       Application.get_env(:vac_engine, :login_delay)
     )
 
-    assign(socket, step: :success)
+    socket |> assign(step: :success)
   end
 end

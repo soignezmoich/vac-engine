@@ -1,6 +1,7 @@
 defmodule VacEngineWeb.SimulationLive.StackOutputVariableComponent do
   use VacEngineWeb, :live_component
 
+  import VacEngine.PipeHelpers
   import VacEngineWeb.IconComponent
 
   alias VacEngine.Simulation
@@ -43,26 +44,22 @@ defmodule VacEngineWeb.SimulationLive.StackOutputVariableComponent do
         _ -> ""
       end
 
-    visible =
-      active ||
-        filter == "all"
+    visible = active || filter == "all"
 
-    socket =
-      socket
-      |> assign(
-        active: active,
-        expected: expected,
-        forbidden: forbidden,
-        id: id,
-        bg_color: bg_color,
-        runnable_case: runnable_case,
-        runnable_output_entry: runnable_output_entry,
-        stack: stack,
-        variable: variable,
-        visible: visible
-      )
-
-    {:ok, socket}
+    socket
+    |> assign(
+      active: active,
+      expected: expected,
+      forbidden: forbidden,
+      id: id,
+      bg_color: bg_color,
+      runnable_case: runnable_case,
+      runnable_output_entry: runnable_output_entry,
+      stack: stack,
+      variable: variable,
+      visible: visible
+    )
+    |> ok()
   end
 
   def handle_event("toggle_entry", %{"active" => active}, socket) do

@@ -19,19 +19,20 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
 
   @impl true
   def mount(socket) do
-    {:ok,
-     assign(socket,
-       types: @types,
-       variable: nil,
-       blueprint: nil,
-       containers: [],
-       changeset: nil,
-       enum_new: nil,
-       used?: false,
-       ast: nil,
-       transient_ast: nil,
-       transient_ast_opts: nil
-     )}
+    socket
+    |> assign(
+      types: @types,
+      variable: nil,
+      blueprint: nil,
+      containers: [],
+      changeset: nil,
+      enum_new: nil,
+      used?: false,
+      ast: nil,
+      transient_ast: nil,
+      transient_ast_opts: nil
+    )
+    |> ok()
   end
 
   @impl true
@@ -86,7 +87,7 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
         socket
         |> assign(enum_new: nil)
         |> update_changeset(%{enum: values})
-        |> pair(:noreply)
+        |> noreply()
     end
   end
 
@@ -100,7 +101,7 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
     |> Changeset.get_field(:enum)
     |> List.delete_at(String.to_integer(idx))
     |> then(fn values -> update_changeset(socket, %{enum: values}) end)
-    |> pair(:noreply)
+    |> noreply()
   end
 
   @impl true
@@ -109,7 +110,9 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
         %{"_target" => ["enum", "new"], "enum" => %{"new" => val}},
         socket
       ) do
-    {:noreply, assign(socket, enum_new: val)}
+    socket
+    |> assign(enum_new: val)
+    |> noreply()
   end
 
   @impl true
@@ -120,7 +123,7 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
       ) do
     socket
     |> update_changeset(params)
-    |> pair(:noreply)
+    |> noreply()
   end
 
   @impl true
@@ -154,10 +157,12 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
       {:ok, var} ->
         socket
         |> update_notify_var(var)
-        |> pair(:noreply)
+        |> noreply()
 
       {:error, changeset} ->
-        {:noreply, assign(socket, changeset: changeset)}
+        socket
+        |> assign(changeset: changeset)
+        |> noreply()
     end
   end
 
@@ -203,14 +208,19 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
       {:ok, %{move: var, update: _var}} ->
         socket
         |> update_notify_var(var)
-        |> pair(:noreply)
+        |> noreply()
 
       {:error, _, err, _} when is_binary(err) ->
         changeset = Changeset.add_error(changeset, :default, err)
-        {:noreply, assign(socket, changeset: changeset)}
+
+        socket
+        |> assign(changeset: changeset)
+        |> noreply()
 
       {:error, _, changeset, _} ->
-        {:noreply, assign(socket, changeset: changeset)}
+        socket
+        |> assign(changeset: changeset)
+        |> noreply()
     end
   end
 
@@ -223,14 +233,14 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
     socket
     |> assign(variable: nil)
     |> set_variable()
-    |> pair(:noreply)
+    |> noreply()
   end
 
   @impl true
   def handle_event("cancel", _, socket) do
     socket
     |> set_variable()
-    |> pair(:noreply)
+    |> noreply()
   end
 
   @impl true
@@ -244,7 +254,7 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
       {:ok, _var} ->
         socket
         |> update_notify_var(nil)
-        |> pair(:noreply)
+        |> noreply()
 
       _error ->
         {:noreply, socket}
@@ -264,7 +274,7 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
     |> set_variable()
     |> update_changeset()
     |> force_changes([:mapping, :type])
-    |> pair(:noreply)
+    |> noreply()
   end
 
   @impl true
@@ -280,7 +290,7 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
     |> set_variable()
     |> update_changeset()
     |> force_changes([:mapping, :type])
-    |> pair(:noreply)
+    |> noreply()
   end
 
   @impl true
@@ -296,7 +306,7 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
     |> set_variable()
     |> update_changeset()
     |> force_changes([:mapping, :type])
-    |> pair(:noreply)
+    |> noreply()
   end
 
   defp force_changes(%{assigns: %{changeset: changeset}} = socket, fields) do
@@ -308,7 +318,7 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
         Changeset.get_field(changeset, field)
       )
     end)
-    |> then(fn ch -> assign(socket, changeset: ch) end)
+    |> then(fn ch -> socket |> assign(changeset: ch) end)
   end
 
   defp set_variable(
@@ -320,7 +330,8 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
          } = socket
        )
        when is_nil(v) or is_nil(b) do
-    assign(socket,
+    socket
+    |> assign(
       ast: nil,
       variable: nil,
       changeset: nil,
@@ -395,7 +406,7 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
       %{changeset | errors: [], valid?: true}
       |> Processor.change_variable(attrs)
 
-    assign(socket, changeset: changeset)
+    socket |> assign(changeset: changeset)
   end
 
   defp containers(var, blueprint) do
@@ -414,6 +425,6 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
   end
 
   defp bump_default_form_id(socket) do
-    assign(socket, default_form_id: "default_#{:os.system_time()}")
+    socket |> assign(default_form_id: "default_#{:os.system_time()}")
   end
 end

@@ -1,6 +1,8 @@
 defmodule VacEngineWeb.BlueprintLive.Pick do
   use VacEngineWeb, :live_view
 
+  import VacEngine.PipeHelpers
+
   alias VacEngine.Processor
 
   on_mount(VacEngineWeb.LiveRole)
@@ -21,7 +23,9 @@ defmodule VacEngineWeb.BlueprintLive.Pick do
         |> Processor.filter_accessible_blueprints(role)
       end)
 
-    {:ok, assign(socket, blueprints: blueprints)}
+    socket
+    |> assign(blueprints: blueprints)
+    |> ok()
   end
 
   @impl true

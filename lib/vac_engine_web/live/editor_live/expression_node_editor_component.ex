@@ -97,7 +97,7 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
     |> update_variable()
     |> update_ast()
     |> notify_parent()
-    |> pair(:noreply)
+    |> noreply()
   end
 
   def update_types(
@@ -182,7 +182,8 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
         composed_types
       end
 
-    assign(socket,
+    socket
+    |> assign(
       composed_types: composed_types,
       composed_types_hash: form_id <> hash(composed_types),
       variables: variables,
@@ -198,7 +199,7 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
     if Enum.member?(types, Ast.return_type(ast)) do
       socket
     else
-      assign(socket, ast: nil)
+      socket |> assign(ast: nil)
     end
   end
 
@@ -301,7 +302,7 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
             changeset
         end
 
-      assign(socket, changeset: changeset)
+      socket |> assign(changeset: changeset)
     else
       socket
     end
@@ -421,9 +422,9 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
         end)
         |> elem(1)
 
-      assign(socket, arguments: arguments, changeset: changeset)
+      socket |> assign(arguments: arguments, changeset: changeset)
     else
-      assign(socket, arguments: [])
+      socket |> assign(arguments: [])
     end
   end
 

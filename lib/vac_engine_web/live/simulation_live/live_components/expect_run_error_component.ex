@@ -1,6 +1,7 @@
 defmodule VacEngineWeb.SimulationLive.ExpectRunErrorComponent do
   use VacEngineWeb, :live_component
 
+  import VacEngine.PipeHelpers
   import VacEngineWeb.IconComponent
 
   alias VacEngine.Simulation
@@ -25,17 +26,15 @@ defmodule VacEngineWeb.SimulationLive.ExpectRunErrorComponent do
         _ -> {:not_tested, ""}
       end
 
-    socket =
-      socket
-      |> assign(
-        bg_color: bg_color,
-        expect_error: expected_result == :error,
-        outcome: outcome,
-        runnable_case: runnable_case,
-        stack: stack
-      )
-
-    {:ok, socket}
+    socket
+    |> assign(
+      bg_color: bg_color,
+      expect_error: expected_result == :error,
+      outcome: outcome,
+      runnable_case: runnable_case,
+      stack: stack
+    )
+    |> ok()
   end
 
   def handle_event("toggle_expect_error", %{"active" => active}, socket) do

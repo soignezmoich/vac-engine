@@ -1,6 +1,8 @@
 defmodule VacEngineWeb.ApiKeyLive.Edit do
   use VacEngineWeb, :live_view
 
+  import VacEngine.PipeHelpers
+
   alias VacEngine.Account
   alias VacEngine.Query
   alias VacEngine.Pub
@@ -19,14 +21,15 @@ defmodule VacEngineWeb.ApiKeyLive.Edit do
       ) do
     can!(socket, :manage, :api_keys)
 
-    {:ok,
-     assign(socket,
-       role_id: role_id,
-       secret_visible: false,
-       workspace_results: [],
-       portal_results: []
-     )
-     |> reload_role}
+    socket
+    |> assign(
+      role_id: role_id,
+      secret_visible: false,
+      workspace_results: [],
+      portal_results: []
+    )
+    |> reload_role
+    |> ok()
   end
 
   @impl true
@@ -45,7 +48,9 @@ defmodule VacEngineWeb.ApiKeyLive.Edit do
       |> Account.change_role(params)
       |> Map.put(:action, :update)
 
-    {:noreply, assign(socket, changeset: changeset)}
+    socket
+    |> assign(changeset: changeset)
+    |> noreply()
   end
 
   @impl true
@@ -59,12 +64,14 @@ defmodule VacEngineWeb.ApiKeyLive.Edit do
     Account.update_role(role, params)
     |> case do
       {:ok, role} ->
-        {:noreply,
-         socket
-         |> push_redirect(to: Routes.api_key_path(socket, :edit, role))}
+        socket
+        |> push_redirect(to: Routes.api_key_path(socket, :edit, role))
+        |> noreply()
 
       {:error, changeset} ->
-        {:noreply, assign(socket, changeset: changeset)}
+        socket
+        |> assign(changeset: changeset)
+        |> noreply()
     end
   end
 
@@ -72,9 +79,9 @@ defmodule VacEngineWeb.ApiKeyLive.Edit do
   def handle_event("reveal_secret", _, socket) do
     Process.send_after(self(), :hide_secret, 10_000)
 
-    {:noreply,
-     socket
-     |> assign(secret_visible: true)}
+    socket
+    |> assign(secret_visible: true)
+    |> noreply()
   end
 
   @impl true
@@ -86,9 +93,9 @@ defmodule VacEngineWeb.ApiKeyLive.Edit do
     can!(socket, :manage, :api_keys)
     {:ok, _} = Account.delete_role(role)
 
-    {:noreply,
-     socket
-     |> push_redirect(to: Routes.api_key_path(socket, :index), replace: true)}
+    socket
+    |> push_redirect(to: Routes.api_key_path(socket, :index), replace: true)
+    |> noreply()
   end
 
   @impl true
@@ -115,12 +122,16 @@ defmodule VacEngineWeb.ApiKeyLive.Edit do
     results =
       Enum.filter(results, fn w -> not Map.has_key?(remove_workspaces, w.id) end)
 
-    {:noreply, assign(socket, workspace_results: results)}
+    socket
+    |> assign(workspace_results: results)
+    |> noreply()
   end
 
   @impl true
   def handle_event("search_workspaces", _, socket) do
-    {:noreply, assign(socket, workspace_results: [])}
+    socket
+    |> assign(workspace_results: [])
+    |> noreply()
   end
 
   @impl true
@@ -143,7 +154,10 @@ defmodule VacEngineWeb.ApiKeyLive.Edit do
 
     {:ok, _perm} = Account.create_permissions(edited_role, workspace)
 
-    {:noreply, assign(socket, workspace_results: []) |> reload_role}
+    socket
+    |> assign(workspace_results: [])
+    |> reload_role()
+    |> noreply()
   end
 
   @impl true
@@ -160,7 +174,9 @@ defmodule VacEngineWeb.ApiKeyLive.Edit do
 
     {:ok, _perm} = Account.delete_permissions(edited_role, perm.workspace)
 
-    {:noreply, reload_role(socket)}
+    socket
+    |> reload_role()
+    |> noreply()
   end
 
   @impl true
@@ -187,12 +203,16 @@ defmodule VacEngineWeb.ApiKeyLive.Edit do
     results =
       Enum.filter(results, fn w -> not Map.has_key?(remove_portals, w.id) end)
 
-    {:noreply, assign(socket, portal_results: results)}
+    socket
+    |> assign(portal_results: results)
+    |> noreply()
   end
 
   @impl true
   def handle_event("search_portals", _, socket) do
-    {:noreply, assign(socket, portal_results: [])}
+    socket
+    |> assign(portal_results: [])
+    |> noreply()
   end
 
   @impl true
@@ -215,7 +235,10 @@ defmodule VacEngineWeb.ApiKeyLive.Edit do
 
     {:ok, _perm} = Account.create_permissions(edited_role, portal)
 
-    {:noreply, assign(socket, portal_results: []) |> reload_role}
+    socket
+    |> assign(portal_results: [])
+    |> reload_role()
+    |> noreply()
   end
 
   @impl true
@@ -232,12 +255,16 @@ defmodule VacEngineWeb.ApiKeyLive.Edit do
 
     {:ok, _perm} = Account.delete_permissions(edited_role, perm.portal)
 
-    {:noreply, reload_role(socket)}
+    socket
+    |> reload_role()
+    |> noreply()
   end
 
   @impl true
   def handle_info(:hide_secret, socket) do
-    {:noreply, assign(socket, secret_visible: false)}
+    socket
+    |> assign(secret_visible: false)
+    |> noreply()
   end
 
   @impl true
@@ -246,9 +273,9 @@ defmodule VacEngineWeb.ApiKeyLive.Edit do
 
     {:ok, _perm} = Account.toggle_permission(role, action, scope)
 
-    {:noreply,
-     socket
-     |> reload_role}
+    socket
+    |> reload_role()
+    |> noreply()
   end
 
   defp reload_role(socket) do
@@ -264,7 +291,8 @@ defmodule VacEngineWeb.ApiKeyLive.Edit do
       |> Account.change_role()
       |> Map.put(:action, :update)
 
-    assign(socket,
+    socket
+    |> assign(
       edited_role: role,
       changeset: changeset,
       token: List.first(role.api_tokens)

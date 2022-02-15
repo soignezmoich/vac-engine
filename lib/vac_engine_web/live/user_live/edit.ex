@@ -1,14 +1,16 @@
 defmodule VacEngineWeb.UserLive.Edit do
   use VacEngineWeb, :live_view
 
-  alias VacEngineWeb.PermissionToggleComponent
-  alias VacEngineWeb.InlineSearchComponent
+  import VacEngine.PipeHelpers
   import VacEngineWeb.PermissionHelpers
+
   alias VacEngine.Account
-  alias VacEngine.Query
-  alias VacEngine.Processor
-  alias VacEngineWeb.Router.Helpers, as: Routes
   alias VacEngine.EnumHelpers
+  alias VacEngine.Processor
+  alias VacEngine.Query
+  alias VacEngineWeb.InlineSearchComponent
+  alias VacEngineWeb.PermissionToggleComponent
+  alias VacEngineWeb.Router.Helpers, as: Routes
 
   on_mount(VacEngineWeb.LiveRole)
   on_mount({VacEngineWeb.LiveLocation, ~w(admin user)a})
@@ -17,15 +19,16 @@ defmodule VacEngineWeb.UserLive.Edit do
   def mount(%{"user_id" => uid}, _session, socket) do
     can!(socket, :manage, :users)
 
-    {:ok,
-     assign(socket,
-       edit: true,
-       user_id: uid,
-       generated_password: nil,
-       workspace_results: [],
-       blueprint_results: []
-     )
-     |> reload_user}
+    socket
+    |> assign(
+      edit: true,
+      user_id: uid,
+      generated_password: nil,
+      workspace_results: [],
+      blueprint_results: []
+    )
+    |> reload_user()
+    |> ok()
   end
 
   @impl true
@@ -44,7 +47,9 @@ defmodule VacEngineWeb.UserLive.Edit do
       |> Account.change_user(params)
       |> Map.put(:action, :update)
 
-    {:noreply, assign(socket, changeset: changeset)}
+    socket
+    |> assign(changeset: changeset)
+    |> noreply()
   end
 
   @impl true
@@ -58,12 +63,14 @@ defmodule VacEngineWeb.UserLive.Edit do
     Account.update_user(user, params)
     |> case do
       {:ok, user} ->
-        {:noreply,
-         socket
-         |> push_redirect(to: Routes.user_path(socket, :edit, user))}
+        socket
+        |> push_redirect(to: Routes.user_path(socket, :edit, user))
+        |> noreply()
 
       {:error, changeset} ->
-        {:noreply, assign(socket, changeset: changeset)}
+        socket
+        |> assign(changeset: changeset)
+        |> noreply()
     end
   end
 
@@ -81,10 +88,10 @@ defmodule VacEngineWeb.UserLive.Edit do
     {:ok, _user} =
       Account.update_user(socket.assigns.user, %{"password" => pass})
 
-    {:noreply,
-     socket
-     |> reload_user
-     |> assign(generated_password: pass)}
+    socket
+    |> reload_user
+    |> assign(generated_password: pass)
+    |> noreply()
   end
 
   @impl true
@@ -98,7 +105,9 @@ defmodule VacEngineWeb.UserLive.Edit do
 
     {:ok, _user} = Account.update_user(user, %{totp_secret: nil})
 
-    {:noreply, socket |> reload_user}
+    socket
+    |> reload_user()
+    |> noreply()
   end
 
   @impl true
@@ -107,7 +116,9 @@ defmodule VacEngineWeb.UserLive.Edit do
         _,
         socket
       ) do
-    {:noreply, assign(socket, generated_password: nil)}
+    socket
+    |> assign(generated_password: nil)
+    |> noreply()
   end
 
   @impl true
@@ -126,9 +137,9 @@ defmodule VacEngineWeb.UserLive.Edit do
 
     :ok = VacEngineWeb.Endpoint.disconnect_live_views(session)
 
-    {:noreply,
-     socket
-     |> reload_user}
+    socket
+    |> reload_user()
+    |> noreply()
   end
 
   @impl true
@@ -149,9 +160,9 @@ defmodule VacEngineWeb.UserLive.Edit do
 
     :ok = VacEngineWeb.Endpoint.disconnect_live_views(role)
 
-    {:noreply,
-     socket
-     |> reload_user}
+    socket
+    |> reload_user()
+    |> noreply()
   end
 
   @impl true
@@ -178,12 +189,16 @@ defmodule VacEngineWeb.UserLive.Edit do
     results =
       Enum.filter(results, fn w -> not Map.has_key?(remove_workspaces, w.id) end)
 
-    {:noreply, assign(socket, workspace_results: results)}
+    socket
+    |> assign(workspace_results: results)
+    |> noreply()
   end
 
   @impl true
   def handle_event("search_workspaces", _, socket) do
-    {:noreply, assign(socket, workspace_results: [])}
+    socket
+    |> assign(workspace_results: [])
+    |> noreply()
   end
 
   @impl true
@@ -207,7 +222,10 @@ defmodule VacEngineWeb.UserLive.Edit do
 
     :ok = VacEngineWeb.Endpoint.disconnect_live_views(user_role)
 
-    {:noreply, assign(socket, workspace_results: []) |> reload_user}
+    socket
+    |> assign(workspace_results: [])
+    |> reload_user()
+    |> noreply()
   end
 
   @impl true
@@ -226,7 +244,9 @@ defmodule VacEngineWeb.UserLive.Edit do
 
     :ok = VacEngineWeb.Endpoint.disconnect_live_views(user_role)
 
-    {:noreply, reload_user(socket)}
+    socket
+    |> reload_user()
+    |> noreply()
   end
 
   @impl true
@@ -253,12 +273,16 @@ defmodule VacEngineWeb.UserLive.Edit do
     results =
       Enum.filter(results, fn w -> not Map.has_key?(remove_blueprints, w.id) end)
 
-    {:noreply, assign(socket, blueprint_results: results)}
+    socket
+    |> assign(blueprint_results: results)
+    |> noreply()
   end
 
   @impl true
   def handle_event("search_blueprints", _, socket) do
-    {:noreply, assign(socket, blueprint_results: [])}
+    socket
+    |> assign(blueprint_results: [])
+    |> noreply()
   end
 
   @impl true
@@ -282,7 +306,10 @@ defmodule VacEngineWeb.UserLive.Edit do
 
     :ok = VacEngineWeb.Endpoint.disconnect_live_views(user_role)
 
-    {:noreply, assign(socket, blueprint_results: []) |> reload_user}
+    socket
+    |> assign(blueprint_results: [])
+    |> reload_user()
+    |> noreply()
   end
 
   @impl true
@@ -301,7 +328,9 @@ defmodule VacEngineWeb.UserLive.Edit do
 
     :ok = VacEngineWeb.Endpoint.disconnect_live_views(user_role)
 
-    {:noreply, reload_user(socket)}
+    socket
+    |> reload_user()
+    |> noreply()
   end
 
   @impl true
@@ -313,9 +342,9 @@ defmodule VacEngineWeb.UserLive.Edit do
 
     :ok = VacEngineWeb.Endpoint.disconnect_live_views(role)
 
-    {:noreply,
-     socket
-     |> reload_user}
+    socket
+    |> reload_user()
+    |> noreply()
   end
 
   defp reload_user(%{assigns: %{user_id: uid}} = socket) do
@@ -333,7 +362,8 @@ defmodule VacEngineWeb.UserLive.Edit do
       |> Account.change_user()
       |> Map.put(:action, :update)
 
-    assign(socket,
+    socket
+    |> assign(
       user: user,
       changeset: changeset,
       user_role: role,

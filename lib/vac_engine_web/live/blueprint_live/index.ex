@@ -1,6 +1,8 @@
 defmodule VacEngineWeb.BlueprintLive.Index do
   use VacEngineWeb, :live_view
 
+  import VacEngine.PipeHelpers
+
   alias VacEngine.Processor
   alias VacEngine.Query
 
@@ -23,11 +25,12 @@ defmodule VacEngineWeb.BlueprintLive.Index do
         |> Query.order_by(:id)
       end)
 
-    {:ok,
-     assign(socket,
-       blueprints: blueprints,
-       can_read_portals: can?(socket, :read_portals, workspace)
-     )}
+    socket
+    |> assign(
+      blueprints: blueprints,
+      can_read_portals: can?(socket, :read_portals, workspace)
+    )
+    |> ok()
   end
 
   @impl true

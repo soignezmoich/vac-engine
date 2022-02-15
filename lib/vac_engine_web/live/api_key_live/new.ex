@@ -1,6 +1,8 @@
 defmodule VacEngineWeb.ApiKeyLive.New do
   use VacEngineWeb, :live_view
 
+  import VacEngine.PipeHelpers
+
   alias VacEngine.Account
   alias VacEngine.Account.Role
 
@@ -16,10 +18,9 @@ defmodule VacEngineWeb.ApiKeyLive.New do
       |> Account.change_role()
       |> Map.put(:action, :insert)
 
-    {:ok,
-     assign(socket,
-       changeset: changeset
-     )}
+    socket
+    |> assign(changeset: changeset)
+    |> ok()
   end
 
   @impl true
@@ -38,7 +39,9 @@ defmodule VacEngineWeb.ApiKeyLive.New do
       |> Account.change_role(params)
       |> Map.put(:action, :insert)
 
-    {:noreply, assign(socket, changeset: changeset)}
+    socket
+    |> assign(changeset: changeset)
+    |> noreply()
   end
 
   @impl true
@@ -51,12 +54,14 @@ defmodule VacEngineWeb.ApiKeyLive.New do
 
     with {:ok, role} <- Account.create_role(:api, params),
          {:ok, _token} <- Account.create_api_token(role, role.test) do
-      {:noreply,
-       socket
-       |> push_redirect(to: Routes.api_key_path(socket, :edit, role))}
+      socket
+      |> push_redirect(to: Routes.api_key_path(socket, :edit, role))
+      |> noreply()
     else
       {:error, changeset} ->
-        {:noreply, assign(socket, changeset: changeset)}
+        socket
+        |> assign(changeset: changeset)
+        |> noreply()
     end
   end
 end

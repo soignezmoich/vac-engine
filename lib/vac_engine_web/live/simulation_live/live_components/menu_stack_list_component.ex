@@ -1,6 +1,8 @@
 defmodule VacEngineWeb.SimulationLive.MenuStackListComponent do
   use VacEngineWeb, :live_component
 
+  import VacEngine.PipeHelpers
+
   alias VacEngine.Simulation
   alias VacEngineWeb.SimulationLive.MenuStackItemComponent
   alias VacEngineWeb.SimulationLive.SimulationEditorComponent
@@ -14,11 +16,9 @@ defmodule VacEngineWeb.SimulationLive.MenuStackListComponent do
       ) do
     %{blueprint: blueprint} = socket.assigns
 
-    socket =
-      socket
-      |> assign(stacks: Simulation.get_stack_names(blueprint))
-
-    {:ok, socket}
+    socket
+    |> assign(stacks: Simulation.get_stack_names(blueprint))
+    |> ok()
   end
 
   def update(
@@ -30,46 +30,45 @@ defmodule VacEngineWeb.SimulationLive.MenuStackListComponent do
         },
         socket
       ) do
-    socket =
-      socket
-      |> assign(
-        id: id,
-        blueprint: blueprint,
-        stacks: Simulation.get_stack_names(blueprint),
-        selected_id: selected_id,
-        has_selection: selected_type == :stack,
-        creation_error_message: nil
-      )
-
-    {:ok, socket}
+    socket
+    |> assign(
+      id: id,
+      blueprint: blueprint,
+      stacks: Simulation.get_stack_names(blueprint),
+      selected_id: selected_id,
+      has_selection: selected_type == :stack,
+      creation_error_message: nil
+    )
+    |> ok()
   end
 
   def handle_event("validate", _params, socket) do
-    {:noreply, socket |> assign(creation_error_message: nil)}
+    socket
+    |> assign(creation_error_message: nil)
+    |> noreply()
   end
 
   def handle_event("create", %{"create_stack" => %{"name" => name}}, socket) do
-    socket =
-      case Simulation.create_blank_stack(socket.assigns.blueprint, name) do
-        {:ok, %{stack: new_stack}} ->
-          send_update(
-            SimulationEditorComponent,
-            id: "simulation_editor",
-            action: :set_selection,
-            selected_type: :stack,
-            selected_id: new_stack.id
-          )
+    case Simulation.create_blank_stack(socket.assigns.blueprint, name) do
+      {:ok, %{stack: new_stack}} ->
+        send_update(
+          SimulationEditorComponent,
+          id: "simulation_editor",
+          action: :set_selection,
+          selected_type: :stack,
+          selected_id: new_stack.id
+        )
 
-          socket
+        socket
+        |> noreply()
 
-        {:error, :case, _changeset, _} ->
-          socket
-          |> assign(
-            creation_error_message:
-              "invalid name: use only digits, letters, '-' or '_' and start with a letter."
-          )
-      end
-
-    {:noreply, socket}
+      {:error, :case, _changeset, _} ->
+        socket
+        |> assign(
+          creation_error_message:
+            "invalid name: use only digits, letters, '-' or '_' and start with a letter."
+        )
+        |> noreply()
+    end
   end
 end

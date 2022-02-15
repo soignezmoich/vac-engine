@@ -54,7 +54,7 @@ defmodule VacEngineWeb.EditorLive.DeductionCellInspectorComponent do
     |> assign(error: nil)
     |> extract_cell()
     |> bump_form_id()
-    |> pair(:noreply)
+    |> noreply()
   end
 
   @impl true
@@ -63,7 +63,9 @@ defmodule VacEngineWeb.EditorLive.DeductionCellInspectorComponent do
         %{"cell" => %{"description" => description}},
         socket
       ) do
-    {:noreply, assign(socket, description: description)}
+    socket
+    |> assign(description: description)
+    |> noreply()
   end
 
   @impl true
@@ -82,7 +84,9 @@ defmodule VacEngineWeb.EditorLive.DeductionCellInspectorComponent do
 
     send(self(), :reload_blueprint)
 
-    {:noreply, assign(socket, error: nil)}
+    socket
+    |> assign(error: nil)
+    |> noreply()
   end
 
   @impl true
@@ -115,7 +119,9 @@ defmodule VacEngineWeb.EditorLive.DeductionCellInspectorComponent do
         {:noreply, socket}
 
       _ ->
-        {:noreply, assign(socket, error: "Cannot save changes")}
+        socket
+        |> assign(error: "Cannot save changes")
+        |> noreply()
     end
   end
 
@@ -181,6 +187,7 @@ defmodule VacEngineWeb.EditorLive.DeductionCellInspectorComponent do
   end
 
   defp bump_form_id(%{assigns: %{cell_id: cell_id}} = socket) do
-    assign(socket, form_id: "#{cell_id}.#{:os.system_time()}")
+    socket
+    |> assign(form_id: "#{cell_id}.#{:os.system_time()}")
   end
 end

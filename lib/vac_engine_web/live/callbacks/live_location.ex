@@ -1,5 +1,6 @@
 defmodule VacEngineWeb.LiveLocation do
   import Phoenix.LiveView
+  import VacEngine.PipeHelpers
 
   def on_mount(location, _params, _session, socket) do
     # live_action = Map.get(socket.assigns, :live_action)
@@ -8,6 +9,8 @@ defmodule VacEngineWeb.LiveLocation do
     # else
     #     location
     # end
-    {:cont, assign(socket, location: location)}
+    socket
+    |> assign(location: location)
+    |> pair(:cont)
   end
 end

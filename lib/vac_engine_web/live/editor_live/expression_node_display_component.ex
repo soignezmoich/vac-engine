@@ -13,7 +13,7 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeDisplayComponent do
   end
 
   def parse_ast(%{assigns: %{ast: nil}} = socket) do
-    assign(socket, type: :constant, value: nil)
+    socket |> assign(type: :constant, value: nil)
   end
 
   def parse_ast(%{assigns: %{ast: ast}} = socket) do
@@ -22,10 +22,10 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeDisplayComponent do
     node_type
     |> case do
       :constant ->
-        assign(socket, type: :constant, value: Ast.describe(ast))
+        socket |> assign(type: :constant, value: Ast.describe(ast))
 
       :variable ->
-        assign(socket, type: :variable, name: Ast.variable_name(ast))
+        socket |> assign(type: :variable, name: Ast.variable_name(ast))
 
       :function ->
         fname = Ast.function_name(ast)
@@ -38,7 +38,8 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeDisplayComponent do
             %{ast: a, index: i}
           end)
 
-        assign(socket,
+        socket
+        |> assign(
           type: :function,
           name: fname,
           arguments: args

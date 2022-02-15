@@ -6,12 +6,16 @@ defmodule VacEngineWeb.EditorLive.VariableListComponent do
 
   @impl true
   def mount(socket) do
-    {:ok, assign(socket, selected_variable: nil)}
+    socket
+    |> assign(selected_variable: nil)
+    |> ok()
   end
 
   @impl true
   def update(%{action: {:select_variable, var}}, socket) do
-    {:ok, assign(socket, selected_variable: var)}
+    socket
+    |> assign(selected_variable: var)
+    |> ok()
   end
 
   @impl true

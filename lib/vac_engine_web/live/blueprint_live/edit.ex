@@ -23,7 +23,6 @@ defmodule VacEngineWeb.BlueprintLive.Edit do
 
     can!(socket, :read, blueprint)
 
-
     socket
     |> assign(
       blueprint: blueprint,
@@ -38,12 +37,14 @@ defmodule VacEngineWeb.BlueprintLive.Edit do
     socket
     |> assign(location: [:blueprint, socket.assigns.live_action])
     |> update_subscription()
-    |> pair(:noreply)
+    |> noreply()
   end
 
   @impl true
   def handle_info({:update_blueprint, br}, socket) do
-    {:noreply, assign(socket, blueprint: br)}
+    socket
+    |> assign(blueprint: br)
+    |> noreply()
   end
 
   @impl true
@@ -56,7 +57,7 @@ defmodule VacEngineWeb.BlueprintLive.Edit do
           socket
         )
     )
-    |> pair(:noreply)
+    |> noreply()
   end
 
   @impl true

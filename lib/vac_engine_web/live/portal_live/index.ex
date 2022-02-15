@@ -1,6 +1,8 @@
 defmodule VacEngineWeb.PortalLive.Index do
   use VacEngineWeb, :live_view
 
+  import VacEngine.PipeHelpers
+
   alias VacEngine.Pub
   alias VacEngine.Query
 
@@ -24,7 +26,9 @@ defmodule VacEngineWeb.PortalLive.Index do
         |> Query.order_by(:id)
       end)
 
-    {:ok, assign(socket, portals: portals)}
+    socket
+    |> assign(portals: portals)
+    |> ok()
   end
 
   @impl true

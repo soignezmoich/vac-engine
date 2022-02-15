@@ -1,6 +1,7 @@
 defmodule VacEngineWeb.BlueprintLive.New do
   use VacEngineWeb, :live_view
 
+  import VacEngine.PipeHelpers
   import VacEngineWeb.PermissionHelpers, only: [can!: 3]
 
   alias VacEngine.Processor
@@ -19,7 +20,9 @@ defmodule VacEngineWeb.BlueprintLive.New do
       |> Processor.change_blueprint()
       |> Map.put(:action, :insert)
 
-    {:ok, assign(socket, changeset: changeset)}
+    socket
+    |> assign(changeset: changeset)
+    |> ok()
   end
 
   @impl true
@@ -38,7 +41,9 @@ defmodule VacEngineWeb.BlueprintLive.New do
       |> Processor.change_blueprint(params)
       |> Map.put(:action, :insert)
 
-    {:noreply, assign(socket, changeset: changeset)}
+    socket
+    |> assign(changeset: changeset)
+    |> noreply()
   end
 
   @impl true
@@ -52,20 +57,22 @@ defmodule VacEngineWeb.BlueprintLive.New do
     Processor.create_blueprint(workspace, params)
     |> case do
       {:ok, br} ->
-        {:noreply,
-         socket
-         |> push_redirect(
-           to:
-             Routes.workspace_blueprint_path(
-               socket,
-               :summary,
-               workspace.id,
-               br.id
-             )
-         )}
+        socket
+        |> push_redirect(
+          to:
+            Routes.workspace_blueprint_path(
+              socket,
+              :summary,
+              workspace.id,
+              br.id
+            )
+        )
+        |> noreply()
 
       {:error, changeset} ->
-        {:noreply, assign(socket, changeset: changeset)}
+        socket
+        |> assign(changeset: changeset)
+        |> noreply()
     end
   end
 end

@@ -1,6 +1,8 @@
 defmodule VacEngineWeb.UserLive.Index do
   use VacEngineWeb, :live_view
 
+  import VacEngine.PipeHelpers
+
   alias VacEngine.Account
 
   on_mount(VacEngineWeb.LiveRole)
@@ -10,10 +12,9 @@ defmodule VacEngineWeb.UserLive.Index do
   def mount(_params, _session, socket) do
     can!(socket, :manage, :users)
 
-    {:ok,
-     assign(socket,
-       users: Account.list_users(&Account.load_user_activity/1)
-     )}
+    socket
+    |> assign(users: Account.list_users(&Account.load_user_activity/1))
+    |> ok()
   end
 
   @impl true

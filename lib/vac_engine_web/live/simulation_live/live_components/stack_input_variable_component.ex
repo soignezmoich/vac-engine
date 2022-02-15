@@ -1,6 +1,8 @@
 defmodule VacEngineWeb.SimulationLive.StackInputVariableComponent do
   use VacEngineWeb, :live_component
 
+  import VacEngine.PipeHelpers
+
   alias VacEngine.Simulation
   alias VacEngineWeb.SimulationLive.EntryValueFieldComponent
   alias VacEngineWeb.SimulationLive.StackEditorComponent
@@ -46,22 +48,20 @@ defmodule VacEngineWeb.SimulationLive.StackInputVariableComponent do
         (filter == "template" && !is_nil(template_input_entry)) ||
         filter == "all"
 
-    socket =
-      socket
-      |> assign(
-        id: id,
-        active: active,
-        runnable_case: runnable_case,
-        runnable_input_entry: runnable_input_entry,
-        stack: stack,
-        template_case: template_case,
-        template_input_entry: template_input_entry,
-        variable: variable,
-        visible: visible,
-        bg_color: bg_color
-      )
-
-    {:ok, socket}
+    socket
+    |> assign(
+      id: id,
+      active: active,
+      runnable_case: runnable_case,
+      runnable_input_entry: runnable_input_entry,
+      stack: stack,
+      template_case: template_case,
+      template_input_entry: template_input_entry,
+      variable: variable,
+      visible: visible,
+      bg_color: bg_color
+    )
+    |> ok()
   end
 
   def handle_event("toggle_entry", %{"active" => active}, socket) do

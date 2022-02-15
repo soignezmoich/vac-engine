@@ -1,6 +1,8 @@
 defmodule VacEngineWeb.SimulationLive.TemplateInputVariableComponent do
   use VacEngineWeb, :live_component
 
+  import VacEngine.PipeHelpers
+
   alias VacEngine.Simulation
   alias VacEngineWeb.SimulationLive.EntryValueFieldComponent
   alias VacEngineWeb.SimulationLive.TemplateEditorComponent
@@ -24,18 +26,16 @@ defmodule VacEngineWeb.SimulationLive.TemplateInputVariableComponent do
 
     visible = active || filter == "all"
 
-    socket =
-      socket
-      |> assign(
-        id: id,
-        active: active,
-        template: template,
-        input_entry: input_entry,
-        variable: variable,
-        visible: visible
-      )
-
-    {:ok, socket}
+    socket
+    |> assign(
+      id: id,
+      active: active,
+      template: template,
+      input_entry: input_entry,
+      variable: variable,
+      visible: visible
+    )
+    |> ok()
   end
 
   def handle_event("toggle_entry", %{"active" => active}, socket) do

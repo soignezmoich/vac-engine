@@ -10,6 +10,10 @@ defmodule VacEngine.PipeHelpers do
     {:ok, val}
   end
 
+  def noreply(val) do
+    {:noreply, val}
+  end
+
   @doc """
   Wrap into tuple pair
   """

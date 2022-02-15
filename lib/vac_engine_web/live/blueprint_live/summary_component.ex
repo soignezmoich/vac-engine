@@ -1,6 +1,8 @@
 defmodule VacEngineWeb.BlueprintLive.SummaryComponent do
   use VacEngineWeb, :live_component
 
+  import VacEngine.PipeHelpers
+
   alias VacEngine.Processor
   alias VacEngine.Pub
   alias VacEngine.Pub.Portal
@@ -15,17 +17,18 @@ defmodule VacEngineWeb.BlueprintLive.SummaryComponent do
 
     portal_changeset = %Portal{} |> Pub.change_portal()
 
-    {:ok,
-     assign(socket,
-       can_read_portals:
-         can?(assigns.role, :read_portals, assigns.blueprint.workspace),
-       changeset: changeset,
-       blueprint: assigns.blueprint,
-       can_write: assigns.can_write,
-       readonly: assigns.readonly,
-       role: assigns.role,
-       portal_changeset: portal_changeset
-     )}
+    socket
+    |> assign(
+      can_read_portals:
+        can?(assigns.role, :read_portals, assigns.blueprint.workspace),
+      changeset: changeset,
+      blueprint: assigns.blueprint,
+      can_write: assigns.can_write,
+      readonly: assigns.readonly,
+      role: assigns.role,
+      portal_changeset: portal_changeset
+    )
+    |> ok()
   end
 
   @impl true
@@ -39,7 +42,9 @@ defmodule VacEngineWeb.BlueprintLive.SummaryComponent do
       |> Processor.change_blueprint(params)
       |> Map.put(:action, :insert)
 
-    {:noreply, assign(socket, changeset: changeset)}
+    socket
+    |> assign(changeset: changeset)
+    |> noreply()
   end
 
   @impl true
@@ -57,7 +62,9 @@ defmodule VacEngineWeb.BlueprintLive.SummaryComponent do
         {:noreply, socket}
 
       {:error, changeset} ->
-        {:noreply, assign(socket, changeset: changeset)}
+        socket
+        |> assign(changeset: changeset)
+        |> noreply()
     end
   end
 
@@ -72,7 +79,9 @@ defmodule VacEngineWeb.BlueprintLive.SummaryComponent do
       |> Pub.change_portal(params)
       |> Map.put(:action, :update)
 
-    {:noreply, assign(socket, portal_changeset: changeset)}
+    socket
+    |> assign(portal_changeset: changeset)
+    |> noreply()
   end
 
   @impl true
@@ -88,17 +97,17 @@ defmodule VacEngineWeb.BlueprintLive.SummaryComponent do
     |> Pub.publish_blueprint(params)
     |> case do
       {:ok, _pub} ->
-        {:noreply,
-         socket
-         |> push_redirect(
-           to:
-             Routes.workspace_blueprint_path(
-               socket,
-               :summary,
-               blueprint.workspace_id,
-               blueprint.id
-             )
-         )}
+        socket
+        |> push_redirect(
+          to:
+            Routes.workspace_blueprint_path(
+              socket,
+              :summary,
+              blueprint.workspace_id,
+              blueprint.id
+            )
+        )
+        |> noreply()
 
       _err ->
         {:noreply, socket}
@@ -115,12 +124,12 @@ defmodule VacEngineWeb.BlueprintLive.SummaryComponent do
 
     {:ok, _} = Processor.delete_blueprint(blueprint)
 
-    {:noreply,
-     socket
-     |> push_redirect(
-       to:
-         Routes.workspace_blueprint_path(socket, :index, blueprint.workspace_id),
-       replace: true
-     )}
+    socket
+    |> push_redirect(
+      to:
+        Routes.workspace_blueprint_path(socket, :index, blueprint.workspace_id),
+      replace: true
+    )
+    |> noreply()
   end
 end

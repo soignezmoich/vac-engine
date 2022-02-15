@@ -1,6 +1,8 @@
 defmodule VacEngineWeb.WorkspaceLive.Edit do
   use VacEngineWeb, :live_view
 
+  import VacEngine.PipeHelpers
+
   alias VacEngine.Account
 
   on_mount(VacEngineWeb.LiveRole)
@@ -21,7 +23,9 @@ defmodule VacEngineWeb.WorkspaceLive.Edit do
       |> Account.change_workspace()
       |> Map.put(:action, :update)
 
-    {:ok, assign(socket, edit_workspace: workspace, changeset: changeset)}
+    socket
+    |> assign(edit_workspace: workspace, changeset: changeset)
+    |> ok()
   end
 
   @impl true
@@ -40,7 +44,9 @@ defmodule VacEngineWeb.WorkspaceLive.Edit do
       |> Account.change_workspace(params)
       |> Map.put(:action, :update)
 
-    {:noreply, assign(socket, changeset: changeset)}
+    socket
+    |> assign(changeset: changeset)
+    |> noreply()
   end
 
   @impl true
@@ -54,12 +60,14 @@ defmodule VacEngineWeb.WorkspaceLive.Edit do
     Account.update_workspace(workspace, params)
     |> case do
       {:ok, workspace} ->
-        {:noreply,
-         socket
-         |> push_redirect(to: Routes.workspace_path(socket, :edit, workspace))}
+        socket
+        |> push_redirect(to: Routes.workspace_path(socket, :edit, workspace))
+        |> noreply()
 
       {:error, changeset} ->
-        {:noreply, assign(socket, changeset: changeset)}
+        socket
+        |> assign(changeset: changeset)
+        |> noreply()
     end
   end
 
@@ -74,15 +82,17 @@ defmodule VacEngineWeb.WorkspaceLive.Edit do
     Account.delete_workspace(workspace)
     |> case do
       {:ok, _workspace} ->
-        {:noreply,
-         socket
-         |> push_redirect(
-           to: Routes.workspace_path(socket, :index),
-           replace: true
-         )}
+        socket
+        |> push_redirect(
+          to: Routes.workspace_path(socket, :index),
+          replace: true
+        )
+        |> noreply()
 
       {:error, changeset} ->
-        {:noreply, assign(socket, changeset: changeset)}
+        socket
+        |> assign(changeset: changeset)
+        |> noreply()
     end
   end
 end

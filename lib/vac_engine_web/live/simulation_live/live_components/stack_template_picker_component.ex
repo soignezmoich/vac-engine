@@ -2,6 +2,7 @@ defmodule StackTemplatePickerComponent do
   use VacEngineWeb, :live_component
 
   import Ecto.Changeset
+  import VacEngine.PipeHelpers
 
   alias VacEngine.Simulation
   alias VacEngineWeb.SimulationLive.StackEditorComponent
@@ -27,16 +28,14 @@ defmodule StackTemplatePickerComponent do
       {%{case_id: template_case_id}, types}
       |> cast(%{}, Map.keys(types))
 
-    socket =
-      socket
-      |> assign(
-        stack: stack,
-        changeset: changeset,
-        target_component: target_component,
-        template_names: template_names
-      )
-
-    {:ok, socket}
+    socket
+    |> assign(
+      stack: stack,
+      changeset: changeset,
+      target_component: target_component,
+      template_names: template_names
+    )
+    |> ok()
   end
 
   def handle_event(

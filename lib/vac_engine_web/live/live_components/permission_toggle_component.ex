@@ -1,13 +1,15 @@
 defmodule VacEngineWeb.PermissionToggleComponent do
   use VacEngineWeb, :live_component
 
+  import VacEngine.PipeHelpers
+
   alias VacEngine.Account
 
   @impl true
   def mount(socket) do
-    {:ok,
-     socket
-     |> assign(readonly: false)}
+    socket
+    |> assign(readonly: false)
+    |> ok()
   end
 
   @impl true
@@ -20,13 +22,13 @@ defmodule VacEngineWeb.PermissionToggleComponent do
         } = assigns,
         socket
       ) do
-    {:ok,
-     socket
-     |> assign(assigns)
-     |> assign(
-       toggle_id: "toggle_#{id}",
-       has: Account.has?(role, action, scope)
-     )}
+    socket
+    |> assign(assigns)
+    |> assign(
+      toggle_id: "toggle_#{id}",
+      has: Account.has?(role, action, scope)
+    )
+    |> ok()
   end
 
   @impl true

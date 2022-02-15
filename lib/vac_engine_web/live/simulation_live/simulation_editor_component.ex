@@ -1,9 +1,10 @@
 defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
   use VacEngineWeb, :live_component
 
+  import VacEngine.PipeHelpers
+
   alias VacEngine.Simulation
   alias VacEngine.Simulation.Case
-
   alias VacEngineWeb.SimulationLive.StackEditorComponent
   alias VacEngineWeb.SimulationLive.ConfigEditorComponent
   alias VacEngineWeb.SimulationLive.MenuConfigComponent
@@ -39,15 +40,13 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
       ) do
     %{blueprint: blueprint} = socket.assigns
 
-    socket =
-      socket
-      |> assign(
-        selected_type: new_selected_type,
-        selected_id: new_selected_id,
-        template_names: Simulation.get_template_names(blueprint)
-      )
-
-    {:ok, socket}
+    socket
+    |> assign(
+      selected_type: new_selected_type,
+      selected_id: new_selected_id,
+      template_names: Simulation.get_template_names(blueprint)
+    )
+    |> ok()
   end
 
   # Only used at page loading or blueprint change
@@ -55,19 +54,17 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
   def update(%{id: id, blueprint: blueprint}, socket) do
     {selected_type, selected_id} = get_initial_selection(blueprint)
 
-    socket =
-      socket
-      |> assign(
-        id: id,
-        blueprint: blueprint,
-        input_variables: blueprint.input_variables,
-        output_variables: blueprint.output_variables,
-        selected_type: selected_type,
-        selected_id: selected_id,
-        template_names: Simulation.get_template_names(blueprint)
-      )
-
-    {:ok, socket}
+    socket
+    |> assign(
+      id: id,
+      blueprint: blueprint,
+      input_variables: blueprint.input_variables,
+      output_variables: blueprint.output_variables,
+      selected_type: selected_type,
+      selected_id: selected_id,
+      template_names: Simulation.get_template_names(blueprint)
+    )
+    |> ok()
   end
 
   @impl true
@@ -86,14 +83,12 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
           socket.assigns.stacks |> Enum.at(idx)
       end
 
-    socket =
-      socket
-      |> assign(
-        selected_element: selected_element,
-        action: %{type: :refresh, token: :rand.uniform()}
-      )
-
-    {:noreply, socket}
+    socket
+    |> assign(
+      selected_element: selected_element,
+      action: %{type: :refresh, token: :rand.uniform()}
+    )
+    |> noreply()
   end
 
   @impl true
@@ -107,14 +102,12 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
 
     selected_element = stacks |> Enum.find(&(&1.id == new_stack_id))
 
-    socket =
-      socket
-      |> assign(
-        stacks: stacks,
-        selected_element: selected_element
-      )
-
-    {:noreply, socket}
+    socket
+    |> assign(
+      stacks: stacks,
+      selected_element: selected_element
+    )
+    |> noreply()
   end
 
   defp get_initial_selection(blueprint) do

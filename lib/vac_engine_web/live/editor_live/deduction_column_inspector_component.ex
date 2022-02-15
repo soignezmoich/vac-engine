@@ -29,7 +29,9 @@ defmodule VacEngineWeb.EditorLive.DeductionColumnInspectorComponent do
         {:noreply, socket}
 
       {:error, changeset} ->
-        {:noreply, assign(socket, changeset: changeset)}
+        socket
+        |> assign(changeset: changeset)
+        |> noreply()
     end
   end
 
@@ -46,7 +48,7 @@ defmodule VacEngineWeb.EditorLive.DeductionColumnInspectorComponent do
 
     socket
     |> assign(changeset: changeset)
-    |> pair(:noreply)
+    |> noreply()
   end
 
   @impl true
@@ -62,6 +64,6 @@ defmodule VacEngineWeb.EditorLive.DeductionColumnInspectorComponent do
 
     socket
     |> assign(changeset: changeset)
-    |> pair(:noreply)
+    |> noreply()
   end
 end

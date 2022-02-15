@@ -1,6 +1,8 @@
 defmodule VacEngineWeb.PortalLive.Edit do
   use VacEngineWeb, :live_view
 
+  import VacEngine.PipeHelpers
+
   alias VacEngine.Pub
   alias VacEngine.Query
   alias VacEngine.Pub.Portal
@@ -31,13 +33,14 @@ defmodule VacEngineWeb.PortalLive.Edit do
       |> Pub.change_portal()
       |> Map.put(:action, :update)
 
-    {:ok,
-     assign(socket,
-       can_write: can?(socket, :write, portal),
-       portal: portal,
-       changeset: changeset,
-       blueprint_results: []
-     )}
+    socket
+    |> assign(
+      can_write: can?(socket, :write, portal),
+      portal: portal,
+      changeset: changeset,
+      blueprint_results: []
+    )
+    |> ok()
   end
 
   @impl true
@@ -54,12 +57,12 @@ defmodule VacEngineWeb.PortalLive.Edit do
     can!(socket, :write, portal)
     {:ok, _} = Pub.delete_portal(portal)
 
-    {:noreply,
-     socket
-     |> push_redirect(
-       to: Routes.workspace_portal_path(socket, :index, workspace),
-       replace: true
-     )}
+    socket
+    |> push_redirect(
+      to: Routes.workspace_portal_path(socket, :index, workspace),
+      replace: true
+    )
+    |> noreply()
   end
 
   @impl true
@@ -73,7 +76,9 @@ defmodule VacEngineWeb.PortalLive.Edit do
       |> Pub.change_portal(params)
       |> Map.put(:action, :insert)
 
-    {:noreply, assign(socket, changeset: changeset)}
+    socket
+    |> assign(changeset: changeset)
+    |> noreply()
   end
 
   @impl true
@@ -87,20 +92,22 @@ defmodule VacEngineWeb.PortalLive.Edit do
     Pub.update_portal(portal, params)
     |> case do
       {:ok, portal} ->
-        {:noreply,
-         socket
-         |> push_redirect(
-           to:
-             Routes.workspace_portal_path(
-               socket,
-               :edit,
-               portal.workspace_id,
-               portal.id
-             )
-         )}
+        socket
+        |> push_redirect(
+          to:
+            Routes.workspace_portal_path(
+              socket,
+              :edit,
+              portal.workspace_id,
+              portal.id
+            )
+        )
+        |> noreply()
 
       {:error, changeset} ->
-        {:noreply, assign(socket, changeset: changeset)}
+        socket
+        |> assign(changeset: changeset)
+        |> noreply()
     end
   end
 
@@ -126,12 +133,16 @@ defmodule VacEngineWeb.PortalLive.Edit do
         |> Query.limit(10)
       end)
 
-    {:noreply, assign(socket, blueprint_results: results)}
+    socket
+    |> assign(blueprint_results: results)
+    |> noreply()
   end
 
   @impl true
   def handle_event("search_blueprints", _, socket) do
-    {:noreply, assign(socket, blueprint_results: [])}
+    socket
+    |> assign(blueprint_results: [])
+    |> noreply()
   end
 
   @impl true
@@ -159,17 +170,17 @@ defmodule VacEngineWeb.PortalLive.Edit do
 
     {:ok, _pub} = Pub.publish_blueprint(blueprint, portal)
 
-    {:noreply,
-     socket
-     |> push_redirect(
-       to:
-         Routes.workspace_portal_path(
-           socket,
-           :edit,
-           portal.workspace_id,
-           portal.id
-         )
-     )}
+    socket
+    |> push_redirect(
+      to:
+        Routes.workspace_portal_path(
+          socket,
+          :edit,
+          portal.workspace_id,
+          portal.id
+        )
+    )
+    |> noreply()
   end
 
   @impl true
@@ -187,16 +198,16 @@ defmodule VacEngineWeb.PortalLive.Edit do
 
     {:ok, _pub} = Pub.unpublish_portal(portal)
 
-    {:noreply,
-     socket
-     |> push_redirect(
-       to:
-         Routes.workspace_portal_path(
-           socket,
-           :edit,
-           portal.workspace_id,
-           portal.id
-         )
-     )}
+    socket
+    |> push_redirect(
+      to:
+        Routes.workspace_portal_path(
+          socket,
+          :edit,
+          portal.workspace_id,
+          portal.id
+        )
+    )
+    |> noreply()
   end
 end

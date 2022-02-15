@@ -2,6 +2,7 @@ defmodule VacEngineWeb.SimulationLive.ExpectedFieldComponent do
   use VacEngineWeb, :live_component
 
   import Ecto.Changeset
+  import VacEngine.PipeHelpers
 
   alias VacEngine.Convert
   alias VacEngine.Repo
@@ -21,19 +22,17 @@ defmodule VacEngineWeb.SimulationLive.ExpectedFieldComponent do
       |> cast(%{}, [:expected])
       |> Map.put(:action, :update)
 
-    socket =
-      socket
-      |> assign(
-        id: id,
-        changeset: changeset,
-        output_entry: output_entry,
-        parsed_value: nil,
-        target_component: %{type: target_type, id: target_id},
-        variable_enum: variable_enum,
-        variable_type: variable_type
-      )
-
-    {:ok, socket}
+    socket
+    |> assign(
+      id: id,
+      changeset: changeset,
+      output_entry: output_entry,
+      parsed_value: nil,
+      target_component: %{type: target_type, id: target_id},
+      variable_enum: variable_enum,
+      variable_type: variable_type
+    )
+    |> ok()
   end
 
   def handle_event("validate", params, socket) do
@@ -59,27 +58,32 @@ defmodule VacEngineWeb.SimulationLive.ExpectedFieldComponent do
           _ -> nil
         end
 
-      {:noreply,
-       socket |> assign(changeset: changeset, parsed_value: parsed_value)}
+      socket
+      |> assign(changeset: changeset, parsed_value: parsed_value)
+      |> noreply()
     end
   end
 
-  def handle_event("submit", %{"output_entry" => output_entry}, socket) do
-    variable_type = socket.assigns.variable_type
+  def handle_event(
+        "submit",
+        %{"output_entry" => output_entry},
+        %{assigns: assigns} = socket
+      ) do
+    variable_type = assigns.variable_type
 
     case Convert.parse_string(output_entry["expected"], variable_type) do
       {:error, _error} ->
         {:noreply, socket}
 
       {:ok, parsed_value} ->
-        socket.assigns.output_entry
+        assigns.output_entry
         |> cast(%{"expected" => to_string(parsed_value)}, [:expected])
         |> validate_required([:key, :expected])
         |> validate_entry_type(variable_type)
-        |> validate_entry_enum(Map.get(socket.assigns, :variable_enum))
+        |> validate_entry_enum(Map.get(assigns, :variable_enum))
         |> Repo.update()
 
-        %{type: type, id: id} = socket.assigns.target_component
+        %{type: type, id: id} = assigns.target_component
 
         send_update(type,
           id: id,

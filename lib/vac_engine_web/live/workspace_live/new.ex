@@ -1,6 +1,8 @@
 defmodule VacEngineWeb.WorkspaceLive.New do
   use VacEngineWeb, :live_view
 
+  import VacEngine.PipeHelpers
+
   alias VacEngine.Account
   alias VacEngine.Account.Workspace
 
@@ -16,7 +18,9 @@ defmodule VacEngineWeb.WorkspaceLive.New do
       |> Account.change_workspace()
       |> Map.put(:action, :insert)
 
-    {:ok, assign(socket, changeset: changeset)}
+    socket
+    |> assign(changeset: changeset)
+    |> ok()
   end
 
   @impl true
@@ -35,7 +39,9 @@ defmodule VacEngineWeb.WorkspaceLive.New do
       |> Account.change_workspace(params)
       |> Map.put(:action, :insert)
 
-    {:noreply, assign(socket, changeset: changeset)}
+    socket
+    |> assign(changeset: changeset)
+    |> noreply()
   end
 
   @impl true
@@ -49,12 +55,14 @@ defmodule VacEngineWeb.WorkspaceLive.New do
     Account.create_workspace(params)
     |> case do
       {:ok, result} ->
-        {:noreply,
-         socket
-         |> push_redirect(to: Routes.workspace_path(socket, :edit, result))}
+        socket
+        |> push_redirect(to: Routes.workspace_path(socket, :edit, result))
+        |> noreply()
 
       {:error, changeset} ->
-        {:noreply, assign(socket, changeset: changeset)}
+        socket
+        |> assign(changeset: changeset)
+        |> noreply()
     end
   end
 end

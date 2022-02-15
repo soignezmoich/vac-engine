@@ -20,12 +20,14 @@ defmodule VacEngineWeb.MaintenanceLive.Index do
   @impl true
   def handle_params(_params, _session, socket) do
     socket
-    |> pair(:noreply)
+    |> noreply()
   end
 
   @impl true
   def handle_event("validate", _params, socket) do
-    {:noreply, assign(socket, upload_files: [])}
+    socket
+    |> assign(upload_files: [])
+    |> noreply()
   end
 
   @impl true
@@ -45,7 +47,9 @@ defmodule VacEngineWeb.MaintenanceLive.Index do
         |> ok()
       end)
 
-    {:noreply, update(socket, :upload_files, &(&1 ++ uploaded_files))}
+    socket
+    |> update(:upload_files, &(&1 ++ uploaded_files))
+    |> noreply()
   end
 
   defp error_to_string(:too_large), do: "Too large"

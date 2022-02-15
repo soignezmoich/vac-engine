@@ -9,7 +9,7 @@ defmodule VacEngineWeb.UserSocket do
   # verification, you can put default assigns into
   # the socket that will be set for all channels, ie
   #
-  #     {:ok, assign(socket, :user_id, verified_user_id)}
+  #     socket |> assign(:user_id, verified_user_id)
   #
   # To deny connection, return `:error`.
   #

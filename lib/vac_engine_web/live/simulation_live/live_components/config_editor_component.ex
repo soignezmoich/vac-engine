@@ -6,6 +6,7 @@ defmodule VacEngineWeb.SimulationLive.ConfigEditorComponent do
   use VacEngineWeb, :live_component
 
   import Ecto.Changeset
+  import VacEngine.PipeHelpers
 
   alias VacEngine.Convert
   alias VacEngine.Simulation
@@ -23,16 +24,14 @@ defmodule VacEngineWeb.SimulationLive.ConfigEditorComponent do
       |> cast(%{}, [:env_now])
       |> Map.put(:action, :update)
 
-    socket =
-      socket
-      |> assign(
-        blueprint: blueprint,
-        changeset: changeset,
-        parsed_value: nil,
-        setting: setting
-      )
-
-    {:ok, socket}
+    socket
+    |> assign(
+      blueprint: blueprint,
+      changeset: changeset,
+      parsed_value: nil,
+      setting: setting
+    )
+    |> ok()
   end
 
   def handle_event("validate", %{"setting" => %{"env_now" => env_now}}, socket) do
@@ -56,8 +55,9 @@ defmodule VacEngineWeb.SimulationLive.ConfigEditorComponent do
         _error -> nil
       end
 
-    {:noreply,
-     socket |> assign(changeset: changeset, parsed_value: parsed_value)}
+    socket
+    |> assign(changeset: changeset, parsed_value: parsed_value)
+    |> noreply()
   end
 
   def handle_event("submit", %{"setting" => %{"env_now" => env_now}}, socket) do
@@ -85,13 +85,13 @@ defmodule VacEngineWeb.SimulationLive.ConfigEditorComponent do
 
           start_all_runner_jobs(blueprint)
 
-          {:noreply,
-           socket
-           |> assign(
-             changeset: changeset,
-             parsed_value: parsed_value,
-             setting: setting
-           )}
+          socket
+          |> assign(
+            changeset: changeset,
+            parsed_value: parsed_value,
+            setting: setting
+          )
+          |> noreply()
       end
     rescue
       # TODO replace when timex doesn't raise an error anymore when "2000-"

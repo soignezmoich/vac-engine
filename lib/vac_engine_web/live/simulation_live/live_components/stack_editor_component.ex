@@ -1,15 +1,17 @@
 defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
   use VacEngineWeb, :live_component
 
+  import VacEngine.PipeHelpers
+
   alias VacEngine.Simulation
   alias VacEngine.Simulation.Job
   alias VacEngineWeb.SimulationLive.StackInputComponent
   alias VacEngineWeb.SimulationLive.StackOutputComponent
 
   def mount(socket) do
-    socket = socket |> assign(results: %{}, causes_error: false)
-
-    {:ok, socket}
+    socket
+    |> assign(results: %{}, causes_error: false)
+    |> ok()
   end
 
   def update(
@@ -23,15 +25,13 @@ defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
     template_case = stack |> Simulation.get_stack_template_case()
     runnable_case = stack |> Simulation.get_stack_runnable_case()
 
-    socket =
-      socket
-      |> assign(
-        stack: stack,
-        runnable_case: runnable_case,
-        template_case: template_case
-      )
-
-    {:ok, socket}
+    socket
+    |> assign(
+      stack: stack,
+      runnable_case: runnable_case,
+      template_case: template_case
+    )
+    |> ok()
   end
 
   def update(
@@ -44,8 +44,9 @@ defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
         %{entries: entries} -> {false, entries}
       end
 
-    socket = socket |> assign(causes_error: causes_error, results: results)
-    {:ok, socket}
+    socket
+    |> assign(causes_error: causes_error, results: results)
+    |> ok()
   end
 
   def update(
@@ -66,15 +67,15 @@ defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
     |> Job.new()
     |> Simulation.queue_job()
 
-    {:ok,
-     socket
-     |> assign(
-       stack: stack,
-       input_variables: input_variables,
-       output_variables: output_variables,
-       runnable_case: runnable_case,
-       template_case: template_case,
-       template_names: template_names
-     )}
+    socket
+    |> assign(
+      stack: stack,
+      input_variables: input_variables,
+      output_variables: output_variables,
+      runnable_case: runnable_case,
+      template_case: template_case,
+      template_names: template_names
+    )
+    |> ok()
   end
 end

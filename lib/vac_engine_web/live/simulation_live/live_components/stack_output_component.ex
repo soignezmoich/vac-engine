@@ -1,13 +1,15 @@
 defmodule VacEngineWeb.SimulationLive.StackOutputComponent do
   use VacEngineWeb, :live_component
 
+  import VacEngine.PipeHelpers
+
   alias VacEngineWeb.SimulationLive.StackOutputVariableComponent
   alias VacEngineWeb.SimulationLive.ExpectRunErrorComponent
 
   def mount(socket) do
-    socket = socket |> assign(filter: "case")
-
-    {:ok, socket}
+    socket
+    |> assign(filter: "case")
+    |> ok()
   end
 
   def update(
@@ -45,22 +47,20 @@ defmodule VacEngineWeb.SimulationLive.StackOutputComponent do
         previous_filter
       end
 
-    socket =
-      socket
-      |> assign(
-        causes_error: causes_error,
-        output_variables: output_variables,
-        runnable_case: runnable_case,
-        stack: stack,
-        filter: filter
-      )
-
-    {:ok, socket}
+    socket
+    |> assign(
+      causes_error: causes_error,
+      output_variables: output_variables,
+      runnable_case: runnable_case,
+      stack: stack,
+      filter: filter
+    )
+    |> ok()
   end
 
   def handle_event("set_filter", %{"filter" => new_filter}, socket) do
-    socket = socket |> assign(filter: new_filter)
-
-    {:noreply, socket}
+    socket
+    |> assign(filter: new_filter)
+    |> noreply()
   end
 end

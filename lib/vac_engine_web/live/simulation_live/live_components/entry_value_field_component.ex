@@ -2,6 +2,7 @@ defmodule VacEngineWeb.SimulationLive.EntryValueFieldComponent do
   use VacEngineWeb, :live_component
 
   import Ecto.Changeset
+  import VacEngine.PipeHelpers
 
   alias VacEngine.Convert
   alias VacEngine.Repo
@@ -21,18 +22,16 @@ defmodule VacEngineWeb.SimulationLive.EntryValueFieldComponent do
       |> cast(%{}, [:value])
       |> Map.put(:action, :update)
 
-    socket =
-      socket
-      |> assign(
-        id: id,
-        changeset: changeset,
-        input_entry: input_entry,
-        parsed_value: nil,
-        target_component: %{type: target_type, id: target_id},
-        variable: variable
-      )
-
-    {:ok, socket}
+    socket
+    |> assign(
+      id: id,
+      changeset: changeset,
+      input_entry: input_entry,
+      parsed_value: nil,
+      target_component: %{type: target_type, id: target_id},
+      variable: variable
+    )
+    |> ok()
   end
 
   def handle_event(
@@ -57,8 +56,9 @@ defmodule VacEngineWeb.SimulationLive.EntryValueFieldComponent do
           _ -> nil
         end
 
-      {:noreply,
-       socket |> assign(changeset: changeset, parsed_value: parsed_value)}
+      socket
+      |> assign(changeset: changeset, parsed_value: parsed_value)
+      |> noreply()
     end
   end
 

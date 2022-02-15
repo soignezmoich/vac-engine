@@ -1,11 +1,14 @@
 defmodule VacEngineWeb.SimulationLive.StackInputComponent do
   use VacEngineWeb, :live_component
 
+  import VacEngine.PipeHelpers
+
   alias VacEngineWeb.SimulationLive.StackInputVariableComponent
 
   def mount(socket) do
-    socket = socket |> assign(filter: "template")
-    {:ok, socket}
+    socket
+    |> assign(filter: "template")
+    |> ok()
   end
 
   def update(assigns, socket) do
@@ -19,17 +22,15 @@ defmodule VacEngineWeb.SimulationLive.StackInputComponent do
         previous_filter
       end
 
-    socket =
-      socket
-      |> assign(assigns)
-      |> assign(filter: filter)
-
-    {:ok, socket}
+    socket
+    |> assign(assigns)
+    |> assign(filter: filter)
+    |> ok()
   end
 
   def handle_event("set_filter", %{"filter" => new_filter}, socket) do
-    socket = socket |> assign(filter: new_filter)
-
-    {:noreply, socket}
+    socket
+    |> assign(filter: new_filter)
+    |> noreply()
   end
 end

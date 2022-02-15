@@ -68,7 +68,7 @@ defmodule VacEngine.Simulation.Runner do
     |> Enum.reduce(%{runner | job_queue: []}, fn job, runner ->
       run_job(job, runner)
     end)
-    |> pair(:noreply)
+    |> noreply()
   end
 
   @impl true
@@ -88,7 +88,7 @@ defmodule VacEngine.Simulation.Runner do
     |> then(fn procs ->
       %{runner | processors: procs}
     end)
-    |> pair(:noreply)
+    |> noreply()
   end
 
   defp run_job(job, runner) do

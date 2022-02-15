@@ -15,12 +15,16 @@ defmodule VacEngineWeb.BlueprintLive.ImportComponent do
 
   @impl true
   def handle_event("validate", _params, socket) do
-    {:noreply, assign(socket, upload_files: [])}
+    socket
+    |> assign(upload_files: [])
+    |> noreply()
   end
 
   @impl true
   def handle_event("cancel-upload", %{"ref" => ref}, socket) do
-    {:noreply, cancel_upload(socket, :json_import, ref)}
+    socket
+    |> cancel_upload(:json_import, ref)
+    |> noreply()
   end
 
   @impl true
@@ -48,7 +52,9 @@ defmodule VacEngineWeb.BlueprintLive.ImportComponent do
         |> ok()
       end)
 
-    {:noreply, update(socket, :upload_files, &(&1 ++ uploaded_files))}
+    socket
+    |> update(:upload_files, &(&1 ++ uploaded_files))
+    |> noreply()
   end
 
   defp error_to_string(:too_large), do: "Too large"

@@ -1,6 +1,8 @@
 defmodule VacEngineWeb.WorkspaceLive.Index do
   use VacEngineWeb, :live_view
 
+  import VacEngine.PipeHelpers
+
   alias VacEngine.Account
   alias VacEngine.Query
 
@@ -11,15 +13,16 @@ defmodule VacEngineWeb.WorkspaceLive.Index do
   def mount(_params, _session, socket) do
     can!(socket, :manage, :workspaces)
 
-    {:ok,
-     assign(socket,
-       workspaces:
-         Account.list_workspaces(fn query ->
-           query
-           |> Account.load_workspace_stats()
-           |> Query.order_by(:name)
-         end)
-     )}
+    socket
+    |> assign(
+      workspaces:
+        Account.list_workspaces(fn query ->
+          query
+          |> Account.load_workspace_stats()
+          |> Query.order_by(:name)
+        end)
+    )
+    |> ok()
   end
 
   @impl true

@@ -1,16 +1,19 @@
 defmodule VacEngineWeb.EditorLive.BlueprintStatusComponent do
   use VacEngineWeb, :live_component
 
+  import VacEngine.PipeHelpers
+
   alias VacEngine.Processor
 
   @impl true
   def update(%{blueprint: blueprint}, socket) do
-    {:ok,
-     assign(socket,
-       blueprint: blueprint,
-       stats: Processor.blueprint_stats(blueprint),
-       issues: Processor.blueprint_issues(blueprint)
-     )}
+    socket
+    |> assign(
+      blueprint: blueprint,
+      stats: Processor.blueprint_stats(blueprint),
+      issues: Processor.blueprint_issues(blueprint)
+    )
+    |> ok()
   end
 
   @impl true

@@ -1,20 +1,28 @@
 defmodule VacEngineWeb.EditorLive.DeductionListComponent do
   use VacEngineWeb, :live_component
 
+  import VacEngine.PipeHelpers
+
   alias VacEngineWeb.EditorLive.DeductionComponent
 
   @impl true
   def mount(socket) do
-    {:ok, assign(socket, selection: nil)}
+    socket
+    |> assign(selection: nil)
+    |> ok()
   end
 
   @impl true
   def update(%{action: {:select, selection}}, socket) do
-    {:ok, assign(socket, selection: selection)}
+    socket
+    |> assign(selection: selection)
+    |> ok()
   end
 
   @impl true
   def update(assigns, socket) do
-    {:ok, assign(socket, assigns)}
+    socket
+    |> assign(assigns)
+    |> ok()
   end
 end

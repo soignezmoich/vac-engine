@@ -1,6 +1,8 @@
 defmodule VacEngineWeb.PortalLive.New do
   use VacEngineWeb, :live_view
 
+  import VacEngine.PipeHelpers
+
   alias VacEngine.Pub
   alias VacEngine.Pub.Portal
 
@@ -17,7 +19,9 @@ defmodule VacEngineWeb.PortalLive.New do
       |> Pub.change_portal()
       |> Map.put(:action, :insert)
 
-    {:ok, assign(socket, changeset: changeset)}
+    socket
+    |> assign(changeset: changeset)
+    |> ok()
   end
 
   @impl true
@@ -36,7 +40,9 @@ defmodule VacEngineWeb.PortalLive.New do
       |> Pub.change_portal(params)
       |> Map.put(:action, :insert)
 
-    {:noreply, assign(socket, changeset: changeset)}
+    socket
+    |> assign(changeset: changeset)
+    |> noreply()
   end
 
   @impl true
@@ -50,20 +56,22 @@ defmodule VacEngineWeb.PortalLive.New do
     Pub.create_portal(workspace, params)
     |> case do
       {:ok, portal} ->
-        {:noreply,
-         socket
-         |> push_redirect(
-           to:
-             Routes.workspace_portal_path(
-               socket,
-               :edit,
-               portal.workspace_id,
-               portal.id
-             )
-         )}
+        socket
+        |> push_redirect(
+          to:
+            Routes.workspace_portal_path(
+              socket,
+              :edit,
+              portal.workspace_id,
+              portal.id
+            )
+        )
+        |> noreply()
 
       {:error, changeset} ->
-        {:noreply, assign(socket, changeset: changeset)}
+        socket
+        |> assign(changeset: changeset)
+        |> noreply()
     end
   end
 end
