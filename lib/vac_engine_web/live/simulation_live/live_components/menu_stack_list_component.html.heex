@@ -1,4 +1,4 @@
-<div class="w-full bg-white filter drop-shadow-lg p-3">
+<div class="w-full bg-white border shadow p-3">
   <div class="font-bold mb-2 border-b border-black">
     Cases
   </div>
@@ -22,9 +22,9 @@
     phx-target={@myself}
   >
     <%= text_input f, :name,
-      class: "form-fld text-sm align-middle",
+      class: "form-fld text-sm align-middle w-44",
       placeholder: "new case" %>
-    <%= submit "create", class: "btn align-middle" %>
+    <%= submit "create", class: "btn-default align-middle" %>
     <p class="px-2 py-1 text-red-400 text-sm">
       <%=@creation_error_message%>
     </p>

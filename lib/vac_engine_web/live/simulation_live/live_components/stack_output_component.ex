@@ -5,7 +5,7 @@ defmodule VacEngineWeb.SimulationLive.StackOutputComponent do
   alias VacEngineWeb.SimulationLive.ExpectRunErrorComponent
 
   def mount(socket) do
-    socket = socket |> assign(filter: "all")
+    socket = socket |> assign(filter: "case")
 
     {:ok, socket}
   end
@@ -20,6 +20,8 @@ defmodule VacEngineWeb.SimulationLive.StackOutputComponent do
         },
         socket
       ) do
+    %{filter: previous_filter} = socket.assigns
+
     output_variables =
       output_variables
       |> Enum.map(fn variable ->
@@ -35,13 +37,21 @@ defmodule VacEngineWeb.SimulationLive.StackOutputComponent do
         end
       end)
 
+    filter =
+      if length(runnable_case.output_entries) == 0 do
+        "all"
+      else
+        previous_filter
+      end
+
     socket =
       socket
       |> assign(
         causes_error: causes_error,
         output_variables: output_variables,
         runnable_case: runnable_case,
-        stack: stack
+        stack: stack,
+        filter: filter
       )
 
     {:ok, socket}

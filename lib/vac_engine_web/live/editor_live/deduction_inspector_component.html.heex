@@ -1,9 +1,10 @@
 <div id="deduction_inspector">
-  <div class="w-full bg-white text-xs shadow-md">
-    <div class="grid grid-cols-4 items-center border-b border-black">
-      <button class={ klass("text-xs flex flex-col items-center disabled:bg-cream-50 disabled:text-cream-200", [
-              {"bg-cream-200 text-cream-900", @tab == :cell},
-              {"bg-cream-600 text-cream-100", @tab != :cell}
+  <div class="w-full bg-white border shadow p-3 cursor-default">
+    <div class="grid grid-cols-4 items-center">
+      <button class={ klass("flex flex-col mx-1 border rounded items-center text-xs
+        border-cream-300 text-gray-900 disabled:text-gray-500 disabled:bg-gray-150", [
+              {"bg-white", @tab == :cell},
+              {"bg-cream-100", @tab != :cell}
               ])}
               disabled={!Enum.member?(@tabs_enabled, :cell)}
               phx-click="change_tab"
@@ -13,9 +14,10 @@
         <div class="h-[20px] flex items-center"><.icon name="hero/view-grid" width="18px" /></div>
         Cell
       </button>
-      <button class={ klass("text-xs flex flex-col items-center disabled:bg-cream-50 disabled:text-cream-200", [
-              {"bg-cream-200 text-cream-900", @tab == :branch},
-              {"bg-cream-600 text-cream-100", @tab != :branch}
+      <button class={ klass("flex flex-col mx-1 border rounded items-center text-xs
+        border-cream-300 text-gray-900 disabled:text-gray-500 disabled:bg-gray-150", [
+              {"bg-white", @tab == :branch},
+              {"bg-cream-100", @tab != :branch}
               ])}
               disabled={!Enum.member?(@tabs_enabled, :branch)}
               phx-click="change_tab"
@@ -25,9 +27,10 @@
         <div class="h-[20px] flex items-center"><.icon name="hero/view-list" width="18px" /></div>
         Branch
       </button>
-      <button class={ klass("text-xs flex flex-col items-center disabled:bg-cream-50 disabled:text-cream-200", [
-              {"bg-cream-200 text-cream-900", @tab == :column},
-              {"bg-cream-600 text-cream-100", @tab != :column}
+      <button class={ klass("flex flex-col mx-1 border rounded items-center text-xs
+        border-cream-300 text-gray-900 disabled:text-gray-500 disabled:bg-gray-150", [
+              {"bg-white", @tab == :column},
+              {"bg-cream-100", @tab != :column}
               ])}
               disabled={!Enum.member?(@tabs_enabled, :column)}
               phx-click="change_tab"
@@ -37,9 +40,10 @@
         <div class="h-[20px] flex items-center"><.icon name="hero/view-boards" width="18px" /></div>
         Column
       </button>
-      <button class={ klass("text-xs flex flex-col items-center disabled:bg-cream-50 disabled:text-cream-200", [
-              {"bg-cream-200 text-cream-900", @tab == :deduction},
-              {"bg-cream-600 text-cream-100", @tab != :deduction}
+      <button class={ klass("flex flex-col mx-1 border rounded items-center
+        text-xs border-cream-300 text-gray-900 disabled:text-gray-500 disabled:bg-gray-150", [
+              {"bg-white", @tab == :deduction},
+              {"bg-cream-100", @tab != :deduction}
               ])}
               disabled={!Enum.member?(@tabs_enabled, :deduction)}
               phx-click="change_tab"
@@ -225,7 +229,10 @@
     <% end %>
 
   </div>
-  <div class="w-full bg-white text-xs shadow-md p-3 mt-4">
+
+  <div class="h-4" />
+
+  <div class="w-full bg-white border shadow p-3 cursor-default">
     <.live_component
       id="blueprint_status"
       module={BlueprintStatusComponent}

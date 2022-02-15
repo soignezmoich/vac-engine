@@ -12,10 +12,10 @@ defmodule VacEngineWeb.SimulationLive.ConfigEditorComponent do
   alias VacEngine.Simulation.Job
 
   def update(%{blueprint: blueprint}, socket) do
-    setting =
+    {:ok, setting} =
       case Simulation.get_setting(blueprint) do
         nil -> Simulation.create_setting(blueprint)
-        setting -> setting
+        setting -> {:ok, setting}
       end
 
     changeset =

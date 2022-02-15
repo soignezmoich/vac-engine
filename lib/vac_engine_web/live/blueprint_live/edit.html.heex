@@ -5,11 +5,6 @@
     </.flex_center>
   <% not is_nil(@blueprint) -> %>
   <div class="flex-grow flex flex-col">
-    <%= if @readonly do %>
-        <div class="text-center italic mt-2 mb-1 border-t border-b bg-gray-100 p-1 shadow-md">
-          This blueprint cannot be edited since it was already published.
-        </div>
-    <% end %>
     <%= case @live_action do %>
     <% :summary -> %>
       <.live_component

@@ -5,8 +5,8 @@ defmodule VacEngineWeb.EditorLive.VariableActionGroupComponent do
 
   def variable_action_group(assigns) do
     ~H"""
-    <div class="w-full mb-4 disabled divide-black border-pink-600 border-l-4 border-black bg-white filter drop-shadow-lg p-3">
-      <div class="font-bold">
+    <div class="w-full bg-white border shadow p-3 cursor-default">
+    <div class="font-bold">
         Variables actions
       </div>
       <hr class="mb-2" />

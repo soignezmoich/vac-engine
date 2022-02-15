@@ -1,8 +1,8 @@
 <div class="relative flex-grow" id="deduction_editor">
   <div class="absolute inset-0 flex min-h-0">
     <%= if can?(@role, :write, @blueprint) && !@readonly do %>
-      <div class="w-64 flex-shrink-0 mr-2 flex flex-col overflow-y-auto">
-        <div class="flex-shrink-0 p-4 pr-2">
+      <div class="w-72 flex-shrink-0 mr-2 flex flex-col overflow-y-auto pt-3 shadow-lg bg-gray-50">
+        <div class="flex-shrink-0 p-2">
           <.live_component
              module={DeductionInspectorComponent}
              id="deduction_inspector"
@@ -14,7 +14,7 @@
     <div class="flex-grow flex flex-col overflow-y-auto"
            id="deduction_list_wrapper"
            phx-hook="action">
-      <div class="flex-shrink p-4 pl-2">
+      <div class="flex-shrink p-2">
         <.live_component
           module={DeductionList}
           id="deduction_list"
