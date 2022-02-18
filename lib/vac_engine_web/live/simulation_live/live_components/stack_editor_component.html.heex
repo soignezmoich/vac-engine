@@ -12,7 +12,7 @@
 
   <div class="h-4"/>
   <div class="flex 2xl:flex-row flex-col">
-    <div class="mr-4 mb-4 min-w-md flex-grow">
+    <div class="mr-2 2xl:mr-4 mb-4 min-w-md flex-grow">
       <.live_component
         module={StackInputComponent}
         id={"stack_input_#{@stack.id}"}
@@ -22,7 +22,7 @@
         stack={@stack}
       />
     </div>
-    <div class="mr-4 min-w-0 flex-grow">
+    <div class="mr-2 min-w-0 flex-grow">
       <.live_component
         module={StackOutputComponent}
         id="case_output"
