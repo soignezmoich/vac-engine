@@ -49,9 +49,9 @@ defmodule VacEngineWeb.Header.TopElementComponent do
   def top_element(assigns) do
     bg_color =
       if assigns.s do
-        "bg-blue-600"
+        "bg-blue-800 border-blue-600"
       else
-        "bg-blue-800 hover:bg-blue-700"
+        "bg-blue-600 hover:bg-blue-700 border-blue-500"
       end
 
     l =
@@ -78,7 +78,7 @@ defmodule VacEngineWeb.Header.TopElementComponent do
     items-center
     border rounded-sm
     shadow-md
-    text-gray-50 #{@bg_color} border-blue-500
+    text-gray-50 #{@bg_color}
     font-bold" %>
     """
   end

@@ -1,13 +1,13 @@
 <div class="p-4 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
 
-  <div class="border p-4 w-full h-full bg-white shadow-lg">
+  <div class="border p-4 w-full h-full bg-white shadow-lg flex flex-col">
     <h2 class="font-bold text-lg mb-6">Base info</h2>
 
     <.form
       let={f}
       for={@changeset}
       id="summary_blueprint_form"
-      class="flex flex-col w-96"
+      class="flex flex-col max-w-sm"
       phx-target={@myself}
       phx-throttle="100"
       phx-change="validate"
@@ -30,14 +30,14 @@
 
 
     <%= if (!@can_write || @readonly) do %>
-      <div class="m-2 text-sm">
+      <div class="mt-2 text-sm">
         This blueprint cannot be edited because it has already been published.
         If you want to modify it, duplicate it first.
       </div>
     <% end %>
   </div>
 
-  
+
 
   <div class="border p-4 w-full h-full bg-white shadow-lg">
 
@@ -78,26 +78,26 @@
     />
   </div>
 
-  <div class="border p-4 w-full h-full bg-white shadow-lg">
-  
-  <h2 class="font-bold text-lg mb-4">
-    Publications
-  </h2>
+  <div class="border p-4 w-full h-full bg-white shadow-lg flex flex-col">
+
+    <h2 class="font-bold text-lg mb-4">
+      Publications
+    </h2>
 
     <.form
       let={f}
       for={@portal_changeset}
-      class="w-128"
+      class="max-w-md flex flex-col mb-4"
       phx-throttle="100"
       phx-target={@myself}
       phx-change="validate_portal"
       phx-submit="publish_new_portal">
 
       <%= label_line_tag f, :name, "New portal name" %>
-      <div>
-      <%= text_input f, :name, class: "form-fld mb-4 flex-grow mr-2", autofocus: true %>
+      <div class="flex items-center">
+      <%= text_input f, :name, class: "form-fld min-w-0 flex-grow flex-shrink mr-2", autofocus: true %>
       <%= submit "Publish in new portal",
-            class: "btn-default",
+            class: "min-w-0 btn-default flex-shrink-0",
             phx_disable_with: "Publishing in progress..." %>
       </div>
     </.form>

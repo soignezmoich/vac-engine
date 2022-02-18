@@ -21,10 +21,12 @@
     phx-change="validate"
     phx-target={@myself}
   >
-    <%= text_input f, :name,
-      class: "form-fld text-sm align-middle w-44",
-      placeholder: "new case" %>
-    <%= submit "create", class: "btn-default align-middle" %>
+    <div class="flex items-stretch h-8">
+      <%= text_input f, :name,
+        class: "form-fld text-sm align-middle w-44 mr-2 min-w-0 flex-shrink",
+        placeholder: "new case" %>
+      <%= submit "Create", class: "btn-default" %>
+    </div>
     <p class="px-2 py-1 text-red-400 text-sm">
       <%=@creation_error_message%>
     </p>

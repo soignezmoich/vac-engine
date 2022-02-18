@@ -9,11 +9,11 @@ defmodule VacEngineWeb.HeaderComponent do
 
   def header(assigns) do
     ~H"""
-    <header class="flex flex-col lg:flex-row relative bg-blue-700">
+    <header class="flex flex-col xl:flex-row relative bg-blue-700">
       <nav class="flex mx-2  xl:self-stretch
                   items-stretch h-14">
         <.top_level {assigns} />
-        <div class="flex whitespace-nowrap pl-4 pr-1 font-bold items-center justify-center text-xl text-white italic truncate">
+        <div class="flex whitespace-nowrap pl-4 pr-1 font-bold items-center text-xl text-white italic truncate max-w-sm">
           <.title {assigns} />
         </div>
       </nav>
@@ -43,14 +43,15 @@ defmodule VacEngineWeb.HeaderComponent do
 
   def sub_level(assigns) do
     ~H"""
-    <div class="text-cream-50 hidden lg:flex -mr-1">
+    <div class="text-cream-50 hidden xl:flex -mr-1">
       <svg width={"3.5rem"}
         height={"3.5rem"}
         viewBox="0 0 200 200">
         <use href={"/slope.svg#slope"}></use>
       </svg>
     </div>
-    <nav class="flex bg-cream-50 min-w-full lg:min-w-fit px-2">
+    <nav class="flex bg-cream-50 min-w-full xl:min-w-fit 2xl:px-2 xl:px-0 px-3
+    xl:pr-3">
       <%= for attrs <- sub_elements(assigns) do %>
         <.sub_element {attrs} />
       <% end %>
@@ -60,13 +61,13 @@ defmodule VacEngineWeb.HeaderComponent do
 
   def filler_without_build_info(assigns) do
     ~H"""
-    <div class="hidden lg:flex flex-grow" />
+    <div class="hidden xl:flex flex-grow" />
     """
   end
 
   def filler_with_build_info(assigns) do
     ~H"""
-    <div class="hidden lg:flex flex-grow bg-blue-700 h-14">
+    <div class="hidden xl:flex flex-grow bg-blue-700 h-14">
       <div class="absolute top-0 right-0 py-1 px-3 text-xs text-gray-200">
         Version: <%= version() %>.
         Build date: <%= build_date() %>.

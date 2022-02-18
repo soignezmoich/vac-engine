@@ -26,9 +26,10 @@ defmodule VacEngineWeb.Header.AccountElementComponent do
     ~H"""
     <div class="relative font-normal flex w-12 h-12 shadow-md item-center justify-center
       text-sm mx-1 my-1 px-2 pt-1.5 text-gray-50 rounded-full
-      cursor-pointer bg-blue-800 hover:bg-blue-700 border border-blue-500"
+      cursor-pointer bg-blue-600 hover:bg-blue-700 border border-blue-500"
       id="account-dropdown-menu"
       data-dropdown="account-dropdown"
+      data-dropdown-class="bg-blue-800"
       >
       <.icon name="hero/user" width="2rem" />
     </div>

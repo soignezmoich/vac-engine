@@ -1,6 +1,6 @@
 <div id="deduction_inspector">
   <div class="w-full bg-white border shadow p-3 cursor-default">
-    <div class="grid grid-cols-4 items-center">
+    <div class="grid grid-cols-4 items-center mb-2">
       <button class={ klass("flex flex-col mx-1 border rounded items-center text-xs
         border-cream-300 text-gray-900 disabled:text-gray-500 disabled:bg-gray-150", [
               {"bg-white", @tab == :cell},
@@ -64,7 +64,7 @@
         phx-throttle="100"
         phx-submit="add_deduction"
         phx-target={@myself}
-        class="flex flex-col w-full p-3">
+        class="flex flex-col w-full p-1">
         <div class="font-bold">New deduction</div>
         <hr class="mb-2 border-black">
         <%= label(f, :variable, "Variable", class: "text-xs mb-1 mt-2") %>
@@ -86,7 +86,7 @@
         phx-throttle="100"
         phx-submit="add_column"
         phx-target={@myself}
-        class="flex flex-col w-full p-3">
+        class="flex flex-col w-full p-1">
         <div class="font-bold">New column</div>
         <hr class="mb-2 border-black">
         <%= label(f, :type, "Type", class: "text-xs mb-1 mt-2") %>
@@ -102,7 +102,7 @@
         </button>
       </.form>
     <% :edit_cell -> %>
-      <div class="p-3">
+      <div class="p-1">
         <%= case @tab do %>
         <% :cell -> %>
           <.live_component
@@ -214,7 +214,7 @@
         <% end %>
       </div>
     <% _ -> %>
-      <div class="flex flex-col p-3">
+      <div class="flex flex-col p-1">
         <div class="grid grid-cols-4 mb-2 gap-1.5 w-full h-6">
           <button class="btn btn-default !p-0 flex justify-center items-center"
                   disabled={!@can_add_deduction?}
