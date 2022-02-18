@@ -186,7 +186,7 @@ defmodule VacEngine.Processor do
   defdelegate get_blueprint(blueprint_id, queries \\ & &1), to: Blueprints
 
   @doc """
-  Duplicate the blueprint with the given id. If the duplication succeeds
+  Duplicate the given blueprint in it's workspace. If the duplication succeeds
   it returns:
   ```
   {:ok, new_blueprint}
@@ -194,7 +194,7 @@ defmodule VacEngine.Processor do
   Otherwise it returns:
   {:error, error_message}
   """
-  defdelegate duplicate_blueprint(blueprint_id, workspace), to: Blueprints
+  defdelegate duplicate_blueprint(blueprint), to: Blueprints
 
   @doc """
   Apply a workspace scope to a blueprint query

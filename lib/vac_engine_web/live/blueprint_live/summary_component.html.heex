@@ -27,11 +27,33 @@
         <%= submit "Update", class: "btn-default", phx_disable_with: "Update in progress..." %>
       <% end %>
     </.form>
+
+
+    <%= if (!@can_write || @readonly) do %>
+      <div class="m-2 text-sm">
+        This blueprint cannot be edited because it has already been published.
+        If you want to modify it, duplicate it first.
+      </div>
+    <% end %>
   </div>
 
   
 
   <div class="border p-4 w-full h-full bg-white shadow-lg">
+
+
+    <div class="font-bold text-lg mb-4">
+      Duplicate in workspace
+    </div>
+    <div class="mr-4">
+      <.live_component
+        module={DuplicateButtonComponent}
+        id={"duplicate_button_component_index_##{@blueprint.id}"}
+        blueprint={@blueprint} />
+    </div>
+
+    <div class="h-5" />
+
     <%= if @can_write && !@readonly do %>
       <div class="font-bold text-lg mb-4">
         Delete blueprint

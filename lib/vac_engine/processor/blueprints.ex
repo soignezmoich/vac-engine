@@ -207,19 +207,17 @@ defmodule VacEngine.Processor.Blueprints do
     Repo.delete(blueprint)
   end
 
-  def duplicate_blueprint(blueprint_id, workspace) do
-    try do
-      new_blueprint =
-        get_full_blueprint!(blueprint_id)
-        |> serialize_blueprint()
-        |> duplicate_from_serialized!(workspace)
+  def duplicate_blueprint(blueprint) do
+    # TODO blueprint.workspace is not loaded...
 
-      {:ok, new_blueprint}
-    rescue
-      error -> {:error, error.message}
-    catch
-      error -> {:error, error.message}
-    end
+    workspace = Repo.get(Workspace, blueprint.workspace_id)
+
+    new_blueprint =
+      get_full_blueprint!(blueprint.id)
+      |> serialize_blueprint()
+      |> duplicate_from_serialized!(workspace)
+
+    {:ok, new_blueprint}
   end
 
   defp get_full_blueprint!(blueprint_id) do

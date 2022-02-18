@@ -1,20 +1,29 @@
 <div class="relative flex-grow" id="variable_editor">
   <div class="absolute inset-0 flex min-h-0">
-    <%= if can?(@role, :write, @blueprint) && !@readonly do %>
     <div class="w-72 flex-shrink-0 mr-2 flex flex-col overflow-y-auto pt-3 shadow-lg bg-gray-50">
+
       <div class="flex-shrink-0 p-2">
-        <.variable_action_group />
+        <%= if can?(@role, :write, @blueprint) && !@readonly do %>
 
-        <div class="h-4" />
+          <.variable_action_group />
+          <div class="h-4" />
+          <.live_component
+                module={VariableInspectorComponent}
+                id="variable_inspector"
+                blueprint={@blueprint}
+                role={@role}/>
 
-        <.live_component
-              module={VariableInspectorComponent}
-              id="variable_inspector"
-              blueprint={@blueprint}
-              role={@role}/>
+        <% else %>
+
+          <div class="w-full bg-white border shadow p-3 cursor-default text-sm">
+            This blueprint cannot be edited because it has already been published.
+            If you want to modify it, duplicate it first.
+          </div>
+        
+        <% end %>
+
       </div>
     </div>
-    <% end %>
     <div class="flex-grow flex flex-col overflow-y-auto">
       <div class="flex-shrink text-xs p-2">
         <.live_component

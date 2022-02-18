@@ -5,6 +5,7 @@ defmodule VacEngineWeb.BlueprintLive.Index do
 
   alias VacEngine.Processor
   alias VacEngine.Query
+  alias VacEngineWeb.BlueprintLive.DuplicateButtonComponent
 
   on_mount(VacEngineWeb.LiveRole)
   on_mount(VacEngineWeb.LiveWorkspace)
@@ -35,27 +36,6 @@ defmodule VacEngineWeb.BlueprintLive.Index do
 
   @impl true
   def handle_params(_params, _session, socket) do
-    {:noreply, socket}
-  end
-
-  @impl true
-  def handle_event("duplicate", %{"blueprint_id" => blueprint_id}, socket) do
-    %{workspace: workspace} = socket.assigns
-
-    {:ok, new_blueprint} =
-      Processor.duplicate_blueprint(blueprint_id, workspace)
-
-    socket =
-      push_redirect(socket,
-        to:
-          Routes.workspace_blueprint_path(
-            socket,
-            :summary,
-            workspace.id,
-            new_blueprint.id
-          )
-      )
-
     {:noreply, socket}
   end
 end

@@ -6,6 +6,7 @@ defmodule VacEngineWeb.BlueprintLive.SummaryComponent do
   alias VacEngine.Processor
   alias VacEngine.Pub
   alias VacEngine.Pub.Portal
+  alias VacEngineWeb.BlueprintLive.DuplicateButtonComponent
   alias VacEngineWeb.BlueprintLive.ImportComponent
 
   @impl true
