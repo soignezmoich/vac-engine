@@ -16,7 +16,7 @@ defmodule VacEngineWeb.SimulationLive.StackInputComponent do
     %{filter: previous_filter} = socket.assigns
 
     filter =
-      if length(runnable_case.input_entries) == 0 do
+      if Enum.empty?(runnable_case.input_entries) do
         "all"
       else
         previous_filter

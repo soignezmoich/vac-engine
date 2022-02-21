@@ -267,10 +267,10 @@ defmodule VacEngineWeb.EditorLive.ExpressionNodeEditorComponent do
       ) do
     return_type = Changeset.get_field(changeset, :return_type)
 
-    if !Enum.member?(return_types, return_type) do
-      default(socket)
-    else
+    if Enum.member?(return_types, return_type) do
       socket
+    else
+      default(socket)
     end
   end
 

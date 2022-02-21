@@ -75,4 +75,30 @@ defmodule VacEngine.PipeHelpers do
   end
 
   def then_on(result, _value, _fun), do: result
+
+  @doc """
+  Put a message on the terminal then pass the input value.
+  """
+  def puts_then(value, message) do
+    IO.puts(message)
+    value
+  end
+
+  @doc """
+  Inspect the element returned by a callback function
+  then pass the input value.
+  """
+  def func_inspect(value, fnc) do
+    IO.inspect(fnc.(value))
+    value
+  end
+
+  @doc """
+  Same as above, with a label on the previous line.
+  """
+  def func_inspect(value, fnc, label) do
+    IO.puts(label)
+    IO.inspect(fnc.(value))
+    value
+  end
 end

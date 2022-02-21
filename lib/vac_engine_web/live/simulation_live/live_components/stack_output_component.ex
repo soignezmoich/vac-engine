@@ -41,7 +41,7 @@ defmodule VacEngineWeb.SimulationLive.StackOutputComponent do
       end)
 
     filter =
-      if length(runnable_case.output_entries) == 0 do
+      if Enum.empty?(runnable_case.output_entries) do
         "all"
       else
         previous_filter

@@ -2,6 +2,7 @@ defmodule VacEngineWeb.BlueprintLive.SummaryComponent do
   use VacEngineWeb, :live_component
 
   import VacEngine.PipeHelpers
+  import VacEngineWeb.InfoComponent
 
   alias VacEngine.Processor
   alias VacEngine.Pub
@@ -46,6 +47,10 @@ defmodule VacEngineWeb.BlueprintLive.SummaryComponent do
     socket
     |> assign(changeset: changeset)
     |> noreply()
+  end
+
+  def handle_event("validate", params, socket) do
+    socket |> noreply()
   end
 
   @impl true

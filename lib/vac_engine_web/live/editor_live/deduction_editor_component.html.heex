@@ -13,8 +13,12 @@
         <% else %>
 
           <div class="w-full bg-white border shadow p-3 cursor-default text-sm">
-            This blueprint cannot be edited because it has already been published.
-            If you want to modify it, duplicate it first.
+            <.info_component>
+              <div class="m-2 text-sm">
+                This blueprint cannot be edited because it has already been published.
+                If you want to modify it, duplicate it first.
+              </div>
+            </.info_component>
           </div>
 
         <% end %>
