@@ -5,6 +5,7 @@ defmodule VacEngine.Simulation.Case do
   import Ecto.Changeset
 
   alias VacEngine.Account.Workspace
+  alias VacEngine.Simulation.Case
   alias VacEngine.Simulation.Layer
   alias VacEngine.Simulation.InputEntry
   alias VacEngine.Simulation.OutputEntry
@@ -46,5 +47,16 @@ defmodule VacEngine.Simulation.Case do
     |> change(workspace_id: ctx.workspace_id)
     |> cast_assoc(:input_entries, with: {InputEntry, :nested_changeset, [ctx]})
     |> cast_assoc(:output_entries, with: {OutputEntry, :nested_changeset, [ctx]})
+  end
+
+  def to_map(%Case{} = c) do
+    %{
+      name: c.name,
+      description: c.description,
+      env_now: c.env_now,
+      runnable: c.runnable,
+      input_entries: Enum.map(c.input_entries, &InputEntry.to_map/1),
+      output_entries: Enum.map(c.output_entries, &OutputEntry.to_map/1)
+    }
   end
 end

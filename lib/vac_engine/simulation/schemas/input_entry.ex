@@ -6,6 +6,7 @@ defmodule VacEngine.Simulation.InputEntry do
 
   alias VacEngine.Account.Workspace
   alias VacEngine.Simulation.Case
+  alias VacEngine.Simulation.InputEntry
 
   schema "simulation_input_entries" do
     belongs_to(:workspace, Workspace)
@@ -25,5 +26,12 @@ defmodule VacEngine.Simulation.InputEntry do
     data
     |> cast(attrs, [:key, :value])
     |> change(workspace_id: ctx.workspace_id)
+  end
+
+  def to_map(%InputEntry{} = ie) do
+    %{
+      key: ie.key,
+      value: ie.value
+    }
   end
 end

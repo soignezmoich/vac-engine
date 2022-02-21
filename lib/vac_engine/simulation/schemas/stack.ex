@@ -8,6 +8,7 @@ defmodule VacEngine.Simulation.Stack do
   alias VacEngine.Account.Workspace
   alias VacEngine.Processor.Blueprint
   alias VacEngine.Simulation.Layer
+  alias VacEngine.Simulation.Stack
 
   schema "simulation_stacks" do
     belongs_to(:blueprint, Blueprint)
@@ -32,5 +33,11 @@ defmodule VacEngine.Simulation.Stack do
     ])
     |> change(workspace_id: ctx.workspace_id, blueprint_id: ctx.blueprint_id)
     |> cast_assoc(:layers, with: {Layer, :nested_changeset, [ctx]})
+  end
+
+  def to_map(%Stack{} = s) do
+    %{
+      layers: Enum.map(s.layers, &Layer.to_map/1)
+    }
   end
 end

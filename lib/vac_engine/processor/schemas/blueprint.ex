@@ -10,6 +10,10 @@ defmodule VacEngine.Processor.Blueprint do
   alias VacEngine.Processor.Deduction
   alias VacEngine.Processor.Variable
   alias VacEngine.Pub.Publication
+  alias VacEngine.Simulation.Setting
+  alias VacEngine.Simulation.Stack
+  alias VacEngine.Simulation.Template
+
   import VacEngine.EnumHelpers
 
   schema "blueprints" do
@@ -28,6 +32,10 @@ defmodule VacEngine.Processor.Blueprint do
     has_many(:active_publications, Publication)
     has_many(:inactive_publications, Publication)
 
+    has_one(:simulation_setting, VacEngine.Simulation.Setting)
+    has_many(:stacks, VacEngine.Simulation.Stack)
+    has_many(:templates, VacEngine.Simulation.Template)
+
     field(:draft, :boolean)
 
     field(:variable_path_index, :map, virtual: true)
@@ -35,8 +43,6 @@ defmodule VacEngine.Processor.Blueprint do
     field(:input_variables, :any, virtual: true)
     field(:intermediate_variables, :any, virtual: true)
     field(:output_variables, :any, virtual: true)
-
-    has_one(:simulation_setting, VacEngine.Simulation.Setting)
   end
 
   @doc false
@@ -78,14 +84,64 @@ defmodule VacEngine.Processor.Blueprint do
   end
 
   @doc """
+  Changeset to update the simulation related data.
+
+  If the cases are provided in stack layers and templates, they will be rebuilt from
+  scratch. Otherwise, ids will be matched with the existing cases.
+  """
+  def simulation_setting_changeset(data, attrs, ctx) do
+    IO.puts("SIMULATION CHANGESET IN BLUEPRINT")
+    IO.inspect(ctx)
+
+    data
+    |> cast(attrs, [])
+    |> cast_assoc(:simulation_setting, with: {Setting, :inject_changeset, [ctx]})
+  end
+
+  def simulation_templates_changeset(data, attrs, ctx) do
+    data
+    |> cast(attrs, [])
+    |> cast_assoc(:templates, with: {Template, :inject_changeset, [ctx]})
+  end
+
+  # def simulation_stacks_changeset(data, attrs)
+
+  @doc """
   Convert to map for serialization
   """
   def to_map(%Blueprint{} = b) do
+    simulation_setting =
+      case b.simulation_setting do
+        nil -> nil
+        simulation_setting -> Setting.to_map(simulation_setting)
+      end
+
+    stacks =
+      case b.stacks do
+        nil ->
+          nil
+
+        stack_list when is_list(stack_list) ->
+          Enum.map(stack_list, &Stack.to_map/1)
+      end
+
+    templates =
+      case b.templates do
+        nil ->
+          nil
+
+        template_list when is_list(template_list) ->
+          Enum.map(template_list, &Template.to_map/1)
+      end
+
     %{
       name: b.name,
       description: b.description,
       variables: Enum.map(b.variables, &Variable.to_map/1),
-      deductions: Enum.map(b.deductions, &Deduction.to_map/1)
+      deductions: Enum.map(b.deductions, &Deduction.to_map/1),
+      simulation_setting: simulation_setting,
+      stacks: stacks,
+      templates: templates
     }
     |> compact
   end

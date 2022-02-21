@@ -4,10 +4,9 @@ defmodule VacEngine.Simulation.OutputEntry do
   use Ecto.Schema
   import Ecto.Changeset
 
-  import Ecto.Changeset
-
   alias VacEngine.Account.Workspace
   alias VacEngine.Simulation.Case
+  alias VacEngine.Simulation.OutputEntry
 
   schema "simulation_output_entries" do
     belongs_to(:workspace, Workspace)
@@ -28,5 +27,13 @@ defmodule VacEngine.Simulation.OutputEntry do
     output_entry
     |> cast(attrs, [:expected])
     |> validate_required([:workspace, :case, :key, :expected])
+  end
+
+  def to_map(%OutputEntry{} = oe) do
+    %{
+      key: oe.key,
+      expected: oe.expected,
+      forbid: oe.forbid
+    }
   end
 end

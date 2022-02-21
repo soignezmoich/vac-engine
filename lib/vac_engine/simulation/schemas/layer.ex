@@ -7,6 +7,7 @@ defmodule VacEngine.Simulation.Layer do
   alias VacEngine.Account.Workspace
   alias VacEngine.Processor.Blueprint
   alias VacEngine.Simulation.Case
+  alias VacEngine.Simulation.Layer
   alias VacEngine.Simulation.Stack
 
   schema "simulation_layers" do
@@ -25,5 +26,18 @@ defmodule VacEngine.Simulation.Layer do
     ])
     |> change(workspace_id: ctx.workspace_id, blueprint_id: ctx.blueprint_id)
     |> cast_assoc(:case, with: {Case, :nested_changeset, [ctx]})
+  end
+
+  def to_map(%Layer{} = l) do
+    kase =
+      case l.case do
+        %Case{} -> Case.to_map(l.case)
+        _ -> nil
+      end
+
+    %{
+      case: kase,
+      case_id: l.case_id
+    }
   end
 end
