@@ -91,9 +91,9 @@ defmodule VacEngineWeb.Header.SubElementComponent do
   def sub_element(assigns) do
     bg_color =
       if assigns.s do
-        "bg-white"
+        "bg-cream-600 text-cream-50 border-cream-800"
       else
-        "bg-cream-100 hover:bg-cream-50"
+        "bg-cream-100 hover:bg-cream-50 border-cream-300"
       end
 
     l =
@@ -116,11 +116,11 @@ defmodule VacEngineWeb.Header.SubElementComponent do
     <%= live_patch @l,
     to: @a,
     class: "flex items-center
-    m-1 px-4
+    m-1 2xl:px-4 px-2
     border rounded-sm
     shadow
     hover:shadow-md
-    text-gray-900 #{@bg_color} border-cream-300
+    text-gray-900 #{@bg_color}
     " %>
     """
   end

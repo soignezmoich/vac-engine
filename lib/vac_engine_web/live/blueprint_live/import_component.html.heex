@@ -6,89 +6,90 @@
         to: Routes.export_path(@socket, :blueprint, @blueprint),
         class: "btn inline-block"
       ) %>
-<%= if can?(@role, :write, @blueprint) && !@readonly do %>
-  <h2 class="font-bold text-lg mt-8 mb-4">
-    Import JSON file
-  </h2>
 
-  <form id="upload-form"
-        phx-submit="save"
-        phx-change="validate"
-        phx-target={@myself}
-        class="flex">
-    <div
-      class={"w-64 h-64 border-8 border-dashed relative flex items-center
-      #{if length(@uploads.json_import.entries) > 0 do "hidden" end}
-      "}
-      phx-drop-target={@uploads.json_import.ref}>
-      <p class="font-bold text-xl text-gray-500 text-center">
-        Drop file here or click to browse files
-      </p>
+  <%= if can?(@role, :write, @blueprint) && !@readonly do %>
+    <h2 class="font-bold text-lg mt-8 mb-4">
+      Import JSON file
+    </h2>
 
-      <%= live_file_input @uploads.json_import,
-            style: "opacity:0",
-            class: "inset-0 absolute"
-      %>
+    <form id="upload-form"
+          phx-submit="save"
+          phx-change="validate"
+          phx-target={@myself}
+          class="flex">
+      <div
+        class={"w-64 h-64 border-8 border-dashed relative flex items-center
+        #{if length(@uploads.json_import.entries) > 0 do "hidden" end}
+        "}
+        phx-drop-target={@uploads.json_import.ref}>
+        <p class="font-bold text-xl text-gray-500 text-center">
+          Drop file here or click to browse files
+        </p>
 
-    </div>
+        <%= live_file_input @uploads.json_import,
+              style: "opacity:0",
+              class: "inset-0 absolute"
+        %>
 
-    <div class="flex flex-col">
-      <div class="flex flex-col mb-4 ml-4">
-        <%= for f <- @upload_files do %>
-          <div class="px-2 font-bold text-xl mb-4">
-            Upload result
-          </div>
-          <%= case f do %>
-            <% {:ok, _br} -> %>
-              <div class="px-2">
-                Success, blueprint updated.
-              </div>
-            <% {:error, msg} -> %>
-              <div class="bg-red-200 border-2 border-red-400 p-2">
-                <div class="mb-2">Error, blueprint NOT updated.</div>
-                <%= case msg do %>
-                  <% [_|_] = errs -> %>
-                    <%= for err <- errs do %>
-                      <div class="text-sm">
+      </div>
+
+      <div class="flex flex-col">
+        <div class="flex flex-col mb-4 ml-4">
+          <%= for f <- @upload_files do %>
+            <div class="px-2 font-bold text-xl mb-4">
+              Upload result
+            </div>
+            <%= case f do %>
+              <% {:ok, _br} -> %>
+                <div class="px-2">
+                  Success, blueprint updated.
+                </div>
+              <% {:error, msg} -> %>
+                <div class="bg-red-200 border-2 border-red-400 p-2">
+                  <div class="mb-2">Error, blueprint NOT updated.</div>
+                  <%= case msg do %>
+                    <% [_|_] = errs -> %>
+                      <%= for err <- errs do %>
+                        <div class="text-sm">
+                          <%= to_string(err) %>
+                        </div>
+                      <% end %>
+                    <% err -> %>
+                      <div>
                         <%= to_string(err) %>
                       </div>
-                    <% end %>
-                  <% err -> %>
-                    <div>
-                      <%= to_string(err) %>
-                    </div>
-                <% end %>
-              </div>
+                  <% end %>
+                </div>
+            <% end %>
           <% end %>
+        </div>
+        <%= for entry <- @uploads.json_import.entries do %>
+          <div class="flex flex-col mb-4 w-64">
+            <p class="font-bold">File: <%= entry.client_name %></p>
+
+            <progress value={entry.progress} max="100" class="h-8 my-2 bg-gray-200">
+              <%= entry.progress %>%
+            </progress>
+
+            <button
+              phx-click="cancel-upload"
+              phx-target={@myself}
+              phx-value-ref={entry.ref}
+              aria-label="cancel"
+              class="btn-cancel mt-2">Remove</button>
+
+            <%= for err <- upload_errors(@uploads.json_import, entry) do %>
+              <p class="bg-red-200 border-2 border-red-400 mt-4 p-2">
+                <%= error_to_string(err) %>
+              </p>
+            <% end %>
+
+          </div>
+        <% end %>
+        <%= if length(@uploads.json_import.entries) > 0 do %>
+           <%= submit "Upload", class: "btn-default", phx_disable_with: "Upload in progress..." %>
         <% end %>
       </div>
-      <%= for entry <- @uploads.json_import.entries do %>
-        <div class="flex flex-col mb-4 w-64">
-          <p class="font-bold">File: <%= entry.client_name %></p>
-
-          <progress value={entry.progress} max="100" class="h-8 my-2 bg-gray-200">
-            <%= entry.progress %>%
-          </progress>
-
-          <button
-            phx-click="cancel-upload"
-            phx-target={@myself}
-            phx-value-ref={entry.ref}
-            aria-label="cancel"
-            class="btn-cancel mt-2">Remove</button>
-
-          <%= for err <- upload_errors(@uploads.json_import, entry) do %>
-            <p class="bg-red-200 border-2 border-red-400 mt-4 p-2">
-              <%= error_to_string(err) %>
-            </p>
-          <% end %>
-
-        </div>
-      <% end %>
-      <%= if length(@uploads.json_import.entries) > 0 do %>
-         <%= submit "Upload", class: "btn-default", phx_disable_with: "Upload in progress..." %>
-      <% end %>
-    </div>
-  </form>
-<% end %>
+    </form>
+  <% end %>
 </div>

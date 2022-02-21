@@ -3,6 +3,7 @@
   id={"#{@id}"}
   let={f}
   for={@changeset}
+  class="flex"
   phx-target={@myself}
   phx-change="validate"
   phx-submit="submit">
@@ -10,7 +11,7 @@
 
       <% {:boolean, _} -> %>
         <%# BOOLEAN (-> select) %>
-        <%= select f, :value, ["true", "false"], class: "form-fld text-sm w-36" %>   
+        <%= select f, :value, ["true", "false"], class: "form-fld text-sm w-36" %>
 
       <% {:string, nil} -> %>
         <%# OTHER (text input) %>
@@ -18,8 +19,8 @@
 
       <% {:string, _} -> %>
         <%# ENUM STRING (-> select) %>
-        <%= select f, :value, @variable.enum, class: "form-fld text-sm w-36" %> 
-               
+        <%= select f, :value, @variable.enum, class: "form-fld text-sm w-36" %>
+
       <% _ -> %>
         <%# OTHER (text input) %>
         <%= text_input f, :value, class: "form-fld inline-block text-sm w-36" %>

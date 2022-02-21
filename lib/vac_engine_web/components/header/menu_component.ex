@@ -70,7 +70,7 @@ defmodule VacEngineWeb.Header.MenuComponent do
     my-1 pl-2 pr-3 py-2
     rounded-sm border
     font-bold
-    bg-blue-700 hover:bg-blue-600 border-blue-500"
+    bg-blue-600 hover:bg-blue-700 border-blue-500"
     %>
     """
   end

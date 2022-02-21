@@ -1,4 +1,5 @@
-<div  class={klass("pb-1 border-b border-gray-100 select-none", {"bg-blue-50", @selected})}>
+<div  class={klass("pb-1 border-b border-gray-100 select-none flex items-center",
+  {"bg-blue-50", @selected})}>
   <div
     phx-click="delete_stack"
     phx-target={@myself}
@@ -6,7 +7,7 @@
   >
     <.icon name="hero/x-circle" width="18px" />
   </div>
-  <div class="inline-block w-4/5 link"
+  <div class="inline-block w-4/5 link text-sm px-1"
     phx-click={"select_item"}
     phx-target={@myself}
   >

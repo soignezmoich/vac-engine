@@ -2,7 +2,7 @@
   <%= if can?(@role, :write_portals, @workspace) do %>
     <%= live_redirect("Create portal",
           to: Routes.workspace_portal_path(@socket, :new, @workspace.id),
-          class: "inline-block mb-4 btn-default"
+          class: "inline-block btn-default"
         ) %>
   <% end %>
 

@@ -201,6 +201,10 @@ function closeListener (evt) {
 function closeDropdown(el) {
   const target = document.getElementById(el.dataset.dropdown)
 
+  let klass = el.dataset.dropdownClass
+  if (klass) {
+    removeClass(el, klass)
+  }
   addClass(target, "hidden")
   document.__currentDropdown = null
 }
@@ -214,6 +218,10 @@ function openDropdown(el, force) {
 
   const target = document.getElementById(el.dataset.dropdown)
 
+  let klass = el.dataset.dropdownClass
+  if (klass) {
+    addClass(el, klass)
+  }
   removeClass(target, "hidden")
   document.__currentDropdown = el.id
 }
