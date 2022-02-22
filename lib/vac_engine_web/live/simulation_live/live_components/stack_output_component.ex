@@ -34,9 +34,8 @@ defmodule VacEngineWeb.SimulationLive.StackOutputComponent do
 
           {:ok, result} ->
             variable
-            |> Map.merge(
-              Map.take(result, [:outcome, :actual, :present_while_forbidden])
-            )
+            |> Map.merge(Map.take(result, [:actual, :present_while_forbidden]))
+            |> Map.put(:outcome, get_outcome(result))
         end
       end)
 
@@ -63,4 +62,11 @@ defmodule VacEngineWeb.SimulationLive.StackOutputComponent do
     |> assign(filter: new_filter)
     |> noreply()
   end
+
+  defp get_outcome(%{absent_while_expected: true}), do: :failure
+  defp get_outcome(%{present_while_forbidden: true}), do: :failure
+  defp get_outcome(%{match: true}), do: :success
+  defp get_outcome(%{match: false}), do: :failure
+  defp get_outcome(%{forbid: true}), do: :success
+  defp get_outcome(_result), do: :not_tested
 end
