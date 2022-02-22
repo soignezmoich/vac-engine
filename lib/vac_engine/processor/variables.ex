@@ -13,14 +13,16 @@ defmodule VacEngine.Processor.Variables do
   import VacEngine.EctoHelpers, only: [transaction: 2]
 
   def create_variable(%Blueprint{} = parent, attrs) do
+    ctx = create_context(parent)
+
     Multi.new()
     |> Multi.insert(:create, fn _ctx ->
-      Variable.create_changeset(%Variable{}, attrs, create_context(parent))
+      Variable.create_changeset(%Variable{}, attrs, ctx)
     end)
     |> Multi.update(:set_default, fn %{create: var} ->
       var
       |> Repo.preload(:default)
-      |> Variable.update_default_changeset(attrs, %{})
+      |> Variable.update_default_changeset(attrs, ctx)
     end)
     |> Multi.run(:check_default, fn repo, %{set_default: var} ->
       check_default_circular_references(repo, var)
@@ -29,13 +31,11 @@ defmodule VacEngine.Processor.Variables do
   end
 
   def create_variable(%Variable{} = parent, attrs) do
+    ctx = create_context(parent)
+
     Multi.new()
     |> Multi.insert(:create, fn _ctx ->
-      Variable.create_changeset(
-        %Variable{parent_id: parent.id},
-        attrs,
-        create_context(parent)
-      )
+      Variable.create_changeset(%Variable{parent_id: parent.id}, attrs, ctx)
     end)
     |> Multi.update(:set_default, fn %{create: var} ->
       var
