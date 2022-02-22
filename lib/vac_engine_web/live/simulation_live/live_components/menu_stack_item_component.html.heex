@@ -1,9 +1,9 @@
-<div  class={klass("pb-1 border-b border-gray-100 select-none flex items-center",
+<div  class={klass("p-0.5 border-b border-gray-100 select-none flex items-center",
   {"bg-blue-50", @selected})}>
   <div
     phx-click="delete_stack"
     phx-target={@myself}
-    class="inline-block mt-1 -mb-1 text-blue-600 cursor-pointer hover:text-red-400"
+    class="inline-block text-blue-600 cursor-pointer hover:text-red-400"
   >
     <.icon name="hero/x-circle" width="18px" />
   </div>
@@ -14,13 +14,13 @@
     #<%= @stack_id %>
     <%= @stack_name %>
   </div>
-  <div class="float-right">
+  <div class="float-right flex items-center">
       <%= if @outcome == :failure  do %>
-    <div class="inline-block align-top text-red-500">
+    <div class="block text-red-500">
       <.icon name="hero/exclamation-circle" width="1.5rem" />
     </div>
   <% else %>
-    <div class="inline-block align-top text-green-600">
+    <div class="text-green-600">
       <.icon name="hero/check-circle" width="1.5rem" />
     </div>
   <% end %>

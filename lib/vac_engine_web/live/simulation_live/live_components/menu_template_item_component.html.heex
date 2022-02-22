@@ -1,12 +1,13 @@
-<div  class={"#{if @selected do " bg-blue-50" end} pb-1 border-b border-gray-100"}>
+<div  class={klass("p-0.5 border-b border-gray-100 select-none flex items-center",
+  {"bg-blue-50", @selected})}>
   <div
     phx-click="delete_template"
     phx-target={@myself}
-    class="inline-block mt-1 -mb-1 text-blue-600 cursor-pointer hover:text-red-400"
+    class="inline-block text-blue-600 cursor-pointer hover:text-red-400"
   >
     <.icon name="hero/x-circle" width="18px" />
   </div>
-  <div class={"inline-block w-4/5 link"}
+  <div class={"inline-block w-4/5 link text-sm px-1"}
     phx-click={"select_item"}
     phx-target={@myself}
     class={""}
