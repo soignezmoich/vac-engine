@@ -89,19 +89,12 @@ defmodule VacEngine.Processor.Blueprint do
   If the cases are provided in stack layers and templates, they will be rebuilt from
   scratch. Otherwise, ids will be matched with the existing cases.
   """
-  def simulation_setting_changeset(data, attrs, ctx) do
-    IO.puts("SIMULATION CHANGESET IN BLUEPRINT")
-    IO.inspect(ctx)
-
+  def simulation_changeset(data, attrs, ctx) do
     data
     |> cast(attrs, [])
     |> cast_assoc(:simulation_setting, with: {Setting, :inject_changeset, [ctx]})
-  end
-
-  def simulation_templates_changeset(data, attrs, ctx) do
-    data
-    |> cast(attrs, [])
-    |> cast_assoc(:templates, with: {Template, :inject_changeset, [ctx]})
+    |> cast_assoc(:templates, with: {Template, :nested_changeset, [ctx]})
+    |> cast_assoc(:stacks, with: {Stack, :nested_changeset, [ctx]})
   end
 
   # def simulation_stacks_changeset(data, attrs)

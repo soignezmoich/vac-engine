@@ -7,6 +7,7 @@ defmodule VacEngine.Simulation.Template do
 
   alias VacEngine.Account.Workspace
   alias VacEngine.Processor.Blueprint
+  alias VacEngine.Repo
   alias VacEngine.Simulation.Case
   alias VacEngine.Simulation.Template
 
@@ -16,41 +17,42 @@ defmodule VacEngine.Simulation.Template do
     belongs_to(:case, Case)
   end
 
-  def to_map(%Template{} = t) do
-    kase =
-      case t.case do
-        %Case{} -> Case.to_map(t.case)
-        _ -> nil
-      end
-
-    %{
-      case: kase,
-      case_id: t.case_id
-    }
+  # If the case is present, create the full case map.
+  def to_map(%Template{case: %Case{} = kase}) do
+    %{case: Case.to_map(kase)}
   end
 
-  # Inject template without any case.
-  # This should be used to link template with an existing case.
-  def inject_changeset(template, %{case: nil, case_id: _case_id} = params, ctx) do
-    bp = ctx.bp_base
+  # If case is not present (preloaded), make a reference using
+  # the case id.
+  def to_map(%Template{case_id: case_id}) do
+    %{case: %{id: case_id}}
+  end
+
+  # Inject template with a reference to an existing case (no full case).
+  def nested_changeset(template, %{case: %{id: case_id}} = params, ctx) do
+    referenced_case = Repo.get(Case, case_id)
 
     template
     |> cast(
-      Map.merge(params, %{blueprint_id: bp.id, workspace_id: bp.workspace_id}),
-      [:blueprint_id, :case_id, :workspace_id]
+      Map.merge(params, %{
+        blueprint_id: ctx.blueprint_id,
+        workspace_id: ctx.workspace_id
+      }),
+      [:blueprint_id, :workspace_id]
     )
+    |> put_assoc(:case, referenced_case)
   end
 
-  # Inject template with a case.
-  # Here, a new case is created and the case ID is ignored.
-  def inject_changeset(template, params, ctx) do
-    bp = ctx.bp_base
-
+  # Inject template with a full case description so that a new case is created.
+  def nested_changeset(template, %{case: _case} = params, ctx) do
     template
     |> cast(
-      Map.merge(params, %{blueprint_id: bp.id, workspace_id: bp.workspace_id}),
-      [:case, :case_id, :blueprint_id, :workspace_id]
+      Map.merge(params, %{
+        blueprint_id: ctx.blueprint_id,
+        workspace_id: ctx.workspace_id
+      }),
+      [:blueprint_id, :workspace_id]
     )
-    |> cast_assoc(:case, with: {Case, :nested_changeset, ctx})
+    |> cast_assoc(:case, with: {Case, :nested_changeset, [ctx]})
   end
 end

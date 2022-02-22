@@ -25,11 +25,12 @@ defmodule VacEngine.Simulation.Setting do
   end
 
   def inject_changeset(simulation_setting, params \\ %{}, ctx) do
-    bp = ctx.bp_base
-
     simulation_setting
     |> cast(
-      Map.merge(params, %{blueprint_id: bp.id, workspace_id: bp.workspace_id}),
+      Map.merge(params, %{
+        blueprint_id: ctx.blueprint_id,
+        workspace_id: ctx.workspace_id
+      }),
       [:env_now, :blueprint_id, :workspace_id]
     )
   end

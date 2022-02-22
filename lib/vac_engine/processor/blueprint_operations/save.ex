@@ -79,16 +79,9 @@ defmodule VacEngine.Processor.Blueprints.Save do
     |> multi_put_variables_context()
     |> multi_inject_variable_defaults()
     |> multi_inject_deductions()
-    |> multi_inject_simulation_setting()
-    |> multi_inject_simulation_templates()
-    # |> multi_update_simulation_setting
-    # |> multi_put_simulation_setting
-    # |> multi_update_stacks
-    # |> multi_put_stacks
-    # |> multi_update_templates
-    # |> multi_put_templates
     |> multi_compute_hash()
     |> multi_inject_hash()
+    |> multi_inject_simulation()
     |> multi_load_complete_blueprint()
     |> Repo.transaction()
     |> case do
@@ -211,30 +204,6 @@ defmodule VacEngine.Processor.Blueprints.Save do
     )
   end
 
-  defp multi_inject_simulation_setting(multi) do
-    multi
-    |> Multi.update(
-      :bp_after_simulation_setting,
-      fn %{:bp_after_deductions => blueprint, attrs: attrs} = ctx ->
-        blueprint
-        |> Repo.preload(:simulation_setting)
-        |> Blueprint.simulation_setting_changeset(attrs, ctx)
-      end
-    )
-  end
-
-  defp multi_inject_simulation_templates(multi) do
-    multi
-    |> Multi.update(
-      :bp_after_templates,
-      fn %{:bp_after_simulation_setting => blueprint, attrs: attrs} = ctx ->
-        blueprint
-        |> Repo.preload(:templates)
-        |> Blueprint.simulation_templates_changeset(attrs, ctx)
-      end
-    )
-  end
-
   defp multi_compute_hash(multi) do
     multi
     |> Multi.run(:compute_hash, fn repo, %{:bp_after_deductions => blueprint} ->
@@ -261,33 +230,17 @@ defmodule VacEngine.Processor.Blueprints.Save do
     )
   end
 
-  # defp multi_put_simulation_setting(multi) do
-  #   multi
-  #   |> Multi.merge(fn
-  #     %{{:blueprint, :simulation_setting} => blueprint} ->
-  #       Multi.new()
-  #       |> Multi.put(:simulation_setting, blueprint.simulation_setting)
-
-  #     rest ->
-  #       IO.inspect(Map.keys(rest))
-  #   end)
-  # end
-
-  # defp multi_put_stacks(multi) do
-  #   multi
-  #   |> Multi.merge(fn %{{:blueprint, :stacks} => blueprint} ->
-  #     Multi.new()
-  #     |> Multi.put(:stacks, blueprint.stacks)
-  #   end)
-  # end
-
-  # defp multi_put_templates(multi) do
-  #   multi
-  #   |> Multi.merge(fn %{{:blueprint, :templates} => blueprint} ->
-  #     Multi.new()
-  #     |> Multi.put(:templates, blueprint[:templates])
-  #   end)
-  # end
+  defp multi_inject_simulation(multi) do
+    multi
+    |> Multi.update(
+      :bp_after_simulation,
+      fn %{:bp_after_hash => blueprint, attrs: attrs} = ctx ->
+        blueprint
+        |> Repo.preload([:simulation_setting, :templates, :stacks])
+        |> Blueprint.simulation_changeset(attrs, ctx)
+      end
+    )
+  end
 
   defp multi_load_complete_blueprint(multi) do
     multi

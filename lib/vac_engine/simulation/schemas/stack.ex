@@ -36,8 +36,6 @@ defmodule VacEngine.Simulation.Stack do
   end
 
   def to_map(%Stack{} = s) do
-    %{
-      layers: Enum.map(s.layers, &Layer.to_map/1)
-    }
+    %{layers: Enum.map(s.layers, &Layer.to_map/1)}
   end
 end
