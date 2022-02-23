@@ -44,15 +44,11 @@ defmodule VacEngine.Simulation.Template do
   end
 
   # Inject template with a full case description so that a new case is created.
-  def nested_changeset(template, %{case: _case} = params, ctx) do
+  def nested_changeset(template, params, ctx) do
     template
-    |> cast(
-      Map.merge(params, %{
-        blueprint_id: ctx.blueprint_id,
-        workspace_id: ctx.workspace_id
-      }),
-      [:blueprint_id, :workspace_id]
-    )
+    |> cast(params, [])
+    |> change(blueprint_id: ctx.blueprint_id, workspace_id: ctx.workspace_id)
     |> cast_assoc(:case, with: {Case, :nested_changeset, [ctx]})
   end
+
 end

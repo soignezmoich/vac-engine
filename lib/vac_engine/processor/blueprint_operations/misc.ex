@@ -14,14 +14,10 @@ defmodule VacEngine.Processor.Blueprints.Misc do
   def duplicate_blueprint(blueprint) do
     workspace = Repo.get(Workspace, blueprint.workspace_id)
 
-    new_blueprint =
-      Load.get_full_blueprint!(blueprint.id, false)
-      |> Load.serialize_blueprint()
-      |> func_inspect(& &1.templates, "###### TEMPLATES ######")
-      |> func_inspect(& &1.stacks, "###### STACKS ######")
-      |> duplicate_from_serialized!(workspace)
-
-    {:ok, new_blueprint}
+    Load.get_full_blueprint!(blueprint.id, false)
+    |> Load.serialize_blueprint()
+    |> duplicate_from_serialized!(workspace)
+    |> ok()
   end
 
   defp duplicate_from_serialized!(%{} = serialized_blueprint, workspace) do

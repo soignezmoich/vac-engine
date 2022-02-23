@@ -214,6 +214,11 @@ defmodule VacEngine.Processor do
   """
   defdelegate load_blueprint_simulation(query, with_cases?), to: Blueprints.Load
 
+  @doc """
+  Get the fully preloaded version of the blueprint with the given id.
+  If with cases is set to true, it also includes related cases.
+  Otherwise, only stacks, layers and templates are preloaded.
+  """
   defdelegate get_full_blueprint!(query, with_cases?), to: Blueprints.Load
 
   @doc """

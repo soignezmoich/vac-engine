@@ -30,14 +30,15 @@ defmodule VacEngine.Processor.Blueprints.Save do
   def update_blueprint(%Blueprint{} = blueprint, attrs) do
     Multi.new()
     |> multi_update_blueprint(blueprint, attrs)
+    |> func_inspect(fn blueprint -> blueprint end)
     |> multi_update()
   end
 
   defp multi_create_blueprint(multi, workspace, attrs) do
     multi
+    |> Multi.put(:attrs, attrs)
     |> Multi.put(:workspace, workspace)
     |> Multi.put(:workspace_id, workspace.id)
-    |> Multi.put(:attrs, attrs)
     |> Multi.insert(
       :bp_base,
       fn %{attrs: attrs, workspace: workspace} ->
@@ -45,13 +46,9 @@ defmodule VacEngine.Processor.Blueprints.Save do
         |> Blueprint.changeset(attrs)
       end
     )
-    # |> func_inspect(&(&1 |> Enum.find(fn {a, _} -> a == {:blueprint, :base} end) |> Map.get(:id)),"##### AFTER MULTI UPDATE BLUEPRINT INSPECT #####")
-    # |> Multi.inspect()
     |> Multi.merge(fn %{:bp_base => blueprint} ->
       Multi.new()
       |> Multi.put(:blueprint_id, blueprint.id)
-
-      # |> Multi.put(:workspace_id, workspace.id)
     end)
   end
 

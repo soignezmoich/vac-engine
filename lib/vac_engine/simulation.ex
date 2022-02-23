@@ -575,7 +575,6 @@ defmodule VacEngine.Simulation do
   end
 
   def set_stack_template(stack, template_case_id) do
-    # delete previous layer relation first
     layer =
       stack.layers
       |> Enum.find(&(&1.position == @template_layer_position))
@@ -593,7 +592,11 @@ defmodule VacEngine.Simulation do
 
       old_layer ->
         Multi.new()
+
+        # delete previous layer relation first
         |> Multi.delete(:delete_old_layer, old_layer)
+
+        # create a new layer with the chosen template
         |> Multi.insert(
           :new_layer,
           %Layer{
@@ -606,8 +609,6 @@ defmodule VacEngine.Simulation do
         )
         |> Repo.transaction()
     end
-
-    # create a new layer with the chosen template
   end
 
   def delete_stack_template(stack) do
