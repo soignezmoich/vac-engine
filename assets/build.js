@@ -38,8 +38,8 @@ require('esbuild')
     entryPoints: entries,
     bundle: true,
     watch: watch,
-    minify: process.env.NODE_ENV == "production",
-    sourcemap: process.env.NODE_ENV == "production" ? false : "both",
+    minify: false, // process.env.NODE_ENV == "production",
+    sourcemap: "both", // process.env.NODE_ENV == "production" ? false : "both",
     outdir: '../priv/static/assets/',
     outbase: './',
   })
