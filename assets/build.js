@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const postCssPlugin = require('esbuild-plugin-postcss2').default
+const postCssPlugin = require('esbuild-style-plugin')
 const path = require('path')
 
 const watch = process.argv.indexOf("watch") >= 0
@@ -20,7 +20,7 @@ require('esbuild')
   .build({
     plugins: [
       postCssPlugin({
-        plugins: [
+        postcss: [
           require('postcss-import')({
             path: [
               path.join(__dirname, 'assets/css'),
