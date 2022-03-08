@@ -20,7 +20,7 @@ defmodule VacEngine.Processor.Variables do
     |> Multi.update(:set_default, fn %{create: var} ->
       var
       |> Repo.preload(:default)
-      |> Variable.update_default_changeset(attrs, %{})
+      |> Variable.update_default_changeset(attrs, create_context(parent))
     end)
     |> Multi.run(:check_default, fn repo, %{set_default: var} ->
       check_default_circular_references(repo, var)
@@ -40,7 +40,7 @@ defmodule VacEngine.Processor.Variables do
     |> Multi.update(:set_default, fn %{create: var} ->
       var
       |> Repo.preload(:default)
-      |> Variable.update_default_changeset(attrs, %{})
+      |> Variable.update_default_changeset(attrs, create_context(parent))
     end)
     |> Multi.run(:check_default, fn repo, %{set_default: var} ->
       check_default_circular_references(repo, var)
