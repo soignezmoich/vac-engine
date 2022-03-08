@@ -187,6 +187,8 @@ defmodule VacEngine.Simulation.Runner do
         expected =
           expected
           |> Enum.reduce(%{}, fn {k, expected}, acc ->
+            acc_item = Map.get(acc, k, %{})
+
             {awe, actual, match} =
               Map.fetch(flat_output, k)
               |> case do
@@ -198,12 +200,21 @@ defmodule VacEngine.Simulation.Runner do
                   {true, nil, false}
               end
 
+            outcome =
+              case {awe, match} do
+                {false, true} -> :success
+                _ -> :failure
+              end
+
             m =
-              Map.get(acc, k, %{})
-              |> Map.put(:expected, expected)
-              |> Map.put(:absent_while_expected, awe)
-              |> Map.put(:actual, actual)
-              |> Map.put(:match, match)
+              acc_item
+              |> Map.merge(%{
+                expected: expected,
+                absent_while_expected: awe,
+                actual: actual,
+                match: match,
+                outcome: outcome
+              })
 
             Map.put(acc, k, m)
           end)
@@ -211,12 +222,23 @@ defmodule VacEngine.Simulation.Runner do
         forbid =
           forbid
           |> Enum.reduce(expected, fn {k, v}, acc ->
+            acc_item = Map.get(acc, k, %{})
+
             pwf = Map.has_key?(flat_output, k)
 
+            outcome =
+              case {Map.get(acc_item, :outcome), pwf} do
+                {:success, false} -> :success
+                {_, _} -> :failure
+              end
+
             m =
-              Map.get(acc, k, %{})
-              |> Map.put(:forbid, v)
-              |> Map.put(:present_while_forbidden, pwf)
+              acc_item
+              |> Map.merge(%{
+                forbid: v,
+                present_while_forbidden: pwf,
+                outcome: outcome
+              })
 
             Map.put(acc, k, m)
           end)
@@ -224,10 +246,21 @@ defmodule VacEngine.Simulation.Runner do
         entries =
           proc.blueprint.variable_path_index
           |> Enum.reduce(forbid, fn {k, v}, acc ->
+            acc_item = Map.get(acc, k, %{})
+
+            outcome =
+              case Map.get(acc_item, :outcome) do
+                nil -> :untested
+                v -> v
+              end
+
             m =
-              Map.get(acc, k, %{})
-              |> Map.put(:variable_id, v.id)
-              |> Map.put(:actual, Map.get(flat_output, k))
+              acc_item
+              |> Map.merge(%{
+                variable_id: v.id,
+                actual: Map.get(flat_output, k),
+                outcome: outcome
+              })
 
             Map.put(acc, k, m)
           end)
