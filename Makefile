@@ -60,16 +60,20 @@ migrate:
 migrate: deps
 	mix ecto.migrate
 
+.PHONY: clean-digest
+
+clean-digest:
+	git ls-files --ignored --exclude-standard -o priv |xargs -r rm
+
 .PHONY: clean
 
-clean:
+clean: clean-digest
 	cd assets && make clean
 	rm -fr .elixir_ls
 	rm -fr _build
 	rm -fr deps
 	rm -fr docs
 	rm -fr erl_crash.dump
-	git ls-files --ignored --exclude-standard -o priv |xargs -r rm
 
 
 .PHONY: server
