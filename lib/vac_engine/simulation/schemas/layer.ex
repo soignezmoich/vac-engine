@@ -8,6 +8,7 @@ defmodule VacEngine.Simulation.Layer do
   alias VacEngine.Processor.Blueprint
   alias VacEngine.Simulation.Case
   alias VacEngine.Simulation.Stack
+  import VacEngine.EctoHelpers
 
   schema "simulation_layers" do
     belongs_to(:blueprint, Blueprint)
@@ -25,5 +26,16 @@ defmodule VacEngine.Simulation.Layer do
     ])
     |> change(workspace_id: ctx.workspace_id, blueprint_id: ctx.blueprint_id)
     |> cast_assoc(:case, with: {Case, :nested_changeset, [ctx]})
+  end
+
+  def changeset(data, attrs \\ %{}) do
+    data
+    |> cast(attrs, [
+      :position
+    ])
+    |> prepare_changes(fn changeset ->
+      stack_id = get_field(changeset, :stack_id)
+      shift_position(changeset, :stack_id, stack_id)
+    end)
   end
 end

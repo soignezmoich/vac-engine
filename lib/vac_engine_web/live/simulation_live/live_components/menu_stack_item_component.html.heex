@@ -1,4 +1,4 @@
-<div  class={klass("pb-1 border-b border-gray-100 select-none flex items-center",
+<div class={klass("pb-1 border-b border-gray-100 select-none flex items-center",
   {"bg-blue-50", @selected})}>
   <div
     phx-click="delete_stack"
@@ -14,18 +14,21 @@
     #<%= @stack_id %>
     <%= @stack_name %>
   </div>
-  <div class="float-right">
-      <%= if @outcome == :failure  do %>
-    <div class="inline-block align-top text-red-500">
+  <div>
+  <%= case @outcome do %>
+  <% :failure -> %>
+    <div class="text-red-500">
       <.icon name="hero/exclamation-circle" width="1.5rem" />
     </div>
-  <% else %>
-    <div class="inline-block align-top text-green-600">
+  <% :success -> %>
+    <div class="text-green-600">
       <.icon name="hero/check-circle" width="1.5rem" />
+    </div>
+  <% _ -> %>
+    <div class="text-orange-600">
+      <.icon name="hero/refresh" width="1.5rem" />
     </div>
   <% end %>
   </div>
 </div>
-
-
 

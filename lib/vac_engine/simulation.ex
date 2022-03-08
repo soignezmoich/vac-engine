@@ -33,9 +33,6 @@ defmodule VacEngine.Simulation do
   alias VacEngine.Simulation.Template
   alias VacEngine.Simulation.Setting
 
-  @runnable_layer_position 0
-  @template_layer_position 1
-
   def queue_job(job) do
     Runner.queue(job)
   end
@@ -189,6 +186,27 @@ defmodule VacEngine.Simulation do
         rcase = Map.get(cases, case_id)
 
         kase = get_or_insert_case(rcase, workspace_id)
+
+        if kase.runnable == false do
+          kase_id = kase.id
+
+          from(t in Template,
+            where: t.blueprint_id == ^blueprint_id and t.case_id == ^kase_id
+          )
+          |> Repo.one()
+          |> case do
+            nil ->
+              %Template{
+                workspace_id: workspace_id,
+                blueprint_id: blueprint_id,
+                case_id: kase.id
+              }
+              |> Repo.insert!()
+
+            t ->
+              t
+          end
+        end
 
         env_now =
           Timex.parse(rcase["env_now"], "{YYYY}-{0M}-{0D}")
@@ -516,9 +534,16 @@ defmodule VacEngine.Simulation do
   end
 
   def get_stack_names(blueprint) do
+    layer_query =
+      from(l in Layer,
+        join: c in assoc(l, :case),
+        where: c.runnable == true,
+        order_by: [desc: l.position]
+      )
+
     from(s in Stack,
-      left_join: l in Layer,
-      on: l.stack_id == s.id and l.position == 0,
+      left_join: l in subquery(layer_query),
+      on: l.stack_id == s.id,
       left_join: c in Case,
       on: l.case_id == c.id,
       where: s.blueprint_id == ^blueprint.id,
@@ -533,7 +558,7 @@ defmodule VacEngine.Simulation do
       %Case{
         workspace_id: blueprint.workspace_id,
         name: name,
-        runnable: false
+        runnable: true
       }
       |> change(%{})
       |> check_constraint(:name, name: :simulation_cases_name_format)
@@ -561,7 +586,8 @@ defmodule VacEngine.Simulation do
 
   def get_stack_template_case(%Stack{} = stack) do
     stack.layers
-    |> Enum.find(&(&1.position == @template_layer_position))
+    |> Enum.reverse()
+    |> Enum.find(&(&1.case.runnable == false))
     |> case do
       nil -> nil
       layer -> layer |> Map.get(:case)
@@ -570,15 +596,20 @@ defmodule VacEngine.Simulation do
 
   def get_stack_runnable_case(%Stack{} = stack) do
     stack.layers
-    |> Enum.find(&(&1.position == @runnable_layer_position))
-    |> Map.get(:case)
+    |> Enum.reverse()
+    |> Enum.find(&(&1.case.runnable == true))
+    |> case do
+      nil -> nil
+      layer -> layer |> Map.get(:case)
+    end
   end
 
   def set_stack_template(stack, template_case_id) do
     # delete previous layer relation first
     layer =
       stack.layers
-      |> Enum.find(&(&1.position == @template_layer_position))
+      |> Enum.reverse()
+      |> Enum.find(&(&1.case.runnable == false))
 
     case layer do
       nil ->
@@ -587,8 +618,9 @@ defmodule VacEngine.Simulation do
           blueprint_id: stack.blueprint_id,
           case_id: template_case_id,
           stack_id: stack.id,
-          position: 1
+          position: 0
         }
+        |> Layer.changeset()
         |> Repo.insert()
 
       old_layer ->
@@ -601,7 +633,7 @@ defmodule VacEngine.Simulation do
             blueprint_id: stack.blueprint_id,
             case_id: template_case_id,
             stack_id: stack.id,
-            position: 1
+            position: old_layer.position
           }
         )
         |> Repo.transaction()
@@ -611,11 +643,11 @@ defmodule VacEngine.Simulation do
   end
 
   def delete_stack_template(stack) do
-    layer =
-      stack.layers
-      |> Enum.find(&(&1.position == @template_layer_position))
-
-    Repo.delete(layer)
+    from(l in Layer,
+      join: c in assoc(l, :case),
+      where: l.stack_id == ^stack.id and c.runnable == false
+    )
+    |> Repo.delete_all()
   end
 
   def variable_default_value(type, enum) do
