@@ -24,6 +24,7 @@ defmodule VacEngine.Processor.Blueprints do
   alias VacEngine.Pub
   alias VacEngine.Pub.Publication
   import VacEngine.PipeHelpers
+  import VacEngine.EctoHelpers
 
   def list_blueprints(queries) do
     Blueprint
@@ -74,6 +75,10 @@ defmodule VacEngine.Processor.Blueprints do
         b.workspace_id in subquery(workspace_permissions) or
           b.id in subquery(blueprint_permissions)
     )
+  end
+
+  def load_blueprint_workspace(query) do
+    from(b in query, preload: :workspace)
   end
 
   def load_blueprint_active_publications(query) do
@@ -208,38 +213,38 @@ defmodule VacEngine.Processor.Blueprints do
   end
 
   def duplicate_blueprint(blueprint) do
-    # TODO blueprint.workspace is not loaded...
-
-    workspace = Repo.get(Workspace, blueprint.workspace_id)
-
-    new_blueprint =
-      get_full_blueprint!(blueprint.id)
-      |> serialize_blueprint()
-      |> duplicate_from_serialized!(workspace)
-
-    {:ok, new_blueprint}
-  end
-
-  defp get_full_blueprint!(blueprint_id) do
-    get_blueprint!(blueprint_id, fn query ->
-      query
-      |> load_blueprint_variables()
-      |> load_blueprint_full_deductions()
+    Multi.new()
+    |> Multi.run(:blueprint, fn _repo, _ ->
+      get_blueprint(blueprint.id, fn query ->
+        query
+        |> load_blueprint_workspace()
+        |> load_blueprint_variables()
+        |> load_blueprint_full_deductions()
+      end)
+      |> case do
+        nil -> {:error, "blueprint not found for duplication"}
+        br -> {:ok, br}
+      end
     end)
-  end
-
-  # TODO add stacks and templates to get_full_blueprint
-  # TODO make a version including cases for export purpose
-
-  defp duplicate_from_serialized!(%{} = serialized_blueprint, workspace) do
-    {:ok, new_blueprint} = create_blueprint(workspace, serialized_blueprint)
-
-    {:ok, renamed_blueprint} =
-      update_blueprint(new_blueprint, %{
-        "name" => "copy of #{serialized_blueprint.name}"
+    |> Multi.run(:serialized, fn _repo, %{blueprint: br} ->
+      br
+      |> serialize_blueprint()
+      |> ok()
+    end)
+    |> Multi.run(:create, fn _repo,
+                             %{
+                               blueprint: %Blueprint{workspace: workspace},
+                               serialized: serialized_blueprint
+                             } ->
+      create_blueprint(workspace, serialized_blueprint)
+    end)
+    |> Multi.run(:update, fn _repo,
+                             %{create: br, blueprint: %Blueprint{name: name}} ->
+      update_blueprint(br, %{
+        "name" => "copy of #{name}"
       })
-
-    renamed_blueprint
+    end)
+    |> transaction(:update)
   end
 
   def blueprint_readonly?(%Blueprint{publications: []}), do: false

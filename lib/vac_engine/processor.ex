@@ -207,6 +207,11 @@ defmodule VacEngine.Processor do
   defdelegate filter_accessible_blueprints(query, role), to: Blueprints
 
   @doc """
+  Load blueprint workspace
+  """
+  defdelegate load_blueprint_workspace(query), to: Blueprints
+
+  @doc """
   Load variables and index them
   """
   defdelegate load_blueprint_variables(query), to: Blueprints
