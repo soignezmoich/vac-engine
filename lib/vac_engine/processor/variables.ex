@@ -14,13 +14,14 @@ defmodule VacEngine.Processor.Variables do
 
   def create_variable(%Blueprint{} = parent, attrs) do
     Multi.new()
-    |> Multi.insert(:create, fn _ctx ->
-      Variable.create_changeset(%Variable{}, attrs, create_context(parent))
+    |> Multi.put(:context, blueprint_context(parent))
+    |> Multi.insert(:create, fn %{context: context} ->
+      Variable.create_changeset(%Variable{}, attrs, context)
     end)
-    |> Multi.update(:set_default, fn %{create: var} ->
+    |> Multi.update(:set_default, fn %{create: var, context: context} ->
       var
       |> Repo.preload(:default)
-      |> Variable.update_default_changeset(attrs, create_context(parent))
+      |> Variable.update_default_changeset(attrs, context)
     end)
     |> Multi.run(:check_default, fn repo, %{set_default: var} ->
       check_default_circular_references(repo, var)
@@ -30,17 +31,18 @@ defmodule VacEngine.Processor.Variables do
 
   def create_variable(%Variable{} = parent, attrs) do
     Multi.new()
-    |> Multi.insert(:create, fn _ctx ->
+    |> Multi.put(:context, blueprint_context(parent))
+    |> Multi.insert(:create, fn %{context: context} ->
       Variable.create_changeset(
         %Variable{parent_id: parent.id},
         attrs,
-        create_context(parent)
+        context
       )
     end)
-    |> Multi.update(:set_default, fn %{create: var} ->
+    |> Multi.update(:set_default, fn %{create: var, context: context} ->
       var
       |> Repo.preload(:default)
-      |> Variable.update_default_changeset(attrs, create_context(parent))
+      |> Variable.update_default_changeset(attrs, context)
     end)
     |> Multi.run(:check_default, fn repo, %{set_default: var} ->
       check_default_circular_references(repo, var)
@@ -121,12 +123,15 @@ defmodule VacEngine.Processor.Variables do
     |> transaction(:update)
   end
 
-  defp create_context(%Blueprint{} = parent) do
-    %{blueprint_id: parent.id, workspace_id: parent.workspace_id}
+  defp blueprint_context(%Blueprint{id: id, workspace_id: workspace_id}) do
+    %{blueprint_id: id, workspace_id: workspace_id}
   end
 
-  defp create_context(%Variable{} = parent) do
-    %{blueprint_id: parent.blueprint_id, workspace_id: parent.workspace_id}
+  defp blueprint_context(%Variable{
+         blueprint_id: blueprint_id,
+         workspace_id: workspace_id
+       }) do
+    %{blueprint_id: blueprint_id, workspace_id: workspace_id}
   end
 
   def variable_used?(%Variable{id: nil}), do: false
