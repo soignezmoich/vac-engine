@@ -27,8 +27,8 @@
     <%= textarea f, :description,
           class: "form-fld w-full text-sm",
           style: "height: 5em" %>
-    <%= label(f, :parent_id, "Container", class: "text-sm mt-4 mb-1") %>
-    <%= select(f, :parent_id, @containers, class: "form-fld text-sm",
+    <%= label(f, :new_parent_id, "Container", class: "text-sm mt-4 mb-1") %>
+    <%= select(f, :new_parent_id, @containers, class: "form-fld text-sm",
         prompt: "-- root --") %>
     <%= label(f, :type, "Type", class: "text-sm mt-4 mb-1") %>
     <%= select(f, :type, @types, class: "form-fld text-sm", disabled:  @used?) %>

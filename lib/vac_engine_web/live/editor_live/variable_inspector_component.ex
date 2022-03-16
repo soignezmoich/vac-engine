@@ -143,7 +143,7 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
       changeset.changes
       |> Map.put(:default, default_ast)
 
-    case Changeset.get_field(changeset, :parent_id) do
+    case Changeset.get_field(changeset, :new_parent_id) do
       nil ->
         Processor.create_variable(blueprint, attrs)
 
@@ -189,7 +189,7 @@ defmodule VacEngineWeb.EditorLive.VariableInspectorComponent do
       Processor.update_variable(variable, attrs)
     end)
     |> Multi.run(:move, fn _repo, %{update: variable} ->
-      case Changeset.fetch_change(changeset, :parent_id) do
+      case Changeset.fetch_change(changeset, :new_parent_id) do
         :error ->
           {:ok, variable}
 

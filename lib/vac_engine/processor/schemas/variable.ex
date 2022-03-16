@@ -36,12 +36,15 @@ defmodule VacEngine.Processor.Variable do
     field(:enum, ListType)
 
     field(:path, {:array, :string}, virtual: true)
+
+    field(:new_parent_id, :integer, virtual: true)
   end
 
   @doc false
   def changeset(data, attrs) do
     data
     |> cast(attrs, [
+      :new_parent_id,
       :enum,
       :name,
       :type,
