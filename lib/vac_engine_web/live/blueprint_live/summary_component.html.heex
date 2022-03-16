@@ -1,39 +1,57 @@
 <div class="p-4 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
 
   <div class="border p-4 w-full h-full bg-white shadow-lg flex flex-col">
-    <h2 class="font-bold text-lg mb-6">Base info</h2>
 
-    <.form
-      let={f}
-      for={@changeset}
-      id="summary_blueprint_form"
-      class="flex flex-col max-w-sm"
-      phx-target={@myself}
-      phx-throttle="100"
-      phx-change="validate"
-      phx-submit="update">
+    <%= if (@can_write && !@readonly) do %>
+      <h2 class="font-bold text-lg mb-6">Base info</h2>
 
-      <%= label_line_tag f, :name, "Name" %>
-      <%= text_input f, :name,
-            class: "form-fld mb-4",
-            autofocus: true,
-            disabled: (!@can_write || @readonly) %>
+      <.form
+        let={f}
+        for={@changeset}
+        id="summary_blueprint_form"
+        class="flex flex-col max-w-sm"
+        phx-target={@myself}
+        phx-throttle="100"
+        phx-change="validate"
+        phx-submit="update">
 
-      <%= label_line_tag f, :description, "Description" %>
-      <%= textarea f, :description, class: "form-fld mb-4",
-            disabled: (!@can_write || @readonly) %>
+        <%= label_line_tag f, :name, "Name" %>
+        <%= text_input f, :name,
+              class: "form-fld mb-4",
+              autofocus: true,
+              disabled: (!@can_write || @readonly) %>
 
-      <%= if @can_write && !@readonly do %>
-        <%= submit "Update", class: "btn-default", phx_disable_with: "Update in progress..." %>
-      <% end %>
-    </.form>
+        <%= label_line_tag f, :description, "Description" %>
+        <%= textarea f, :description, class: "form-fld mb-4",
+              disabled: (!@can_write || @readonly) %>
 
-
-    <%= if (!@can_write || @readonly) do %>
-      <div class="mt-2 text-sm">
+        <%= if @can_write && !@readonly do %>
+          <%= submit "Update", class: "btn-default", phx_disable_with: "Update in progress..." %>
+        <% end %>
+      </.form>
+    <% else %>
+      <div class="m-2">
+        <div class="text-sm">
+          Name:
+        </div>
+        <div class="text-2xl font-bold">
+          <%= @blueprint.name %>
+        </div>
+      </div>
+      <div class="m-2">
+        <div class="text-sm">
+          Description:
+        </div>
+        <div class="italic text-sm">
+          <%= @blueprint.description %>
+        </div>
+      </div>
+      <.info_component>
+      <div class="m-2 text-sm">
         This blueprint cannot be edited because it has already been published.
         If you want to modify it, duplicate it first.
       </div>
+      </.info_component>
     <% end %>
   </div>
 

@@ -6,12 +6,7 @@ defmodule VacEngineWeb.ExportController do
   action_fallback(VacEngineWeb.FallbackController)
 
   def blueprint(conn, %{"blueprint_id" => id}) do
-    blueprint =
-      Processor.get_blueprint!(id, fn query ->
-        query
-        |> Processor.load_blueprint_variables()
-        |> Processor.load_blueprint_full_deductions()
-      end)
+    blueprint = Processor.get_full_blueprint!(id, true)
 
     can!(conn, :read, blueprint)
 

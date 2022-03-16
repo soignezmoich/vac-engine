@@ -173,17 +173,117 @@ defmodule VacEngine.Processor do
   @doc """
   List blueprint
   """
-  defdelegate list_blueprints(queries \\ & &1), to: Blueprints
+  defdelegate list_blueprints(queries \\ & &1), to: Blueprints.Load
 
   @doc """
   Get a blueprint with id, raise if not found.
   """
-  defdelegate get_blueprint!(blueprint_id, queries \\ & &1), to: Blueprints
+  defdelegate get_blueprint!(blueprint_id, queries \\ & &1), to: Blueprints.Load
 
   @doc """
   Get a blueprint with id, nil if not found.
   """
-  defdelegate get_blueprint(blueprint_id, queries \\ & &1), to: Blueprints
+  defdelegate get_blueprint(blueprint_id, queries \\ & &1), to: Blueprints.Load
+
+  @doc """
+  Apply a workspace scope to a blueprint query
+  """
+  defdelegate filter_blueprints_by_workspace(query, workspace),
+    to: Blueprints.Load
+
+  @doc """
+  Filter accessible blueprints with role
+  """
+  defdelegate filter_accessible_blueprints(query, role), to: Blueprints.Load
+
+  @doc """
+  Load blueprint workspace
+  """
+  defdelegate load_blueprint_workspace(query), to: Blueprints.Load
+
+  @doc """
+  Load variables and index them
+  """
+  defdelegate load_blueprint_variables(query), to: Blueprints.Load
+
+  @doc """
+  Load deductions and arrange them, load_blueprint_variables MUST be called first
+  """
+  defdelegate load_blueprint_full_deductions(query), to: Blueprints.Load
+
+  @doc """
+  Load simulation elements associated with the blueprint (settings, templates
+  and stacks).
+  If the `with_cases?` parameter is set to true, the associated cases
+  (with input/output entries) are also loaded.
+  """
+  defdelegate load_blueprint_simulation(query, with_cases?), to: Blueprints.Load
+
+  @doc """
+  Get the fully preloaded version of the blueprint with the given id.
+  If with cases is set to true, it also includes related cases.
+  Otherwise, only stacks, layers and templates are preloaded.
+  """
+  defdelegate get_full_blueprint!(query, with_cases?), to: Blueprints.Load
+
+  @doc """
+  Load active publications in the given blueprint query.
+  """
+  defdelegate load_blueprint_active_publications(query), to: Blueprints.Load
+
+  @doc """
+  Load inactive publications in the give blueprint query.
+  """
+  defdelegate load_blueprint_inactive_publications(query), to: Blueprints.Load
+
+  @doc """
+  Load all publications in the given blueprint query.
+  """
+  defdelegate load_blueprint_publications(query), to: Blueprints.Load
+
+  @doc """
+  Get the version of the given blueprint or blueprint id.
+  """
+  defdelegate blueprint_version(blueprint_or_id), to: Blueprints.Load
+
+  @doc """
+  Convert to map for serialization
+  """
+  defdelegate serialize_blueprint(blueprint), to: Blueprints.Load
+
+  @doc """
+  Create a blueprint with the given attributes
+  TODO describe attributes
+  """
+  defdelegate create_blueprint(workspace, attrs), to: Blueprints.Save
+
+  @doc """
+  Delete blueprint (will error if used)
+  """
+  defdelegate delete_blueprint(blueprint), to: Blueprints.Save
+
+  @doc """
+  Cast attributes into a changeset
+  Only root attributes are supported (no variables or deductions)
+  """
+  defdelegate change_blueprint(blueprint, attrs \\ %{}), to: Blueprints.Save
+
+  @doc """
+  Update a blueprint with attributes
+  """
+  defdelegate update_blueprint(blueprint, attrs), to: Blueprints.Save
+
+  @doc """
+  Load a blueprint from a file.
+
+  Used for file upload as phoenix write into temp file
+  """
+  defdelegate update_blueprint_from_file(blueprint, path), to: Blueprints.Save
+
+  @doc """
+  Check whether a blueprint is readonly
+  """
+  defdelegate blueprint_readonly?(blueprint), to: Blueprints.Misc
 
   @doc """
   Duplicate the given blueprint in it's workspace. If the duplication succeeds
@@ -194,74 +294,7 @@ defmodule VacEngine.Processor do
   Otherwise it returns:
   {:error, error_message}
   """
-  defdelegate duplicate_blueprint(blueprint), to: Blueprints
-
-  @doc """
-  Apply a workspace scope to a blueprint query
-  """
-  defdelegate filter_blueprints_by_workspace(query, workspace), to: Blueprints
-
-  @doc """
-  Filter accessible blueprints with role
-  """
-  defdelegate filter_accessible_blueprints(query, role), to: Blueprints
-
-  @doc """
-  Load blueprint workspace
-  """
-  defdelegate load_blueprint_workspace(query), to: Blueprints
-
-  @doc """
-  Load variables and index them
-  """
-  defdelegate load_blueprint_variables(query), to: Blueprints
-
-  @doc """
-  Load deductions and arrange them, load_blueprint_variables MUST be called first
-  """
-  defdelegate load_blueprint_full_deductions(query), to: Blueprints
-
-  @doc """
-  Load active publications
-  """
-  defdelegate load_blueprint_active_publications(query), to: Blueprints
-
-  @doc """
-  Load inactive publications
-  """
-  defdelegate load_blueprint_inactive_publications(query), to: Blueprints
-
-  @doc """
-  Load all publications
-  """
-  defdelegate load_blueprint_publications(query), to: Blueprints
-
-  @doc """
-  Create a blueprint with the given attributes
-  TODO describe attributes
-  """
-  defdelegate create_blueprint(workspace, attrs), to: Blueprints
-
-  @doc """
-  Delete blueprint (will error if used)
-  """
-  defdelegate delete_blueprint(blueprint), to: Blueprints
-
-  @doc """
-  Cast attributes into a changeset
-  Only root attributes are supported (no variables or deductions)
-  """
-  defdelegate change_blueprint(blueprint, attrs \\ %{}), to: Blueprints
-
-  @doc """
-  Update a blueprint with attributes
-  """
-  defdelegate update_blueprint(blueprint, attrs), to: Blueprints
-
-  @doc """
-  Check whether a blueprint is readonly
-  """
-  defdelegate blueprint_readonly?(blueprint), to: Blueprints
+  defdelegate duplicate_blueprint(blueprint), to: Blueprints.Misc
 
   @doc """
   Create variable with attributes
@@ -292,20 +325,6 @@ defmodule VacEngine.Processor do
   Check if variable is used (expensive, will hit DB)
   """
   defdelegate variable_used?(var), to: Variables
-
-  @doc """
-  Convert to map for serialization
-  """
-  defdelegate serialize_blueprint(blueprint), to: Blueprints
-
-  @doc """
-  Load a blueprint from a file.
-
-  Used for file upload as phoenix write into temp file
-  """
-  defdelegate update_blueprint_from_file(blueprint, path), to: Blueprints
-
-  defdelegate blueprint_version(blueprint_or_id), to: Blueprints
 
   alias VacEngine.Processor.Deductions
 

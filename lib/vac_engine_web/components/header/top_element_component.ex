@@ -25,6 +25,10 @@ defmodule VacEngineWeb.Header.TopElementComponent do
     ]
   end
 
+  def top_elements(%{location: loc, workspace: nil}) when is_list(loc) do
+    []
+  end
+
   def top_elements(%{location: loc, workspace: w}) when is_list(loc) do
     [
       %{
