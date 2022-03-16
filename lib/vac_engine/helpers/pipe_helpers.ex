@@ -41,7 +41,7 @@ defmodule VacEngine.PipeHelpers do
   """
   def tap_on(result, value, fun) do
     then_on(result, value, fun)
-    value
+    result
   end
 
   @doc """
