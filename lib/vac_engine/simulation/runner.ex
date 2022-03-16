@@ -228,7 +228,8 @@ defmodule VacEngine.Simulation.Runner do
 
             outcome =
               case {Map.get(acc_item, :outcome), pwf} do
-                {:success, false} -> :success
+                {:failure, _} -> :failure
+                {_, false} -> :success
                 {_, _} -> :failure
               end
 
