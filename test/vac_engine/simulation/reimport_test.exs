@@ -16,12 +16,13 @@ defmodule VacEngine.Simulation.ReimportTest do
     Simulation.create_blank_stack(original_blueprint, "Test_stack_case")
     Simulation.create_blank_template(original_blueprint, "Test_template_case")
 
+    serialized_blueprint =
+      original_blueprint.id
+      |> Processor.get_full_blueprint!(true)
+      |> Processor.serialize_blueprint()
 
-    serialized_blueprint = original_blueprint.id
-    |> Processor.get_full_blueprint!(true)
-    |> Processor.serialize_blueprint()
-
-    {:ok, reimported_blueprint} = Processor.create_blueprint(workspace, serialized_blueprint)
+    {:ok, reimported_blueprint} =
+      Processor.create_blueprint(workspace, serialized_blueprint)
 
     preloaded_original_blueprint =
       original_blueprint

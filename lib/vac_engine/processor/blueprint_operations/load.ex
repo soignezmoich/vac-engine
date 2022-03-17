@@ -295,6 +295,4 @@ defmodule VacEngine.Processor.Blueprints.Load do
       date -> {:ok, Timex.to_unix(date)}
     end
   end
-
-
 end

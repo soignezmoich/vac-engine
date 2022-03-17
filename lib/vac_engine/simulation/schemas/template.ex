@@ -38,7 +38,7 @@ defmodule VacEngine.Simulation.Template do
       }),
       [:blueprint_id, :workspace_id]
     )
-    |> prepare_changes( fn changeset ->
+    |> prepare_changes(fn changeset ->
       referenced_case = Repo.get(Case, case_id)
 
       changeset
@@ -53,5 +53,4 @@ defmodule VacEngine.Simulation.Template do
     |> change(blueprint_id: ctx.blueprint_id, workspace_id: ctx.workspace_id)
     |> cast_assoc(:case, with: {Case, :nested_changeset, [ctx]})
   end
-
 end

@@ -32,9 +32,9 @@ defmodule VacEngine.Processor.Blueprint do
     has_many(:active_publications, Publication)
     has_many(:inactive_publications, Publication)
 
-    has_one(:simulation_setting, VacEngine.Simulation.Setting)
-    has_many(:stacks, VacEngine.Simulation.Stack)
-    has_many(:templates, VacEngine.Simulation.Template)
+    has_one(:simulation_setting, Setting, on_replace: :delete_if_exists)
+    has_many(:stacks, Stack, on_replace: :delete_if_exists)
+    has_many(:templates, Template, on_replace: :delete_if_exists)
 
     field(:draft, :boolean)
 
