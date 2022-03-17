@@ -23,12 +23,15 @@ defmodule VacEngine.Simulation.Layer do
 
   # Inject layer with a reference to an existing case (no full case).
   def nested_changeset(layer, %{case: %{id: case_id}} = attrs, ctx) do
-    referenced_case = Repo.get(Case, case_id)
-
     layer
     |> cast(attrs, [:position])
     |> change(workspace_id: ctx.workspace_id, blueprint_id: ctx.blueprint_id)
-    |> put_assoc(:case, referenced_case)
+    |> prepare_changes(fn changeset ->
+      referenced_case = Repo.get(Case, case_id)
+
+      changeset
+      |> put_assoc(:case, referenced_case)
+    end)
   end
 
   # Inject layer with a full case description so that a new case is created.

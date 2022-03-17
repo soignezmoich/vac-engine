@@ -30,8 +30,6 @@ defmodule VacEngine.Simulation.Template do
 
   # Inject template with a reference to an existing case (no full case).
   def nested_changeset(template, %{case: %{id: case_id}} = params, ctx) do
-    referenced_case = Repo.get(Case, case_id)
-
     template
     |> cast(
       Map.merge(params, %{
@@ -40,7 +38,12 @@ defmodule VacEngine.Simulation.Template do
       }),
       [:blueprint_id, :workspace_id]
     )
-    |> put_assoc(:case, referenced_case)
+    |> prepare_changes( fn changeset ->
+      referenced_case = Repo.get(Case, case_id)
+
+      changeset
+      |> put_assoc(:case, referenced_case)
+    end)
   end
 
   # Inject template with a full case description so that a new case is created.
