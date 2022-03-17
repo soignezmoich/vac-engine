@@ -4,17 +4,17 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.26.0">
+    <meta name="generator" content="ExDoc v0.28.0">
     <meta name="project" content="Vac Engine v1.0.3">
 
     <title>VacEngine.PipeHelpers — Vac Engine v1.0.3</title>
-    <link rel="stylesheet" href="dist/elixir-b5076885a795c65e636c.css" />
+    <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
-    <script src="dist/sidebar_items-3a4f8516fb.js"></script>
+    <script src="dist/sidebar_items-6e385c0426.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/app-a404e1e870b77c874f9e.js"></script>
+    <script async src="dist/app-80aa23c1d96b6dc3c064.js"></script>
 
 
   </head>
@@ -30,17 +30,18 @@
 
 <div class="main">
 
-<button class="sidebar-button sidebar-toggle">
-  <span class="icon-menu" title="Collapse/expand sidebar"></span>
-</button>
 
 <section class="sidebar">
+  <button class="sidebar-button sidebar-toggle">
+    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+  </button>
+
   <form class="sidebar-search" action="search.html">
     <button type="submit" class="search-button" aria-label="Submit Search">
-      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
     </button>
     <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
-      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
     </button>
     <label class="search-label">
       <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
@@ -53,6 +54,7 @@
   </div>
 
   <div class="sidebar-header">
+
     <div class="sidebar-projectDetails">
       <a href="readme.html" class="sidebar-projectName" translate="no">
 Vac Engine
@@ -61,16 +63,15 @@ Vac Engine
         v1.0.3
       </strong>
     </div>
+    <ul class="sidebar-listNav">
+      <li><a id="extras-list-link" href="#full-list">GUIDES</a></li>
 
+        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+
+    </ul>
   </div>
 
-  <ul class="sidebar-listNav">
-    <li><a id="extras-list-link" href="#full-list">GUIDES</a></li>
-
-      <li><a id="modules-list-link" href="#full-list">Modules</a></li>
-
-
-  </ul>
   <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
 </section>
@@ -80,14 +81,19 @@ Vac Engine
     <div id="content" class="content-inner">
 
 <h1>
-  <span translate="no">VacEngine.PipeHelpers</span> 
-  <small class="app-vsn" translate="no">(Vac Engine v1.0.3)</small>
+<button class="settings display-settings">
+  <i class="ri-settings-3-line"></i>
+  <span class="sr-only">Settings</span>
+</button>
+
 
     <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/pipe_helpers.ex#L1" title="View Source" class="view-source" rel="help">
-      <span class="icon-code" aria-hidden="true"></span>
+      <i class="ri-code-s-slash-line" aria-hidden="true"></i>
       <span class="sr-only">View Source</span>
     </a>
 
+  <span translate="no">VacEngine.PipeHelpers</span> 
+  <small class="app-vsn" translate="no">(Vac Engine v1.0.3)</small>
 
 </h1>
 
@@ -100,7 +106,7 @@ Vac Engine
   <section id="summary" class="details-list">
     <h1 class="section-heading">
       <a class="hover-link" href="#summary">
-        <span class="icon-link" aria-hidden="true"></span>
+        <i class="ri-link-m" aria-hidden="true"></i>
         <span class="sr-only">Link to this section</span>
       </a>
       Summary
@@ -110,6 +116,35 @@ Vac Engine
     <h2>
       <a href="#functions">Functions</a>
     </h2>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#func_inspect/2" translate="no">func_inspect(value, fnc)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Inspect the element returned by a callback function
+then pass the input value.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#func_inspect/3" translate="no">func_inspect(value, fnc, label)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Same as above, with a label on the previous line.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#noreply/1" translate="no">noreply(val)</a>
+
+        </div>
+
+      </div>
 
       <div class="summary-row">
         <div class="summary-signature">
@@ -133,6 +168,26 @@ Vac Engine
 
       <div class="summary-row">
         <div class="summary-signature">
+          <a href="#puts_then/2" translate="no">puts_then(value, message)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Put a message on the terminal then pass the input value.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#rpair/2" translate="no">rpair(val, res)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Wrap into tuple rpair</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
           <a href="#tap_ok/2" translate="no">tap_ok(result, fun)</a>
 
         </div>
@@ -143,11 +198,31 @@ Vac Engine
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#tap_on/3" translate="no">tap_on(value, value, fun)</a>
+          <a href="#tap_on/3" translate="no">tap_on(result, value, fun)</a>
 
         </div>
 
           <div class="summary-synopsis"><p>Tap only if value match</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#then_ok/2" translate="no">then_ok(result, fun)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Then only if ok tuple</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#then_on/3" translate="no">then_on(value, value, fun)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Then only if value match</p></div>
 
       </div>
 
@@ -159,23 +234,90 @@ Vac Engine
   <section id="functions" class="details-list">
     <h1 class="section-heading">
       <a class="hover-link" href="#functions">
-        <span class="icon-link" aria-hidden="true"></span>
+        <i class="ri-link-m" aria-hidden="true"></i>
         <span class="sr-only">Link to this section</span>
       </a>
 Functions
     </h1>
     <div class="functions-list">
+<section class="detail" id="func_inspect/2">
+
+  <div class="detail-header">
+    <a href="#func_inspect/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">func_inspect(value, fnc)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/pipe_helpers.ex#L91" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Inspect the element returned by a callback function
+then pass the input value.</p>
+  </section>
+</section>
+<section class="detail" id="func_inspect/3">
+
+  <div class="detail-header">
+    <a href="#func_inspect/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">func_inspect(value, fnc, label)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/pipe_helpers.ex#L99" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Same as above, with a label on the previous line.</p>
+  </section>
+</section>
+<section class="detail" id="noreply/1">
+
+  <div class="detail-header">
+    <a href="#noreply/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">noreply(val)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/pipe_helpers.ex#L13" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+
+  </section>
+</section>
 <section class="detail" id="ok/1">
 
   <div class="detail-header">
     <a href="#ok/1" class="detail-link" title="Link to this function">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature" translate="no">ok(val)</h1>
 
       <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/pipe_helpers.ex#L9" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -191,13 +333,13 @@ Functions
 
   <div class="detail-header">
     <a href="#pair/2" class="detail-link" title="Link to this function">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature" translate="no">pair(val, res)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/pipe_helpers.ex#L16" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/pipe_helpers.ex#L20" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -209,17 +351,61 @@ Functions
 <p>Wrap into tuple pair</p>
   </section>
 </section>
+<section class="detail" id="puts_then/2">
+
+  <div class="detail-header">
+    <a href="#puts_then/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">puts_then(value, message)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/pipe_helpers.ex#L82" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Put a message on the terminal then pass the input value.</p>
+  </section>
+</section>
+<section class="detail" id="rpair/2">
+
+  <div class="detail-header">
+    <a href="#rpair/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">rpair(val, res)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/pipe_helpers.ex#L27" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Wrap into tuple rpair</p>
+  </section>
+</section>
 <section class="detail" id="tap_ok/2">
 
   <div class="detail-header">
     <a href="#tap_ok/2" class="detail-link" title="Link to this function">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature" translate="no">tap_ok(result, fun)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/pipe_helpers.ex#L23" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/pipe_helpers.ex#L34" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -235,13 +421,13 @@ Functions
 
   <div class="detail-header">
     <a href="#tap_on/3" class="detail-link" title="Link to this function">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">tap_on(value, value, fun)</h1>
+    <h1 class="signature" translate="no">tap_on(result, value, fun)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/pipe_helpers.ex#L41" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/pipe_helpers.ex#L42" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -253,45 +439,76 @@ Functions
 <p>Tap only if value match</p>
   </section>
 </section>
+<section class="detail" id="then_ok/2">
+
+  <div class="detail-header">
+    <a href="#then_ok/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">then_ok(result, fun)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/pipe_helpers.ex#L50" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Then only if ok tuple</p>
+  </section>
+</section>
+<section class="detail" id="then_on/3">
+
+  <div class="detail-header">
+    <a href="#then_on/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">then_on(value, value, fun)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/pipe_helpers.ex#L66" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Then only if value match</p>
+  </section>
+</section>
 
     </div>
   </section>
 
       <footer class="footer">
 
+          <p>
+            On Hex.pm:
+
+            <span class="line">
+              <a href="https://hex.pm/packages/vac_engine/1.0.3" class="line footer-hex-package">Package</a>
+              <a href="https://preview.hex.pm/preview/vac_engine/1.0.3" class="line">Preview</a>
+
+                <a href="https://preview.hex.pm/preview/vac_engine/1.0.3/show/lib/vac_engine/helpers/pipe_helpers.ex">(current file)</a>
+
+            </span>
+
+            <button class="line footer-button display-quick-switch">
+              Search
+            </button>
+          </p>
+
         <p>
-          Find it on Hex:
-          <a href="https://hex.pm/packages/vac_engine/1.0.3" class="line footer-hex-package">Package</a>
-          <a href="https://preview.hex.pm/preview/vac_engine/1.0.3" class="line">Preview</a>
-
-            <a href="https://preview.hex.pm/preview/vac_engine/1.0.3/show/lib/vac_engine/helpers/pipe_helpers.ex">(current file)</a>
-
-        </p>
-
-        <p>
-          <span class="line">
-            Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.26.0) for the
-            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>.
-          </span>
-          <span class="line">
-            Designed by
-            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire" translate="no">Friedel Ziegelmayer</a>.
-          </span>
-        </p>
-        <p>
-
-            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
-
-          <button class="line footer-button display-shortcuts-help">
-            Display keyboard shortcuts
-          </button>
-          <button class="line footer-button display-quick-switch">
-            Go to a HexDocs package
-          </button>
-          <button class="line footer-button display-settings">
-            Settings
-          </button>
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.0) for the
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
         </p>
       </footer>
     </div>

@@ -4,17 +4,17 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.26.0">
+    <meta name="generator" content="ExDoc v0.28.0">
     <meta name="project" content="Vac Engine v1.0.3">
 
     <title>Installation — Vac Engine v1.0.3</title>
-    <link rel="stylesheet" href="dist/elixir-b5076885a795c65e636c.css" />
+    <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
-    <script src="dist/sidebar_items-3a4f8516fb.js"></script>
+    <script src="dist/sidebar_items-6e385c0426.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/app-a404e1e870b77c874f9e.js"></script>
+    <script async src="dist/app-80aa23c1d96b6dc3c064.js"></script>
 
 
   </head>
@@ -30,17 +30,18 @@
 
 <div class="main">
 
-<button class="sidebar-button sidebar-toggle">
-  <span class="icon-menu" title="Collapse/expand sidebar"></span>
-</button>
 
 <section class="sidebar">
+  <button class="sidebar-button sidebar-toggle">
+    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+  </button>
+
   <form class="sidebar-search" action="search.html">
     <button type="submit" class="search-button" aria-label="Submit Search">
-      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
     </button>
     <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
-      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
     </button>
     <label class="search-label">
       <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
@@ -53,6 +54,7 @@
   </div>
 
   <div class="sidebar-header">
+
     <div class="sidebar-projectDetails">
       <a href="readme.html" class="sidebar-projectName" translate="no">
 Vac Engine
@@ -61,16 +63,15 @@ Vac Engine
         v1.0.3
       </strong>
     </div>
+    <ul class="sidebar-listNav">
+      <li><a id="extras-list-link" href="#full-list">GUIDES</a></li>
 
+        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+
+    </ul>
   </div>
 
-  <ul class="sidebar-listNav">
-    <li><a id="extras-list-link" href="#full-list">GUIDES</a></li>
-
-      <li><a id="modules-list-link" href="#full-list">Modules</a></li>
-
-
-  </ul>
   <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
 </section>
@@ -79,146 +80,151 @@ Vac Engine
   <div class="content-outer">
     <div id="content" class="content-inner">
 
-<h1 id="content">
-Installation
+<h1>
+<button class="settings display-settings">
+  <i class="ri-settings-3-line"></i>
+  <span class="sr-only">Settings</span>
+</button>
+
 
     <a href="https://github.com/soignezmoich/vac-engine/blob/main/INSTALLATION.md#L1" title="View Source" class="view-source" rel="help">
-      <span class="icon-code" aria-hidden="true"></span>
+      <i class="ri-code-s-slash-line" aria-hidden="true"></i>
       <span class="sr-only">View Source</span>
     </a>
 
+  <span>Installation</span>
 </h1>
 
 <h2 id="prerequisites" class="section-heading">
-  <a href="#prerequisites" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#prerequisites" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Prerequisites
 </h2>
 <p>The detailed installation instructions below are aimed to Ubuntu/Debian
 distributions. For other distributions, installation instructions are
-available on the websites the different softwares.</p><h4>erlang and rebar3</h4><pre><code class="makeup console"><span class="">sudo apt install erlang
-</span></code></pre><p>For other distirubtions, installation files are available at</p><p><a href="https://www.erlang.org/downloads">https://www.erlang.org/downloads</a></p><h4>elixir</h4><pre><code class="makeup console"><span class="">Wget https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb
+available on the websites the different softwares.</p><h4>erlang and rebar3</h4><pre><code class="makeup console" translate="no"><span class="">sudo apt install erlang
+</span></code></pre><p>For other distirubtions, installation files are available at</p><p><a href="https://www.erlang.org/downloads">https://www.erlang.org/downloads</a></p><h4>elixir</h4><pre><code class="makeup console" translate="no"><span class="">Wget https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb
 </span><span class="">sudo dpkg -i erlang-solutions_2.0_all.deb
 </span><span class="">sudo apt update
 </span><span class="">sudo apt install esl-erlang
 </span><span class="">sudo apt install elixir
-</span></code></pre><h4>nodejs and npm</h4><pre><code class="makeup console"><span class="">sudo apt install nodejs npm
-</span></code></pre><p>Upgrade npm and node if needed:</p><pre><code class="makeup console"><span class="">sudo npm install -g n
+</span></code></pre><h4>nodejs and npm</h4><pre><code class="makeup console" translate="no"><span class="">sudo apt install nodejs npm
+</span></code></pre><p>Upgrade npm and node if needed:</p><pre><code class="makeup console" translate="no"><span class="">sudo npm install -g n
 </span><span class="">sudo n latest
-</span></code></pre><h4>yarn</h4><pre><code class="makeup console"><span class="">sudo npm install --global yarn
-</span></code></pre><h4>inotify-tools</h4><pre><code class="makeup console"><span class="">sudo apt install inotify-tools
-</span></code></pre><h4>postgresql</h4><pre><code class="makeup console"><span class="">sudo apt install postgresql postgresql-contrib
+</span></code></pre><h4>yarn</h4><pre><code class="makeup console" translate="no"><span class="">sudo npm install --global yarn
+</span></code></pre><h4>inotify-tools</h4><pre><code class="makeup console" translate="no"><span class="">sudo apt install inotify-tools
+</span></code></pre><h4>postgresql</h4><pre><code class="makeup console" translate="no"><span class="">sudo apt install postgresql postgresql-contrib
 </span></code></pre><h2 id="environment-variables" class="section-heading">
-  <a href="#environment-variables" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#environment-variables" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Environment Variables
 </h2>
 <p>The application is configured throught environment variables.</p><p>There is two types of environment variables:</p><ul><li>compile time environment variables</li><li>run time environment variables</li></ul><h3 id="compile-time-environment-variables" class="section-heading">
-  <a href="#compile-time-environment-variables" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#compile-time-environment-variables" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Compile time environment variables
 </h3>
 <p>Must be available on the machine that compiles the application.</p><ul><li><code class="inline">SESSION_SIGNING_SALT</code></li><li><code class="inline">SESSION_ENCRYPTION_SALT</code></li><li><code class="inline">SESSION_KEY</code></li><li><code class="inline">LIVE_VIEW_SALT</code></li><li><code class="inline">FORCE_SSL</code></li><li><code class="inline">REMOTE_IP_HEADER</code></li></ul><p>All the environment variables above are mandatory. They must be available on the
 system both:</p><ul><li>when compiling (i.e. when executing &quot;make release&quot;) or</li><li>when starting the dev server (i.e. when executing &quot;make server&quot;)</li></ul><h3 id="run-time-environment-variables" class="section-heading">
-  <a href="#run-time-environment-variables" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#run-time-environment-variables" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Run time environment variables
 </h3>
 <p>Must be available on the machine that runs the application. The variables are
 partly different for production and development.</p><h4>Production</h4><ul><li><code class="inline">DATABASE_URL</code></li><li><code class="inline">HOST</code></li><li><code class="inline">PORT</code></li><li><code class="inline">SECRET_KEY_BASE</code></li><li><code class="inline">POOL_SIZE</code> ¹</li><li><code class="inline">ADDRESS</code> ²</li><li><code class="inline">SSL_KEY_PATH</code> ³</li><li><code class="inline">SSL_CERT_PATH</code> ³</li><li><code class="inline">FORCE_SSL</code> ⁴</li><li><code class="inline">REMOTE_IP_HEADER</code> ⁴</li></ul><ol><li>Optional, defaults to 10.</li><li>Optional, defaults to <code class="inline">::0</code> (all IPv6 and IPv4 interfaces).</li><li>Optional, only necessary if the application is supposed to terminate SSL
 connections.</li><li>Optional.</li></ol><h4>Development</h4><ul><li><code class="inline">DATABASE_URL</code></li><li><code class="inline">DATABASE_TEST_URL</code> ¹</li><li><code class="inline">NO_DEBUG_LOG</code> ²</li></ul><ol><li>Only necessary to run tests.</li><li>Optional, prevents debug log output.</li></ol><h3 id="session_signing_salt" class="section-heading">
-  <a href="#session_signing_salt" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#session_signing_salt" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   <code class="inline">SESSION_SIGNING_SALT</code>
 </h3>
 <p>This is the session signing salt. This is a salt and not a secret.</p><p>Must be a random string between 8 and 32 characters long.</p><p>This is a compile time variable.</p><h3 id="session_encryption_salt" class="section-heading">
-  <a href="#session_encryption_salt" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#session_encryption_salt" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   <code class="inline">SESSION_ENCRYPTION_SALT</code>
 </h3>
 <p>This is the session encryption salt. This is a salt and not a secret.</p><p>Must be a random string between 8 and 32 characters long.</p><p>This is a compile time variable.</p><h3 id="session_key" class="section-heading">
-  <a href="#session_key" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#session_key" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   <code class="inline">SESSION_KEY</code>
 </h3>
 <p>This is the name of the cookie used to store the session.</p><p>Must be a string between 4 and 16 characters long.</p><p>This is a compile time variable.</p><h3 id="live_view_salt" class="section-heading">
-  <a href="#live_view_salt" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#live_view_salt" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   <code class="inline">LIVE_VIEW_SALT</code>
 </h3>
 <p>This is the live view salt signing salt. This is a salt and not a secret.</p><p>Must be a random string between 8 and 32 characters long.</p><p>This is a compile time variable.</p><h3 id="force_ssl" class="section-heading">
-  <a href="#force_ssl" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#force_ssl" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   <code class="inline">FORCE_SSL</code>
 </h3>
 <p>If set to <code class="inline">FORWARDED</code> force SSL is enabled and the <code class="inline">X-Forwarded-Proto</code> header is
 required. If set to <code class="inline">FORCE</code> SSL is forced (non HTTP are redirected to HTTPS).</p><h3 id="remote_ip_header" class="section-heading">
-  <a href="#remote_ip_header" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#remote_ip_header" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   <code class="inline">REMOTE_IP_HEADER</code>
 </h3>
 <p>If the app is behind a proxy, set this header to either <code class="inline">X-Forwarded-For</code>,
 <code class="inline">X-Real-Ip</code>, or <code class="inline">X-Client-Ip</code>. This will tell the App to read the client ip from
 this header. Do not set if not behind a proxy.</p><h3 id="database_url" class="section-heading">
-  <a href="#database_url" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#database_url" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   <code class="inline">DATABASE_URL</code>
 </h3>
-<p>The database URL to use.</p><p>Example:</p><pre><code class="makeup elixir"><span class="n">postgresql</span><span class="ss">://</span><span class="n">user</span><span class="ss">:password@127</span><span class="o">.</span><span class="mf">0.0</span><span class="o">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">5432</span><span class="o">/</span><span class="n">dbname</span></code></pre><p><a href="https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING">Format</a></p><p>When using make to run test, the Makefile will override <code class="inline">DATABASE_URL</code> with
+<p>The database URL to use.</p><p>Example:</p><pre><code class="makeup elixir" translate="no"><span class="n">postgresql</span><span class="ss">://</span><span class="n">user</span><span class="ss">:password@127</span><span class="o">.</span><span class="mf">0.0</span><span class="o">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">5432</span><span class="o">/</span><span class="n">dbname</span></code></pre><p><a href="https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING">Format</a></p><p>When using make to run test, the Makefile will override <code class="inline">DATABASE_URL</code> with
 <code class="inline">DATABASE_TEST_URL</code>.</p><h3 id="database_test_url" class="section-heading">
-  <a href="#database_test_url" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#database_test_url" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   <code class="inline">DATABASE_TEST_URL</code>
 </h3>
 <p>Same as <code class="inline">DATABASE_URL</code> but used when running tests.</p><h3 id="host" class="section-heading">
-  <a href="#host" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#host" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   <code class="inline">HOST</code>
 </h3>
 <p>The public host of the server.</p><p>This is used to generate redirect URLs.</p><p>For example, if set to <code class="inline">myapp.example.com</code> then all full URLs would be
 <code class="inline">https://myapp.example.com/path</code>.</p><p>This is only a hostname, protocol will be forced to <code class="inline">https</code> and no path can be
 added.</p><h3 id="port" class="section-heading">
-  <a href="#port" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#port" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   <code class="inline">PORT</code>
 </h3>
 <p>The HTTP port on which Erlang will listen (can be proxied, but not necessary).</p><h3 id="pool_size" class="section-heading">
-  <a href="#pool_size" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#pool_size" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   <code class="inline">POOL_SIZE</code>
 </h3>
 <p>The postgresql pool size. This is the number of database connection to open.</p><p>Default to 10.</p><h3 id="address" class="section-heading">
-  <a href="#address" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#address" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   <code class="inline">ADDRESS</code>
 </h3>
 <p>The IP address to bind the HTTP listener to. By default it will use <code class="inline">::0</code> which
 will bind to all ipv6 and ipv4 addresses. You can set it to either an ipv6 or
 ipv4 address. Set it to <code class="inline">127.0.0.1</code> for ipv4 only localhost listening.</p><h3 id="secret_key_base" class="section-heading">
-  <a href="#secret_key_base" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#secret_key_base" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   <code class="inline">SECRET_KEY_BASE</code>
 </h3>
 <p>This is the secret used to derive all the keys used in the application.</p><p>Must be a random string between 64 and 120 characters long.</p><p>This is a secret and must be protected.</p><p>Modifying this key will invalidate all cookies, sessions, activation tokens.</p><h3 id="ssl_key_path" class="section-heading">
-  <a href="#ssl_key_path" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#ssl_key_path" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   <code class="inline">SSL_KEY_PATH</code>
 </h3>
 <p>Path to a <code class="inline">.pem</code> file containing the private key.</p><p>If both <code class="inline">SSL_KEY_PATH</code> and <code class="inline">SSL_CERT_PATH</code> are set, the application
 will terminate SSL itself, and <code class="inline">PORT</code> should be set to <code class="inline">443</code>.</p><h3 id="ssl_cert_path" class="section-heading">
-  <a href="#ssl_cert_path" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#ssl_cert_path" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   <code class="inline">SSL_CERT_PATH</code>
 </h3>
 <p>Path to a <code class="inline">.pem</code> file containing the FULL CHAIN certificate.</p><p>If both <code class="inline">SSL_KEY_PATH</code> and <code class="inline">SSL_CERT_PATH</code> are set, the application
 will terminate SSL itself, and <code class="inline">PORT</code> should be set to <code class="inline">443</code>.</p><h3 id="no_debug_log" class="section-heading">
-  <a href="#no_debug_log" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#no_debug_log" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   <code class="inline">NO_DEBUG_LOG</code>
 </h3>
 <p>If set to true, no debug log will be output.</p><h2 id="initialize-database" class="section-heading">
-  <a href="#initialize-database" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#initialize-database" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Initialize Database
 </h2>
 <h3 id="development" class="section-heading">
-  <a href="#development" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#development" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Development
 </h3>
-<p>To initialize the database on the development machine, run:</p><pre><code class="makeup console"><span class="">make db
+<p>To initialize the database on the development machine, run:</p><pre><code class="makeup console" translate="no"><span class="">make db
 </span></code></pre><p>Note: The command will output the credentials of the admin user of the
-application. Write it down so you can connect to the application interface.</p><p>And if you intend to run test, create the test database by running:</p><pre><code class="makeup console"><span class="">make test-db
+application. Write it down so you can connect to the application interface.</p><p>And if you intend to run test, create the test database by running:</p><pre><code class="makeup console" translate="no"><span class="">make test-db
 </span></code></pre><p>Note: the two commands above will only succeed if the <code class="inline">DATABASE_URL</code> and
 <code class="inline">DATABASE_TEST_URL</code> are set, respectively.</p><h3 id="production" class="section-heading">
-  <a href="#production" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#production" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Production
 </h3>
 <p>On production, you need to create a database with the dbname, user and password
 corresponding to the <code class="inline">DATABASE_URL</code> environment variable.</p><p>In order to populate the database, you need to play the migrations by executing
-the following command:</p><pre><code class="makeup console"><span class="">./bin/vac_engine eval &#39;VacEngine.Release.migrate&#39;
+the following command:</p><pre><code class="makeup console" translate="no"><span class="">./bin/vac_engine eval &#39;VacEngine.Release.migrate&#39;
 </span></code></pre><p>Then finally, create an admin user using the following command (don't forget to
-write down the credentials):</p><pre><code class="makeup console"><span class="">./bin/vac_engine eval &#39;VacEngine.Release.create_admin&#39;
+write down the credentials):</p><pre><code class="makeup console" translate="no"><span class="">./bin/vac_engine eval &#39;VacEngine.Release.create_admin&#39;
 </span></code></pre><h2 id="next-steps" class="section-heading">
-  <a href="#next-steps" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#next-steps" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Next Steps
 </h2>
 <p>From now, you can start developing or deploying the app. Please refer to
@@ -252,39 +258,26 @@ Deployment
 
       <footer class="footer">
 
+          <p>
+            On Hex.pm:
+
+            <span class="line">
+              <a href="https://hex.pm/packages/vac_engine/1.0.3" class="line footer-hex-package">Package</a>
+              <a href="https://preview.hex.pm/preview/vac_engine/1.0.3" class="line">Preview</a>
+
+                <a href="https://preview.hex.pm/preview/vac_engine/1.0.3/show/INSTALLATION.md">(current file)</a>
+
+            </span>
+
+            <button class="line footer-button display-quick-switch">
+              Search
+            </button>
+          </p>
+
         <p>
-          Find it on Hex:
-          <a href="https://hex.pm/packages/vac_engine/1.0.3" class="line footer-hex-package">Package</a>
-          <a href="https://preview.hex.pm/preview/vac_engine/1.0.3" class="line">Preview</a>
-
-            <a href="https://preview.hex.pm/preview/vac_engine/1.0.3/show/INSTALLATION.md">(current file)</a>
-
-        </p>
-
-        <p>
-          <span class="line">
-            Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.26.0) for the
-            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>.
-          </span>
-          <span class="line">
-            Designed by
-            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire" translate="no">Friedel Ziegelmayer</a>.
-          </span>
-        </p>
-        <p>
-
-            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
-
-          <button class="line footer-button display-shortcuts-help">
-            Display keyboard shortcuts
-          </button>
-          <button class="line footer-button display-quick-switch">
-            Go to a HexDocs package
-          </button>
-          <button class="line footer-button display-settings">
-            Settings
-          </button>
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.0) for the
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
         </p>
       </footer>
     </div>

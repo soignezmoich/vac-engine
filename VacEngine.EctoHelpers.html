@@ -4,17 +4,17 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.26.0">
+    <meta name="generator" content="ExDoc v0.28.0">
     <meta name="project" content="Vac Engine v1.0.3">
 
     <title>VacEngine.EctoHelpers — Vac Engine v1.0.3</title>
-    <link rel="stylesheet" href="dist/elixir-b5076885a795c65e636c.css" />
+    <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
-    <script src="dist/sidebar_items-3a4f8516fb.js"></script>
+    <script src="dist/sidebar_items-6e385c0426.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/app-a404e1e870b77c874f9e.js"></script>
+    <script async src="dist/app-80aa23c1d96b6dc3c064.js"></script>
 
 
   </head>
@@ -30,17 +30,18 @@
 
 <div class="main">
 
-<button class="sidebar-button sidebar-toggle">
-  <span class="icon-menu" title="Collapse/expand sidebar"></span>
-</button>
 
 <section class="sidebar">
+  <button class="sidebar-button sidebar-toggle">
+    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+  </button>
+
   <form class="sidebar-search" action="search.html">
     <button type="submit" class="search-button" aria-label="Submit Search">
-      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
     </button>
     <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
-      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
     </button>
     <label class="search-label">
       <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
@@ -53,6 +54,7 @@
   </div>
 
   <div class="sidebar-header">
+
     <div class="sidebar-projectDetails">
       <a href="readme.html" class="sidebar-projectName" translate="no">
 Vac Engine
@@ -61,16 +63,15 @@ Vac Engine
         v1.0.3
       </strong>
     </div>
+    <ul class="sidebar-listNav">
+      <li><a id="extras-list-link" href="#full-list">GUIDES</a></li>
 
+        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+
+    </ul>
   </div>
 
-  <ul class="sidebar-listNav">
-    <li><a id="extras-list-link" href="#full-list">GUIDES</a></li>
-
-      <li><a id="modules-list-link" href="#full-list">Modules</a></li>
-
-
-  </ul>
   <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
 </section>
@@ -80,14 +81,19 @@ Vac Engine
     <div id="content" class="content-inner">
 
 <h1>
-  <span translate="no">VacEngine.EctoHelpers</span> 
-  <small class="app-vsn" translate="no">(Vac Engine v1.0.3)</small>
+<button class="settings display-settings">
+  <i class="ri-settings-3-line"></i>
+  <span class="sr-only">Settings</span>
+</button>
+
 
     <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/ecto_helpers.ex#L1" title="View Source" class="view-source" rel="help">
-      <span class="icon-code" aria-hidden="true"></span>
+      <i class="ri-code-s-slash-line" aria-hidden="true"></i>
       <span class="sr-only">View Source</span>
     </a>
 
+  <span translate="no">VacEngine.EctoHelpers</span> 
+  <small class="app-vsn" translate="no">(Vac Engine v1.0.3)</small>
 
 </h1>
 
@@ -100,7 +106,7 @@ Vac Engine
   <section id="summary" class="details-list">
     <h1 class="section-heading">
       <a class="hover-link" href="#summary">
-        <span class="icon-link" aria-hidden="true"></span>
+        <i class="ri-link-m" aria-hidden="true"></i>
         <span class="sr-only">Link to this section</span>
       </a>
       Summary
@@ -128,6 +134,14 @@ Vac Engine
         </div>
 
           <div class="summary-synopsis"><p>Delete all with result wrapping</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#flatten_changeset_errors/1" translate="no">flatten_changeset_errors(ch)</a>
+
+        </div>
 
       </div>
 
@@ -184,6 +198,22 @@ with existing data.</p></div>
 
       <div class="summary-row">
         <div class="summary-signature">
+          <a href="#validate_in_enum/3" translate="no">validate_in_enum(ch, field, enum)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#validate_type/3" translate="no">validate_type(ch, field, variable_type)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
           <a href="#wrap_in_map/3" translate="no">wrap_in_map(attrs, key, target_name)</a>
 
         </div>
@@ -200,7 +230,7 @@ with existing data.</p></div>
   <section id="functions" class="details-list">
     <h1 class="section-heading">
       <a class="hover-link" href="#functions">
-        <span class="icon-link" aria-hidden="true"></span>
+        <i class="ri-link-m" aria-hidden="true"></i>
         <span class="sr-only">Link to this section</span>
       </a>
 Functions
@@ -210,13 +240,13 @@ Functions
 
   <div class="detail-header">
     <a href="#accept_array_or_map_for_embed/2" class="detail-link" title="Link to this function">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature" translate="no">accept_array_or_map_for_embed(attrs, key)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/ecto_helpers.ex#L89" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/ecto_helpers.ex#L92" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -232,13 +262,13 @@ Functions
 
   <div class="detail-header">
     <a href="#delete_all/1" class="detail-link" title="Link to this function">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature" translate="no">delete_all(q)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/ecto_helpers.ex#L171" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/ecto_helpers.ex#L174" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -250,19 +280,41 @@ Functions
 <p>Delete all with result wrapping</p>
   </section>
 </section>
+<section class="detail" id="flatten_changeset_errors/1">
+
+  <div class="detail-header">
+    <a href="#flatten_changeset_errors/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">flatten_changeset_errors(ch)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/ecto_helpers.ex#L299" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+
+  </section>
+</section>
 <section class="detail" id="get_in_attrs/3">
 
     <span id="get_in_attrs/2"></span>
 
   <div class="detail-header">
     <a href="#get_in_attrs/3" class="detail-link" title="Link to this function">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature" translate="no">get_in_attrs(attrs, path, default \\ nil)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/ecto_helpers.ex#L13" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/ecto_helpers.ex#L16" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -278,13 +330,13 @@ Functions
 
   <div class="detail-header">
     <a href="#put_in_attrs/3" class="detail-link" title="Link to this function">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature" translate="no">put_in_attrs(attrs, path, value)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/ecto_helpers.ex#L44" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/ecto_helpers.ex#L47" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -301,13 +353,13 @@ with existing data.</p>
 
   <div class="detail-header">
     <a href="#set_positions/2" class="detail-link" title="Link to this function">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature" translate="no">set_positions(attrs, key)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/ecto_helpers.ex#L67" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/ecto_helpers.ex#L70" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -323,13 +375,13 @@ with existing data.</p>
 
   <div class="detail-header">
     <a href="#shift_position/3" class="detail-link" title="Link to this function">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature" translate="no">shift_position(changeset, group_field, group_value)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/ecto_helpers.ex#L186" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/ecto_helpers.ex#L189" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -345,13 +397,13 @@ with existing data.</p>
 
   <div class="detail-header">
     <a href="#transaction/2" class="detail-link" title="Link to this function">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature" translate="no">transaction(multi, key)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/ecto_helpers.ex#L156" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/ecto_helpers.ex#L159" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -363,17 +415,61 @@ with existing data.</p>
 <p>Wrapper around <code class="inline">Repo.transaction</code> that will return an ok or error tuple</p>
   </section>
 </section>
+<section class="detail" id="validate_in_enum/3">
+
+  <div class="detail-header">
+    <a href="#validate_in_enum/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">validate_in_enum(ch, field, enum)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/ecto_helpers.ex#L291" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+
+  </section>
+</section>
+<section class="detail" id="validate_type/3">
+
+  <div class="detail-header">
+    <a href="#validate_type/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">validate_type(ch, field, variable_type)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/ecto_helpers.ex#L277" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+
+  </section>
+</section>
 <section class="detail" id="wrap_in_map/3">
 
   <div class="detail-header">
     <a href="#wrap_in_map/3" class="detail-link" title="Link to this function">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature" translate="no">wrap_in_map(attrs, key, target_name)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/ecto_helpers.ex#L113" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/helpers/ecto_helpers.ex#L116" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -391,39 +487,26 @@ with existing data.</p>
 
       <footer class="footer">
 
+          <p>
+            On Hex.pm:
+
+            <span class="line">
+              <a href="https://hex.pm/packages/vac_engine/1.0.3" class="line footer-hex-package">Package</a>
+              <a href="https://preview.hex.pm/preview/vac_engine/1.0.3" class="line">Preview</a>
+
+                <a href="https://preview.hex.pm/preview/vac_engine/1.0.3/show/lib/vac_engine/helpers/ecto_helpers.ex">(current file)</a>
+
+            </span>
+
+            <button class="line footer-button display-quick-switch">
+              Search
+            </button>
+          </p>
+
         <p>
-          Find it on Hex:
-          <a href="https://hex.pm/packages/vac_engine/1.0.3" class="line footer-hex-package">Package</a>
-          <a href="https://preview.hex.pm/preview/vac_engine/1.0.3" class="line">Preview</a>
-
-            <a href="https://preview.hex.pm/preview/vac_engine/1.0.3/show/lib/vac_engine/helpers/ecto_helpers.ex">(current file)</a>
-
-        </p>
-
-        <p>
-          <span class="line">
-            Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.26.0) for the
-            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>.
-          </span>
-          <span class="line">
-            Designed by
-            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire" translate="no">Friedel Ziegelmayer</a>.
-          </span>
-        </p>
-        <p>
-
-            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
-
-          <button class="line footer-button display-shortcuts-help">
-            Display keyboard shortcuts
-          </button>
-          <button class="line footer-button display-quick-switch">
-            Go to a HexDocs package
-          </button>
-          <button class="line footer-button display-settings">
-            Settings
-          </button>
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.0) for the
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
         </p>
       </footer>
     </div>

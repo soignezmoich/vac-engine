@@ -4,17 +4,17 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.26.0">
+    <meta name="generator" content="ExDoc v0.28.0">
     <meta name="project" content="Vac Engine v1.0.3">
 
     <title>Development — Vac Engine v1.0.3</title>
-    <link rel="stylesheet" href="dist/elixir-b5076885a795c65e636c.css" />
+    <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
-    <script src="dist/sidebar_items-3a4f8516fb.js"></script>
+    <script src="dist/sidebar_items-6e385c0426.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/app-a404e1e870b77c874f9e.js"></script>
+    <script async src="dist/app-80aa23c1d96b6dc3c064.js"></script>
 
 
   </head>
@@ -30,17 +30,18 @@
 
 <div class="main">
 
-<button class="sidebar-button sidebar-toggle">
-  <span class="icon-menu" title="Collapse/expand sidebar"></span>
-</button>
 
 <section class="sidebar">
+  <button class="sidebar-button sidebar-toggle">
+    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+  </button>
+
   <form class="sidebar-search" action="search.html">
     <button type="submit" class="search-button" aria-label="Submit Search">
-      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
     </button>
     <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
-      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
     </button>
     <label class="search-label">
       <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
@@ -53,6 +54,7 @@
   </div>
 
   <div class="sidebar-header">
+
     <div class="sidebar-projectDetails">
       <a href="readme.html" class="sidebar-projectName" translate="no">
 Vac Engine
@@ -61,16 +63,15 @@ Vac Engine
         v1.0.3
       </strong>
     </div>
+    <ul class="sidebar-listNav">
+      <li><a id="extras-list-link" href="#full-list">GUIDES</a></li>
 
+        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+
+    </ul>
   </div>
 
-  <ul class="sidebar-listNav">
-    <li><a id="extras-list-link" href="#full-list">GUIDES</a></li>
-
-      <li><a id="modules-list-link" href="#full-list">Modules</a></li>
-
-
-  </ul>
   <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
 </section>
@@ -79,33 +80,38 @@ Vac Engine
   <div class="content-outer">
     <div id="content" class="content-inner">
 
-<h1 id="content">
-Development
+<h1>
+<button class="settings display-settings">
+  <i class="ri-settings-3-line"></i>
+  <span class="sr-only">Settings</span>
+</button>
+
 
     <a href="https://github.com/soignezmoich/vac-engine/blob/main/DEVELOPMENT.md#L1" title="View Source" class="view-source" rel="help">
-      <span class="icon-code" aria-hidden="true"></span>
+      <i class="ri-code-s-slash-line" aria-hidden="true"></i>
       <span class="sr-only">View Source</span>
     </a>
 
+  <span>Development</span>
 </h1>
 
 <p>To install the development server, please refer to the
 <a href="installation.html">INSTALLATION.md</a> file.</p><h2 id="run-the-development-server-locally" class="section-heading">
-  <a href="#run-the-development-server-locally" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#run-the-development-server-locally" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Run the development server locally
 </h2>
 <h3 id="start-server" class="section-heading">
-  <a href="#start-server" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#start-server" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Start server
 </h3>
-<p>To start the server, just run the following command:</p><pre><code class="makeup console"><span class="">make server
+<p>To start the server, just run the following command:</p><pre><code class="makeup console" translate="no"><span class="">make server
 </span></code></pre><h3 id="connect-to-web-application" class="section-heading">
-  <a href="#connect-to-web-application" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#connect-to-web-application" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Connect to web application
 </h3>
 <p>You can now connect to the web application on <a href="http://localhost:4000">http://localhost:4000</a> and log in
 with the credentials <code class="inline">make db</code> printed.</p><h3 id="make-api-calls" class="section-heading">
-  <a href="#make-api-calls" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#make-api-calls" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Make api calls
 </h3>
 <p>In order to make api calls, you first need to create a blueprint, import it's
@@ -113,38 +119,38 @@ content and publish it on a portal. A sample blueprint .json file is available
 in the <code class="inline">/examples/blueprints/</code> directory.</p><p>Report to the api interface documentation here:
 <a href="https://vac-engine.github.com/api.html">https://vac-engine.github.com/api.html</a> to determine how to make calls to the
 API.</p><h2 id="testing" class="section-heading">
-  <a href="#testing" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#testing" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Testing
 </h2>
 <h3 id="run-tests" class="section-heading">
-  <a href="#run-tests" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#run-tests" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Run tests
 </h3>
-<p>Tests can be run by executing:</p><pre><code class="makeup console"><span class="">make test
-</span></code></pre><p>Fine grained testing can be made using the mix command directly:</p><pre><code class="makeup console"><span class="">mix test &lt;directory or file path&gt;
+<p>Tests can be run by executing:</p><pre><code class="makeup console" translate="no"><span class="">make test
+</span></code></pre><p>Fine grained testing can be made using the mix command directly:</p><pre><code class="makeup console" translate="no"><span class="">mix test &lt;directory or file path&gt;
 </span></code></pre><h3 id="coverage" class="section-heading">
-  <a href="#coverage" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#coverage" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Coverage
 </h3>
-<p>Coverage can be analysed by running:</p><pre><code class="makeup console"><span class="">make coverage
+<p>Coverage can be analysed by running:</p><pre><code class="makeup console" translate="no"><span class="">make coverage
 </span></code></pre><p>Coverage result will be printed on screen. More detailed information is
 generated in the <code class="inline">/cover/</code> directory.</p><p>There is a <code class="inline">.coverignore</code> file that is used to ignore module from coverage
 check.</p><h2 id="generate-documentation" class="section-heading">
-  <a href="#generate-documentation" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#generate-documentation" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Generate documentation
 </h2>
-<p>The documentation of elixir code and API endpoints can be generated by running:</p><pre><code class="makeup elixir"><span class="n">make</span><span class="w"> </span><span class="n">docs</span></code></pre><p>API endpoint documentation source from which the html documentation is generated
+<p>The documentation of elixir code and API endpoints can be generated by running:</p><pre><code class="makeup elixir" translate="no"><span class="n">make</span><span class="w"> </span><span class="n">docs</span></code></pre><p>API endpoint documentation source from which the html documentation is generated
 is contained in the <code class="inline">/docs/swagger.yaml</code> file and must be updated there in case
 of change in the API behaviour.</p><h2 id="code-formatting" class="section-heading">
-  <a href="#code-formatting" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#code-formatting" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Code formatting
 </h2>
-<p>Before committing your code, run:</p><pre><code class="makeup elixir"><span class="n">make</span><span class="w"> </span><span class="n">format</span></code></pre><p>Doing so, you ensure that your code follows the elixir standard and that the
+<p>Before committing your code, run:</p><pre><code class="makeup elixir" translate="no"><span class="n">make</span><span class="w"> </span><span class="n">format</span></code></pre><p>Doing so, you ensure that your code follows the elixir standard and that the
 project remains consistent.</p><h2 id="code-checking" class="section-heading">
-  <a href="#code-checking" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#code-checking" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Code checking
 </h2>
-<p>You can run:</p><pre><code class="makeup elixir"><span class="n">make</span><span class="w"> </span><span class="n">check</span></code></pre><p>to ensure a good code quality.</p>
+<p>You can run:</p><pre><code class="makeup elixir" translate="no"><span class="n">make</span><span class="w"> </span><span class="n">check</span></code></pre><p>to ensure a good code quality.</p>
 <div class="bottom-actions">
   <div class="bottom-actions-item">
 
@@ -165,39 +171,26 @@ Deployment
 
       <footer class="footer">
 
+          <p>
+            On Hex.pm:
+
+            <span class="line">
+              <a href="https://hex.pm/packages/vac_engine/1.0.3" class="line footer-hex-package">Package</a>
+              <a href="https://preview.hex.pm/preview/vac_engine/1.0.3" class="line">Preview</a>
+
+                <a href="https://preview.hex.pm/preview/vac_engine/1.0.3/show/DEVELOPMENT.md">(current file)</a>
+
+            </span>
+
+            <button class="line footer-button display-quick-switch">
+              Search
+            </button>
+          </p>
+
         <p>
-          Find it on Hex:
-          <a href="https://hex.pm/packages/vac_engine/1.0.3" class="line footer-hex-package">Package</a>
-          <a href="https://preview.hex.pm/preview/vac_engine/1.0.3" class="line">Preview</a>
-
-            <a href="https://preview.hex.pm/preview/vac_engine/1.0.3/show/DEVELOPMENT.md">(current file)</a>
-
-        </p>
-
-        <p>
-          <span class="line">
-            Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.26.0) for the
-            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>.
-          </span>
-          <span class="line">
-            Designed by
-            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire" translate="no">Friedel Ziegelmayer</a>.
-          </span>
-        </p>
-        <p>
-
-            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
-
-          <button class="line footer-button display-shortcuts-help">
-            Display keyboard shortcuts
-          </button>
-          <button class="line footer-button display-quick-switch">
-            Go to a HexDocs package
-          </button>
-          <button class="line footer-button display-settings">
-            Settings
-          </button>
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.0) for the
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
         </p>
       </footer>
     </div>

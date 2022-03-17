@@ -4,17 +4,17 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.26.0">
+    <meta name="generator" content="ExDoc v0.28.0">
     <meta name="project" content="Vac Engine v1.0.3">
 
     <title>API Reference — Vac Engine v1.0.3</title>
-    <link rel="stylesheet" href="dist/elixir-b5076885a795c65e636c.css" />
+    <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
-    <script src="dist/sidebar_items-3a4f8516fb.js"></script>
+    <script src="dist/sidebar_items-6e385c0426.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/app-a404e1e870b77c874f9e.js"></script>
+    <script async src="dist/app-80aa23c1d96b6dc3c064.js"></script>
 
 
   </head>
@@ -30,17 +30,18 @@
 
 <div class="main">
 
-<button class="sidebar-button sidebar-toggle">
-  <span class="icon-menu" title="Collapse/expand sidebar"></span>
-</button>
 
 <section class="sidebar">
+  <button class="sidebar-button sidebar-toggle">
+    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+  </button>
+
   <form class="sidebar-search" action="search.html">
     <button type="submit" class="search-button" aria-label="Submit Search">
-      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
     </button>
     <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
-      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
     </button>
     <label class="search-label">
       <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
@@ -53,6 +54,7 @@
   </div>
 
   <div class="sidebar-header">
+
     <div class="sidebar-projectDetails">
       <a href="readme.html" class="sidebar-projectName" translate="no">
 Vac Engine
@@ -61,16 +63,15 @@ Vac Engine
         v1.0.3
       </strong>
     </div>
+    <ul class="sidebar-listNav">
+      <li><a id="extras-list-link" href="#full-list">GUIDES</a></li>
 
+        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+
+    </ul>
   </div>
 
-  <ul class="sidebar-listNav">
-    <li><a id="extras-list-link" href="#full-list">GUIDES</a></li>
-
-      <li><a id="modules-list-link" href="#full-list">Modules</a></li>
-
-
-  </ul>
   <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
 </section>
@@ -79,19 +80,31 @@ Vac Engine
   <div class="content-outer">
     <div id="content" class="content-inner">
 
-<h1 id="content">
-API Reference <small class="app-vsn">Vac Engine v1.0.3</small>
+<h1>
+<button class="settings display-settings">
+  <i class="ri-settings-3-line"></i>
+  <span class="sr-only">Settings</span>
+</button>
 
+
+  <span>API Reference <small class="app-vsn">Vac Engine v1.0.3</small></span>
 </h1>
 
 
   <section class="details-list">
     <h2 id="modules" class="section-heading">
-  <a href="#modules" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#modules" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Modules
 </h2>
 
     <div class="summary">
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="StackTemplatePickerComponent.html" translate="no">StackTemplatePickerComponent</a>
+
+  </div>
+
+</div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="VacEngine.html" translate="no">VacEngine</a>
@@ -109,6 +122,13 @@ i.e. it's business logic and data management.</p></div>
   </div>
 
     <div class="summary-synopsis"><p>Rsponsible for the management of a role-based permission system.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngine.Convert.html" translate="no">VacEngine.Convert</a>
+
+  </div>
 
 </div>
 <div class="summary-row">
@@ -164,6 +184,20 @@ to compute API output from API input.</p></div>
   </div>
 
     <div class="summary-synopsis"><p>Represent the blueprint &quot;simple&quot; AST</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngine.Processor.Blueprints.Arrange.html" translate="no">VacEngine.Processor.Blueprints.Arrange</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngine.Processor.Blueprints.VariableIndex.html" translate="no">VacEngine.Processor.Blueprints.VariableIndex</a>
+
+  </div>
 
 </div>
 <div class="summary-row">
@@ -305,7 +339,24 @@ from the command line</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="VacEngine.VariableHelpers.html" translate="no">VacEngine.VariableHelpers</a>
+    <a href="VacEngine.Simulation.html" translate="no">VacEngine.Simulation</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Provides the model for the blueprint simulation. Simulation is useful
+to assess whether a ruleset meets the business requirements.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngine.Simulation.Simulations.html" translate="no">VacEngine.Simulation.Simulations</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngine.SimulationHelpers.html" translate="no">VacEngine.SimulationHelpers</a>
 
   </div>
 
@@ -333,7 +384,7 @@ as controllers, views, channels and so on.</p></div>
 
   </div>
 
-    <div class="summary-synopsis"><p>Translates controller action results into valid <a href="https://hexdocs.pm/plug/1.12.1/Plug.Conn.html"><code class="inline">Plug.Conn</code></a> responses.</p></div>
+    <div class="summary-synopsis"><p>Translates controller action results into valid <a href="https://hexdocs.pm/plug/1.13.2/Plug.Conn.html"><code class="inline">Plug.Conn</code></a> responses.</p></div>
 
 </div>
 <div class="summary-row">
@@ -415,6 +466,13 @@ as controllers, views, channels and so on.</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="VacEngineWeb.BlueprintLive.DuplicateButtonComponent.html" translate="no">VacEngineWeb.BlueprintLive.DuplicateButtonComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="VacEngineWeb.BlueprintLive.Edit.html" translate="no">VacEngineWeb.BlueprintLive.Edit</a>
 
   </div>
@@ -485,6 +543,13 @@ as controllers, views, channels and so on.</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="VacEngineWeb.EditorLive.BlueprintStatusComponent.html" translate="no">VacEngineWeb.EditorLive.BlueprintStatusComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="VacEngineWeb.EditorLive.DeductionBranchComponent.html" translate="no">VacEngineWeb.EditorLive.DeductionBranchComponent</a>
 
   </div>
@@ -492,7 +557,28 @@ as controllers, views, channels and so on.</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="VacEngineWeb.EditorLive.DeductionBranchInspectorComponent.html" translate="no">VacEngineWeb.EditorLive.DeductionBranchInspectorComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="VacEngineWeb.EditorLive.DeductionCellComponent.html" translate="no">VacEngineWeb.EditorLive.DeductionCellComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngineWeb.EditorLive.DeductionCellInspectorComponent.html" translate="no">VacEngineWeb.EditorLive.DeductionCellInspectorComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngineWeb.EditorLive.DeductionColumnInspectorComponent.html" translate="no">VacEngineWeb.EditorLive.DeductionColumnInspectorComponent</a>
 
   </div>
 
@@ -534,7 +620,7 @@ as controllers, views, channels and so on.</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="VacEngineWeb.EditorLive.ExpressionEditorComponent.html" translate="no">VacEngineWeb.EditorLive.ExpressionEditorComponent</a>
+    <a href="VacEngineWeb.EditorLive.DeductionTableInspectorComponent.html" translate="no">VacEngineWeb.EditorLive.DeductionTableInspectorComponent</a>
 
   </div>
 
@@ -542,6 +628,13 @@ as controllers, views, channels and so on.</p></div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="VacEngineWeb.EditorLive.ExpressionNode.html" translate="no">VacEngineWeb.EditorLive.ExpressionNode</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngineWeb.EditorLive.ExpressionNodeDisplayComponent.html" translate="no">VacEngineWeb.EditorLive.ExpressionNodeDisplayComponent</a>
 
   </div>
 
@@ -590,6 +683,13 @@ as controllers, views, channels and so on.</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="VacEngineWeb.EditorLive.VariableSubListComponent.html" translate="no">VacEngineWeb.EditorLive.VariableSubListComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="VacEngineWeb.Endpoint.html" translate="no">VacEngineWeb.Endpoint</a>
 
   </div>
@@ -624,7 +724,7 @@ as controllers, views, channels and so on.</p></div>
 
   </div>
 
-    <div class="summary-synopsis"><p>Translates controller action results into valid <a href="https://hexdocs.pm/plug/1.12.1/Plug.Conn.html"><code class="inline">Plug.Conn</code></a> responses.</p></div>
+    <div class="summary-synopsis"><p>Translates controller action results into valid <a href="https://hexdocs.pm/plug/1.13.2/Plug.Conn.html"><code class="inline">Plug.Conn</code></a> responses.</p></div>
 
 </div>
 <div class="summary-row">
@@ -666,6 +766,41 @@ as controllers, views, channels and so on.</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="VacEngineWeb.Header.AccountElementComponent.html" translate="no">VacEngineWeb.Header.AccountElementComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngineWeb.Header.MenuComponent.html" translate="no">VacEngineWeb.Header.MenuComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngineWeb.Header.SubElementComponent.html" translate="no">VacEngineWeb.Header.SubElementComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngineWeb.Header.TitleComponent.html" translate="no">VacEngineWeb.Header.TitleComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngineWeb.Header.TopElementComponent.html" translate="no">VacEngineWeb.Header.TopElementComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="VacEngineWeb.HeaderComponent.html" translate="no">VacEngineWeb.HeaderComponent</a>
 
   </div>
@@ -674,6 +809,13 @@ as controllers, views, channels and so on.</p></div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="VacEngineWeb.IconComponent.html" translate="no">VacEngineWeb.IconComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngineWeb.InfoComponent.html" translate="no">VacEngineWeb.InfoComponent</a>
 
   </div>
 
@@ -723,6 +865,13 @@ as controllers, views, channels and so on.</p></div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="VacEngineWeb.LoaderCardComponent.html" translate="no">VacEngineWeb.LoaderCardComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngineWeb.MaintenanceLive.Index.html" translate="no">VacEngineWeb.MaintenanceLive.Index</a>
 
   </div>
 
@@ -808,9 +957,161 @@ as controllers, views, channels and so on.</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="VacEngineWeb.SimulationLive.ConfigEditorComponent.html" translate="no">VacEngineWeb.SimulationLive.ConfigEditorComponent</a>
+
+  </div>
+
+    <div class="summary-synopsis"></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngineWeb.SimulationLive.EntryValueFieldComponent.html" translate="no">VacEngineWeb.SimulationLive.EntryValueFieldComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngineWeb.SimulationLive.ExpectRunErrorComponent.html" translate="no">VacEngineWeb.SimulationLive.ExpectRunErrorComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngineWeb.SimulationLive.ExpectedFieldComponent.html" translate="no">VacEngineWeb.SimulationLive.ExpectedFieldComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngineWeb.SimulationLive.InputComponent.html" translate="no">VacEngineWeb.SimulationLive.InputComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngineWeb.SimulationLive.MenuConfigComponent.html" translate="no">VacEngineWeb.SimulationLive.MenuConfigComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngineWeb.SimulationLive.MenuStackItemComponent.html" translate="no">VacEngineWeb.SimulationLive.MenuStackItemComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngineWeb.SimulationLive.MenuStackListComponent.html" translate="no">VacEngineWeb.SimulationLive.MenuStackListComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngineWeb.SimulationLive.MenuTemplateItemComponent.html" translate="no">VacEngineWeb.SimulationLive.MenuTemplateItemComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngineWeb.SimulationLive.MenuTemplateListComponent.html" translate="no">VacEngineWeb.SimulationLive.MenuTemplateListComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="VacEngineWeb.SimulationLive.SimulationEditorComponent.html" translate="no">VacEngineWeb.SimulationLive.SimulationEditorComponent</a>
 
   </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngineWeb.SimulationLive.StackEditorComponent.html" translate="no">VacEngineWeb.SimulationLive.StackEditorComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngineWeb.SimulationLive.StackInputComponent.html" translate="no">VacEngineWeb.SimulationLive.StackInputComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngineWeb.SimulationLive.StackInputVariableComponent.html" translate="no">VacEngineWeb.SimulationLive.StackInputVariableComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngineWeb.SimulationLive.StackOutputComponent.html" translate="no">VacEngineWeb.SimulationLive.StackOutputComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngineWeb.SimulationLive.StackOutputVariableComponent.html" translate="no">VacEngineWeb.SimulationLive.StackOutputVariableComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngineWeb.SimulationLive.TemplateEditorComponent.html" translate="no">VacEngineWeb.SimulationLive.TemplateEditorComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngineWeb.SimulationLive.TemplateInputComponent.html" translate="no">VacEngineWeb.SimulationLive.TemplateInputComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngineWeb.SimulationLive.TemplateInputVariableComponent.html" translate="no">VacEngineWeb.SimulationLive.TemplateInputVariableComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngineWeb.SimulationLive.ToggleComponent.html" translate="no">VacEngineWeb.SimulationLive.ToggleComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngineWeb.SimulationLive.ToggleForbiddenComponent.html" translate="no">VacEngineWeb.SimulationLive.ToggleForbiddenComponent</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngineWeb.SimulationLive.VariableFullNameComponent.html" translate="no">VacEngineWeb.SimulationLive.VariableFullNameComponent</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Show variable name indented with dashes according its position in
+the structure.</p></div>
 
 </div>
 <div class="summary-row">
@@ -936,37 +1237,24 @@ README
 
       <footer class="footer">
 
+          <p>
+            On Hex.pm:
+
+            <span class="line">
+              <a href="https://hex.pm/packages/vac_engine/1.0.3" class="line footer-hex-package">Package</a>
+              <a href="https://preview.hex.pm/preview/vac_engine/1.0.3" class="line">Preview</a>
+
+            </span>
+
+            <button class="line footer-button display-quick-switch">
+              Search
+            </button>
+          </p>
+
         <p>
-          Find it on Hex:
-          <a href="https://hex.pm/packages/vac_engine/1.0.3" class="line footer-hex-package">Package</a>
-          <a href="https://preview.hex.pm/preview/vac_engine/1.0.3" class="line">Preview</a>
-
-        </p>
-
-        <p>
-          <span class="line">
-            Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.26.0) for the
-            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>.
-          </span>
-          <span class="line">
-            Designed by
-            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire" translate="no">Friedel Ziegelmayer</a>.
-          </span>
-        </p>
-        <p>
-
-            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
-
-          <button class="line footer-button display-shortcuts-help">
-            Display keyboard shortcuts
-          </button>
-          <button class="line footer-button display-quick-switch">
-            Go to a HexDocs package
-          </button>
-          <button class="line footer-button display-settings">
-            Settings
-          </button>
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.0) for the
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
         </p>
       </footer>
     </div>
