@@ -1,7 +1,5 @@
 defmodule VacEngine.Pub.Publication do
-  @moduledoc """
-  A publication is a published blueprint
-  """
+  @moduledoc false
 
   use Ecto.Schema
   import Ecto.Changeset

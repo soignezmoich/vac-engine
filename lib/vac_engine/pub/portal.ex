@@ -1,7 +1,5 @@
 defmodule VacEngine.Pub.Portal do
-  @moduledoc """
-  A portal is an API entry point with multiple publications
-  """
+  @moduledoc false
 
   use Ecto.Schema
   import Ecto.Changeset
