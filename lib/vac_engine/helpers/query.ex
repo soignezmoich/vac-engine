@@ -1,4 +1,6 @@
 defmodule VacEngine.Query do
+  @moduledoc false
+
   import Ecto.Query
 
   def filter_by_query(query, search) do

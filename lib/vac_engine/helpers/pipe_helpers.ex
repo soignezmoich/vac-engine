@@ -1,7 +1,5 @@
 defmodule VacEngine.PipeHelpers do
-  @moduledoc """
-  Helper for piping data
-  """
+  @moduledoc false
 
   @doc """
   Wrap into ok tuple

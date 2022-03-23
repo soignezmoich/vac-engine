@@ -1,4 +1,11 @@
 defmodule VacEngine.Convert do
+  @moduledoc """
+  Utility to parse a string to a given type, returning meaningful errors
+  if parsing is impossible.
+
+  The parsing itself is done by the VacEngine.Processor.Convert module.
+  """
+
   import VacEngine.PipeHelpers
 
   def parse_string(str, type) do

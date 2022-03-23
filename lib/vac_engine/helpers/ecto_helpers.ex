@@ -1,7 +1,6 @@
 defmodule VacEngine.EctoHelpers do
-  @moduledoc """
-  Set of utilities to help manipulate data in Ecto Schema.
-  """
+  @moduledoc false
+
   import Ecto.Changeset
   import Ecto.Query
 

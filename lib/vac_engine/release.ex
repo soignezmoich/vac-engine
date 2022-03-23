@@ -1,7 +1,7 @@
 defmodule VacEngine.Release do
   @moduledoc """
   This module is used in production to provide an interface to the app
-  from the command line
+  from the command line.
   """
 
   @app :vac_engine

@@ -1,7 +1,5 @@
 defmodule VacEngine.EnumHelpers do
-  @moduledoc """
-  Set of Enum helpers
-  """
+  @moduledoc false
 
   import VacEngine.PipeHelpers, only: [rpair: 2]
 

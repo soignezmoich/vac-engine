@@ -1,4 +1,6 @@
 defmodule VacEngine.Processor.Blueprints.Arrange do
+  @moduledoc false
+
   import VacEngine.Processor.Blueprints.VariableIndex
 
   alias VacEngine.Processor.Assignment

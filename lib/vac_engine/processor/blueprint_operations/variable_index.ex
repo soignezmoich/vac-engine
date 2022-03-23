@@ -1,4 +1,6 @@
 defmodule VacEngine.Processor.Blueprints.VariableIndex do
+  @moduledoc false
+
   alias VacEngine.Processor.Variable
 
   def index_variables(variables) do
