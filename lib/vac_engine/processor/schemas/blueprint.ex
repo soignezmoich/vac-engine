@@ -105,26 +105,26 @@ defmodule VacEngine.Processor.Blueprint do
   def to_map(%Blueprint{} = b) do
     simulation_setting =
       case b.simulation_setting do
-        nil -> nil
-        simulation_setting -> Setting.to_map(simulation_setting)
+        %Setting{} = simulation_setting -> Setting.to_map(simulation_setting)
+        _ -> nil
       end
 
     stacks =
       case b.stacks do
-        nil ->
-          nil
-
         stack_list when is_list(stack_list) ->
           Enum.map(stack_list, &Stack.to_map/1)
+
+        _ ->
+          nil
       end
 
     templates =
       case b.templates do
-        nil ->
-          nil
-
         template_list when is_list(template_list) ->
           Enum.map(template_list, &Template.to_map/1)
+
+        _ ->
+          nil
       end
 
     %{
