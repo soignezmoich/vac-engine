@@ -1,5 +1,13 @@
 <div class="m-3">
-  <div class="text-xl mb-4"><b>Template:</b> <i><%= @template.case.name %></i></div>
+  <div class="text-xl mb-4">
+    <b>Template #<%=@template.id%>:</b>
+    <.live_component
+      module={CaseNameComponent}
+      id={"template_case_name_#{@template.id}"}
+      target_components={@target_components}
+      case={@template.case}
+    />
+  </div>
   <div class="border-cream-500 text-xs px-2 border-l-2 max-w-3xl">
     <p>
       Use template to define input entries that are identical among several cases.
@@ -15,7 +23,7 @@
   <div class="grid sm:grid-cols-1 2xl:grid-cols-2 gap-3">
     <.live_component
       module={TemplateInputComponent}
-      id={"template_editor_#{@template.id}"}
+      id={"template_input_#{@template.id}"}
       input_variables={@input_variables}
       template={@template}
     />

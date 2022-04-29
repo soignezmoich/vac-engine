@@ -1,5 +1,13 @@
 <div class="m-3">
-  <div class="text-2xl font-bold mb-4">Case: <%= @runnable_case.name %></div>
+  <div class="text-xl mb-4">
+    <b>Case #<%=@stack.id%>:</b>
+    <.live_component
+      module={CaseNameComponent}
+      id={"stack_case_name_#{@stack.id}"}
+      target_components={@target_components}
+      case={@runnable_case}
+    />
+  </div>
 
   <.live_component
     module={StackTemplatePickerComponent}

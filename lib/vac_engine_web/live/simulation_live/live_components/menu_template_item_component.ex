@@ -39,6 +39,12 @@ defmodule VacEngineWeb.SimulationLive.MenuTemplateItemComponent do
     |> ok()
   end
 
+  def update(%{action: {:refresh, name}}, socket) do
+    socket
+    |> assign(template_name: name)
+    |> ok()
+  end
+
   def handle_event("select_item", _params, socket) do
     send_update(SimulationEditorComponent,
       id: "simulation_editor",

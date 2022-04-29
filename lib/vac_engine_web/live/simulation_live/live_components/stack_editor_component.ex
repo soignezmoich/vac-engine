@@ -5,8 +5,11 @@ defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
 
   alias VacEngine.Simulation
   alias VacEngine.Simulation.Job
+  alias VacEngineWeb.SimulationLive.CaseNameComponent
+  alias VacEngineWeb.SimulationLive.StackEditorComponent
   alias VacEngineWeb.SimulationLive.StackInputComponent
   alias VacEngineWeb.SimulationLive.StackOutputComponent
+  alias VacEngineWeb.SimulationLive.MenuStackItemComponent
 
   def mount(socket) do
     socket
@@ -29,7 +32,8 @@ defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
     |> assign(
       stack: stack,
       runnable_case: runnable_case,
-      template_case: template_case
+      template_case: template_case,
+      target_components: make_target_components(stack)
     )
     |> ok()
   end
@@ -74,8 +78,23 @@ defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
       output_variables: output_variables,
       runnable_case: runnable_case,
       template_case: template_case,
-      template_names: template_names
+      template_names: template_names,
+      target_components: make_target_components(stack)
+
     )
     |> ok()
+  end
+
+  defp make_target_components(stack) do
+    [
+      %{
+        type: StackEditorComponent,
+        id: "stack_editor_#{stack.id}"
+      },
+      %{
+        type: MenuStackItemComponent,
+        id: "menu_stack_item_#{stack.id}"
+      }
+    ]
   end
 end

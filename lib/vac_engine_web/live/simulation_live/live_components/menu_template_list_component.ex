@@ -37,7 +37,7 @@ defmodule VacEngineWeb.SimulationLive.MenuTemplateListComponent do
 
   def handle_event("create", %{"create_template" => %{"name" => name}}, socket) do
     case Simulation.create_blank_template(socket.assigns.blueprint, name) do
-      {:ok, %{template: new_template}} ->
+      {:ok, new_template} ->
         send_update(
           SimulationEditorComponent,
           id: "simulation_editor",

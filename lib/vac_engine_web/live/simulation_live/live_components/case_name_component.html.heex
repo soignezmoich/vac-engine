@@ -1,0 +1,16 @@
+<div class="inline-block">
+  <.form
+    let={f}
+    for={@changeset |> Ecto.Changeset.change()}
+    id="case_name_form"
+    phx-target={@myself}
+    phx-throttle="100"
+    phx-change="validate"
+    phx-submit="submit">
+    
+    <%= text_input f,
+      :name,
+      class: "text-lg italic #{if has_error?(f, :name) do "bg-red-100 py-0.5 px-1 rounded" else "form-fld" end}"
+    %>
+  </.form>
+</div>

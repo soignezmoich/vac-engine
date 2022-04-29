@@ -53,6 +53,12 @@ defmodule VacEngineWeb.SimulationLive.MenuStackItemComponent do
     |> ok()
   end
 
+  def update(%{action: {:refresh, name}}, socket) do
+    socket
+    |> assign(stack_name: name)
+    |> ok()
+  end
+
   @impl true
   def handle_event("select_item", _params, socket) do
     send_update(SimulationEditorComponent,
