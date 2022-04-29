@@ -1,5 +1,4 @@
 defmodule VacEngine.Simulation.Settings do
-
   import Ecto.Changeset
   import Ecto.Query
   import VacEngine.EctoHelpers
@@ -44,5 +43,4 @@ defmodule VacEngine.Simulation.Settings do
     |> validate_required([:env_now])
     |> validate_type(:env_now, :datetime)
   end
-
 end

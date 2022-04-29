@@ -133,7 +133,6 @@ defmodule VacEngine.Simulation.BulkImportation do
     :ok
   end
 
-
   defp get_or_insert_case(data, workspace_id) do
     case_id = data["id"]
 
@@ -214,8 +213,4 @@ defmodule VacEngine.Simulation.BulkImportation do
 
     kase
   end
-
-
-
-
 end

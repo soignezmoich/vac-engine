@@ -1,5 +1,4 @@
 defmodule VacEngine.Simulation.Stacks do
-
   import Ecto.Changeset
   import Ecto.Query
 
@@ -53,10 +52,6 @@ defmodule VacEngine.Simulation.Stacks do
     Repo.delete(stack)
   end
 
-  def filter_stacks_by_blueprint(query, blueprint) do
-    from(b in query, where: b.blueprint_id == ^blueprint.id)
-  end
-
   def get_first_stack(blueprint) do
     from(s in Stack,
       where: s.blueprint_id == ^blueprint.id,
@@ -72,12 +67,6 @@ defmodule VacEngine.Simulation.Stacks do
       preload: [layers: [case: [:input_entries, :output_entries]]]
     )
     |> Repo.one()
-  end
-
-  def get_stack(stack_id, queries) do
-    Stack
-    |> queries.()
-    |> Repo.get(stack_id)
   end
 
   def get_stack!(stack_id, queries) do
@@ -113,22 +102,6 @@ defmodule VacEngine.Simulation.Stacks do
     |> Repo.all()
   end
 
-  def list_stacks(queries) do
-    Stack
-    |> queries.()
-    |> Repo.all()
-  end
-
-  def load_stack_layers(query) do
-    layer_query =
-      from(l in Layer,
-        order_by: l.position,
-        preload: :case
-      )
-
-    from(b in query, preload: [layers: ^layer_query])
-  end
-
   def load_stack_layers_case_entries(query) do
     layer_query =
       from(l in Layer,
@@ -142,5 +115,4 @@ defmodule VacEngine.Simulation.Stacks do
   def load_stack_setting(query) do
     from(b in query, preload: :setting)
   end
-
 end

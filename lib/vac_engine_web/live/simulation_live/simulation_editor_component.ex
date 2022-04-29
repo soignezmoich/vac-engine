@@ -4,7 +4,6 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
   import VacEngine.PipeHelpers
 
   alias VacEngine.Simulation
-  alias VacEngine.Simulation.Case
   alias VacEngineWeb.SimulationLive.StackEditorComponent
   alias VacEngineWeb.SimulationLive.ConfigEditorComponent
   alias VacEngineWeb.SimulationLive.MenuConfigComponent
@@ -87,25 +86,6 @@ defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
     |> assign(
       selected_element: selected_element,
       action: %{type: :refresh, token: :rand.uniform()}
-    )
-    |> noreply()
-  end
-
-  @impl true
-  def handle_event("create_stack", %{"new_case_name" => name}, socket) do
-    new_stack_id =
-      case Simulation.create_stack(socket.assigns.blueprint, name) do
-        {:ok, %{case: %Case{id: id}}} -> id
-      end
-
-    stacks = Simulation.get_stacks(socket.assigns.blueprint)
-
-    selected_element = stacks |> Enum.find(&(&1.id == new_stack_id))
-
-    socket
-    |> assign(
-      stacks: stacks,
-      selected_element: selected_element
     )
     |> noreply()
   end

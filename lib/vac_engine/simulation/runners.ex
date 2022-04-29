@@ -6,5 +6,4 @@ defmodule VacEngine.Simulation.Runners do
   def queue_job(job) do
     Runner.queue(job)
   end
-
 end

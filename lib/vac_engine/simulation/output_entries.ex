@@ -1,5 +1,4 @@
 defmodule VacEngine.Simulation.OutputEntries do
-
   import Ecto.Changeset
 
   alias VacEngine.Repo
@@ -37,5 +36,4 @@ defmodule VacEngine.Simulation.OutputEntries do
     |> change(%{forbid: forbidden})
     |> Repo.update()
   end
-
 end

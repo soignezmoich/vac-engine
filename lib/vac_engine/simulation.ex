@@ -1,13 +1,59 @@
 defmodule VacEngine.Simulation do
   @moduledoc """
+
   Provides the model for the blueprint simulation. Simulation is used
   to assess whether a ruleset meets business requirements.
 
-  Simulation is based on *cases* that describe the expected output for a given
-  input.
+  A blueprint simulation is a collection of input/output definitions. The output
+  corresponds to the expected outcome of the blueprint for the given input.
+
+  ## Simulation runner
+
+  The input descriptions are processed a case runner (similar to the main processor)
+  in order to determine if the corresponding output expectations are met.
+
+  ## Stacks, layers, cases
+
+  The description passed to the runner is actually a "stack" of simple descriptions
+  called "cases" where the higher case's values overwrite the lower case's ones.
+  Cases are refenced as "layer" in the "stack" and may be referenced in several stacks.
+  Only input is composed this way. Lower cases are not intended to describe output.
+
+  ## Two-layers "Basic stacks" and "Templates"
+
+  In the current implementation of the simulation. Stacks are limited to two level. The
+  bottom layer is called a "Template" where the top one is called a "Runnable case".
+
+  ## Blueprint templates and basic stacks
+
+  Each blueprint simulation has a collection of templates (a many to many relation between
+  cases and blueprints) that can be used as bottom layer cases. Each simulation also has
+  a collection fo "Basic stacks", each containing a runnable case and optionally a template.
+  The editor allows to pick the template of the basic cases among the simulation's templates,
+  but technically, a template can be any case of the workspace.
+
+  ## Case sharing
+
+  Blueprints can share cases. This automatically occurs when a blueprint is duplicated, but
+  not when a blueprint is exported and reimported where each case is duplicated.
+
+  When cases are shared, they can be modified at one for every blueprint. This is useful when
+  you want to fix an error.
+
+
+
+  ## Workspace cases collections
+
+
+
+  Cases
+
+  Cases are grouped in a multi-layer stack. Each layer is a single case.
 
   The content of a case can be used as a base for another case, forming a *stack*
   (technically, even a single case is part of a stack).
+
+  The basic stack is a two-layered stack (used as the only existing stack structure)
 
   Cases are created workspace-wide whereas case stacks are limited to the blueprint
   scope. This structure allows to share cases among several blueprints.
@@ -21,55 +67,74 @@ defmodule VacEngine.Simulation do
   alias VacEngine.Simulation.Settings
   alias VacEngine.Simulation.Stacks
   alias VacEngine.Simulation.Templates
-  alias VacEngine.Simulation.BasicStacks
+  alias VacEngine.Simulation.SimpleStacks
   alias VacEngine.SimulationHelpers
-
 
   ##################
   # CASE FUNCTIONS #
   ##################
 
-  defdelegate filter_cases_by_workspace(query, workspace), to: Cases
-
-  defdelegate get_case(case_id, queries), to: Cases
-
-  defdelegate get_case!(case_id, queries), to: Cases
-
-  defdelegate list_cases(queries), to: Cases
-
+  @doc """
+  Sets whether the case expects an error to occur (mostly when the complete element is not used).
+  """
   defdelegate set_expect_run_error(kase, expect_run_error), to: Cases
-
 
   ###################
   # STACK FUNCTIONS #
   ###################
 
+  @doc """
+  Creates a new stack with an empty runnable case and no template case.
+  """
   defdelegate create_blank_stack(blueprint, name), to: Stacks
 
+  @doc """
+  Creates a new stack using the given attributes.
+  """
   defdelegate create_stack(blueprint, attrs \\ %{}), to: Stacks
 
+  @doc """
+  Deletes the stack with the given id. Layers are also deleted. Cases not.
+  """
   defdelegate delete_stack(stack_id), to: Stacks
 
-  defdelegate filter_stacks_by_blueprint(query, blueprint), to: Stacks
-
+  @doc """
+  Get the first stack associated to the given blueprint.
+  """
   defdelegate get_first_stack(blueprint), to: Stacks
 
+  @doc """
+  Retrieve a stack corresponding to the given id.
+  """
   defdelegate get_stack(stack_id), to: Stacks
 
-  defdelegate get_stack(stack_id, queries), to: Stacks
-
+  @doc """
+  Retrieve a stack corresponding to the given id (throw! version).
+  """
   defdelegate get_stack!(stack_id, queries), to: Stacks
 
+  @doc """
+  Retrieve all the stack names for the given blueprint.
+
+  Typically used to build the list of available stacks.
+  """
   defdelegate get_stack_names(blueprint), to: Stacks
 
+  @doc """
+  Get all stacks for the given blueprint.
+  """
   defdelegate get_stacks(blueprint), to: Stacks
 
-  defdelegate list_stacks(queries), to: Stacks
-
-  defdelegate load_stack_layers(query), to: Stacks
-
+  @doc """
+  Add the case entries (input and output) to the stacks retrieved
+  by the given query.
+  """
   defdelegate load_stack_layers_case_entries(query), to: Stacks
 
+  @doc """
+  Add the setting attribute to the stacks retrieved by the given
+  query.
+  """
   defdelegate load_stack_setting(query), to: Stacks
 
 
@@ -84,7 +149,6 @@ defmodule VacEngine.Simulation do
   defdelegate update_setting(setting, options), to: Settings
 
   defdelegate validate_setting(changeset), to: Settings
-
 
   #############
   # TEMPLATES #

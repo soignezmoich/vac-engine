@@ -1,5 +1,4 @@
 defmodule VacEngine.Simulation.InputEntries do
-
   import Ecto.Changeset
   import VacEngine.EctoHelpers
 
@@ -35,5 +34,4 @@ defmodule VacEngine.Simulation.InputEntries do
     |> validate_type(:value, variable.type)
     |> validate_in_enum(:value, Map.get(variable, :variable_enum))
   end
-
 end

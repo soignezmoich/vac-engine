@@ -30,7 +30,6 @@ defmodule VacEngine.Processor.Blueprints.Save do
   def update_blueprint(%Blueprint{} = blueprint, attrs) do
     Multi.new()
     |> multi_update_blueprint(blueprint, attrs)
-    |> func_inspect(fn blueprint -> blueprint end)
     |> multi_update()
   end
 

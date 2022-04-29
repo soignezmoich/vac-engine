@@ -1,5 +1,4 @@
 defmodule VacEngine.Simulation.Templates do
-
   import Ecto.Changeset
   import Ecto.Query
 
