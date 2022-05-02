@@ -6,9 +6,10 @@ defmodule VacEngine.Simulation.Case do
 
   alias VacEngine.Account.Workspace
   alias VacEngine.Simulation.Case
-  alias VacEngine.Simulation.Layer
   alias VacEngine.Simulation.InputEntry
+  alias VacEngine.Simulation.Layer
   alias VacEngine.Simulation.OutputEntry
+  alias VacEngine.Simulation.Template
 
   schema "simulation_cases" do
     timestamps(type: :utc_datetime)
@@ -18,6 +19,7 @@ defmodule VacEngine.Simulation.Case do
     has_many(:input_entries, InputEntry)
     has_many(:output_entries, OutputEntry)
     has_many(:layers, Layer)
+    has_many(:template, Template)
 
     field(:name, :string)
     field(:description, :string)

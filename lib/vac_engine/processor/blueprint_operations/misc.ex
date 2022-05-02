@@ -42,7 +42,7 @@ defmodule VacEngine.Processor.Blueprints.Misc do
     |> Multi.run(:update, fn _repo,
                              %{create: br, blueprint: %Blueprint{name: name}} ->
       Save.update_blueprint(br, %{
-        "name" => "copy of #{name}"
+        "name" => make_copy_name(name)
       })
     end)
     |> transaction(:update)
@@ -60,5 +60,23 @@ defmodule VacEngine.Processor.Blueprints.Misc do
       limit: 1
     )
     |> Repo.exists?()
+  end
+
+  defp make_copy_name(original_name) do
+    name_root = Regex.replace(~r/ copy-\d*$/, original_name, "")
+
+    copy_number =
+      case Regex.run(~r/ copy-(\d*)$/, original_name) do
+        nil -> nil
+        [_full_capture, first_block] -> first_block
+      end
+
+    copy_tag =
+      case copy_number do
+        nil -> " copy-1"
+        number -> " copy-#{String.to_integer(number) + 1}"
+      end
+
+    "#{name_root}#{copy_tag}"
   end
 end

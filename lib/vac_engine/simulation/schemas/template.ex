@@ -14,7 +14,7 @@ defmodule VacEngine.Simulation.Template do
   schema "simulation_templates" do
     belongs_to(:blueprint, Blueprint)
     belongs_to(:workspace, Workspace)
-    belongs_to(:case, Case)
+    belongs_to(:case, Case, on_replace: :update)
   end
 
   # If the case is present, create the full case map.

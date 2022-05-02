@@ -54,13 +54,13 @@ defmodule VacEngine.Simulation.Layer do
   end
 
   # If the case is present, create the full case map.
-  def to_map(%Layer{case: %Case{} = kase}) do
-    %{case: Case.to_map(kase)}
+  def to_map(%Layer{case: %Case{} = kase, position: position}) do
+    %{case: Case.to_map(kase), position: position}
   end
 
   # If case is not present (preloaded), make a reference using
   # the case id.
-  def to_map(%Layer{case_id: case_id}) do
-    %{case: %{id: case_id}}
+  def to_map(%Layer{case_id: case_id, position: position}) do
+    %{case: %{id: case_id}, position: position}
   end
 end

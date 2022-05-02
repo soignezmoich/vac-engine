@@ -5,11 +5,13 @@ defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
 
   alias VacEngine.Simulation
   alias VacEngine.Simulation.Job
+  alias VacEngine.Simulation.SimpleStacks
   alias VacEngineWeb.SimulationLive.CaseNameComponent
   alias VacEngineWeb.SimulationLive.StackEditorComponent
   alias VacEngineWeb.SimulationLive.StackInputComponent
   alias VacEngineWeb.SimulationLive.StackOutputComponent
   alias VacEngineWeb.SimulationLive.MenuStackItemComponent
+  @moduledoc false
 
   def mount(socket) do
     socket
@@ -24,24 +26,12 @@ defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
     Job.new(stack)
     |> Simulation.queue_job()
 
-    stack = Simulation.get_stack(stack.id)
-    template_case = stack |> Simulation.get_stack_template_case()
-    runnable_case = stack |> Simulation.get_stack_runnable_case()
-
     socket
-    |> assign(
-      stack: stack,
-      runnable_case: runnable_case,
-      template_case: template_case,
-      target_components: make_target_components(stack)
-    )
+    |> load_stack(Simulation.get_stack(stack))
     |> ok()
   end
 
-  def update(
-        %{action: {:job_finished, job}},
-        socket
-      ) do
+  def update(%{action: {:job_finished, job}}, socket) do
     {causes_error, results} =
       case job.result do
         %{run_error: run_error} when not is_nil(run_error) -> {true, %{}}
@@ -64,25 +54,50 @@ defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
       ) do
     stack = Simulation.get_stack(stack_id)
 
-    template_case = stack |> Simulation.get_stack_template_case()
-    runnable_case = stack |> Simulation.get_stack_runnable_case()
-
     stack
     |> Job.new()
     |> Simulation.queue_job()
 
     socket
+    |> load_stack(stack)
     |> assign(
-      stack: stack,
       input_variables: input_variables,
       output_variables: output_variables,
-      runnable_case: runnable_case,
-      template_case: template_case,
-      template_names: template_names,
-      target_components: make_target_components(stack)
-
+      template_names: template_names
     )
     |> ok()
+  end
+
+  def handle_event("duplicate_case", _params, socket) do
+    %{stack: stack, runnable_case: runnable_case} = socket.assigns
+    new_name = "#{runnable_case.name}-b#{stack.blueprint_id}"
+    Simulation.fork_runnable_case(stack, new_name)
+
+    send_update(MenuStackItemComponent,
+      id: "menu_stack_item_#{stack.id}",
+      action: {:refresh, new_name}
+    )
+
+    socket
+    |> load_stack(stack)
+    |> noreply()
+  end
+
+  defp load_stack(socket, stack) do
+    stack = Simulation.get_stack(stack.id)
+    template_case = Simulation.get_stack_template_case(stack)
+    runnable_case = Simulation.get_stack_runnable_case(stack)
+    stacks_sharing_case = Simulation.get_blueprints_sharing_runnable_case(stack)
+
+    socket
+    |> assign(
+      stack: stack,
+      stacks_sharing_case: stacks_sharing_case,
+      shared_case?: Enum.count(stacks_sharing_case) > 0,
+      runnable_case: runnable_case,
+      template_case: template_case,
+      target_components: make_target_components(stack)
+    )
   end
 
   defp make_target_components(stack) do

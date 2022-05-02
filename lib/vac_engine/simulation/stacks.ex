@@ -2,6 +2,7 @@ defmodule VacEngine.Simulation.Stacks do
   import Ecto.Changeset
   import Ecto.Query
 
+  alias Ecto.Multi
   alias VacEngine.Processor.Blueprint
   alias VacEngine.Repo
   alias VacEngine.Simulation.Case
@@ -36,6 +37,10 @@ defmodule VacEngine.Simulation.Stacks do
       }
     end)
     |> Repo.transaction()
+    |> case do
+      {:ok, %{stack: stack}} -> {:ok, stack}
+      other -> other
+    end
   end
 
   def create_stack(%Blueprint{} = blueprint, attrs \\ %{}) do

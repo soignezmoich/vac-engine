@@ -1,4 +1,27 @@
 <div class="m-3">
+  <%= if @shared_case? do %>
+    <div class="bg-cream-150 p-2 shadow-lg mb-4 text-sm">
+      <p>
+        This template is shared with the following blueprints:
+      </p>
+      
+      <div class="my-2">
+        <%= for sharing_template <- @templates_sharing_case do %>
+          <span class="inline-block text-sm bg-cream-400 text-white rounded-full px-3 py-0.5 shadow">
+            <%= "#{sharing_template.blueprint_name}" %>
+          </span>
+        <% end %>
+      </div>
+      
+      <p>These blueprint simulations will be affected by modifications done to the current template.</p>
+      <p>
+        If you don't want other simulations to be modified, make a copy of the case for the current template by clicking 
+        <button class="btn" phx-click="duplicate_case" phx-target={@myself}>Duplicate Case</button>
+        .
+      </p>
+    </div>
+  <% end %>
+
   <div class="text-xl mb-4">
     <b>Template #<%=@template.id%>:</b>
     <.live_component

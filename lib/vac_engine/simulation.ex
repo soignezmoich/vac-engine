@@ -137,6 +137,11 @@ defmodule VacEngine.Simulation do
   """
   defdelegate load_stack_setting(query), to: Stacks
 
+  @doc """
+  Get the blueprint name and ids that share the runnable case of
+  the given simple (two-layer) stack.
+  """
+  defdelegate get_blueprints_sharing_runnable_case(stack), to: SimpleStacks
 
   #######################
   # SIMULATION SETTINGS #
@@ -154,16 +159,26 @@ defmodule VacEngine.Simulation do
   # TEMPLATES #
   #############
 
-  defdelegate get_template(template_id), to: Templates
-
-  defdelegate get_templates(blueprint), to: Templates
-
-  defdelegate get_template_names(blueprint), to: Templates
+  defdelegate cases_using_template(template), to: Templates
 
   defdelegate create_blank_template(blueprint, name), to: Templates
 
   defdelegate delete_template(template_id), to: Templates
 
+  defdelegate fork_template_case(template, name), to: Templates
+
+  defdelegate get_template(template_id), to: Templates
+
+  defdelegate get_templates(blueprint), to: Templates
+
+  defdelegate get_template_cases(blueprint), to: Templates
+
+  defdelegate get_template_names(blueprint), to: Templates
+
+  @doc """
+  Returns the name and ids of the blueprints with which the case is shared.
+  """
+  defdelegate get_blueprints_sharing_template_case(template), to: Templates
 
   ########################
   # INPUT/OUTPUT ENTRIES #
@@ -185,19 +200,19 @@ defmodule VacEngine.Simulation do
 
   defdelegate toggle_forbidden(entry, forbidden), to: OutputEntries
 
-
   #############################
   # BASIC (TWO LAYERS) STACKS #
   #############################
 
-  defdelegate delete_stack_template(stack), to: BasicStacks
+  defdelegate delete_stack_template(stack), to: SimpleStacks
 
-  defdelegate get_stack_runnable_case(stack), to: BasicStacks
+  defdelegate get_stack_runnable_case(stack), to: SimpleStacks
 
-  defdelegate get_stack_template_case(stack), to: BasicStacks
+  defdelegate get_stack_template_case(stack), to: SimpleStacks
 
-  defdelegate set_stack_template(stack, template_case_id), to: BasicStacks
+  defdelegate set_stack_template(stack, template_case_id), to: SimpleStacks
 
+  defdelegate fork_runnable_case(stack, name), to: SimpleStacks
 
   ###################
   # SIMULATION JOBS #
@@ -205,13 +220,11 @@ defmodule VacEngine.Simulation do
 
   defdelegate queue_job(job), to: Runners
 
-
   ###########
   # HELPERS #
   ###########
 
   defdelegate variable_default_value(type, enum), to: SimulationHelpers
-
 
   ###############
   # IMPORTATION #

@@ -62,13 +62,13 @@ defmodule VacEngineWeb.SimulationLive.CaseNameComponent do
   end
 
   defp send_updates(socket, name) do
-    socket.assigns.target_components
-    |> Enum.map(fn component ->
+
+    for component <- socket.assigns.target_components do
       send_update(component.type,
         id: component.id,
         action: {:refresh, name}
       )
-    end)
+    end
 
     socket
   end
