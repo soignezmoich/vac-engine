@@ -32,10 +32,10 @@ defmodule VacEngine.Processor.Info.Logic do
       hits = hits |> Map.put(key, hit)
       {map, hits}
     end)
-    |> remove_unhited
+    |> remove_not_hit
   end
 
-  def remove_unhited({map, hits}) do
+  defp remove_not_hit({map, hits}) do
     map
     |> Enum.filter(fn {k, _v} ->
       Map.get(hits, k)
