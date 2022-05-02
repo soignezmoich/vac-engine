@@ -207,7 +207,6 @@ defmodule VacEngine.Processor.Expression do
     Ast.serialize(e.ast)
     |> case do
       {:ok, ast} -> ast
-      _ -> nil
     end
   end
 end

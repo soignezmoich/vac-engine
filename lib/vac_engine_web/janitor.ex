@@ -17,7 +17,7 @@ defmodule VacEngineWeb.Janitor do
     Logger.metadata(context: "janitor")
     Logger.info("Starting Janitor")
 
-    if @timeout > 0 and is_number(@timeout) do
+    if is_number(@timeout) and @timeout > 0 do
       send(self(), :check_sessions)
     end
 
