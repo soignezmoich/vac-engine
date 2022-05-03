@@ -70,5 +70,8 @@ case Config.config_env() do
   :test ->
     config :vac_engine, VacEngine.Repo,
       url:
-        System.get_env("DATABASE_URL", "postgres://localhost/vac_engine_test")
+        System.get_env(
+          "DATABASE_TEST_URL",
+          "postgres://localhost/vac_engine_test"
+        )
 end
