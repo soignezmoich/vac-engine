@@ -243,7 +243,7 @@ defmodule VacEngine.MixProject do
       {:ex_doc, "~> 0.24", only: :dev, runtime: false},
 
       # TOTP
-      {:nimble_totp, "~> 0.1.0"},
+      {:nimble_totp, "~> 0.2.0"},
 
       # Generate QR code
       {:eqrcode, "~> 0.1.10"}
