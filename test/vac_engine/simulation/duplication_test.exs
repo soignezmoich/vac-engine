@@ -20,7 +20,7 @@ defmodule VacEngine.Simulation.DuplicationTest do
 
     # Create a blueprint with a stack and a template
     {:ok, original_blueprint} =
-      Processor.create_blueprint(workspace, %{name: "Original"})
+      Processor.create_blueprint(workspace, %{"name" => "Original"})
 
     {:ok, original_stack} =
       Simulation.create_blank_stack(original_blueprint, "Test_stack_case")

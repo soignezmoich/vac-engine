@@ -12,6 +12,11 @@ defmodule VacEngine.Processor.Blueprints.Misc do
   alias VacEngine.Processor.Blueprints.Save
   alias VacEngine.Pub.Publication
 
+  def change_blueprint(%Blueprint{} = blueprint, attrs) do
+    blueprint
+    |> Blueprint.changeset(attrs)
+  end
+
   def duplicate_blueprint(blueprint) do
     Multi.new()
     |> Multi.run(:blueprint, fn _repo, _ ->

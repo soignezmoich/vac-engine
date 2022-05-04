@@ -11,7 +11,7 @@ defmodule VacEngine.Simulation.ReimportTest do
     {:ok, workspace} = Account.create_workspace(%{name: "Test workspace"})
 
     {:ok, original_blueprint} =
-      Processor.create_blueprint(workspace, %{name: "Original"})
+      Processor.create_blueprint(workspace, %{"name" => "Original"})
 
     Simulation.create_blank_stack(original_blueprint, "Test_stack_case")
     Simulation.create_blank_template(original_blueprint, "Test_template_case")

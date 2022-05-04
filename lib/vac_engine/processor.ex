@@ -257,20 +257,20 @@ defmodule VacEngine.Processor do
 
   @doc """
   Create a blueprint with the given attributes
-  TODO describe attributes
   """
   defdelegate create_blueprint(workspace, attrs), to: Blueprints.Save
+
+  @doc """
+  Recreate a blueprint with the given attributes.
+
+  Name, workspace and id are kept.
+  """
+  defdelegate recreate_blueprint(blueprint, attrs), to: Blueprints.Save
 
   @doc """
   Delete blueprint (will error if used)
   """
   defdelegate delete_blueprint(blueprint), to: Blueprints.Save
-
-  @doc """
-  Cast attributes into a changeset
-  Only root attributes are supported (no variables or deductions)
-  """
-  defdelegate change_blueprint(blueprint, attrs \\ %{}), to: Blueprints.Save
 
   @doc """
   Update a blueprint with attributes
@@ -280,7 +280,7 @@ defmodule VacEngine.Processor do
   @doc """
   Load a blueprint from a file.
 
-  Used for file upload as phoenix write into temp file
+  Used for file upload as phoenix write into temp file.
   """
   defdelegate update_blueprint_from_file(blueprint, path), to: Blueprints.Save
 
@@ -288,6 +288,13 @@ defmodule VacEngine.Processor do
   Check whether a blueprint is readonly
   """
   defdelegate blueprint_readonly?(blueprint), to: Blueprints.Misc
+
+  @doc """
+  Cast attributes into a changeset
+  Only root attributes are supported (no variables or deductions)
+  Writes nothing in the database.
+  """
+  defdelegate change_blueprint(blueprint, attrs \\ %{}), to: Blueprints.Misc
 
   @doc """
   Duplicate the given blueprint in it's workspace. If the duplication succeeds

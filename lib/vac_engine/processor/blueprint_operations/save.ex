@@ -20,55 +20,60 @@ defmodule VacEngine.Processor.Blueprints.Save do
   alias VacEngine.Simulation.Template
 
   def create_blueprint(%Workspace{} = workspace, attrs) do
+    base_attrs = attrs |> Map.take([:name, "name"])
+
     Multi.new()
-    |> multi_create_blueprint(workspace, attrs)
-    |> multi_update()
+    |> Multi.put(:attrs, attrs)
+    |> multi_create_blueprint(base_attrs, attrs, workspace.id)
+    |> multi_inject()
   end
 
-  def change_blueprint(%Blueprint{} = blueprint, attrs) do
-    blueprint
-    |> Blueprint.changeset(attrs)
+  def recreate_blueprint(%Blueprint{} = blueprint, attrs) do
+    base_attrs = %{id: blueprint.id, name: blueprint.name}
+
+    Multi.new()
+    |> Multi.put(:attrs, attrs)
+    |> multi_delete_blueprint(blueprint)
+    |> multi_create_blueprint(base_attrs, attrs, blueprint.workspace_id)
+    |> multi_inject()
   end
 
   def update_blueprint(%Blueprint{} = blueprint, attrs) do
     Multi.new()
-    |> multi_update_blueprint(blueprint, attrs)
-    |> multi_update()
+    |> Multi.put(:attrs, attrs)
+    |> multi_update_blueprint(blueprint)
+    |> multi_inject()
   end
 
-  defp multi_create_blueprint(multi, workspace, attrs) do
+  defp multi_create_blueprint(multi, base_attrs, attrs, workspace_id) do
     multi
-    |> Multi.put(:attrs, attrs)
-    |> Multi.put(:workspace, workspace)
-    |> Multi.put(:workspace_id, workspace.id)
     |> Multi.insert(
       :bp_base,
-      fn %{attrs: attrs, workspace: workspace} ->
-        %Blueprint{workspace_id: workspace.id}
+      fn %{} ->
+        %Blueprint{workspace_id: workspace_id}
+        # split between base_attrs and attrs is necessary
+        # due to possible mix of string and atom keys
+        |> Blueprint.changeset(base_attrs)
         |> Blueprint.changeset(attrs)
       end
     )
-    |> Multi.merge(fn %{:bp_base => blueprint} ->
-      Multi.new()
-      |> Multi.put(:blueprint_id, blueprint.id)
-    end)
   end
 
-  defp multi_update_blueprint(multi, blueprint, attrs) do
+  defp multi_update_blueprint(multi, blueprint) do
     multi
-    |> Multi.put(:attrs, attrs)
-    |> Multi.put(:blueprint_id, blueprint.id)
-    |> Multi.put(:workspace_id, blueprint.workspace_id)
     |> Multi.update(
       :bp_base,
-      fn %{attrs: attrs} ->
-        blueprint
-        |> Blueprint.changeset(attrs)
-      end
+      fn %{attrs: attrs} -> Blueprint.changeset(blueprint, attrs) end
     )
   end
 
   def delete_blueprint(%Blueprint{} = blueprint) do
+    Multi.new()
+    |> multi_delete_blueprint(blueprint)
+    |> Repo.transaction()
+  end
+
+  defp multi_delete_blueprint(multi, %Blueprint{} = blueprint) do
     # The structure below (gather_orphaned_cases -> delete_blueprint -> delete_orphaned_cases) result
     # from the following facts:
     # - Cases can only be deleted if not referenced by a layer (or template), so the blueprint
@@ -76,8 +81,7 @@ defmodule VacEngine.Processor.Blueprints.Save do
     # - The cases to delete can be retrieved more efficiently by using the stack and layers. So
     #   the orphaned cases retrieval must occur before blueprint deletion.
 
-
-    Multi.new()
+    multi
     |> gather_orphaned_cases_multi(blueprint)
     |> Multi.delete(:delete_blueprint, blueprint)
     |> Multi.delete_all(
@@ -86,11 +90,9 @@ defmodule VacEngine.Processor.Blueprints.Save do
         from(c in Case, where: c.id in ^orphaned_cases_ids)
       end
     )
-    |> Repo.transaction()
   end
 
   defp gather_orphaned_cases_multi(multi, blueprint) do
-
     multi
     |> Multi.run(:gather_orphaned_cases, fn repo, _ ->
       linked_to_blueprint_by_layer =
@@ -124,8 +126,9 @@ defmodule VacEngine.Processor.Blueprints.Save do
     end)
   end
 
-  defp multi_update(multi) do
+  defp multi_inject(multi) do
     multi
+    |> multi_put_blueprint_and_workspace_ids()
     |> multi_inject_variables()
     |> multi_put_variables_context()
     |> multi_inject_variable_defaults()
@@ -136,29 +139,30 @@ defmodule VacEngine.Processor.Blueprints.Save do
     |> multi_load_complete_blueprint()
     |> Repo.transaction()
     |> case do
-      {:ok, %{:bp_complete => bp}} ->
-        {:ok, bp}
-
-      {:error, msg} when is_binary(msg) ->
-        {:error, msg}
-
-      {:error, _, msg, _} when is_binary(msg) ->
-        {:error, msg}
-
-      {:error, _, %Changeset{} = changeset, _} ->
-        {:error, changeset}
-
-      _ ->
-        {:error, "cannot save blueprint"}
+      {:ok, %{bp_complete: bp}} -> {:ok, bp}
+      {:error, msg} when is_binary(msg) -> {:error, msg}
+      {:error, _, msg, _} when is_binary(msg) -> {:error, msg}
+      {:error, _, %Changeset{} = changeset, _} -> {:error, changeset}
+      _ -> {:error, "cannot save blueprint"}
     end
     |> tap_ok(&Pub.bust_blueprint_cache/1)
+  end
+
+  defp multi_put_blueprint_and_workspace_ids(multi) do
+    multi
+    |> Multi.run(:blueprint_id, fn _repo, %{bp_base: blueprint} ->
+      {:ok, blueprint.id}
+    end)
+    |> Multi.run(:workspace_id, fn _repo, %{bp_base: blueprint} ->
+      {:ok, blueprint.workspace_id}
+    end)
   end
 
   defp multi_inject_variables(multi) do
     multi
     |> Multi.update(
       :bp_after_variables,
-      fn %{:bp_base => blueprint, attrs: attrs} = ctx ->
+      fn %{bp_base: blueprint, attrs: attrs} = ctx ->
         blueprint
         |> Repo.preload(:variables)
         |> Blueprint.variables_changeset(attrs, ctx)
@@ -168,7 +172,7 @@ defmodule VacEngine.Processor.Blueprints.Save do
 
   defp multi_put_variables_context(multi) do
     multi
-    |> Multi.merge(fn %{:bp_after_variables => blueprint} ->
+    |> Multi.merge(fn %{bp_after_variables: blueprint} ->
       {variables, path_index} =
         blueprint
         |> Repo.preload(:variables)
@@ -247,7 +251,7 @@ defmodule VacEngine.Processor.Blueprints.Save do
     multi
     |> Multi.update(
       :bp_after_deductions,
-      fn %{:bp_after_variables => blueprint, attrs: attrs} = ctx ->
+      fn %{bp_after_variables: blueprint, attrs: attrs} = ctx ->
         blueprint
         |> Repo.preload(:deductions)
         |> Blueprint.deductions_changeset(attrs, ctx)
@@ -257,7 +261,7 @@ defmodule VacEngine.Processor.Blueprints.Save do
 
   defp multi_compute_hash(multi) do
     multi
-    |> Multi.run(:compute_hash, fn repo, %{:bp_after_deductions => blueprint} ->
+    |> Multi.run(:compute_hash, fn repo, %{bp_after_deductions: blueprint} ->
       from(v in Variable,
         # Only consider input variables for hash
         where:
@@ -275,7 +279,7 @@ defmodule VacEngine.Processor.Blueprints.Save do
     multi
     |> Multi.update(
       :bp_after_hash,
-      fn %{:bp_after_deductions => blueprint, compute_hash: interface_hash} ->
+      fn %{bp_after_deductions: blueprint, compute_hash: interface_hash} ->
         blueprint
         |> Blueprint.interface_changeset(%{interface_hash: interface_hash})
       end
@@ -286,7 +290,7 @@ defmodule VacEngine.Processor.Blueprints.Save do
     multi
     |> Multi.update(
       :bp_after_simulation,
-      fn %{:bp_after_hash => blueprint, attrs: attrs} = ctx ->
+      fn %{bp_after_hash: blueprint, attrs: attrs} = ctx ->
         blueprint
         |> Repo.preload([:simulation_setting, :templates, :stacks])
         |> Blueprint.simulation_changeset(attrs, ctx)
@@ -298,7 +302,7 @@ defmodule VacEngine.Processor.Blueprints.Save do
     multi
     |> Multi.run(
       :bp_complete,
-      fn repo, %{:bp_base => blueprint} ->
+      fn repo, %{bp_base: blueprint} ->
         {:ok, repo.get!(Blueprint, blueprint.id)}
       end
     )
@@ -323,9 +327,7 @@ defmodule VacEngine.Processor.Blueprints.Save do
         Jason.decode(json)
         |> case do
           {:ok, data} ->
-            data = Map.put(data, "name", blueprint.name)
-            update_blueprint(blueprint, data)
-
+            recreate_blueprint(blueprint, data)
           {:error, _} ->
             {:error, "cannot decode json"}
         end
@@ -334,4 +336,5 @@ defmodule VacEngine.Processor.Blueprints.Save do
         {:error, "cannot read file"}
     end
   end
+
 end
