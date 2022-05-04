@@ -163,12 +163,16 @@ defmodule VacEngine.Processor do
 
   """
   alias VacEngine.Processor
+  alias VacEngine.Processor.Advisor
   alias VacEngine.Processor.Blueprint
   alias VacEngine.Processor.Blueprints
   alias VacEngine.Processor.Compiler
+  alias VacEngine.Processor.Deductions
+  alias VacEngine.Processor.Info
   alias VacEngine.Processor.State
   alias VacEngine.Processor.Variables
-  alias VacEngine.Processor.Info
+
+  defstruct blueprint: nil, compiled_module: nil, state: nil, info: nil
 
   @doc """
   List blueprint
@@ -322,37 +326,97 @@ defmodule VacEngine.Processor do
   defdelegate move_variable(var, new_parent), to: Variables
 
   @doc """
-  Check if variable is used (expensive, will hit DB)
+  Check if variable is used (expensive, will hit DB).
   """
   defdelegate variable_used?(var), to: Variables
 
-  alias VacEngine.Processor.Deductions
+  @doc """
+  Create a new deduction in the given blueprint with the given attributes.
 
+  If no attribute is provided, the default values are used.
+  """
   defdelegate create_deduction(blueprint, attrs \\ %{}), to: Deductions
+
+  @doc """
+  Delete the given deduction.
+  """
   defdelegate delete_deduction(deduction), to: Deductions
+
+  @doc """
+  Modify the given deduction using the given attributes, without persisting the changes in the db.
+  """
   defdelegate change_deduction(deduction, attrs \\ %{}), to: Deductions
+
+  @doc """
+  Update the given deduction using the given attributes and persist the changes in the db.
+  """
   defdelegate update_deduction(deduction, attrs), to: Deductions
+
+  @doc """
+  Create a new branch in the given deduction with the given attributes.
+  """
   defdelegate create_branch(deduction, attrs \\ %{}), to: Deductions
+
+  @doc """
+  Delete the given branch.
+  """
   defdelegate delete_branch(branch), to: Deductions
+
+  @doc """
+  Modify the given branch using the given attributes, without persisting the changes in the db.
+  """
   defdelegate change_branch(branch, attrs \\ %{}), to: Deductions
+
+  @doc """
+  Update the given branch using the given attributes and persist the changes in the db.
+  """
   defdelegate update_branch(branch, attrs), to: Deductions
+
+  @doc """
+  Create a new column in the given deduction, using the given attributes.
+  """
   defdelegate create_column(blueprint, deduction, attrs), to: Deductions
+
+  @doc """
+  Modify the given column using the given attributes, without persisting the changes in the db.
+  """
   defdelegate change_column(column, attrs \\ %{}), to: Deductions
+
+  @doc """
+  Update the given column using the given attributes and persist the changes in the db.
+  """
   defdelegate update_column(column, attrs), to: Deductions
+
+  @doc """
+  Delete the given column.
+  """
   defdelegate delete_column(column), to: Deductions
 
+  @doc """
+  Update the cell in the given branch and column of the given blueprint with the given ast and attributes.
+  """
   defdelegate update_cell(ast, blueprint, branch, column, attrs \\ %{}),
     to: Deductions
 
+  @doc """
+  Remove the cell content in the intersection of the given branch and column.
+  """
   defdelegate delete_cell(branch, column), to: Deductions
 
-  alias VacEngine.Processor.Advisor
-
+  @doc """
+  Get given blueprint statistics (number of variables, deductions etc.)
+  """
   defdelegate blueprint_stats(blueprint), to: Advisor
-  defdelegate blueprint_issues(blueprint), to: Advisor
-  defdelegate autofix_blueprint(blueprint), to: Advisor
 
-  defstruct blueprint: nil, compiled_module: nil, state: nil, info: nil
+  @doc """
+  Get given blueprint inssues (column errors etc.)
+  """
+  defdelegate blueprint_issues(blueprint), to: Advisor
+
+  @doc """
+  Auto-fix issues in the blueprint when possible.
+  """
+  defdelegate autofix_blueprint(blueprint), to: Advisor
 
   @doc """
   Compile blueprint into processor
@@ -407,6 +471,9 @@ defmodule VacEngine.Processor do
     :code.purge(processor.compiled_module)
   end
 
+  @doc """
+  List all modules that correspond to compiled blueprints.
+  """
   def list_compiled_blueprint_modules() do
     :code.all_loaded()
     |> Enum.filter(fn {mod, _} -> "#{mod}" =~ ~r{^Elixir} end)

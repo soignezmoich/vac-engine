@@ -147,32 +147,70 @@ defmodule VacEngine.Simulation do
   # SIMULATION SETTINGS #
   #######################
 
+  @doc """
+  Get the simulation settings.
+  """
   defdelegate get_setting(blueprint), to: Settings
 
+  @doc """
+  Create a new simulation setting for the given blueprint.
+
+  The default "now" time used here is "2000-01-01" (0h).
+  """
   defdelegate create_setting(blueprint), to: Settings
 
+  @doc """
+  Update setting with the given options.
+  Currently, the only option is the datetime `env_now`.
+  """
   defdelegate update_setting(setting, options), to: Settings
 
+  @doc """
+  Validate the setting.
+  """
   defdelegate validate_setting(changeset), to: Settings
 
   #############
   # TEMPLATES #
   #############
 
-  defdelegate cases_using_template(template), to: Templates
+  @doc """
+  Retrieve the cases (stacks) using the given template.
+  """
+  defdelegate get_cases_using_template(template), to: Templates
 
+  @doc """
+  Create a new blank template for the given blueprint with the given name.
+  """
   defdelegate create_blank_template(blueprint, name), to: Templates
 
+  @doc """
+  Delete the template with the given id.
+  """
   defdelegate delete_template(template_id), to: Templates
 
+  @doc """
+  For the template case, i.e. create a copy to use in the template
+  and all cases using this template.
+
+  This is useful when the template case is shared among templates of several blueprints,
+  e.g. when a blueprint has been duplicated.
+  """
   defdelegate fork_template_case(template, name), to: Templates
 
+  @doc """
+  Retrieve the template with the given id.
+  """
   defdelegate get_template(template_id), to: Templates
 
+  @doc """
+  Get all the given blueprint's templates.
+  """
   defdelegate get_templates(blueprint), to: Templates
 
-  defdelegate get_template_cases(blueprint), to: Templates
-
+  @doc """
+  Get all the given blueprint's template names.
+  """
   defdelegate get_template_names(blueprint), to: Templates
 
   @doc """
@@ -184,51 +222,106 @@ defmodule VacEngine.Simulation do
   # INPUT/OUTPUT ENTRIES #
   ########################
 
+  @doc """
+  Create a new input entry for the given case, key with the given value.
+  """
   defdelegate create_input_entry(kase, key, value \\ "-"), to: InputEntries
 
+  @doc """
+  Delete the given input entry.
+  """
   defdelegate delete_input_entry(input_entry), to: InputEntries
 
+  @doc """
+  Update given input entry value.
+  """
   defdelegate update_input_entry(input_entry, value), to: InputEntries
 
+  @doc """
+  Validate given input entry for the given variable.
+  """
   defdelegate validate_input_entry(changeset, variable), to: InputEntries
 
+  @doc """
+  Create a new output entry for the given case, key and variable.
+  """
   defdelegate create_blank_output_entry(kase, key, variable), to: OutputEntries
 
+  @doc """
+  Delete given output entry.
+  """
   defdelegate delete_output_entry(output_entry), to: OutputEntries
 
+  @doc """
+  Set the "expected" value of the given output entry.
+  """
   defdelegate set_expected(entry, expected), to: OutputEntries
 
+  @doc """
+  Set the forbidden flag of the given output entry. If forbidden is set to true,
+  the corresponding output variable is expected to be absent of the output in
+  the current case.
+  """
   defdelegate toggle_forbidden(entry, forbidden), to: OutputEntries
 
-  #############################
-  # BASIC (TWO LAYERS) STACKS #
-  #############################
+  ##############################
+  # SIMPLE (TWO LAYERS) STACKS #
+  ##############################
 
+  @doc """
+  Delete the template of the given simple stack.
+  """
   defdelegate delete_stack_template(stack), to: SimpleStacks
 
+  @doc """
+  Get the runnable case of the given simple stack.
+  """
   defdelegate get_stack_runnable_case(stack), to: SimpleStacks
 
+  @doc """
+  Get the template case of the given simple stack.
+  """
   defdelegate get_stack_template_case(stack), to: SimpleStacks
 
+  @doc """
+  Set the case with the given id as template case for the given simple stack.
+  """
   defdelegate set_stack_template(stack, template_case_id), to: SimpleStacks
 
+  @doc """
+  Fork the runnable case of the given simple stack, i.e. create a copy to use in the
+  given stack.
+
+  This is useful when the runnable case is shared among stacks of several blueprints,
+  e.g. when a blueprint has been duplicated.
+  """
   defdelegate fork_runnable_case(stack, name), to: SimpleStacks
 
   ###################
   # SIMULATION JOBS #
   ###################
 
+  @doc """
+  Queue a case to be runned by the simulation runner.
+  """
   defdelegate queue_job(job), to: Runners
 
   ###########
   # HELPERS #
   ###########
 
+  @doc """
+  Get the default value for a variable of the given type. If the type
+  is string, the enum must me passed if it exists.
+  """
   defdelegate variable_default_value(type, enum), to: SimulationHelpers
 
   ###############
   # IMPORTATION #
   ###############
 
+  @doc """
+  Import all cases from a path (used for bulk importation).
+  """
   defdelegate import_all_cases(path), to: BulkImportation
 end
