@@ -62,7 +62,6 @@ defmodule VacEngineWeb.SimulationLive.CaseNameComponent do
   end
 
   defp send_updates(socket, name) do
-
     for component <- socket.assigns.target_components do
       send_update(component.type,
         id: component.id,
