@@ -1,6 +1,7 @@
 defmodule VacEngine.Simulation.Templates do
   import Ecto.Changeset
   import Ecto.Query
+  import VacEngine.PipeHelpers
 
   alias Ecto.Multi
   alias VacEngine.Processor.Blueprint
@@ -10,7 +11,7 @@ defmodule VacEngine.Simulation.Templates do
   alias VacEngine.Simulation.Stack
   alias VacEngine.Simulation.Template
 
-  def cases_using_template(%Template{} = template) do
+  def get_cases_using_template(%Template{} = template) do
     # Take the runnable case of the stack using the template's case
     # as template. Then extract blueprint and runnable case names.
 
@@ -61,23 +62,62 @@ defmodule VacEngine.Simulation.Templates do
     end
   end
 
+  def delete_template(%Template{} = template) do
+    if used_in_stacks?(template) do
+      {:error, "Can't delete template: currently in use in one or more stacks."}
+    else
+      do_delete_template(template)
+    end
+  end
+
   def delete_template(template_id) do
     template = Repo.get(Template, template_id)
+    delete_template(template)
+  end
 
-    related_blueprint_layers =
-      from(l in Layer,
-        join: c in Case,
-        on: c.id == l.case_id,
-        where: l.blueprint_id == ^template.blueprint_id,
-        where: c.id == ^template.case_id
+  defp used_in_stacks?(template) do
+    from(l in Layer,
+      join: c in Case,
+      on: c.id == l.case_id,
+      where: l.blueprint_id == ^template.blueprint_id,
+      where: c.id == ^template.case_id
+    )
+    |> Repo.all()
+    |> Enum.empty?()
+    |> Kernel.not()
+  end
+
+  defp do_delete_template(template) do
+    # The structure below (gather_orphaned_cases -> delete_template -> delete_orphaned_cases) result
+    # from the following facts:
+    # - Cases can only be deleted if not referenced by a template (or layer), so the template
+    #   deletion must occur case deletion.
+    # - The cases to delete can be retrieved more efficiently by using the template. So
+    #   the orphaned cases retrieval must occur before template deletion.
+    Multi.new()
+    |> multi_gather_orphaned_cases(template)
+    |> Multi.delete(:delete_template, template)
+    |> Multi.delete_all(
+      :delete_orphaned_cases,
+      fn %{gather_orphaned_cases: orphaned_cases_ids} ->
+        from(c in Case, where: c.id in ^orphaned_cases_ids)
+      end
+    )
+    |> Repo.transaction()
+  end
+
+  defp multi_gather_orphaned_cases(multi, template) do
+    multi
+    |> Multi.run(:gather_orphaned_cases, fn repo, _ ->
+      from(c in Case,
+        left_join: t in Template,
+        on: t.case_id == c.id and t.id != ^template.id,
+        where: c.id == ^template.case_id and is_nil(t.id),
+        select: c.id
       )
-      |> Repo.all()
-
-    if Enum.empty?(related_blueprint_layers) do
-      Repo.delete(template)
-    else
-      {:error, "Can't delete template: currently in use."}
-    end
+      |> repo.all()
+      |> ok()
+    end)
   end
 
   def fork_template_case(%Template{} = template, name) do
@@ -130,16 +170,6 @@ defmodule VacEngine.Simulation.Templates do
   def get_templates(%Blueprint{} = blueprint) do
     from(t in Template,
       where: t.blueprint_id == ^blueprint.id
-    )
-    |> Repo.all()
-  end
-
-  def get_template_cases(%Blueprint{} = blueprint) do
-    from(c in Case,
-      join: t in Template,
-      on: t.case_id == c.id,
-      where: t.blueprint_id == ^blueprint.id,
-      preload: [:input_entries]
     )
     |> Repo.all()
   end

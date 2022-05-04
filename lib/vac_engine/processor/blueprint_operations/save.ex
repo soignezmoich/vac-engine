@@ -15,6 +15,9 @@ defmodule VacEngine.Processor.Blueprints.Save do
   alias VacEngine.Processor.Variables
   alias VacEngine.Pub
   alias VacEngine.Repo
+  alias VacEngine.Simulation.Case
+  alias VacEngine.Simulation.Layer
+  alias VacEngine.Simulation.Template
 
   def create_blueprint(%Workspace{} = workspace, attrs) do
     Multi.new()
@@ -65,8 +68,60 @@ defmodule VacEngine.Processor.Blueprints.Save do
     )
   end
 
-  def delete_blueprint(blueprint) do
-    Repo.delete(blueprint)
+  def delete_blueprint(%Blueprint{} = blueprint) do
+    # The structure below (gather_orphaned_cases -> delete_blueprint -> delete_orphaned_cases) result
+    # from the following facts:
+    # - Cases can only be deleted if not referenced by a layer (or template), so the blueprint
+    #   deletion must occur case deletion.
+    # - The cases to delete can be retrieved more efficiently by using the stack and layers. So
+    #   the orphaned cases retrieval must occur before blueprint deletion.
+
+
+    Multi.new()
+    |> gather_orphaned_cases_multi(blueprint)
+    |> Multi.delete(:delete_blueprint, blueprint)
+    |> Multi.delete_all(
+      :delete_orphaned_cases,
+      fn %{gather_orphaned_cases: orphaned_cases_ids} ->
+        from(c in Case, where: c.id in ^orphaned_cases_ids)
+      end
+    )
+    |> Repo.transaction()
+  end
+
+  defp gather_orphaned_cases_multi(multi, blueprint) do
+
+    multi
+    |> Multi.run(:gather_orphaned_cases, fn repo, _ ->
+      linked_to_blueprint_by_layer =
+        from(c in Case,
+          join: l in Layer,
+          on: l.case_id == c.id and l.blueprint_id == ^blueprint.id,
+          select: c.id
+        )
+
+      linked_to_blueprint_by_layer_or_template =
+        from(c in Case,
+          join: t in Template,
+          on: t.case_id == c.id and t.blueprint_id == ^blueprint.id,
+          select: c.id,
+          union: ^linked_to_blueprint_by_layer
+        )
+
+      linked_only_to_blueprint =
+        from(c in subquery(linked_to_blueprint_by_layer_or_template),
+          left_join: l1 in Layer,
+          on: l1.case_id == c.id and l1.blueprint_id != ^blueprint.id,
+          left_join: t1 in Template,
+          on: t1.case_id == c.id and t1.blueprint_id != ^blueprint.id,
+          where: is_nil(l1.id) and is_nil(t1.id),
+          select: c.id
+        )
+
+      linked_only_to_blueprint
+      |> repo.all()
+      |> ok()
+    end)
   end
 
   defp multi_update(multi) do
@@ -204,6 +259,7 @@ defmodule VacEngine.Processor.Blueprints.Save do
     multi
     |> Multi.run(:compute_hash, fn repo, %{:bp_after_deductions => blueprint} ->
       from(v in Variable,
+        # Only consider input variables for hash
         where:
           v.blueprint_id == ^blueprint.id and
             fragment("?::text like 'in%'", v.mapping),
