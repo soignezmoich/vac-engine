@@ -77,6 +77,7 @@ defmodule VacEngine.Processor.ImportTest do
       query
       |> Processor.load_blueprint_variables()
       |> Processor.load_blueprint_full_deductions()
+      |> Processor.load_blueprint_simulation(true)
     end)
   end
 end

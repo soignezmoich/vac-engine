@@ -7,7 +7,7 @@ defmodule VacEngine.Simulation.ReimportTest do
   alias VacEngine.Simulation
   alias VacEngine.Simulation.Case
 
-  setup_all do
+  setup do
     {:ok, workspace} = Account.create_workspace(%{name: "Test workspace"})
 
     {:ok, original_blueprint} =

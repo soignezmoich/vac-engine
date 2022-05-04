@@ -14,12 +14,12 @@ defmodule VacEngine.Processor.BlueprintTest do
   alias VacEngine.Processor.Condition
 
   @hashes %{
-    "7XZBRP9BZ7KX564ZAX7FTAXBYPRCG68E8S2TY4XESZSRSF36G4ASF55S" => [
+    "EK6HAB47THHWSR7YP3K3KRCHKPC4TZZBEWBH38S4KT6E58TKBG8EZY3E" => [
       :hash0_test,
       :hash1_test,
       :hash2_test
     ],
-    "RKBZZXY82ZXTYS29EEB3YBC5R2FP7HKBGZY6AY4CB87H63T8T5X7WT95" => [:hash3_test]
+    "HWSHT9W4YB63AHXB6FKXP6E268WZEYREH339R398W88R429H85AYZ633" => [:hash3_test]
   }
 
   setup_all do

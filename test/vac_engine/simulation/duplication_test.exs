@@ -14,7 +14,7 @@ defmodule VacEngine.Simulation.DuplicationTest do
   alias VacEngine.Simulation
   alias VacEngine.Simulation.Case
 
-  setup_all do
+  setup do
     # Create workspace for the whole test
     {:ok, workspace} = Account.create_workspace(%{name: "Test workspace"})
 
