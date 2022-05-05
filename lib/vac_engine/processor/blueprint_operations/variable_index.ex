@@ -13,10 +13,10 @@ defmodule VacEngine.Processor.Blueprints.VariableIndex do
         Map.put(map, v.parent_id, [v | vars])
       end)
 
-    index_variables(nil, [], by_parent_ids, %{})
+    index_variables(nil, [], by_parent_ids, %{}, false)
   end
 
-  def index_variables(parent_id, path, by_parent_ids, index) do
+  def index_variables(parent_id, path, by_parent_ids, index, in_list) do
     {vars, index} =
       Map.get(by_parent_ids, parent_id)
       |> case do
@@ -26,7 +26,7 @@ defmodule VacEngine.Processor.Blueprints.VariableIndex do
         vars ->
           vars
           |> Enum.map_reduce(index, fn v, index ->
-            index_variable(v, path, by_parent_ids, index)
+            index_variable(v, path, by_parent_ids, index, in_list)
           end)
       end
 
@@ -37,12 +37,15 @@ defmodule VacEngine.Processor.Blueprints.VariableIndex do
     {vars, index}
   end
 
-  def index_variable(var, path, by_parent_ids, index) do
+  def index_variable(var, path, by_parent_ids, index, in_list) do
     path = path ++ [var.name]
 
-    {children, index} = index_variables(var.id, path, by_parent_ids, index)
+    in_list = in_list || Variable.list?(var)
 
-    var = %{var | children: children, path: path}
+    {children, index} =
+      index_variables(var.id, path, by_parent_ids, index, in_list)
+
+    var = %{var | children: children, path: path, in_list: in_list}
     {var, Map.put(index, path, var)}
   end
 

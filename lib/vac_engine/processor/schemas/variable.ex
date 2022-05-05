@@ -38,6 +38,7 @@ defmodule VacEngine.Processor.Variable do
     field(:path, {:array, :string}, virtual: true)
 
     field(:new_parent_id, :integer, virtual: true)
+    field(:in_list, :boolean, virtual: true)
   end
 
   @doc false
