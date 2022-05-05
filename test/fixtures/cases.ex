@@ -188,4 +188,25 @@ defmodule Fixtures.Cases do
       }
     }
   end
+
+  cas(:default3) do
+    %{
+      env: %{now: "2022-02-08"},
+      input: %{in1: 44},
+      output: %{
+        out1: 44,
+        out2: "2022-02-08"
+      }
+    }
+  end
+
+  cas(:default3) do
+    %{
+      env: %{now: "2022-02-08"},
+      output: %{
+        out1: 23,
+        out2: "2022-02-08"
+      }
+    }
+  end
 end

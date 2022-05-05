@@ -48,7 +48,7 @@ defmodule VacEngine.Processor.State do
         {input_vars, output_vars}
       end)
 
-    vars = vars |> Enum.map(fn {path, v} -> {path, v} end) |> Map.new()
+    vars = Map.new(vars)
 
     %State{
       input_variables: input_vars,
@@ -78,6 +78,17 @@ defmodule VacEngine.Processor.State do
 
   defdelegate map_input(state, input), to: Input
   defdelegate map_env(state, env), to: Env
+
+  def set_defaults(%State{output_variables: output_vars} = state) do
+    output_vars
+    |> Enum.reject(fn {_path, var} ->
+      var.in_list
+    end)
+    |> Enum.reduce(state, fn {path, _v}, state ->
+      set_var(state, path, get_var(state, path))
+    end)
+    |> ok()
+  end
 
   @doc """
   Get value of variable (used by blueprint compiled code)

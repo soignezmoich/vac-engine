@@ -818,4 +818,20 @@ defmodule Fixtures.Blueprints do
       deductions: []
     }
   end
+
+  blueprint(:default3) do
+    %{
+      variables: [
+        %{
+          name: :in1,
+          type: :integer,
+          mapping: :in_optional,
+          default: quote(do: 23)
+        },
+        %{name: :out1, type: :integer, mapping: :out, default: quote(do: @in1)},
+        %{name: :out2, type: :date, mapping: :out, default: quote(do: now())}
+      ],
+      deductions: []
+    }
+  end
 end
