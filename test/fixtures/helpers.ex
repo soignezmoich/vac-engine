@@ -1,5 +1,9 @@
 defmodule Fixtures.Helpers do
+  @moduledoc false
+
   defmodule Blueprints do
+    @moduledoc false
+
     defmacro blueprint(name, do: block) do
       quote do
         def unquote(:"blueprint__#{name}")() do
@@ -77,6 +81,8 @@ defmodule Fixtures.Helpers do
   end
 
   defmodule Cases do
+    @moduledoc false
+
     defmacro cas(br, do: block) do
       name = :crypto.strong_rand_bytes(8) |> Base24.encode24()
 
@@ -120,6 +126,8 @@ defmodule Fixtures.Helpers do
   end
 
   defmodule Simulations do
+    @moduledoc false
+
     defmacro sim(do: block) do
       name = :crypto.strong_rand_bytes(8) |> Base24.encode24()
 

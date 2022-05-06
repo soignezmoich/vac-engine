@@ -1,4 +1,8 @@
 defmodule VacEngineWeb.PermissionHelpers do
+  @moduledoc """
+  Provides functions necessary to check persissions.
+  """
+
   alias VacEngine.Account.Role
   alias VacEngine.Account.User
   alias VacEngine.Account.Session

@@ -1,4 +1,10 @@
 defmodule VacEngineWeb.Header.MenuComponent do
+  @moduledoc """
+  The user menu that pops when the user icon is clicked. It contains
+  info about the user, the current workspace and controls to change workspace
+  or reach user settings.
+  """
+
   use VacEngineWeb, :component
 
   import VacEngineWeb.IconComponent

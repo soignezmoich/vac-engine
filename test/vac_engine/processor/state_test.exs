@@ -1,4 +1,6 @@
 defmodule VacEngine.Processor.StateTest do
+  @moduledoc false
+
   use VacEngine.DataCase
 
   alias VacEngine.Account

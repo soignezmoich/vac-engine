@@ -1,4 +1,6 @@
 defmodule VacEngineWeb.SimulationLive.MenuStackItemComponent do
+  @moduledoc false
+
   use VacEngineWeb, :live_component
 
   import VacEngineWeb.IconComponent

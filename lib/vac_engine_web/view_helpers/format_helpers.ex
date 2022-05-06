@@ -1,4 +1,6 @@
 defmodule VacEngineWeb.FormatHelpers do
+  @moduledoc false
+
   def format_date(nil), do: "-"
 
   def format_date(date) do

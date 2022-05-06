@@ -1,6 +1,10 @@
 defmodule VacEngineWeb.EditorLive.DeductionComponent do
+  @moduledoc false
+
   use VacEngineWeb, :live_component
+
   import VacEngine.PipeHelpers
+
   alias VacEngineWeb.EditorLive.DeductionHeaderComponent
   alias VacEngineWeb.EditorLive.DeductionBranchComponent
 

@@ -1,4 +1,6 @@
 defmodule VacEngineWeb.UserLive.New do
+  @moduledoc false
+
   use VacEngineWeb, :live_view
 
   import VacEngine.PipeHelpers

@@ -1,4 +1,7 @@
 defmodule VacEngineWeb.BlueprintLive.Import do
+  @moduledoc """
+  Blueprint import page.
+  """
   use VacEngineWeb, :live_view
 
   import VacEngine.PipeHelpers
@@ -29,42 +32,6 @@ defmodule VacEngineWeb.BlueprintLive.Import do
   @impl true
   def handle_params(_params, _session, socket) do
     {:noreply, socket}
-  end
-
-  @impl true
-  def handle_event(
-        "validate",
-        %{"blueprint" => params},
-        socket
-      ) do
-    changeset =
-      %Blueprint{}
-      |> Processor.change_blueprint(params)
-      |> Map.put(:action, :insert)
-
-    socket
-    |> assign(changeset: changeset)
-    |> noreply()
-  end
-
-  @impl true
-  def handle_event(
-        "create",
-        %{"blueprint" => params},
-        %{assigns: %{workspace: workspace}} = socket
-      ) do
-    can!(socket, :write_blueprints, workspace)
-
-    Processor.create_blueprint(workspace, params)
-    |> case do
-      {:ok, br} ->
-        socket
-
-      {:error, changeset} ->
-        socket
-        |> assign(changeset: changeset)
-        |> noreply()
-    end
   end
 
   @impl true

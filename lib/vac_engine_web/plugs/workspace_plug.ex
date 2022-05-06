@@ -1,4 +1,6 @@
 defmodule VacEngineWeb.WorkspacePlug do
+  @moduledoc false
+
   import Plug.Conn
 
   alias VacEngine.Account

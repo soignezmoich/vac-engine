@@ -1,4 +1,6 @@
 defmodule VacEngineWeb.FormHelpers do
+  @moduledoc false
+
   use Phoenix.HTML
   import VacEngineWeb.ErrorHelpers
 

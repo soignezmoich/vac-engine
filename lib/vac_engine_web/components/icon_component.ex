@@ -1,4 +1,8 @@
 defmodule VacEngineWeb.IconComponent do
+  @moduledoc """
+  Icon loaded from a file based on the @name argument.
+  """
+
   use VacEngineWeb, :component
 
   def icon(assigns) do

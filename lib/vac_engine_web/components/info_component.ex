@@ -1,4 +1,8 @@
 defmodule VacEngineWeb.InfoComponent do
+  @moduledoc """
+  A simple component to display info.
+  """
+
   use VacEngineWeb, :component
 
   import VacEngineWeb.IconComponent

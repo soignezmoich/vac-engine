@@ -1,4 +1,6 @@
 defmodule VacEngineWeb.LiveRole do
+  @moduledoc false
+
   import Phoenix.LiveView
 
   alias VacEngine.Account

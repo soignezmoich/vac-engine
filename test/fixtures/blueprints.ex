@@ -1,4 +1,6 @@
 defmodule Fixtures.Blueprints do
+  @moduledoc false
+
   import Fixtures.Helpers
   use Fixtures.Helpers.Blueprints
 

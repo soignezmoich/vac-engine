@@ -1,4 +1,8 @@
 defmodule VacEngineWeb.BlueprintLive.Index do
+  @moduledoc """
+  The list of the blueprints in the current workspace.
+  """
+
   use VacEngineWeb, :live_view
 
   import VacEngine.PipeHelpers

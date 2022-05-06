@@ -1,4 +1,8 @@
 defmodule VacEngineWeb.AuthLive.LoginFormComponent do
+  @moduledoc """
+  Form component for the user login.
+  """
+
   use VacEngineWeb, :component
 
   def login_form(assigns) do

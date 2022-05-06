@@ -1,4 +1,6 @@
 defmodule VacEngineWeb.NavLive.Index do
+  @moduledoc false
+
   use VacEngineWeb, :live_view
 
   on_mount(VacEngineWeb.LiveRole)

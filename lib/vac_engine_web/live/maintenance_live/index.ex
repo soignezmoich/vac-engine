@@ -1,4 +1,6 @@
 defmodule VacEngineWeb.MaintenanceLive.Index do
+  @moduledoc false
+
   use VacEngineWeb, :live_view
 
   import VacEngine.PipeHelpers

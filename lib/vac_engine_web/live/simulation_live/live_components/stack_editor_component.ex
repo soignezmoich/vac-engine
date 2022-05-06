@@ -1,17 +1,17 @@
 defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
+  @moduledoc false
+
   use VacEngineWeb, :live_component
 
   import VacEngine.PipeHelpers
 
   alias VacEngine.Simulation
   alias VacEngine.Simulation.Job
-  alias VacEngine.Simulation.SimpleStacks
   alias VacEngineWeb.SimulationLive.CaseNameComponent
   alias VacEngineWeb.SimulationLive.StackEditorComponent
   alias VacEngineWeb.SimulationLive.StackInputComponent
   alias VacEngineWeb.SimulationLive.StackOutputComponent
   alias VacEngineWeb.SimulationLive.MenuStackItemComponent
-  @moduledoc false
 
   def mount(socket) do
     socket

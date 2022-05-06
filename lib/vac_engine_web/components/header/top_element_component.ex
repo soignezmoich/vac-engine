@@ -1,4 +1,8 @@
 defmodule VacEngineWeb.Header.TopElementComponent do
+  @moduledoc """
+  The container for the top level sections of the header.
+  """
+
   use VacEngineWeb, :component
 
   import VacEngineWeb.IconComponent

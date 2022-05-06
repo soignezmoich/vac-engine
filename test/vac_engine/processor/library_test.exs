@@ -1,4 +1,6 @@
 defmodule VacEngine.Processor.LibraryTest do
+  @moduledoc false
+
   use ExUnit.Case
 
   import VacEngine.Processor.Library

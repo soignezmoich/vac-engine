@@ -1,4 +1,8 @@
 defmodule VacEngineWeb.ApiKeyLive.Edit do
+  @moduledoc """
+  Editor for a single ApiKey.
+  """
+
   use VacEngineWeb, :live_view
 
   import VacEngine.PipeHelpers

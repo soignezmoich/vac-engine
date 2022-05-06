@@ -1,4 +1,6 @@
 defmodule VacEngineWeb.ApiPlug do
+  @moduledoc false
+
   import Plug.Conn
 
   @err Jason.encode!(%{error: "unauthorized, api_key required"})

@@ -1,4 +1,8 @@
 defmodule VacEngineWeb.ApiKeyLive.New do
+  @moduledoc """
+  Form for API-key creation.
+  """
+
   use VacEngineWeb, :live_view
 
   import VacEngine.PipeHelpers

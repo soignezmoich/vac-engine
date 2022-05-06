@@ -1,4 +1,8 @@
 defmodule VacEngineWeb.AuthController do
+  @moduledoc """
+  Authentication controller.
+  """
+
   use VacEngineWeb, :controller
 
   import VacEngineWeb.ConnHelpers

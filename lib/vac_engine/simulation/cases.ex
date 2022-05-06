@@ -1,4 +1,5 @@
 defmodule VacEngine.Simulation.Cases do
+  @moduledoc false
   import Ecto.Changeset
 
   alias VacEngine.Repo

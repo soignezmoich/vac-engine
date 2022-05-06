@@ -1,4 +1,6 @@
 defmodule VacEngineWeb.SimulationLive.StackOutputVariableComponent do
+  @moduledoc false
+
   use VacEngineWeb, :live_component
 
   import VacEngine.PipeHelpers

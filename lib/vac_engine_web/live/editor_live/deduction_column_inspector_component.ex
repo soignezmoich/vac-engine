@@ -1,7 +1,10 @@
 defmodule VacEngineWeb.EditorLive.DeductionColumnInspectorComponent do
+  @moduledoc false
+
   use VacEngineWeb, :live_component
 
   import VacEngine.PipeHelpers
+
   alias VacEngine.Processor
 
   @impl true

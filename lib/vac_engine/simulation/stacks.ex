@@ -1,4 +1,6 @@
 defmodule VacEngine.Simulation.Stacks do
+  @moduledoc false
+
   import Ecto.Changeset
   import Ecto.Query
 

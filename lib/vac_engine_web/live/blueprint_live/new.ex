@@ -1,4 +1,8 @@
 defmodule VacEngineWeb.BlueprintLive.New do
+  @moduledoc """
+  The new blueprint creation page.
+  """
+
   use VacEngineWeb, :live_view
 
   import VacEngine.PipeHelpers

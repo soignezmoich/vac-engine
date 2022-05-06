@@ -1,4 +1,6 @@
 defmodule StackTemplatePickerComponent do
+  @moduledoc false
+
   use VacEngineWeb, :live_component
 
   import Ecto.Changeset

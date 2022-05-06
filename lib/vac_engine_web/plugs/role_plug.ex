@@ -1,4 +1,6 @@
 defmodule VacEngineWeb.RolePlug do
+  @moduledoc false
+
   import Plug.Conn
   import Phoenix.Controller, only: [redirect: 2]
   import VacEngineWeb.ConnHelpers

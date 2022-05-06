@@ -1,4 +1,8 @@
 defmodule VacEngineWeb.Header.AccountElementComponent do
+  @moduledoc """
+  The user icon at the left of the screen that open the user menu when clicked.
+  """
+
   use VacEngineWeb, :component
 
   import VacEngineWeb.Header.MenuComponent

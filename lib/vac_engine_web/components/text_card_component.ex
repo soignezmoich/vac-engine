@@ -1,4 +1,7 @@
 defmodule VacEngineWeb.TextCardComponent do
+  @moduledoc """
+  A card with a text inside.
+  """
   use VacEngineWeb, :component
 
   def text_card(assigns) do

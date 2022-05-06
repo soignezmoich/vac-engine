@@ -1,4 +1,8 @@
 defmodule VacEngineWeb.AuthLive.Login do
+  @moduledoc """
+  Login page.
+  """
+
   use VacEngineWeb, :live_view
 
   import VacEngine.PipeHelpers
@@ -7,6 +11,8 @@ defmodule VacEngineWeb.AuthLive.Login do
   alias VacEngine.Account
 
   defmodule LoginForm do
+    @moduledoc false
+
     use Ecto.Schema
 
     import Ecto.Changeset

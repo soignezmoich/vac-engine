@@ -1,9 +1,12 @@
 defmodule VacEngineWeb.EditorLive.DeductionCellComponent do
-  use VacEngineWeb, :live_component
-  import VacEngine.PipeHelpers
-  import Elixir.Integer
-  alias VacEngine.Processor.Ast
+  @moduledoc false
 
+  use VacEngineWeb, :live_component
+
+  import Elixir.Integer
+  import VacEngine.PipeHelpers
+
+  alias VacEngine.Processor.Ast
   alias VacEngineWeb.EditorLive.DeductionListComponent
   alias VacEngineWeb.EditorLive.DeductionInspectorComponent
 

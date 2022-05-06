@@ -1,4 +1,8 @@
 defmodule VacEngineWeb.LoaderCardComponent do
+  @moduledoc """
+  A card with a loader.
+  """
+
   use VacEngineWeb, :component
 
   def loader_card(assigns) do

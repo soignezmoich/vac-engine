@@ -1,4 +1,6 @@
 defmodule VacEngineWeb.SimulationLive.SimulationEditorComponent do
+  @moduledoc false
+
   use VacEngineWeb, :live_component
 
   import VacEngine.PipeHelpers

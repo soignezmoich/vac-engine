@@ -1,4 +1,8 @@
 defmodule VacEngineWeb.BlueprintLive.ImportComponent do
+  @moduledoc """
+  Blueprint importation component.
+  """
+
   use VacEngineWeb, :live_component
 
   alias VacEngine.Processor

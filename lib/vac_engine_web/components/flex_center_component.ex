@@ -1,4 +1,6 @@
 defmodule VacEngineWeb.FlexCenterComponent do
+  @moduledoc false
+
   use VacEngineWeb, :component
 
   def flex_center(assigns) do

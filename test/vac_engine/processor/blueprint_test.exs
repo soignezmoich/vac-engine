@@ -1,4 +1,6 @@
 defmodule VacEngine.Processor.BlueprintTest do
+  @moduledoc false
+
   use VacEngine.DataCase
 
   import Ecto.Query

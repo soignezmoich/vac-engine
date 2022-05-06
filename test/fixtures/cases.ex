@@ -1,4 +1,6 @@
 defmodule Fixtures.Cases do
+  @moduledoc false
+
   import Fixtures.Helpers
   use Fixtures.Helpers.Cases
 

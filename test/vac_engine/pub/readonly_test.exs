@@ -1,4 +1,6 @@
 defmodule VacEngine.Pub.ReadonlyTest do
+  @moduledoc false
+
   use VacEngine.DataCase
 
   alias VacEngine.Account

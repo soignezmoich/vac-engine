@@ -1,4 +1,6 @@
 defmodule VacEngine.Simulation.Settings do
+  @moduledoc false
+
   import Ecto.Changeset
   import Ecto.Query
   import VacEngine.EctoHelpers

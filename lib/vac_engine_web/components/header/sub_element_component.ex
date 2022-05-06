@@ -1,4 +1,8 @@
 defmodule VacEngineWeb.Header.SubElementComponent do
+  @moduledoc """
+  The container for the sub-level section buttons.
+  """
+
   use VacEngineWeb, :component
 
   import VacEngineWeb.IconComponent

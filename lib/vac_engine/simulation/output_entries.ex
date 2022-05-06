@@ -1,4 +1,6 @@
 defmodule VacEngine.Simulation.OutputEntries do
+  @moduledoc false
+
   import Ecto.Changeset
 
   alias VacEngine.Repo

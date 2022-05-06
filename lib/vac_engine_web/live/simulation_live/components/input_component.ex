@@ -1,4 +1,6 @@
 defmodule VacEngineWeb.SimulationLive.InputComponent do
+  @moduledoc false
+
   use Phoenix.Component
 
   def boolean_input(assigns) do

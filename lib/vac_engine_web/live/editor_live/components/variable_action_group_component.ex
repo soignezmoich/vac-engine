@@ -1,4 +1,6 @@
 defmodule VacEngineWeb.EditorLive.VariableActionGroupComponent do
+  @moduledoc false
+
   use Phoenix.Component
 
   import VacEngineWeb.IconComponent

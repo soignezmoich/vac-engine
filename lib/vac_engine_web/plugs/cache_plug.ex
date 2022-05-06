@@ -1,4 +1,6 @@
 defmodule VacEngineWeb.CachePlug do
+  @moduledoc false
+
   import Plug.Conn
 
   def no_cache(conn, _) do

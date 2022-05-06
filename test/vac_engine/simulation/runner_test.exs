@@ -1,4 +1,6 @@
 defmodule VacEngine.Simulation.RunnerTest do
+  @moduledoc false
+
   use VacEngine.DataCase
 
   alias VacEngine.Account

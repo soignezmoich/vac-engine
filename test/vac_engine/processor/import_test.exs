@@ -1,4 +1,6 @@
 defmodule VacEngine.Processor.ImportTest do
+  @moduledoc false
+
   use VacEngine.DataCase
 
   alias VacEngine.Processor

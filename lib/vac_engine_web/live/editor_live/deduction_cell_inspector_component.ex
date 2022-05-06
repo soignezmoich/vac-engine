@@ -1,7 +1,10 @@
 defmodule VacEngineWeb.EditorLive.DeductionCellInspectorComponent do
+  @moduledoc false
+
   use VacEngineWeb, :live_component
 
   import VacEngine.PipeHelpers
+
   alias VacEngine.Processor
   alias VacEngine.Processor.Expression
   alias VacEngineWeb.EditorLive.ExpressionNodeEditorComponent

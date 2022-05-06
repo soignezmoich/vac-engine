@@ -1,4 +1,8 @@
 defmodule VacEngineWeb.Api.PubController do
+  @moduledoc """
+  Receives requests to the corresponding portal.
+  """
+
   use VacEngineWeb, :controller
   alias VacEngine.Pub
   require Logger

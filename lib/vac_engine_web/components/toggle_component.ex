@@ -1,4 +1,7 @@
 defmodule VacEngineWeb.ToggleComponent do
+  @moduledoc """
+  A toggle component with a confirm click capabilitiy.
+  """
   use VacEngineWeb, :component
 
   import VacEngineWeb.FormatHelpers

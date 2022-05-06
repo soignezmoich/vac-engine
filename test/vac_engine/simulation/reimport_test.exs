@@ -1,4 +1,6 @@
 defmodule VacEngine.Simulation.ReimportTest do
+  @moduledoc false
+
   use VacEngine.DataCase
 
   alias VacEngine.Account

@@ -1,4 +1,8 @@
 defmodule VacEngineWeb.WelcomeController do
+  @doc """
+  Handles the root route.
+  """
+
   use VacEngineWeb, :controller
 
   action_fallback(VacEngineWeb.FallbackController)

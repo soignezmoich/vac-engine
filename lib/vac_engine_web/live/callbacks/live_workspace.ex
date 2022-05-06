@@ -1,4 +1,6 @@
 defmodule VacEngineWeb.LiveWorkspace do
+  @moduledoc false
+
   import Phoenix.LiveView
   import VacEngine.PipeHelpers
 

@@ -1,4 +1,6 @@
 defmodule VacEngineWeb.KlassHelpers do
+  @moduledoc false
+
   def klass(base, conditionals) when is_list(conditionals) do
     conditionals
     |> Enum.reduce([base], fn

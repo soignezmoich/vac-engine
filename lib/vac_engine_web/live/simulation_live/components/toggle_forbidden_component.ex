@@ -1,4 +1,6 @@
 defmodule VacEngineWeb.SimulationLive.ToggleForbiddenComponent do
+  @moduledoc false
+
   use Phoenix.Component
 
   import VacEngineWeb.IconComponent

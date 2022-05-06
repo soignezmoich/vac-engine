@@ -1,4 +1,8 @@
 defmodule VacEngineWeb.BlueprintLive.DuplicateButtonComponent do
+  @moduledoc """
+  Button to duplicate current blueprint.
+  """
+
   use VacEngineWeb, :live_component
 
   alias VacEngine.Processor

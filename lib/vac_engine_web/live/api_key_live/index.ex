@@ -1,4 +1,8 @@
 defmodule VacEngineWeb.ApiKeyLive.Index do
+  @moduledoc """
+  Index of all API keys.
+  """
+
   use VacEngineWeb, :live_view
 
   import VacEngine.PipeHelpers

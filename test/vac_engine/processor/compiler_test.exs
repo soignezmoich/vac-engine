@@ -1,4 +1,6 @@
 defmodule VacEngine.Processor.CompilerTest do
+  @moduledoc false
+
   use VacEngine.DataCase
 
   alias VacEngine.Processor.Compiler

@@ -1,5 +1,8 @@
 defmodule VacEngineWeb.EditorLive.DeductionHeaderComponent do
+  @moduledoc false
+
   use VacEngineWeb, :live_component
+
   import VacEngine.PipeHelpers
   import VacEngineWeb.PathHelpers
 

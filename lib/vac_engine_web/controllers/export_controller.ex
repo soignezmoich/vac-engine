@@ -1,4 +1,8 @@
 defmodule VacEngineWeb.ExportController do
+  @moduledoc """
+  Export controller. Used for blueprint download.
+  """
+
   use VacEngineWeb, :controller
 
   alias VacEngine.Processor

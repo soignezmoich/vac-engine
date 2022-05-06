@@ -1,7 +1,10 @@
 defmodule VacEngineWeb.EditorLive.VariableListComponent do
+  @moduledoc false
+
   use VacEngineWeb, :live_component
 
   import VacEngine.PipeHelpers
+
   alias VacEngineWeb.EditorLive.VariableSubListComponent
 
   @impl true

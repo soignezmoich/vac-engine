@@ -1,4 +1,6 @@
 defmodule VacEngineWeb.EditorLive.VariableComponent do
+  @moduledoc false
+
   use VacEngineWeb, :live_component
 
   alias VacEngineWeb.EditorLive.VariableInspectorComponent

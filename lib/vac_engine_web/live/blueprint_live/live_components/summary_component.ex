@@ -1,4 +1,7 @@
 defmodule VacEngineWeb.BlueprintLive.SummaryComponent do
+  @moduledoc """
+  Contains general informations and controls about the current blueprint.
+  """
   use VacEngineWeb, :live_component
 
   import VacEngine.PipeHelpers

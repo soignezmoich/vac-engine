@@ -1,4 +1,6 @@
 defmodule VacEngineWeb.SimulationLive.ExpectedFieldComponent do
+  @moduledoc false
+
   use VacEngineWeb, :live_component
 
   import Ecto.Changeset

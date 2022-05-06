@@ -1,4 +1,8 @@
 defmodule VacEngineWeb.Header.TitleComponent do
+  @moduledoc """
+  The title in the middle of the header. It depends on the current context.
+  """
+
   use VacEngineWeb, :component
 
   def title(%{portal: portal} = assigns) when not is_nil(portal) do

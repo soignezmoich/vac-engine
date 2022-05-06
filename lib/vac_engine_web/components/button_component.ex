@@ -1,4 +1,9 @@
 defmodule VacEngineWeb.ButtonComponent do
+  @moduledoc """
+  A button with click confirmation capabilities.
+
+  (Uses a client side script hook)
+  """
   use VacEngineWeb, :component
 
   def button(assigns) do

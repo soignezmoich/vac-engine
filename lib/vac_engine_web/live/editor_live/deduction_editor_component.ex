@@ -1,4 +1,6 @@
 defmodule VacEngineWeb.EditorLive.DeductionEditorComponent do
+  @moduledoc false
+
   use VacEngineWeb, :live_component
 
   import VacEngineWeb.InfoComponent

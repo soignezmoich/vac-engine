@@ -1,6 +1,10 @@
 defmodule VacEngineWeb.EditorLive.ExpressionNode do
+  @moduledoc false
+
   use Ecto.Schema
+
   import Ecto.Changeset
+
   alias VacEngine.Processor.Meta
   alias VacEngine.Processor.Convert
 

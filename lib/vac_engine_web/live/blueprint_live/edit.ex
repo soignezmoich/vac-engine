@@ -1,4 +1,8 @@
 defmodule VacEngineWeb.BlueprintLive.Edit do
+  @moduledoc """
+  Main blueprint edition page.
+  """
+
   use VacEngineWeb, :live_view
 
   import VacEngineWeb.PermissionHelpers

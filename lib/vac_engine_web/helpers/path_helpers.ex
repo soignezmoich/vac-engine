@@ -1,4 +1,6 @@
 defmodule VacEngineWeb.PathHelpers do
+  @moduledoc false
+
   @doc """
     Extract the common prefix of the given lists.
 

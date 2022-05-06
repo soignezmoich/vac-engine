@@ -1,7 +1,5 @@
 defmodule VacEngineWeb.SimulationLive.ConfigEditorComponent do
-  @moduledoc """
-
-  """
+  @moduledoc false
 
   use VacEngineWeb, :live_component
 

@@ -1,4 +1,11 @@
 defmodule VacEngineWeb.HeaderComponent do
+  @moduledoc """
+  The header of the application page. It is composed of two levels. The top level
+  contains top sections like "blueprint" and "portals". The sub level contains
+  subsections related to the currently selected top secton (e.g. deduction or simulation
+  for the blueprint section).
+  """
+
   use VacEngineWeb, :component
 
   import VacEngineWeb.Header.AccountElementComponent

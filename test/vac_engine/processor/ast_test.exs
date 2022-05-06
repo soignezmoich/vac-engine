@@ -1,4 +1,6 @@
 defmodule VacEngine.Processor.AstTest do
+  @moduledoc false
+
   use ExUnit.Case
 
   alias VacEngine.Processor.Ast
