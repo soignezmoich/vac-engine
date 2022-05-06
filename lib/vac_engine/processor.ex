@@ -261,12 +261,6 @@ defmodule VacEngine.Processor do
   defdelegate create_blueprint(workspace, attrs), to: Blueprints.Save
 
   @doc """
-  Recreate a blueprint with the given attributes.
-
-  Name, workspace and id are kept.
-  """
-
-  @doc """
   Delete blueprint (will error if used)
   """
   defdelegate delete_blueprint(blueprint), to: Blueprints.Save
