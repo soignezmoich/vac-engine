@@ -1,19 +1,8 @@
 <div>
-  <h2 class="font-bold text-lg mb-4">
-    Export as JSON
-  </h2>
-  <%= link("Download",
-        to: Routes.export_path(@socket, :blueprint, @blueprint),
-        class: "btn inline-block"
-      ) %>
 
-  <%= if can?(@role, :write, @blueprint) && !@readonly do %>
-    <h2 class="font-bold text-lg mt-8 mb-4">
-      Import JSON file
-    </h2>
-
+  <%= if can?(@role, :write, @workspace) do %>
     <form id="upload-form"
-          phx-submit="save"
+          phx-submit="do-import"
           phx-change="validate"
           phx-target={@myself}
           class="flex">
@@ -23,7 +12,7 @@
         "}
         phx-drop-target={@uploads.json_import.ref}>
         <p class="font-bold text-xl text-gray-500 text-center">
-          Drop file here or click to browse files
+          Drop json file here or click to browse files
         </p>
 
         <%= live_file_input @uploads.json_import,
@@ -42,11 +31,11 @@
             <%= case f do %>
               <% {:ok, _br} -> %>
                 <div class="px-2">
-                  Success, blueprint updated.
+                  Success, blueprint imported.
                 </div>
               <% {:error, msg} -> %>
                 <div class="bg-red-200 border-2 border-red-400 p-2">
-                  <div class="mb-2">Error, blueprint NOT updated.</div>
+                  <div class="mb-2">Error, blueprint could not be imported.</div>
                   <%= case msg do %>
                     <% [_|_] = errs -> %>
                       <%= for err <- errs do %>
@@ -91,5 +80,7 @@
         <% end %>
       </div>
     </form>
+  <% else %>
+    You have'nt got the right to import blueprints. Please ask your administrator.
   <% end %>
 </div>

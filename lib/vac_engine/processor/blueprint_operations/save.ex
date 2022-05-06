@@ -28,16 +28,6 @@ defmodule VacEngine.Processor.Blueprints.Save do
     |> multi_inject()
   end
 
-  def recreate_blueprint(%Blueprint{} = blueprint, attrs) do
-    base_attrs = %{id: blueprint.id, name: blueprint.name}
-
-    Multi.new()
-    |> Multi.put(:attrs, attrs)
-    |> multi_delete_blueprint(blueprint)
-    |> multi_create_blueprint(base_attrs, attrs, blueprint.workspace_id)
-    |> multi_inject()
-  end
-
   def update_blueprint(%Blueprint{} = blueprint, attrs) do
     Multi.new()
     |> Multi.put(:attrs, attrs)
@@ -320,14 +310,15 @@ defmodule VacEngine.Processor.Blueprints.Save do
     |> Hash.hash_string()
   end
 
-  def update_blueprint_from_file(%Blueprint{} = blueprint, path) do
+  def update_blueprint_from_file(%Workspace{} = workspace, path) do
     File.read(path)
     |> case do
       {:ok, json} ->
         Jason.decode(json)
         |> case do
           {:ok, data} ->
-            recreate_blueprint(blueprint, data)
+            create_blueprint(workspace, data)
+
           {:error, _} ->
             {:error, "cannot decode json"}
         end
@@ -336,5 +327,4 @@ defmodule VacEngine.Processor.Blueprints.Save do
         {:error, "cannot read file"}
     end
   end
-
 end

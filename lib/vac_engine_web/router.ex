@@ -58,6 +58,7 @@ defmodule VacEngineWeb.Router do
 
       live("/blueprints/pick", BlueprintLive.Pick, :pick, as: :blueprint)
       live("/blueprints/new", BlueprintLive.New, :new, as: :blueprint)
+      live("/blueprints/import", BlueprintLive.Import, :import, as: :blueprint)
 
       live("/blueprints/:blueprint_id", BlueprintLive.Edit, :summary,
         as: :blueprint

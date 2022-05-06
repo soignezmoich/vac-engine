@@ -265,7 +265,6 @@ defmodule VacEngine.Processor do
 
   Name, workspace and id are kept.
   """
-  defdelegate recreate_blueprint(blueprint, attrs), to: Blueprints.Save
 
   @doc """
   Delete blueprint (will error if used)

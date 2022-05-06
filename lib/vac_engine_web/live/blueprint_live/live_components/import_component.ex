@@ -28,16 +28,16 @@ defmodule VacEngineWeb.BlueprintLive.ImportComponent do
   end
 
   @impl true
-  def handle_event("save", _params, socket) do
-    blueprint = socket.assigns.blueprint
-    can!(socket, :write, blueprint)
+  def handle_event("do-import", _params, socket) do
+    workspace = socket.assigns.workspace
+    can!(socket, :write, workspace)
 
     uploaded_files =
       consume_uploaded_entries(socket, :json_import, fn %{path: path}, _entry ->
-        Processor.update_blueprint_from_file(blueprint, path)
+        Processor.update_blueprint_from_file(workspace, path)
         |> case do
-          {:ok, _br} = res ->
-            send(self(), :reload_blueprint)
+          {:ok, blueprint} = res ->
+            send(self(), {:open_blueprint, blueprint.id})
             res
 
           {:error, err} when is_binary(err) ->
@@ -59,7 +59,5 @@ defmodule VacEngineWeb.BlueprintLive.ImportComponent do
 
   defp error_to_string(:too_large), do: "Too large"
   defp error_to_string(:too_many_files), do: "You have selected too many files"
-
-  defp error_to_string(:not_accepted),
-    do: "You have selected an unacceptable file type"
+  defp error_to_string(:not_accepted), do: "You have selected a non json file"
 end

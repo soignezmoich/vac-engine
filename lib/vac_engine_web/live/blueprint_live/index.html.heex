@@ -4,6 +4,13 @@
           to: Routes.workspace_blueprint_path(@socket, :new, @workspace),
           class: "btn-default inline-block"
         ) %>
+
+    <span class="p-1"/>
+
+    <%= live_redirect("Import blueprint",
+          to: Routes.workspace_blueprint_path(@socket, :import, @workspace),
+          class: "btn-default inline-block"
+        ) %>
   <% end %>
 
   <div class="my-4 border-b border-2" />
