@@ -107,14 +107,12 @@ defmodule VacEngineWeb.EditorLive.DeductionCellInspectorComponent do
           }
         } = socket
       ) do
-    cond do
-      is_nil(ast) and not set_nil ->
-        :error
-
-      true ->
-        Processor.update_cell(ast, blueprint, branch, column, %{
-          description: description
-        })
+    if is_nil(ast) and not set_nil do
+      :error
+    else
+      Processor.update_cell(ast, blueprint, branch, column, %{
+        description: description
+      })
     end
     |> case do
       {:ok, _res} ->

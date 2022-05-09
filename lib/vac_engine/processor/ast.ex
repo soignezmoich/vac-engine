@@ -339,12 +339,8 @@ defmodule VacEngine.Processor.Ast do
   end
 
   def describe({f, _, args}) do
-    args =
-      args
-      |> Enum.map(&describe/1)
-      |> Enum.join(", ")
-
-    "#{f}(#{args})"
+    joined_args = args |> Enum.map_join(", ", &describe/1)
+    "#{f}(#{joined_args})"
   end
 
   def describe(ast) when is_binary(ast), do: ast

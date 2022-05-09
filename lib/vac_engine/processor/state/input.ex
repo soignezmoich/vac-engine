@@ -53,6 +53,7 @@ defmodule VacEngine.Processor.State.Input do
     end)
   end
 
+  # credo:disable-for-next-line
   defp map_variable(vars, value, mapped_data, path, hits) do
     vpath = Enum.reject(path, &is_function/1)
     var = vars |> Map.get(vpath)

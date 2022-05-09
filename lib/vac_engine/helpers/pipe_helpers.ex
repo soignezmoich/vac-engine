@@ -87,6 +87,7 @@ defmodule VacEngine.PipeHelpers do
   then pass the input value.
   """
   def func_inspect(value, fnc) do
+    # credo:disable-for-next-line Credo.Check.Warning.IoInspect
     IO.inspect(fnc.(value))
     value
   end
@@ -96,6 +97,7 @@ defmodule VacEngine.PipeHelpers do
   """
   def func_inspect(value, fnc, label) do
     IO.puts(label)
+    # credo:disable-for-next-line Credo.Check.Warning.IoInspect
     IO.inspect(fnc.(value))
     value
   end
