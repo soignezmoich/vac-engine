@@ -7,7 +7,6 @@ defmodule VacEngineWeb.SimulationLive.EntryValueFieldComponent do
   import VacEngine.PipeHelpers
 
   alias VacEngine.Convert
-  alias VacEngine.Repo
   alias VacEngine.Simulation
 
   def update(
