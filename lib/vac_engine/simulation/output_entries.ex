@@ -7,7 +7,7 @@ defmodule VacEngine.Simulation.OutputEntries do
   alias VacEngine.Simulation
   alias VacEngine.Simulation.OutputEntry
 
-  def create_blank_output_entry(kase, key, variable) do
+  def create_output_entry(kase, key, variable) do
     expected = Simulation.variable_default_value(variable.type, variable.enum)
     forbid = variable.type == :map
 

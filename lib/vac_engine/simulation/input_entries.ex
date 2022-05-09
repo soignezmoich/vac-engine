@@ -24,16 +24,19 @@ defmodule VacEngine.Simulation.InputEntries do
     Repo.delete(input_entry)
   end
 
-  def update_input_entry(input_entry, value) do
+  def update_input_entry(input_entry, value, variable) do
     input_entry
-    |> InputEntry.changeset(%{value: value})
+    |> cast(%{"value" => value}, [:value])
+    |> validate_input_entry(variable)
     |> Repo.update()
   end
 
   def validate_input_entry(%Changeset{} = changeset, variable) do
+    enum = Map.get(variable, :enum)
+
     changeset
     |> validate_required([:key, :value])
     |> validate_type(:value, variable.type)
-    |> validate_in_enum(:value, Map.get(variable, :variable_enum))
+    |> validate_in_enum(:value, enum)
   end
 end

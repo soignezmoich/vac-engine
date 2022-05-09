@@ -235,7 +235,7 @@ defmodule VacEngine.Simulation do
   @doc """
   Update given input entry value.
   """
-  defdelegate update_input_entry(input_entry, value), to: InputEntries
+  defdelegate update_input_entry(input_entry, value, variable), to: InputEntries
 
   @doc """
   Validate given input entry for the given variable.
@@ -245,7 +245,7 @@ defmodule VacEngine.Simulation do
   @doc """
   Create a new output entry for the given case, key and variable.
   """
-  defdelegate create_blank_output_entry(kase, key, variable), to: OutputEntries
+  defdelegate create_output_entry(kase, key, variable), to: OutputEntries
 
   @doc """
   Delete given output entry.

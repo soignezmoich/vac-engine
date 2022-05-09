@@ -76,10 +76,11 @@ defmodule VacEngineWeb.SimulationLive.EntryValueFieldComponent do
         {:noreply, socket}
 
       {:ok, parsed_value} ->
-        input_entry
-        |> cast(%{"value" => to_string(parsed_value)}, [:value])
-        |> Simulation.validate_input_entry(variable)
-        |> Repo.update()
+        Simulation.update_input_entry(
+          input_entry,
+          to_string(parsed_value),
+          variable
+        )
 
         send_update(target_component.type,
           id: target_component.id,

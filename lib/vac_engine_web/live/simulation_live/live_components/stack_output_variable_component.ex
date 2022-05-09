@@ -76,7 +76,7 @@ defmodule VacEngineWeb.SimulationLive.StackOutputVariableComponent do
       entry_key = variable.path |> Enum.join(".")
 
       {:ok, input_entry} =
-        Simulation.create_blank_output_entry(
+        Simulation.create_output_entry(
           runnable_case,
           entry_key,
           variable
