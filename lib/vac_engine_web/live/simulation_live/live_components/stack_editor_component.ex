@@ -27,7 +27,7 @@ defmodule VacEngineWeb.SimulationLive.StackEditorComponent do
     |> Simulation.queue_job()
 
     socket
-    |> load_stack(Simulation.get_stack(stack))
+    |> load_stack(stack)
     |> ok()
   end
 
