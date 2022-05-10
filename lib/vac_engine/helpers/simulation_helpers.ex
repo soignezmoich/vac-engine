@@ -84,6 +84,8 @@ defmodule VacEngine.SimulationHelpers do
     }
   end
 
+  def map_value(), do: "<map>"
+
   def variable_default_value(type, enum) do
     case {type, enum} do
       {:boolean, _} -> "false"
@@ -93,7 +95,7 @@ defmodule VacEngine.SimulationHelpers do
       {:datetime, _} -> "2000-01-01T00:00:00"
       {:number, _} -> "0.0"
       {:integer, _} -> "0"
-      {:map, _} -> "<map>"
+      {:map, _} -> map_value()
     end
   end
 end

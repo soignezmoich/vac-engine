@@ -7,6 +7,7 @@ defmodule VacEngine.Simulation.Runner do
   import VacEngine.PipeHelpers
 
   alias Phoenix.PubSub
+  alias VacEngine.SimulationHelpers
   alias VacEngine.Simulation
   alias VacEngine.Simulation.Setting
   alias VacEngine.Simulation.Case
@@ -320,6 +321,7 @@ defmodule VacEngine.Simulation.Runner do
       fn %Layer{case: kase}, {input, expected, forbid, outcome, env} ->
         l_input =
           kase.input_entries
+          |> Enum.reject(fn e -> e.value == SimulationHelpers.map_value() end)
           |> Enum.map(fn e ->
             {String.split(e.key, "."), e.value}
           end)
