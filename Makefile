@@ -78,7 +78,7 @@ clean: clean-digest
 
 .PHONY: server
 
-server: deps assets-deps
+server: clean-digest deps assets-deps
 	iex -S mix phx.server
 
 .PHONY: prod-test-server
