@@ -3,7 +3,7 @@ defmodule VacEngine.MixProject do
 
   @source_url "https://github.com/soignezmoich/vac-engine"
   # also change in api.yaml
-  @version "1.0.3"
+  @version "1.1.0-rc1"
 
   @external_resource "#{__DIR__}/.coverignore"
   @ignore_modules File.stream!("#{__DIR__}/.coverignore")
