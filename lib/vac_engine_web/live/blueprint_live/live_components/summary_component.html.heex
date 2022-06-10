@@ -160,7 +160,7 @@
       </div>
       <%= for p <- publications do %>
         <%= if not is_nil(p.deactivated_at) do %>
-          <div class="border-b flex py-4 w-128">
+          <div class="border-b flex py-4">
             <div class="flex flex-col flex-grow">
               <span class="text-gray-300">
                 Inactive Portal #<%= p.portal_id %>: <%= p.portal.name %>
