@@ -468,8 +468,8 @@ defmodule VacEngine.Processor do
   Flush compiled processor
   """
   def flush_processor(%Processor{} = processor) do
-    :code.delete(processor.compiled_module)
     :code.purge(processor.compiled_module)
+    :code.delete(processor.compiled_module)
   end
 
   @doc """
