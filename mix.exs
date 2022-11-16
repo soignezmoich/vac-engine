@@ -3,7 +3,7 @@ defmodule VacEngine.MixProject do
 
   @source_url "https://github.com/soignezmoich/vac-engine"
   # also change in api.yaml
-  @version "1.1.0-rc1"
+  @version "1.1.1"
 
   @external_resource "#{__DIR__}/.coverignore"
   @ignore_modules File.stream!("#{__DIR__}/.coverignore")
@@ -15,7 +15,7 @@ defmodule VacEngine.MixProject do
     [
       app: :vac_engine,
       version: @version,
-      elixir: "~> 1.11.1",
+      elixir: "~> 1.11",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
