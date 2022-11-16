@@ -15,7 +15,7 @@ defmodule VacEngine.MixProject do
     [
       app: :vac_engine,
       version: @version,
-      elixir: "~> 1.11",
+      elixir: "~> 1.11.1",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,

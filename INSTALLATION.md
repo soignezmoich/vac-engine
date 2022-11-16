@@ -90,6 +90,7 @@ partly different for production and development.
 #### Production
 
 - `DATABASE_URL`
+- `DB_SSL_ENABLED`
 - `HOST`
 - `PORT`
 - `SECRET_KEY_BASE`
@@ -109,6 +110,7 @@ partly different for production and development.
 #### Development
 
 - `DATABASE_URL`
+- `DB_SSL_ENABLED`
 - `DATABASE_TEST_URL` ¹
 - `NO_DEBUG_LOG` ²
 

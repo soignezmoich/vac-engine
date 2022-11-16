@@ -11,6 +11,7 @@ case Config.config_env() do
 
     config :vac_engine, VacEngine.Repo,
       url: database_url,
+      ssl: String.to_existing_atom(System.get_env("DB_SSL_ENABLED", "false")),
       pool_size: String.to_integer(System.get_env("POOL_SIZE", "10"))
 
     secret_key_base = System.fetch_env!("SECRET_KEY_BASE")
@@ -65,7 +66,8 @@ case Config.config_env() do
     end
 
     config :vac_engine, VacEngine.Repo,
-      url: System.get_env("DATABASE_URL", "postgres://localhost/vac_engine")
+      url: System.get_env("DATABASE_URL", "postgres://localhost/vac_engine"),
+      ssl: String.to_existing_atom(System.get_env("DB_SSL_ENABLED", "false"))
 
   :test ->
     config :vac_engine, VacEngine.Repo,
