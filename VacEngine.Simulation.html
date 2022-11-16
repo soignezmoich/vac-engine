@@ -5,12 +5,12 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.28.0">
-    <meta name="project" content="Vac Engine v1.0.3">
+    <meta name="project" content="Vac Engine v1.1.1">
 
-    <title>VacEngine.Simulation — Vac Engine v1.0.3</title>
+    <title>VacEngine.Simulation — Vac Engine v1.1.1</title>
     <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
-    <script src="dist/sidebar_items-6e385c0426.js"></script>
+    <script src="dist/sidebar_items-5f79f8e75a.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -60,7 +60,7 @@
 Vac Engine
       </a>
       <strong class="sidebar-projectVersion" translate="no">
-        v1.0.3
+        v1.1.1
       </strong>
     </div>
     <ul class="sidebar-listNav">
@@ -93,16 +93,51 @@ Vac Engine
     </a>
 
   <span translate="no">VacEngine.Simulation</span> 
-  <small class="app-vsn" translate="no">(Vac Engine v1.0.3)</small>
+  <small class="app-vsn" translate="no">(Vac Engine v1.1.1)</small>
 
 </h1>
 
 
   <section id="moduledoc">
-<p>Provides the model for the blueprint simulation. Simulation is useful
-to assess whether a ruleset meets the business requirements.</p><p>Simulation is based on <em>cases</em> that describe the expected output for a given
-input.</p><p>The content of a case can be used as a base for another case, forming a <em>stack</em>
-(technically, even a single case is part of a stack).</p><p>Cases are created workspace-wide whereas case stacks are limited to the blueprint
+<p>Provides the model for the blueprint simulation. Simulation is used
+to assess whether a ruleset meets business requirements.</p><p>A blueprint simulation is a collection of input/output definitions. The output
+corresponds to the expected outcome of the blueprint for the given input.</p><h2 id="module-simulation-runner" class="section-heading">
+  <a href="#module-simulation-runner" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  Simulation runner
+</h2>
+<p>The input descriptions are processed a case runner (similar to the main processor)
+in order to determine if the corresponding output expectations are met.</p><h2 id="module-stacks-layers-cases" class="section-heading">
+  <a href="#module-stacks-layers-cases" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  Stacks, layers, cases
+</h2>
+<p>The description passed to the runner is actually a &quot;stack&quot; of simple descriptions
+called &quot;cases&quot; where the higher case's values overwrite the lower case's ones.
+Cases are refenced as &quot;layer&quot; in the &quot;stack&quot; and may be referenced in several stacks.
+Only input is composed this way. Lower cases are not intended to describe output.</p><h2 id="module-two-layers-basic-stacks-and-templates" class="section-heading">
+  <a href="#module-two-layers-basic-stacks-and-templates" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  Two-layers &quot;Basic stacks&quot; and &quot;Templates&quot;
+</h2>
+<p>In the current implementation of the simulation. Stacks are limited to two level. The
+bottom layer is called a &quot;Template&quot; where the top one is called a &quot;Runnable case&quot;.</p><h2 id="module-blueprint-templates-and-basic-stacks" class="section-heading">
+  <a href="#module-blueprint-templates-and-basic-stacks" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  Blueprint templates and basic stacks
+</h2>
+<p>Each blueprint simulation has a collection of templates (a many to many relation between
+cases and blueprints) that can be used as bottom layer cases. Each simulation also has
+a collection fo &quot;Basic stacks&quot;, each containing a runnable case and optionally a template.
+The editor allows to pick the template of the basic cases among the simulation's templates,
+but technically, a template can be any case of the workspace.</p><h2 id="module-case-sharing" class="section-heading">
+  <a href="#module-case-sharing" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  Case sharing
+</h2>
+<p>Blueprints can share cases. This automatically occurs when a blueprint is duplicated, but
+not when a blueprint is exported and reimported where each case is duplicated.</p><p>When cases are shared, they can be modified at one for every blueprint. This is useful when
+you want to fix an error.</p><h2 id="module-workspace-cases-collections" class="section-heading">
+  <a href="#module-workspace-cases-collections" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  Workspace cases collections
+</h2>
+<p>Cases</p><p>Cases are grouped in a multi-layer stack. Each layer is a single case.</p><p>The content of a case can be used as a base for another case, forming a <em>stack</em>
+(technically, even a single case is part of a stack).</p><p>The basic stack is a two-layered stack (used as the only existing stack structure)</p><p>Cases are created workspace-wide whereas case stacks are limited to the blueprint
 scope. This structure allows to share cases among several blueprints.</p>
   </section>
 
@@ -123,17 +158,11 @@ scope. This structure allows to share cases among several blueprints.</p>
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#create_blank_output_entry/3" translate="no">create_blank_output_entry(kase, key, variable)</a>
-
-        </div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
           <a href="#create_blank_stack/2" translate="no">create_blank_stack(blueprint, name)</a>
 
         </div>
+
+          <div class="summary-synopsis"><p>Creates a new stack with an empty runnable case and no template case.</p></div>
 
       </div>
 
@@ -143,6 +172,8 @@ scope. This structure allows to share cases among several blueprints.</p>
 
         </div>
 
+          <div class="summary-synopsis"><p>Create a new blank template for the given blueprint with the given name.</p></div>
+
       </div>
 
       <div class="summary-row">
@@ -150,6 +181,18 @@ scope. This structure allows to share cases among several blueprints.</p>
           <a href="#create_input_entry/3" translate="no">create_input_entry(kase, key, value \\ &quot;-&quot;)</a>
 
         </div>
+
+          <div class="summary-synopsis"><p>Create a new input entry for the given case, key with the given value.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#create_output_entry/3" translate="no">create_output_entry(kase, key, variable)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Create a new output entry for the given case, key and variable.</p></div>
 
       </div>
 
@@ -159,6 +202,8 @@ scope. This structure allows to share cases among several blueprints.</p>
 
         </div>
 
+          <div class="summary-synopsis"><p>Create a new simulation setting for the given blueprint.</p></div>
+
       </div>
 
       <div class="summary-row">
@@ -166,6 +211,8 @@ scope. This structure allows to share cases among several blueprints.</p>
           <a href="#create_stack/2" translate="no">create_stack(blueprint, attrs \\ %{})</a>
 
         </div>
+
+          <div class="summary-synopsis"><p>Creates a new stack using the given attributes.</p></div>
 
       </div>
 
@@ -175,6 +222,8 @@ scope. This structure allows to share cases among several blueprints.</p>
 
         </div>
 
+          <div class="summary-synopsis"><p>Delete the given input entry.</p></div>
+
       </div>
 
       <div class="summary-row">
@@ -182,6 +231,8 @@ scope. This structure allows to share cases among several blueprints.</p>
           <a href="#delete_output_entry/1" translate="no">delete_output_entry(output_entry)</a>
 
         </div>
+
+          <div class="summary-synopsis"><p>Delete given output entry.</p></div>
 
       </div>
 
@@ -191,6 +242,8 @@ scope. This structure allows to share cases among several blueprints.</p>
 
         </div>
 
+          <div class="summary-synopsis"><p>Deletes the stack with the given id. Layers are also deleted. Cases not.</p></div>
+
       </div>
 
       <div class="summary-row">
@@ -198,6 +251,8 @@ scope. This structure allows to share cases among several blueprints.</p>
           <a href="#delete_stack_template/1" translate="no">delete_stack_template(stack)</a>
 
         </div>
+
+          <div class="summary-synopsis"><p>Delete the template of the given simple stack.</p></div>
 
       </div>
 
@@ -207,45 +262,60 @@ scope. This structure allows to share cases among several blueprints.</p>
 
         </div>
 
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#do_import_all_cases/1" translate="no">do_import_all_cases(data)</a>
-
-        </div>
+          <div class="summary-synopsis"><p>Delete the template with the given id.</p></div>
 
       </div>
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#filter_cases_by_workspace/2" translate="no">filter_cases_by_workspace(query, workspace)</a>
+          <a href="#fork_runnable_case/2" translate="no">fork_runnable_case(stack, name)</a>
 
         </div>
+
+          <div class="summary-synopsis"><p>Fork the runnable case of the given simple stack, i.e. create a copy to use in the
+given stack.</p></div>
 
       </div>
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#filter_stacks_by_blueprint/2" translate="no">filter_stacks_by_blueprint(query, blueprint)</a>
+          <a href="#fork_template_case/2" translate="no">fork_template_case(template, name)</a>
 
         </div>
+
+          <div class="summary-synopsis"><p>For the template case, i.e. create a copy to use in the template
+and all cases using this template.</p></div>
 
       </div>
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#get_case/2" translate="no">get_case(case_id, queries)</a>
+          <a href="#get_blueprints_sharing_runnable_case/1" translate="no">get_blueprints_sharing_runnable_case(stack)</a>
 
         </div>
+
+          <div class="summary-synopsis"><p>Get the blueprint name and ids that share the runnable case of
+the given simple (two-layer) stack.</p></div>
 
       </div>
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#get_case!/2" translate="no">get_case!(case_id, queries)</a>
+          <a href="#get_blueprints_sharing_template_case/1" translate="no">get_blueprints_sharing_template_case(template)</a>
 
         </div>
+
+          <div class="summary-synopsis"><p>Returns the name and ids of the blueprints with which the case is shared.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#get_cases_using_template/1" translate="no">get_cases_using_template(template)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Retrieve the cases (stacks) using the given template.</p></div>
 
       </div>
 
@@ -255,6 +325,8 @@ scope. This structure allows to share cases among several blueprints.</p>
 
         </div>
 
+          <div class="summary-synopsis"><p>Get the first stack associated to the given blueprint.</p></div>
+
       </div>
 
       <div class="summary-row">
@@ -262,6 +334,8 @@ scope. This structure allows to share cases among several blueprints.</p>
           <a href="#get_setting/1" translate="no">get_setting(blueprint)</a>
 
         </div>
+
+          <div class="summary-synopsis"><p>Get the simulation settings.</p></div>
 
       </div>
 
@@ -271,13 +345,7 @@ scope. This structure allows to share cases among several blueprints.</p>
 
         </div>
 
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#get_stack/2" translate="no">get_stack(stack_id, queries)</a>
-
-        </div>
+          <div class="summary-synopsis"><p>Retrieve a stack corresponding to the given id.</p></div>
 
       </div>
 
@@ -287,6 +355,8 @@ scope. This structure allows to share cases among several blueprints.</p>
 
         </div>
 
+          <div class="summary-synopsis"><p>Retrieve a stack corresponding to the given id (throw! version).</p></div>
+
       </div>
 
       <div class="summary-row">
@@ -294,6 +364,8 @@ scope. This structure allows to share cases among several blueprints.</p>
           <a href="#get_stack_names/1" translate="no">get_stack_names(blueprint)</a>
 
         </div>
+
+          <div class="summary-synopsis"><p>Retrieve all the stack names for the given blueprint.</p></div>
 
       </div>
 
@@ -303,6 +375,8 @@ scope. This structure allows to share cases among several blueprints.</p>
 
         </div>
 
+          <div class="summary-synopsis"><p>Get the runnable case of the given simple stack.</p></div>
+
       </div>
 
       <div class="summary-row">
@@ -310,6 +384,8 @@ scope. This structure allows to share cases among several blueprints.</p>
           <a href="#get_stack_template_case/1" translate="no">get_stack_template_case(stack)</a>
 
         </div>
+
+          <div class="summary-synopsis"><p>Get the template case of the given simple stack.</p></div>
 
       </div>
 
@@ -319,6 +395,8 @@ scope. This structure allows to share cases among several blueprints.</p>
 
         </div>
 
+          <div class="summary-synopsis"><p>Get all stacks for the given blueprint.</p></div>
+
       </div>
 
       <div class="summary-row">
@@ -326,6 +404,8 @@ scope. This structure allows to share cases among several blueprints.</p>
           <a href="#get_template/1" translate="no">get_template(template_id)</a>
 
         </div>
+
+          <div class="summary-synopsis"><p>Retrieve the template with the given id.</p></div>
 
       </div>
 
@@ -335,6 +415,8 @@ scope. This structure allows to share cases among several blueprints.</p>
 
         </div>
 
+          <div class="summary-synopsis"><p>Get all the given blueprint's template names.</p></div>
+
       </div>
 
       <div class="summary-row">
@@ -342,6 +424,8 @@ scope. This structure allows to share cases among several blueprints.</p>
           <a href="#get_templates/1" translate="no">get_templates(blueprint)</a>
 
         </div>
+
+          <div class="summary-synopsis"><p>Get all the given blueprint's templates.</p></div>
 
       </div>
 
@@ -351,29 +435,7 @@ scope. This structure allows to share cases among several blueprints.</p>
 
         </div>
 
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#list_cases/1" translate="no">list_cases(queries)</a>
-
-        </div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#list_stacks/1" translate="no">list_stacks(queries)</a>
-
-        </div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#load_stack_layers/1" translate="no">load_stack_layers(query)</a>
-
-        </div>
+          <div class="summary-synopsis"><p>Import all cases from a path (used for bulk importation).</p></div>
 
       </div>
 
@@ -383,6 +445,9 @@ scope. This structure allows to share cases among several blueprints.</p>
 
         </div>
 
+          <div class="summary-synopsis"><p>Add the case entries (input and output) to the stacks retrieved
+by the given query.</p></div>
+
       </div>
 
       <div class="summary-row">
@@ -390,6 +455,9 @@ scope. This structure allows to share cases among several blueprints.</p>
           <a href="#load_stack_setting/1" translate="no">load_stack_setting(query)</a>
 
         </div>
+
+          <div class="summary-synopsis"><p>Add the setting attribute to the stacks retrieved by the given
+query.</p></div>
 
       </div>
 
@@ -399,6 +467,8 @@ scope. This structure allows to share cases among several blueprints.</p>
 
         </div>
 
+          <div class="summary-synopsis"><p>Queue a case to be runned by the simulation runner.</p></div>
+
       </div>
 
       <div class="summary-row">
@@ -406,6 +476,8 @@ scope. This structure allows to share cases among several blueprints.</p>
           <a href="#set_expect_run_error/2" translate="no">set_expect_run_error(kase, expect_run_error)</a>
 
         </div>
+
+          <div class="summary-synopsis"><p>Sets whether the case expects an error to occur (mostly when the complete element is not used).</p></div>
 
       </div>
 
@@ -415,6 +487,8 @@ scope. This structure allows to share cases among several blueprints.</p>
 
         </div>
 
+          <div class="summary-synopsis"><p>Set the &quot;expected&quot; value of the given output entry.</p></div>
+
       </div>
 
       <div class="summary-row">
@@ -422,6 +496,8 @@ scope. This structure allows to share cases among several blueprints.</p>
           <a href="#set_stack_template/2" translate="no">set_stack_template(stack, template_case_id)</a>
 
         </div>
+
+          <div class="summary-synopsis"><p>Set the case with the given id as template case for the given simple stack.</p></div>
 
       </div>
 
@@ -431,21 +507,30 @@ scope. This structure allows to share cases among several blueprints.</p>
 
         </div>
 
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#update_input_entry/2" translate="no">update_input_entry(input_entry, value)</a>
-
-        </div>
+          <div class="summary-synopsis"><p>Set the forbidden flag of the given output entry. If forbidden is set to true,
+the corresponding output variable is expected to be absent of the output in
+the current case.</p></div>
 
       </div>
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#update_setting/2" translate="no">update_setting(setting, list)</a>
+          <a href="#update_input_entry/3" translate="no">update_input_entry(input_entry, value, variable)</a>
 
         </div>
+
+          <div class="summary-synopsis"><p>Update given input entry value.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#update_setting/2" translate="no">update_setting(setting, options)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Update setting with the given options.
+Currently, the only option is the datetime <code class="inline">env_now</code>.</p></div>
 
       </div>
 
@@ -455,6 +540,8 @@ scope. This structure allows to share cases among several blueprints.</p>
 
         </div>
 
+          <div class="summary-synopsis"><p>Validate given input entry for the given variable.</p></div>
+
       </div>
 
       <div class="summary-row">
@@ -463,6 +550,8 @@ scope. This structure allows to share cases among several blueprints.</p>
 
         </div>
 
+          <div class="summary-synopsis"><p>Validate the setting.</p></div>
+
       </div>
 
       <div class="summary-row">
@@ -470,6 +559,9 @@ scope. This structure allows to share cases among several blueprints.</p>
           <a href="#variable_default_value/2" translate="no">variable_default_value(type, enum)</a>
 
         </div>
+
+          <div class="summary-synopsis"><p>Get the default value for a variable of the given type. If the type
+is string, the enum must me passed if it exists.</p></div>
 
       </div>
 
@@ -487,28 +579,6 @@ scope. This structure allows to share cases among several blueprints.</p>
 Functions
     </h1>
     <div class="functions-list">
-<section class="detail" id="create_blank_output_entry/3">
-
-  <div class="detail-header">
-    <a href="#create_blank_output_entry/3" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">create_blank_output_entry(kase, key, variable)</h1>
-
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L472" class="view-source" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-
-  </section>
-</section>
 <section class="detail" id="create_blank_stack/2">
 
   <div class="detail-header">
@@ -518,7 +588,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">create_blank_stack(blueprint, name)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L555" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L89" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -528,7 +598,7 @@ Functions
 
   <section class="docstring">
 
-
+<p>Creates a new stack with an empty runnable case and no template case.</p>
   </section>
 </section>
 <section class="detail" id="create_blank_template/2">
@@ -540,7 +610,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">create_blank_template(blueprint, name)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L398" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L185" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -550,7 +620,7 @@ Functions
 
   <section class="docstring">
 
-
+<p>Create a new blank template for the given blueprint with the given name.</p>
   </section>
 </section>
 <section class="detail" id="create_input_entry/3">
@@ -564,7 +634,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">create_input_entry(kase, key, value \\ &quot;-&quot;)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L441" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L228" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -574,7 +644,29 @@ Functions
 
   <section class="docstring">
 
+<p>Create a new input entry for the given case, key with the given value.</p>
+  </section>
+</section>
+<section class="detail" id="create_output_entry/3">
 
+  <div class="detail-header">
+    <a href="#create_output_entry/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">create_output_entry(kase, key, variable)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L248" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Create a new output entry for the given case, key and variable.</p>
   </section>
 </section>
 <section class="detail" id="create_setting/1">
@@ -586,7 +678,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">create_setting(blueprint)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L338" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L160" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -596,7 +688,7 @@ Functions
 
   <section class="docstring">
 
-
+<p>Create a new simulation setting for the given blueprint.</p><p>The default &quot;now&quot; time used here is &quot;2000-01-01&quot; (0h).</p>
   </section>
 </section>
 <section class="detail" id="create_stack/2">
@@ -610,7 +702,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">create_stack(blueprint, attrs \\ %{})</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L121" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L94" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -620,7 +712,7 @@ Functions
 
   <section class="docstring">
 
-
+<p>Creates a new stack using the given attributes.</p>
   </section>
 </section>
 <section class="detail" id="delete_input_entry/1">
@@ -632,7 +724,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">delete_input_entry(input_entry)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L453" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L233" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -642,7 +734,7 @@ Functions
 
   <section class="docstring">
 
-
+<p>Delete the given input entry.</p>
   </section>
 </section>
 <section class="detail" id="delete_output_entry/1">
@@ -654,7 +746,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">delete_output_entry(output_entry)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L488" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L253" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -664,7 +756,7 @@ Functions
 
   <section class="docstring">
 
-
+<p>Delete given output entry.</p>
   </section>
 </section>
 <section class="detail" id="delete_stack/1">
@@ -676,7 +768,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">delete_stack(stack_id)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L506" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L99" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -686,7 +778,7 @@ Functions
 
   <section class="docstring">
 
-
+<p>Deletes the stack with the given id. Layers are also deleted. Cases not.</p>
   </section>
 </section>
 <section class="detail" id="delete_stack_template/1">
@@ -698,7 +790,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">delete_stack_template(stack)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L646" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L274" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -708,7 +800,7 @@ Functions
 
   <section class="docstring">
 
-
+<p>Delete the template of the given simple stack.</p>
   </section>
 </section>
 <section class="detail" id="delete_template/1">
@@ -720,7 +812,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">delete_template(template_id)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L420" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L190" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -730,19 +822,19 @@ Functions
 
   <section class="docstring">
 
-
+<p>Delete the template with the given id.</p>
   </section>
 </section>
-<section class="detail" id="do_import_all_cases/1">
+<section class="detail" id="fork_runnable_case/2">
 
   <div class="detail-header">
-    <a href="#do_import_all_cases/1" class="detail-link" title="Link to this function">
+    <a href="#fork_runnable_case/2" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">do_import_all_cases(data)</h1>
+    <h1 class="signature" translate="no">fork_runnable_case(stack, name)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L148" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L298" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -752,19 +844,21 @@ Functions
 
   <section class="docstring">
 
-
+<p>Fork the runnable case of the given simple stack, i.e. create a copy to use in the
+given stack.</p><p>This is useful when the runnable case is shared among stacks of several blueprints,
+e.g. when a blueprint has been duplicated.</p>
   </section>
 </section>
-<section class="detail" id="filter_cases_by_workspace/2">
+<section class="detail" id="fork_template_case/2">
 
   <div class="detail-header">
-    <a href="#filter_cases_by_workspace/2" class="detail-link" title="Link to this function">
+    <a href="#fork_template_case/2" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">filter_cases_by_workspace(query, workspace)</h1>
+    <h1 class="signature" translate="no">fork_template_case(template, name)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L93" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L199" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -774,19 +868,21 @@ Functions
 
   <section class="docstring">
 
-
+<p>For the template case, i.e. create a copy to use in the template
+and all cases using this template.</p><p>This is useful when the template case is shared among templates of several blueprints,
+e.g. when a blueprint has been duplicated.</p>
   </section>
 </section>
-<section class="detail" id="filter_stacks_by_blueprint/2">
+<section class="detail" id="get_blueprints_sharing_runnable_case/1">
 
   <div class="detail-header">
-    <a href="#filter_stacks_by_blueprint/2" class="detail-link" title="Link to this function">
+    <a href="#get_blueprints_sharing_runnable_case/1" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">filter_stacks_by_blueprint(query, blueprint)</h1>
+    <h1 class="signature" translate="no">get_blueprints_sharing_runnable_case(stack)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L89" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L144" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -796,19 +892,20 @@ Functions
 
   <section class="docstring">
 
-
+<p>Get the blueprint name and ids that share the runnable case of
+the given simple (two-layer) stack.</p>
   </section>
 </section>
-<section class="detail" id="get_case/2">
+<section class="detail" id="get_blueprints_sharing_template_case/1">
 
   <div class="detail-header">
-    <a href="#get_case/2" class="detail-link" title="Link to this function">
+    <a href="#get_blueprints_sharing_template_case/1" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">get_case(case_id, queries)</h1>
+    <h1 class="signature" translate="no">get_blueprints_sharing_template_case(template)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L52" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L219" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -818,19 +915,19 @@ Functions
 
   <section class="docstring">
 
-
+<p>Returns the name and ids of the blueprints with which the case is shared.</p>
   </section>
 </section>
-<section class="detail" id="get_case!/2">
+<section class="detail" id="get_cases_using_template/1">
 
   <div class="detail-header">
-    <a href="#get_case!/2" class="detail-link" title="Link to this function">
+    <a href="#get_cases_using_template/1" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">get_case!(case_id, queries)</h1>
+    <h1 class="signature" translate="no">get_cases_using_template(template)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L46" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L180" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -840,7 +937,7 @@ Functions
 
   <section class="docstring">
 
-
+<p>Retrieve the cases (stacks) using the given template.</p>
   </section>
 </section>
 <section class="detail" id="get_first_stack/1">
@@ -852,7 +949,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">get_first_stack(blueprint)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L519" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L104" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -862,7 +959,7 @@ Functions
 
   <section class="docstring">
 
-
+<p>Get the first stack associated to the given blueprint.</p>
   </section>
 </section>
 <section class="detail" id="get_setting/1">
@@ -874,7 +971,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">get_setting(blueprint)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L331" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L153" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -884,7 +981,7 @@ Functions
 
   <section class="docstring">
 
-
+<p>Get the simulation settings.</p>
   </section>
 </section>
 <section class="detail" id="get_stack/1">
@@ -896,7 +993,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">get_stack(stack_id)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L511" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L109" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -906,29 +1003,7 @@ Functions
 
   <section class="docstring">
 
-
-  </section>
-</section>
-<section class="detail" id="get_stack/2">
-
-  <div class="detail-header">
-    <a href="#get_stack/2" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">get_stack(stack_id, queries)</h1>
-
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L83" class="view-source" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-
+<p>Retrieve a stack corresponding to the given id.</p>
   </section>
 </section>
 <section class="detail" id="get_stack!/2">
@@ -940,7 +1015,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">get_stack!(stack_id, queries)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L77" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L114" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -950,7 +1025,7 @@ Functions
 
   <section class="docstring">
 
-
+<p>Retrieve a stack corresponding to the given id (throw! version).</p>
   </section>
 </section>
 <section class="detail" id="get_stack_names/1">
@@ -962,7 +1037,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">get_stack_names(blueprint)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L536" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L121" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -972,7 +1047,7 @@ Functions
 
   <section class="docstring">
 
-
+<p>Retrieve all the stack names for the given blueprint.</p><p>Typically used to build the list of available stacks.</p>
   </section>
 </section>
 <section class="detail" id="get_stack_runnable_case/1">
@@ -984,7 +1059,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">get_stack_runnable_case(stack)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L597" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L279" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -994,7 +1069,7 @@ Functions
 
   <section class="docstring">
 
-
+<p>Get the runnable case of the given simple stack.</p>
   </section>
 </section>
 <section class="detail" id="get_stack_template_case/1">
@@ -1006,7 +1081,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">get_stack_template_case(stack)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L587" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L284" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1016,7 +1091,7 @@ Functions
 
   <section class="docstring">
 
-
+<p>Get the template case of the given simple stack.</p>
   </section>
 </section>
 <section class="detail" id="get_stacks/1">
@@ -1028,7 +1103,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">get_stacks(blueprint)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L528" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L126" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1038,7 +1113,7 @@ Functions
 
   <section class="docstring">
 
-
+<p>Get all stacks for the given blueprint.</p>
   </section>
 </section>
 <section class="detail" id="get_template/1">
@@ -1050,7 +1125,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">get_template(template_id)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L370" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L204" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1060,7 +1135,7 @@ Functions
 
   <section class="docstring">
 
-
+<p>Retrieve the template with the given id.</p>
   </section>
 </section>
 <section class="detail" id="get_template_names/1">
@@ -1072,7 +1147,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">get_template_names(blueprint)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L388" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L214" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1082,7 +1157,7 @@ Functions
 
   <section class="docstring">
 
-
+<p>Get all the given blueprint's template names.</p>
   </section>
 </section>
 <section class="detail" id="get_templates/1">
@@ -1094,7 +1169,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">get_templates(blueprint)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L378" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L209" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1104,7 +1179,7 @@ Functions
 
   <section class="docstring">
 
-
+<p>Get all the given blueprint's templates.</p>
   </section>
 </section>
 <section class="detail" id="import_all_cases/1">
@@ -1116,7 +1191,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">import_all_cases(path)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L132" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L326" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1126,73 +1201,7 @@ Functions
 
   <section class="docstring">
 
-
-  </section>
-</section>
-<section class="detail" id="list_cases/1">
-
-  <div class="detail-header">
-    <a href="#list_cases/1" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">list_cases(queries)</h1>
-
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L40" class="view-source" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-
-  </section>
-</section>
-<section class="detail" id="list_stacks/1">
-
-  <div class="detail-header">
-    <a href="#list_stacks/1" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">list_stacks(queries)</h1>
-
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L71" class="view-source" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-
-  </section>
-</section>
-<section class="detail" id="load_stack_layers/1">
-
-  <div class="detail-header">
-    <a href="#load_stack_layers/1" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">load_stack_layers(query)</h1>
-
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L97" class="view-source" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-
+<p>Import all cases from a path (used for bulk importation).</p>
   </section>
 </section>
 <section class="detail" id="load_stack_layers_case_entries/1">
@@ -1204,7 +1213,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">load_stack_layers_case_entries(query)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L107" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L132" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1214,7 +1223,8 @@ Functions
 
   <section class="docstring">
 
-
+<p>Add the case entries (input and output) to the stacks retrieved
+by the given query.</p>
   </section>
 </section>
 <section class="detail" id="load_stack_setting/1">
@@ -1226,7 +1236,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">load_stack_setting(query)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L117" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L138" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1236,7 +1246,8 @@ Functions
 
   <section class="docstring">
 
-
+<p>Add the setting attribute to the stacks retrieved by the given
+query.</p>
   </section>
 </section>
 <section class="detail" id="queue_job/1">
@@ -1248,7 +1259,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">queue_job(job)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L36" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L307" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1258,7 +1269,7 @@ Functions
 
   <section class="docstring">
 
-
+<p>Queue a case to be runned by the simulation runner.</p>
   </section>
 </section>
 <section class="detail" id="set_expect_run_error/2">
@@ -1270,7 +1281,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">set_expect_run_error(kase, expect_run_error)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L58" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L80" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1280,7 +1291,7 @@ Functions
 
   <section class="docstring">
 
-
+<p>Sets whether the case expects an error to occur (mostly when the complete element is not used).</p>
   </section>
 </section>
 <section class="detail" id="set_expected/2">
@@ -1292,7 +1303,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">set_expected(entry, expected)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L492" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L258" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1302,7 +1313,7 @@ Functions
 
   <section class="docstring">
 
-
+<p>Set the &quot;expected&quot; value of the given output entry.</p>
   </section>
 </section>
 <section class="detail" id="set_stack_template/2">
@@ -1314,7 +1325,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">set_stack_template(stack, template_case_id)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L607" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L289" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1324,7 +1335,7 @@ Functions
 
   <section class="docstring">
 
-
+<p>Set the case with the given id as template case for the given simple stack.</p>
   </section>
 </section>
 <section class="detail" id="toggle_forbidden/2">
@@ -1336,7 +1347,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">toggle_forbidden(entry, forbidden)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L498" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L265" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1346,19 +1357,21 @@ Functions
 
   <section class="docstring">
 
-
+<p>Set the forbidden flag of the given output entry. If forbidden is set to true,
+the corresponding output variable is expected to be absent of the output in
+the current case.</p>
   </section>
 </section>
-<section class="detail" id="update_input_entry/2">
+<section class="detail" id="update_input_entry/3">
 
   <div class="detail-header">
-    <a href="#update_input_entry/2" class="detail-link" title="Link to this function">
+    <a href="#update_input_entry/3" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">update_input_entry(input_entry, value)</h1>
+    <h1 class="signature" translate="no">update_input_entry(input_entry, value, variable)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L457" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L238" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1368,7 +1381,7 @@ Functions
 
   <section class="docstring">
 
-
+<p>Update given input entry value.</p>
   </section>
 </section>
 <section class="detail" id="update_setting/2">
@@ -1378,9 +1391,9 @@ Functions
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">update_setting(setting, list)</h1>
+    <h1 class="signature" translate="no">update_setting(setting, options)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L355" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L166" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1390,7 +1403,8 @@ Functions
 
   <section class="docstring">
 
-
+<p>Update setting with the given options.
+Currently, the only option is the datetime <code class="inline">env_now</code>.</p>
   </section>
 </section>
 <section class="detail" id="validate_input_entry/2">
@@ -1402,7 +1416,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">validate_input_entry(changeset, variable)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L463" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L243" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1412,7 +1426,7 @@ Functions
 
   <section class="docstring">
 
-
+<p>Validate given input entry for the given variable.</p>
   </section>
 </section>
 <section class="detail" id="validate_setting/1">
@@ -1424,7 +1438,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">validate_setting(changeset)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L362" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L171" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1434,7 +1448,7 @@ Functions
 
   <section class="docstring">
 
-
+<p>Validate the setting.</p>
   </section>
 </section>
 <section class="detail" id="variable_default_value/2">
@@ -1446,7 +1460,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">variable_default_value(type, enum)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L654" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation.ex#L317" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1456,7 +1470,8 @@ Functions
 
   <section class="docstring">
 
-
+<p>Get the default value for a variable of the given type. If the type
+is string, the enum must me passed if it exists.</p>
   </section>
 </section>
 
@@ -1469,10 +1484,10 @@ Functions
             On Hex.pm:
 
             <span class="line">
-              <a href="https://hex.pm/packages/vac_engine/1.0.3" class="line footer-hex-package">Package</a>
-              <a href="https://preview.hex.pm/preview/vac_engine/1.0.3" class="line">Preview</a>
+              <a href="https://hex.pm/packages/vac_engine/1.1.1" class="line footer-hex-package">Package</a>
+              <a href="https://preview.hex.pm/preview/vac_engine/1.1.1" class="line">Preview</a>
 
-                <a href="https://preview.hex.pm/preview/vac_engine/1.0.3/show/lib/vac_engine/simulation.ex">(current file)</a>
+                <a href="https://preview.hex.pm/preview/vac_engine/1.1.1/show/lib/vac_engine/simulation.ex">(current file)</a>
 
             </span>
 

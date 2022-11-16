@@ -5,12 +5,12 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.28.0">
-    <meta name="project" content="Vac Engine v1.0.3">
+    <meta name="project" content="Vac Engine v1.1.1">
 
-    <title>API Reference — Vac Engine v1.0.3</title>
+    <title>API Reference — Vac Engine v1.1.1</title>
     <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
-    <script src="dist/sidebar_items-6e385c0426.js"></script>
+    <script src="dist/sidebar_items-5f79f8e75a.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -60,7 +60,7 @@
 Vac Engine
       </a>
       <strong class="sidebar-projectVersion" translate="no">
-        v1.0.3
+        v1.1.1
       </strong>
     </div>
     <ul class="sidebar-listNav">
@@ -87,7 +87,7 @@ Vac Engine
 </button>
 
 
-  <span>API Reference <small class="app-vsn">Vac Engine v1.0.3</small></span>
+  <span>API Reference <small class="app-vsn">Vac Engine v1.1.1</small></span>
 </h1>
 
 
@@ -98,13 +98,6 @@ Vac Engine
 </h2>
 
     <div class="summary">
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="StackTemplatePickerComponent.html" translate="no">StackTemplatePickerComponent</a>
-
-  </div>
-
-</div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="VacEngine.html" translate="no">VacEngine</a>
@@ -130,23 +123,8 @@ i.e. it's business logic and data management.</p></div>
 
   </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngine.EctoHelpers.html" translate="no">VacEngine.EctoHelpers</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Set of utilities to help manipulate data in Ecto Schema.</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngine.EnumHelpers.html" translate="no">VacEngine.EnumHelpers</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Set of Enum helpers</p></div>
+    <div class="summary-synopsis"><p>Utility to parse a string to a given type, returning meaningful errors
+if parsing is impossible.</p></div>
 
 </div>
 <div class="summary-row">
@@ -156,15 +134,6 @@ i.e. it's business logic and data management.</p></div>
   </div>
 
     <div class="summary-synopsis"><p>Hash utilities</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngine.PipeHelpers.html" translate="no">VacEngine.PipeHelpers</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Helper for piping data</p></div>
 
 </div>
 <div class="summary-row">
@@ -184,20 +153,6 @@ to compute API output from API input.</p></div>
   </div>
 
     <div class="summary-synopsis"><p>Represent the blueprint &quot;simple&quot; AST</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngine.Processor.Blueprints.Arrange.html" translate="no">VacEngine.Processor.Blueprints.Arrange</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngine.Processor.Blueprints.VariableIndex.html" translate="no">VacEngine.Processor.Blueprints.VariableIndex</a>
-
-  </div>
 
 </div>
 <div class="summary-row">
@@ -304,37 +259,12 @@ accessible through the API.</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="VacEngine.Pub.Portal.html" translate="no">VacEngine.Pub.Portal</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>A portal is an API entry point with multiple publications</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngine.Pub.Publication.html" translate="no">VacEngine.Pub.Publication</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>A publication is a published blueprint</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngine.Query.html" translate="no">VacEngine.Query</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
     <a href="VacEngine.Release.html" translate="no">VacEngine.Release</a>
 
   </div>
 
     <div class="summary-synopsis"><p>This module is used in production to provide an interface to the app
-from the command line</p></div>
+from the command line.</p></div>
 
 </div>
 <div class="summary-row">
@@ -343,22 +273,17 @@ from the command line</p></div>
 
   </div>
 
-    <div class="summary-synopsis"><p>Provides the model for the blueprint simulation. Simulation is useful
-to assess whether a ruleset meets the business requirements.</p></div>
+    <div class="summary-synopsis"><p>Provides the model for the blueprint simulation. Simulation is used
+to assess whether a ruleset meets business requirements.</p></div>
 
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="VacEngine.Simulation.Simulations.html" translate="no">VacEngine.Simulation.Simulations</a>
+    <a href="VacEngine.Simulation.SimpleStacks.html" translate="no">VacEngine.Simulation.SimpleStacks</a>
 
   </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngine.SimulationHelpers.html" translate="no">VacEngine.SimulationHelpers</a>
-
-  </div>
+    <div class="summary-synopsis"><p>Simple stacks are stacks with only two layers</p></div>
 
 </div>
 <div class="summary-row">
@@ -393,6 +318,8 @@ as controllers, views, channels and so on.</p></div>
 
   </div>
 
+    <div class="summary-synopsis"><p>Receives requests to the corresponding portal.</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
@@ -407,12 +334,16 @@ as controllers, views, channels and so on.</p></div>
 
   </div>
 
+    <div class="summary-synopsis"><p>Editor for a single ApiKey.</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="VacEngineWeb.ApiKeyLive.Index.html" translate="no">VacEngineWeb.ApiKeyLive.Index</a>
 
   </div>
+
+    <div class="summary-synopsis"><p>Index of all API keys.</p></div>
 
 </div>
 <div class="summary-row">
@@ -421,12 +352,7 @@ as controllers, views, channels and so on.</p></div>
 
   </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.ApiPlug.html" translate="no">VacEngineWeb.ApiPlug</a>
-
-  </div>
+    <div class="summary-synopsis"><p>Form for API-key creation.</p></div>
 
 </div>
 <div class="summary-row">
@@ -435,6 +361,8 @@ as controllers, views, channels and so on.</p></div>
 
   </div>
 
+    <div class="summary-synopsis"><p>Authentication controller.</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
@@ -442,12 +370,7 @@ as controllers, views, channels and so on.</p></div>
 
   </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.AuthLive.Login.LoginForm.html" translate="no">VacEngineWeb.AuthLive.Login.LoginForm</a>
-
-  </div>
+    <div class="summary-synopsis"><p>Login page.</p></div>
 
 </div>
 <div class="summary-row">
@@ -455,6 +378,8 @@ as controllers, views, channels and so on.</p></div>
     <a href="VacEngineWeb.AuthLive.LoginFormComponent.html" translate="no">VacEngineWeb.AuthLive.LoginFormComponent</a>
 
   </div>
+
+    <div class="summary-synopsis"><p>Form component for the user login.</p></div>
 
 </div>
 <div class="summary-row">
@@ -470,12 +395,25 @@ as controllers, views, channels and so on.</p></div>
 
   </div>
 
+    <div class="summary-synopsis"><p>Button to duplicate current blueprint.</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="VacEngineWeb.BlueprintLive.Edit.html" translate="no">VacEngineWeb.BlueprintLive.Edit</a>
 
   </div>
+
+    <div class="summary-synopsis"><p>Main blueprint edition page.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="VacEngineWeb.BlueprintLive.Import.html" translate="no">VacEngineWeb.BlueprintLive.Import</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Blueprint import page.</p></div>
 
 </div>
 <div class="summary-row">
@@ -484,12 +422,16 @@ as controllers, views, channels and so on.</p></div>
 
   </div>
 
+    <div class="summary-synopsis"><p>Blueprint importation component.</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="VacEngineWeb.BlueprintLive.Index.html" translate="no">VacEngineWeb.BlueprintLive.Index</a>
 
   </div>
+
+    <div class="summary-synopsis"><p>The list of the blueprints in the current workspace.</p></div>
 
 </div>
 <div class="summary-row">
@@ -498,12 +440,7 @@ as controllers, views, channels and so on.</p></div>
 
   </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.BlueprintLive.Pick.html" translate="no">VacEngineWeb.BlueprintLive.Pick</a>
-
-  </div>
+    <div class="summary-synopsis"><p>The new blueprint creation page.</p></div>
 
 </div>
 <div class="summary-row">
@@ -512,6 +449,8 @@ as controllers, views, channels and so on.</p></div>
 
   </div>
 
+    <div class="summary-synopsis"><p>Contains general informations and controls about the current blueprint.</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
@@ -519,19 +458,7 @@ as controllers, views, channels and so on.</p></div>
 
   </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.CachePlug.html" translate="no">VacEngineWeb.CachePlug</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.ConnHelpers.html" translate="no">VacEngineWeb.ConnHelpers</a>
-
-  </div>
+    <div class="summary-synopsis"><p>A button with click confirmation capabilities.</p></div>
 
 </div>
 <div class="summary-row">
@@ -540,152 +467,7 @@ as controllers, views, channels and so on.</p></div>
 
   </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.EditorLive.BlueprintStatusComponent.html" translate="no">VacEngineWeb.EditorLive.BlueprintStatusComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.EditorLive.DeductionBranchComponent.html" translate="no">VacEngineWeb.EditorLive.DeductionBranchComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.EditorLive.DeductionBranchInspectorComponent.html" translate="no">VacEngineWeb.EditorLive.DeductionBranchInspectorComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.EditorLive.DeductionCellComponent.html" translate="no">VacEngineWeb.EditorLive.DeductionCellComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.EditorLive.DeductionCellInspectorComponent.html" translate="no">VacEngineWeb.EditorLive.DeductionCellInspectorComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.EditorLive.DeductionColumnInspectorComponent.html" translate="no">VacEngineWeb.EditorLive.DeductionColumnInspectorComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.EditorLive.DeductionComponent.html" translate="no">VacEngineWeb.EditorLive.DeductionComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.EditorLive.DeductionEditorComponent.html" translate="no">VacEngineWeb.EditorLive.DeductionEditorComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.EditorLive.DeductionHeaderComponent.html" translate="no">VacEngineWeb.EditorLive.DeductionHeaderComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.EditorLive.DeductionInspectorComponent.html" translate="no">VacEngineWeb.EditorLive.DeductionInspectorComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.EditorLive.DeductionListComponent.html" translate="no">VacEngineWeb.EditorLive.DeductionListComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.EditorLive.DeductionTableInspectorComponent.html" translate="no">VacEngineWeb.EditorLive.DeductionTableInspectorComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.EditorLive.ExpressionNode.html" translate="no">VacEngineWeb.EditorLive.ExpressionNode</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.EditorLive.ExpressionNodeDisplayComponent.html" translate="no">VacEngineWeb.EditorLive.ExpressionNodeDisplayComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.EditorLive.ExpressionNodeEditorComponent.html" translate="no">VacEngineWeb.EditorLive.ExpressionNodeEditorComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.EditorLive.VariableActionGroupComponent.html" translate="no">VacEngineWeb.EditorLive.VariableActionGroupComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.EditorLive.VariableComponent.html" translate="no">VacEngineWeb.EditorLive.VariableComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.EditorLive.VariableEditorComponent.html" translate="no">VacEngineWeb.EditorLive.VariableEditorComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.EditorLive.VariableInspectorComponent.html" translate="no">VacEngineWeb.EditorLive.VariableInspectorComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.EditorLive.VariableListComponent.html" translate="no">VacEngineWeb.EditorLive.VariableListComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.EditorLive.VariableSubListComponent.html" translate="no">VacEngineWeb.EditorLive.VariableSubListComponent</a>
-
-  </div>
+    <div class="summary-synopsis"><p>The workspaces dashboard (TODO remove and redirect to blueprints)</p></div>
 
 </div>
 <div class="summary-row">
@@ -717,6 +499,8 @@ as controllers, views, channels and so on.</p></div>
 
   </div>
 
+    <div class="summary-synopsis"><p>Export controller. Used for blueprint download.</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
@@ -725,34 +509,6 @@ as controllers, views, channels and so on.</p></div>
   </div>
 
     <div class="summary-synopsis"><p>Translates controller action results into valid <a href="https://hexdocs.pm/plug/1.13.2/Plug.Conn.html"><code class="inline">Plug.Conn</code></a> responses.</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.FlashComponent.html" translate="no">VacEngineWeb.FlashComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.FlexCenterComponent.html" translate="no">VacEngineWeb.FlexCenterComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.FormHelpers.html" translate="no">VacEngineWeb.FormHelpers</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.FormatHelpers.html" translate="no">VacEngineWeb.FormatHelpers</a>
-
-  </div>
 
 </div>
 <div class="summary-row">
@@ -770,12 +526,18 @@ as controllers, views, channels and so on.</p></div>
 
   </div>
 
+    <div class="summary-synopsis"><p>The user icon at the left of the screen that open the user menu when clicked.</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="VacEngineWeb.Header.MenuComponent.html" translate="no">VacEngineWeb.Header.MenuComponent</a>
 
   </div>
+
+    <div class="summary-synopsis"><p>The user menu that pops when the user icon is clicked. It contains
+info about the user, the current workspace and controls to change workspace
+or reach user settings.</p></div>
 
 </div>
 <div class="summary-row">
@@ -784,12 +546,16 @@ as controllers, views, channels and so on.</p></div>
 
   </div>
 
+    <div class="summary-synopsis"><p>The container for the sub-level section buttons.</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="VacEngineWeb.Header.TitleComponent.html" translate="no">VacEngineWeb.Header.TitleComponent</a>
 
   </div>
+
+    <div class="summary-synopsis"><p>The title in the middle of the header. It depends on the current context.</p></div>
 
 </div>
 <div class="summary-row">
@@ -798,12 +564,19 @@ as controllers, views, channels and so on.</p></div>
 
   </div>
 
+    <div class="summary-synopsis"><p>The container for the top level sections of the header.</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="VacEngineWeb.HeaderComponent.html" translate="no">VacEngineWeb.HeaderComponent</a>
 
   </div>
+
+    <div class="summary-synopsis"><p>The header of the application page. It is composed of two levels. The top level
+contains top sections like &quot;blueprint&quot; and &quot;portals&quot;. The sub level contains
+subsections related to the currently selected top secton (e.g. deduction or simulation
+for the blueprint section).</p></div>
 
 </div>
 <div class="summary-row">
@@ -812,6 +585,8 @@ as controllers, views, channels and so on.</p></div>
 
   </div>
 
+    <div class="summary-synopsis"><p>Icon loaded from a file based on the @name argument.</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
@@ -819,19 +594,7 @@ as controllers, views, channels and so on.</p></div>
 
   </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.InlineSearchComponent.html" translate="no">VacEngineWeb.InlineSearchComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.KlassHelpers.html" translate="no">VacEngineWeb.KlassHelpers</a>
-
-  </div>
+    <div class="summary-synopsis"><p>A simple component to display info.</p></div>
 
 </div>
 <div class="summary-row">
@@ -843,51 +606,11 @@ as controllers, views, channels and so on.</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="VacEngineWeb.LiveLocation.html" translate="no">VacEngineWeb.LiveLocation</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.LiveRole.html" translate="no">VacEngineWeb.LiveRole</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.LiveWorkspace.html" translate="no">VacEngineWeb.LiveWorkspace</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
     <a href="VacEngineWeb.LoaderCardComponent.html" translate="no">VacEngineWeb.LoaderCardComponent</a>
 
   </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.MaintenanceLive.Index.html" translate="no">VacEngineWeb.MaintenanceLive.Index</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.NavLive.Index.html" translate="no">VacEngineWeb.NavLive.Index</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.PathHelpers.html" translate="no">VacEngineWeb.PathHelpers</a>
-
-  </div>
+    <div class="summary-synopsis"><p>A card with a loader.</p></div>
 
 </div>
 <div class="summary-row">
@@ -903,40 +626,7 @@ as controllers, views, channels and so on.</p></div>
 
   </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.PermissionToggleComponent.html" translate="no">VacEngineWeb.PermissionToggleComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.PortalLive.Edit.html" translate="no">VacEngineWeb.PortalLive.Edit</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.PortalLive.Index.html" translate="no">VacEngineWeb.PortalLive.Index</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.PortalLive.New.html" translate="no">VacEngineWeb.PortalLive.New</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.RolePlug.html" translate="no">VacEngineWeb.RolePlug</a>
-
-  </div>
+    <div class="summary-synopsis"><p>Provides functions necessary to check persissions.</p></div>
 
 </div>
 <div class="summary-row">
@@ -957,155 +647,6 @@ as controllers, views, channels and so on.</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="VacEngineWeb.SimulationLive.ConfigEditorComponent.html" translate="no">VacEngineWeb.SimulationLive.ConfigEditorComponent</a>
-
-  </div>
-
-    <div class="summary-synopsis"></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.SimulationLive.EntryValueFieldComponent.html" translate="no">VacEngineWeb.SimulationLive.EntryValueFieldComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.SimulationLive.ExpectRunErrorComponent.html" translate="no">VacEngineWeb.SimulationLive.ExpectRunErrorComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.SimulationLive.ExpectedFieldComponent.html" translate="no">VacEngineWeb.SimulationLive.ExpectedFieldComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.SimulationLive.InputComponent.html" translate="no">VacEngineWeb.SimulationLive.InputComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.SimulationLive.MenuConfigComponent.html" translate="no">VacEngineWeb.SimulationLive.MenuConfigComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.SimulationLive.MenuStackItemComponent.html" translate="no">VacEngineWeb.SimulationLive.MenuStackItemComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.SimulationLive.MenuStackListComponent.html" translate="no">VacEngineWeb.SimulationLive.MenuStackListComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.SimulationLive.MenuTemplateItemComponent.html" translate="no">VacEngineWeb.SimulationLive.MenuTemplateItemComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.SimulationLive.MenuTemplateListComponent.html" translate="no">VacEngineWeb.SimulationLive.MenuTemplateListComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.SimulationLive.SimulationEditorComponent.html" translate="no">VacEngineWeb.SimulationLive.SimulationEditorComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.SimulationLive.StackEditorComponent.html" translate="no">VacEngineWeb.SimulationLive.StackEditorComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.SimulationLive.StackInputComponent.html" translate="no">VacEngineWeb.SimulationLive.StackInputComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.SimulationLive.StackInputVariableComponent.html" translate="no">VacEngineWeb.SimulationLive.StackInputVariableComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.SimulationLive.StackOutputComponent.html" translate="no">VacEngineWeb.SimulationLive.StackOutputComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.SimulationLive.StackOutputVariableComponent.html" translate="no">VacEngineWeb.SimulationLive.StackOutputVariableComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.SimulationLive.TemplateEditorComponent.html" translate="no">VacEngineWeb.SimulationLive.TemplateEditorComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.SimulationLive.TemplateInputComponent.html" translate="no">VacEngineWeb.SimulationLive.TemplateInputComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.SimulationLive.TemplateInputVariableComponent.html" translate="no">VacEngineWeb.SimulationLive.TemplateInputVariableComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.SimulationLive.ToggleComponent.html" translate="no">VacEngineWeb.SimulationLive.ToggleComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.SimulationLive.ToggleForbiddenComponent.html" translate="no">VacEngineWeb.SimulationLive.ToggleForbiddenComponent</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
     <a href="VacEngineWeb.SimulationLive.VariableFullNameComponent.html" translate="no">VacEngineWeb.SimulationLive.VariableFullNameComponent</a>
 
   </div>
@@ -1116,16 +657,11 @@ the structure.</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="VacEngineWeb.Telemetry.html" translate="no">VacEngineWeb.Telemetry</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
     <a href="VacEngineWeb.TextCardComponent.html" translate="no">VacEngineWeb.TextCardComponent</a>
 
   </div>
+
+    <div class="summary-synopsis"><p>A card with a text inside.</p></div>
 
 </div>
 <div class="summary-row">
@@ -1134,38 +670,12 @@ the structure.</p></div>
 
   </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.UserLive.Edit.html" translate="no">VacEngineWeb.UserLive.Edit</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.UserLive.Index.html" translate="no">VacEngineWeb.UserLive.Index</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.UserLive.New.html" translate="no">VacEngineWeb.UserLive.New</a>
-
-  </div>
+    <div class="summary-synopsis"><p>A toggle component with a confirm click capabilitiy.</p></div>
 
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="VacEngineWeb.UserSocket.html" translate="no">VacEngineWeb.UserSocket</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.VersionHelpers.html" translate="no">VacEngineWeb.VersionHelpers</a>
 
   </div>
 
@@ -1180,34 +690,6 @@ the structure.</p></div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="VacEngineWeb.WelcomeView.html" translate="no">VacEngineWeb.WelcomeView</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.WorkspaceLive.Edit.html" translate="no">VacEngineWeb.WorkspaceLive.Edit</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.WorkspaceLive.Index.html" translate="no">VacEngineWeb.WorkspaceLive.Index</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.WorkspaceLive.New.html" translate="no">VacEngineWeb.WorkspaceLive.New</a>
-
-  </div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="VacEngineWeb.WorkspacePlug.html" translate="no">VacEngineWeb.WorkspacePlug</a>
 
   </div>
 
@@ -1241,8 +723,8 @@ README
             On Hex.pm:
 
             <span class="line">
-              <a href="https://hex.pm/packages/vac_engine/1.0.3" class="line footer-hex-package">Package</a>
-              <a href="https://preview.hex.pm/preview/vac_engine/1.0.3" class="line">Preview</a>
+              <a href="https://hex.pm/packages/vac_engine/1.1.1" class="line footer-hex-package">Package</a>
+              <a href="https://preview.hex.pm/preview/vac_engine/1.1.1" class="line">Preview</a>
 
             </span>
 

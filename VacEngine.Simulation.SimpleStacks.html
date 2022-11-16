@@ -5,12 +5,12 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.28.0">
-    <meta name="project" content="Vac Engine v1.0.3">
+    <meta name="project" content="Vac Engine v1.1.1">
 
-    <title>VacEngineWeb.SimulationLive.MenuTemplateItemComponent — Vac Engine v1.0.3</title>
+    <title>VacEngine.Simulation.SimpleStacks — Vac Engine v1.1.1</title>
     <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
-    <script src="dist/sidebar_items-6e385c0426.js"></script>
+    <script src="dist/sidebar_items-5f79f8e75a.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -60,7 +60,7 @@
 Vac Engine
       </a>
       <strong class="sidebar-projectVersion" translate="no">
-        v1.0.3
+        v1.1.1
       </strong>
     </div>
     <ul class="sidebar-listNav">
@@ -87,16 +87,21 @@ Vac Engine
 </button>
 
 
-    <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/live/simulation_live/live_components/menu_template_item_component.ex#L1" title="View Source" class="view-source" rel="help">
+    <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation/simple_stacks.ex#L1" title="View Source" class="view-source" rel="help">
       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
       <span class="sr-only">View Source</span>
     </a>
 
-  <span translate="no">VacEngineWeb.SimulationLive.MenuTemplateItemComponent</span> 
-  <small class="app-vsn" translate="no">(Vac Engine v1.0.3)</small>
+  <span translate="no">VacEngine.Simulation.SimpleStacks</span> 
+  <small class="app-vsn" translate="no">(Vac Engine v1.1.1)</small>
 
 </h1>
 
+
+  <section id="moduledoc">
+<p>Simple stacks are stacks with only two layers:</p><ul><li>one template layer at position 0</li><li>one runnable layer at position 1</li></ul><p>This is the only type of stack used in the current
+VacEngine simulation implementation.</p>
+  </section>
 
 
   <section id="summary" class="details-list">
@@ -115,41 +120,49 @@ Vac Engine
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#handle_event/3" translate="no">handle_event(binary, params, socket)</a>
+          <a href="#delete_stack_template/1" translate="no">delete_stack_template(stack)</a>
 
         </div>
-
-          <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/phoenix_live_view/0.17.6/Phoenix.LiveComponent.html#c:handle_event/3"><code class="inline">Phoenix.LiveComponent.handle_event/3</code></a>.</p></div>
 
       </div>
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#mount/1" translate="no">mount(socket)</a>
+          <a href="#fork_runnable_case/2" translate="no">fork_runnable_case(simple_stack, name)</a>
 
         </div>
-
-          <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/phoenix_live_view/0.17.6/Phoenix.LiveComponent.html#c:mount/1"><code class="inline">Phoenix.LiveComponent.mount/1</code></a>.</p></div>
 
       </div>
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#render/1" translate="no">render(arg)</a>
+          <a href="#get_blueprints_sharing_runnable_case/1" translate="no">get_blueprints_sharing_runnable_case(stack)</a>
 
         </div>
-
-          <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/phoenix_live_view/0.17.6/Phoenix.LiveComponent.html#c:render/1"><code class="inline">Phoenix.LiveComponent.render/1</code></a>.</p></div>
 
       </div>
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#update/2" translate="no">update(map, socket)</a>
+          <a href="#get_stack_runnable_case/1" translate="no">get_stack_runnable_case(stack)</a>
 
         </div>
 
-          <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/phoenix_live_view/0.17.6/Phoenix.LiveComponent.html#c:update/2"><code class="inline">Phoenix.LiveComponent.update/2</code></a>.</p></div>
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#get_stack_template_case/1" translate="no">get_stack_template_case(stack)</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#set_stack_template/2" translate="no">set_stack_template(stack, template_case_id)</a>
+
+        </div>
 
       </div>
 
@@ -167,16 +180,16 @@ Vac Engine
 Functions
     </h1>
     <div class="functions-list">
-<section class="detail" id="handle_event/3">
+<section class="detail" id="delete_stack_template/1">
 
   <div class="detail-header">
-    <a href="#handle_event/3" class="detail-link" title="Link to this function">
+    <a href="#delete_stack_template/1" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">handle_event(binary, params, socket)</h1>
+    <h1 class="signature" translate="no">delete_stack_template(stack)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/live/simulation_live/live_components/menu_template_item_component.ex#L42" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation/simple_stacks.ex#L21" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -186,19 +199,19 @@ Functions
 
   <section class="docstring">
 
-<p>Callback implementation for <a href="https://hexdocs.pm/phoenix_live_view/0.17.6/Phoenix.LiveComponent.html#c:handle_event/3"><code class="inline">Phoenix.LiveComponent.handle_event/3</code></a>.</p>
+
   </section>
 </section>
-<section class="detail" id="mount/1">
+<section class="detail" id="fork_runnable_case/2">
 
   <div class="detail-header">
-    <a href="#mount/1" class="detail-link" title="Link to this function">
+    <a href="#fork_runnable_case/2" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">mount(socket)</h1>
+    <h1 class="signature" translate="no">fork_runnable_case(simple_stack, name)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/live/simulation_live/live_components/menu_template_item_component.ex#L13" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation/simple_stacks.ex#L87" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -208,19 +221,19 @@ Functions
 
   <section class="docstring">
 
-<p>Callback implementation for <a href="https://hexdocs.pm/phoenix_live_view/0.17.6/Phoenix.LiveComponent.html#c:mount/1"><code class="inline">Phoenix.LiveComponent.mount/1</code></a>.</p>
+
   </section>
 </section>
-<section class="detail" id="render/1">
+<section class="detail" id="get_blueprints_sharing_runnable_case/1">
 
   <div class="detail-header">
-    <a href="#render/1" class="detail-link" title="Link to this function">
+    <a href="#get_blueprints_sharing_runnable_case/1" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">render(arg)</h1>
+    <h1 class="signature" translate="no">get_blueprints_sharing_runnable_case(stack)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/live/simulation_live/live_components/menu_template_item_component.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation/simple_stacks.ex#L118" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -230,19 +243,19 @@ Functions
 
   <section class="docstring">
 
-<p>Callback implementation for <a href="https://hexdocs.pm/phoenix_live_view/0.17.6/Phoenix.LiveComponent.html#c:render/1"><code class="inline">Phoenix.LiveComponent.render/1</code></a>.</p>
+
   </section>
 </section>
-<section class="detail" id="update/2">
+<section class="detail" id="get_stack_runnable_case/1">
 
   <div class="detail-header">
-    <a href="#update/2" class="detail-link" title="Link to this function">
+    <a href="#get_stack_runnable_case/1" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">update(map, socket)</h1>
+    <h1 class="signature" translate="no">get_stack_runnable_case(stack)</h1>
 
-      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine_web/live/simulation_live/live_components/menu_template_item_component.ex#L19" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation/simple_stacks.ex#L29" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -252,7 +265,51 @@ Functions
 
   <section class="docstring">
 
-<p>Callback implementation for <a href="https://hexdocs.pm/phoenix_live_view/0.17.6/Phoenix.LiveComponent.html#c:update/2"><code class="inline">Phoenix.LiveComponent.update/2</code></a>.</p>
+
+  </section>
+</section>
+<section class="detail" id="get_stack_template_case/1">
+
+  <div class="detail-header">
+    <a href="#get_stack_template_case/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">get_stack_template_case(stack)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation/simple_stacks.ex#L38" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+
+  </section>
+</section>
+<section class="detail" id="set_stack_template/2">
+
+  <div class="detail-header">
+    <a href="#set_stack_template/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">set_stack_template(stack, template_case_id)</h1>
+
+      <a href="https://github.com/soignezmoich/vac-engine/blob/main/lib/vac_engine/simulation/simple_stacks.ex#L48" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+
   </section>
 </section>
 
@@ -265,10 +322,10 @@ Functions
             On Hex.pm:
 
             <span class="line">
-              <a href="https://hex.pm/packages/vac_engine/1.0.3" class="line footer-hex-package">Package</a>
-              <a href="https://preview.hex.pm/preview/vac_engine/1.0.3" class="line">Preview</a>
+              <a href="https://hex.pm/packages/vac_engine/1.1.1" class="line footer-hex-package">Package</a>
+              <a href="https://preview.hex.pm/preview/vac_engine/1.1.1" class="line">Preview</a>
 
-                <a href="https://preview.hex.pm/preview/vac_engine/1.0.3/show/lib/vac_engine_web/live/simulation_live/live_components/menu_template_item_component.ex">(current file)</a>
+                <a href="https://preview.hex.pm/preview/vac_engine/1.1.1/show/lib/vac_engine/simulation/simple_stacks.ex">(current file)</a>
 
             </span>
 
